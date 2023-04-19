@@ -5,8 +5,7 @@
       "plugin:@typescript-eslint/recommended"
     ],
     "plugins": [
-      "react",
-      "@typescript-eslint"
+      "react"
     ],
     "rules": {
       "no-trailing-spaces": ["error", { "skipBlankLines": true } ],
