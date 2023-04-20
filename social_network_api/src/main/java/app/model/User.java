@@ -1,9 +1,8 @@
 package app.model;
 
 import lombok.Data;
-
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity (name = "users")
 @Data
@@ -23,7 +22,7 @@ public class User {
     String email;
 
     @Column (name = "created_date")
-    Date createdDate;
+    LocalDate createdDate;
 
     @Column (name = "name")
     String name;
