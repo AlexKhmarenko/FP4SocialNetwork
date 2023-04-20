@@ -9,4 +9,3 @@ public class NetworkApp {
     SpringApplication.run(NetworkApp.class, args);
   }
 }
-
