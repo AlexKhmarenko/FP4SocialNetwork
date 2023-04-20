@@ -1,19 +1,14 @@
 {
-  "parser": "@babel/eslint-parser",
-  "extends": [
-    "plugin:react/recommended"
-  ],
-  "plugins": [
-    "react"
-  ],
-  "rules": {
-    "no-trailing-spaces": [
-      "error",
-      {
-        "skipBlankLines": true
-      }
+    "parser": "@babel/eslint-parser",
+    "extends": [
+      "plugin:react/recommended",
     ],
-    "no-return-assign": 0,
-    "eol-last": 0
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "no-trailing-spaces": ["error", { "skipBlankLines": true } ],
+      "no-return-assign": 0,
+      "eol-last": 0
+    }
   }
-}
