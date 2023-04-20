@@ -18,6 +18,6 @@ spring:
 
   logging:
     level:
-      root=ERROR:
-      org=info:
+      root:ERROR
+      org:info
 
