@@ -23,11 +23,12 @@ public class JwtTokenService {
   @Value("${jwt.expire.remember}")
   Long expiration_remember = 60 * 60 * 24 * 1000L * 10; // 10d
 
-  public String generateToken(Integer userId, boolean rememberMe) {
+  public String generateToken(String username, String password, boolean rememberMe) {
+    String subject = username + "+" + password;
     Date now = new Date();
     Date expiry = new Date(now.getTime() + (rememberMe ? expiration_remember : expiration_normal));
     String token = Jwts.builder()
-        .setSubject(userId.toString())
+        .setSubject(subject.toString())
         .setIssuedAt(now)
         .setExpiration(expiry)
         .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -70,7 +71,7 @@ public class JwtTokenService {
   // https://jwt.io
   public static void main(String[] args) {
     JwtTokenService ts = new JwtTokenService();
-    String t = ts.generateToken(1, false);
+    String t = ts.generateToken("Nadya", "123",false);
 
     Optional<Integer> maybeUsernamePassword = ts.tokenToClaims(t)
         .flatMap(ts::extractTokenFromClaims);
