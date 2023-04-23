@@ -13,8 +13,12 @@ import { LoginModal } from "./LoginModal";
 //     );
 // }
 
+
+
 export function Layout() {
+
     return (
+
         <>
             <Outlet/>
             <LoginModal/>

@@ -1,7 +1,22 @@
 import React from "react";
 import { Modal, Typography, Box, FormControl, InputLabel, Input, Button, Link, SvgIcon } from "@mui/material";
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
+import PropTypes from "prop-types";
+import * as Yup from "yup";
 
 export function LoginModal() {
+    const userData = {};
+
+    const ErrorText = ({ children }) => (
+        <Typography color="error" variant="caption">
+            {children}
+        </Typography>
+    );
+
+    ErrorText.propTypes = {
+        children: PropTypes.string.isRequired,
+    };
+
     return (
         <Modal
             open={true}
@@ -77,32 +92,52 @@ export function LoginModal() {
                     },
                 }}
                 >or</Typography>
-                <FormControl>
-                    <InputLabel htmlFor="my-input">Email, phone or username</InputLabel>
-                    <Input sx={{ width: "400px" }} id="my-input" aria-describedby="my-helper-text"/>
-                </FormControl>
-                <Button variant="contained" sx={{
-                    height: "45px",
-                    marginTop: "40px", width: "400px", background: "#000000",
-                    transition: "0.7s", "&:hover": {
-                        transition: "0.7s",
-                        backgroundColor: "#ffffff",
-                        color: "#000000"
-                    },
-                    fontWeight: 700,
-                    borderRadius: "20px",
-                }} fullWidth={true}>Next</Button>
-                <Button variant="contained" sx={{
-                    height: "45px",
-                    marginTop: "20px", width: "400px", background: "#ffffff", color: "#000000",
-                    transition: "0.7s", "&:hover": {
-                        transition: "0.7s",
-                        backgroundColor: "#000000",
-                        color: "#ffffff"
-                    },
-                    fontWeight: 700,
-                    borderRadius: "20px",
-                }} fullWidth={true}>Forgot password?</Button>
+                <Formik initialValues={{
+                    userName: "",
+                }} validationSchema={
+                    Yup.object(
+                        {
+                            userName: Yup.string().required("Username is required")
+                        }
+                    )} onSubmit={(values, { setSubmitting }) => {
+                    // Обработка отправки формы
+                }}>
+                    {formikProps => (
+                        <>
+                            <FormControl>
+                                <InputLabel htmlFor="userName">username</InputLabel>
+                                <Input sx={{ width: "400px" }} id="userName" type="text"/>
+                                <ErrorMessage name="userName" component={<Input
+                                    color={formikProps.touched.name && formikProps.errors.name && "error"}/>}/>
+                            </FormControl>
+                            <Button type="submit"
+                                    disabled={formikProps.isSubmitting} variant="contained" sx={{
+                                height: "45px",
+                                marginTop: "40px", width: "400px", background: "#000000",
+                                transition: "0.7s", "&:hover": {
+                                    transition: "0.7s",
+                                    backgroundColor: "#ffffff",
+                                    color: "#000000"
+                                },
+                                fontWeight: 700,
+                                borderRadius: "20px",
+                            }} fullWidth={true}>Next</Button>
+                            <Button variant="contained" sx={{
+                                height: "45px",
+                                marginTop: "20px", width: "400px", background: "#ffffff", color: "#000000",
+                                transition: "0.7s", "&:hover": {
+                                    transition: "0.7s",
+                                    backgroundColor: "#000000",
+                                    color: "#ffffff"
+                                },
+                                fontWeight: 700,
+                                borderRadius: "20px",
+                            }} fullWidth={true}>Forgot password?</Button>
+                        </>
+                    )
+                    }
+                </Formik>
+
                 <Typography sx={{ marginTop: "30px" }}>Don`t have an account? <Link href="#">Sign Up</Link></Typography>
             </Box>
         </Modal>
