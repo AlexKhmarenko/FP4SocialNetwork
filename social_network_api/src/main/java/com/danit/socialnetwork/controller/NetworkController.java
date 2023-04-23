@@ -3,6 +3,7 @@ package com.danit.socialnetwork.controller;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.service.DbUserService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,13 @@ public class NetworkController {
     return "login";
   }
 
+  @PostMapping("login")
+  public String handleLoginPost(Model model) {
+
+    log.info("Hello from loginPost");
+    return "login";
+  }
+
   //  http://localhost:8080/registration
   @GetMapping("registration")
   public String showRegistrationGet(Model model) {
@@ -48,7 +56,7 @@ public class NetworkController {
       return new RedirectView("registration");
     }
     userService.saveUser(user);
-    log.info("Hello from save user");
+    log.info("Hello from save user. Datetime of create: " + user.getCreatedDate());
     return new RedirectView("login");
   }
 

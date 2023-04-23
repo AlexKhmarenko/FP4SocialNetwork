@@ -20,11 +20,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final JwtAuthFilter jwtFilter;
 
-  @Bean
-  public BCryptPasswordEncoder getPasswordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.
@@ -36,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(
             "/h2/**", "/img**", "/js**", "/css**",
             "/registration", "/").permitAll() // in production delete page "/users"
-
+        .antMatchers("/api", "/home").authenticated()
         .anyRequest().authenticated();
 
     http.formLogin()

@@ -17,8 +17,7 @@ public class MyUserDetailsServiceJPA implements UserDetailsService {
 
   private UserDetails mapper(DbUser dbUser) {
     return User
-        .withDefaultPasswordEncoder()
-        .username(dbUser.getUsername())
+        .withUsername(dbUser.getUsername())
         .password(dbUser.getPassword())
         .roles("USER")
         .build();

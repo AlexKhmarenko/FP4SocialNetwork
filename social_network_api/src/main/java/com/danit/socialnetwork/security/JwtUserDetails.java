@@ -9,10 +9,12 @@ import java.util.Collection;
 @Data
 public class JwtUserDetails implements UserDetails {
 
-  private final int id;
+  private final String username;
+  private final String password;
 
-  public JwtUserDetails(int id) {
-    this.id = id;
+  public JwtUserDetails(String username, String password) {
+    this.username = username;
+    this.password = password;
   }
 
   @Override
