@@ -15,11 +15,10 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class AppController {
-  private final DbUserService userService;
 
   @GetMapping("api")
   public String handle(Authentication a) {
     JwtUserDetails principal = (JwtUserDetails) a.getPrincipal();
-    return String.format("it works: %d", principal.getUsername());
+    return String.format("it works: %d", principal.getId());
   }
 }

@@ -8,8 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface DbUserRepo extends JpaRepository<DbUser, Integer> {
-  Optional<DbUser> findByUsername(String username);
 
+  Optional<DbUser> findByUsername(String username);
 
   DbUser findByActivationCode(String code);
 }

@@ -27,12 +27,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   private final JwtTokenService tokenService;
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                  FilterChain filterChain) throws ServletException, IOException {
     try {
       extractTokenFromRequest(request)
           .flatMap(tokenService::tokenToClaims)
           .flatMap(tokenService::extractTokenFromClaims)
-          .map(JwtUserDetails::new)
+          .map(u -> new JwtUserDetails(Integer.parseInt(u.substring(0, u.indexOf("*")))))
           .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
           .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

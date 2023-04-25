@@ -30,7 +30,7 @@ public class DbUser {
   @Column(name = "email")
   private String email;
 
-  //  @NonNull
+  @NonNull
   @CreationTimestamp
   @Column(name = "created_date")
   private LocalDateTime createdDate;
