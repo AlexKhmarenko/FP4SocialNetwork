@@ -7,10 +7,7 @@ import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
@@ -30,13 +27,6 @@ public class NetworkController {
     return "login";
   }
 
-  @PostMapping("login")
-  public String handleLoginPost(Model model) {
-
-    log.info("Hello from loginPost");
-    return "login";
-  }
-
   //  http://localhost:8080/registration
   @GetMapping("registration")
   public String showRegistrationGet(Model model) {
@@ -49,15 +39,25 @@ public class NetworkController {
   public RedirectView handleRegistrationPost(
       @ModelAttribute("user") DbUser user,
       Map<String, String> model) {
-    Optional<DbUser> userFromDb = userService.findByUsername(user.getUsername());
-    if (userFromDb.isPresent()) {
+
+    if (!userService.saveUser(user)) {
       model.put("message", "User exists!");
       log.info("User exists!");
       return new RedirectView("registration");
     }
-    userService.saveUser(user);
-    log.info("Hello from save user. Datetime of create: " + user.getCreatedDate());
     return new RedirectView("login");
+  }
+
+  @GetMapping("/activate/{code}")
+  public String activate(Model model, @PathVariable String code) {
+    boolean isActivated = userService.activateUser(code);
+
+    if (isActivated) {
+      model.addAttribute("message", "User successfully activated");
+    } else {
+      model.addAttribute("message", "Activation cod is not found");
+    }
+    return "login";
   }
 
   //  http://localhost:8080/users

@@ -18,23 +18,21 @@ public class JwtTokenService {
   private String jwtSecret = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY4MDExMzM3NywiaWF0IjoxNjgwMTEzMzc3fQ.jFPQ9JlHR4DQQtforpePZziCmr4133-9JLYB_8noMp4";
 
   @Value("${jwt.expire.normal}")
-  private Long expiration_normal = 60 * 1000L; // 1min
+  private Long expiration_normal = 60 * 60 * 24* 1000L; // 1min
 
   @Value("${jwt.expire.remember}")
   Long expiration_remember = 60 * 60 * 24 * 1000L * 10; // 10d
 
-  public String generateToken(String username, String password, boolean rememberMe) {
-    String subject = username + "+" + password;
+  public String generateToken(Integer userId, boolean rememberMe) {
     Date now = new Date();
     Date expiry = new Date(now.getTime() + (rememberMe ? expiration_remember : expiration_normal));
     String token = Jwts.builder()
-        .setSubject(subject)
+        .setSubject(userId.toString())
         .setIssuedAt(now)
         .setExpiration(expiry)
         .signWith(SignatureAlgorithm.HS512, jwtSecret)
         .compact();
-    log.info("Token " + token);
-
+    log.info("token = " + token);
     return token;
   }
 
@@ -57,14 +55,27 @@ public class JwtTokenService {
     return Optional.empty();
   }
 
-  public Optional<String> extractTokenFromClaims(Jws<Claims> claims) {
+  public Optional<Integer> extractTokenFromClaims(Jws<Claims> claims) {
     try {
+      log.info(getClass() + "Maybe username and password " + claims.getBody().getSubject());
       return Optional
-          .of(claims.getBody().getSubject());
+          .of(claims.getBody().getSubject())
+          .map(Integer::parseInt);
     } catch (Exception x) {
       log.error(getClass() + " Exception");
       return Optional.empty();
     }
   }
 
+  // https://jwt.io
+  public static void main(String[] args) {
+    JwtTokenService ts = new JwtTokenService();
+    String t = ts.generateToken(1, false);
+
+    Optional<Integer> maybeuserId = ts.tokenToClaims(t)
+        .flatMap(ts::extractTokenFromClaims);
+
+    System.out.println(t);
+    System.out.println(maybeuserId);
+  }
 }

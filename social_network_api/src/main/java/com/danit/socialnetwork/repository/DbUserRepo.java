@@ -11,4 +11,5 @@ public interface DbUserRepo extends JpaRepository<DbUser, Integer> {
   Optional<DbUser> findByUsername(String username);
 
 
+  DbUser findByActivationCode(String code);
 }

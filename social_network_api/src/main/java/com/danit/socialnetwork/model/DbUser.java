@@ -2,16 +2,12 @@ package com.danit.socialnetwork.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NonNull;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.LocalDate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity(name = "users")
 @Data
@@ -22,18 +18,24 @@ public class DbUser {
   @Column(name = "user_id")
   private Integer userId;
 
+  @NonNull
   @Column(name = "username")
   private String username;
 
+  @NonNull
   @Column(name = "password")
   private String password;
 
+  @NonNull
   @Column(name = "email")
   private String email;
 
+  //  @NonNull
+  @CreationTimestamp
   @Column(name = "created_date")
   private LocalDateTime createdDate;
 
+  @NonNull
   @Column(name = "name")
   private String name;
 
@@ -43,10 +45,30 @@ public class DbUser {
   @Column(name = "profile_image_url")
   private String profileImageUrl;
 
-  public DbUser(String username, String password, String email, String name) {
+  @Column(name = "activation_code")
+  private String activationCode;
+
+  private String roles;
+
+  private final static String DELIMITER = ":";
+
+  public DbUser(String activationCode, String username, String password,
+                String email, String name, String... roles) {
+    this.activationCode = activationCode;
     this.username = username;
     this.password = password;
     this.email = email;
     this.name = name;
+    setRoles(roles);
+  }
+
+  public String[] getRoles() {
+    return Optional.ofNullable(roles)
+        .map(x -> x.split(DELIMITER))
+        .orElseGet(() -> new String[]{});
+  }
+
+  public void setRoles(String[] roles) {
+    this.roles = String.join(DELIMITER, roles);
   }
 }

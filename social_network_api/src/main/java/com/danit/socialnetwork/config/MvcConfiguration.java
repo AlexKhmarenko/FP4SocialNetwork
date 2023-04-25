@@ -1,4 +1,4 @@
-package com.danit.socialnetwork.javatpoint;
+package com.danit.socialnetwork.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
