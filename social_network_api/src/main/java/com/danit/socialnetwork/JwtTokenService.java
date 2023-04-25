@@ -23,16 +23,18 @@ public class JwtTokenService {
   @Value("${jwt.expire.remember}")
   Long expiration_remember = 60 * 60 * 24 * 1000L * 10; // 10d
 
-  public String generateToken(Integer userId, boolean rememberMe) {
+  public String generateToken(String username, String password, boolean rememberMe) {
+    String subject = username + "+" + password;
     Date now = new Date();
     Date expiry = new Date(now.getTime() + (rememberMe ? expiration_remember : expiration_normal));
     String token = Jwts.builder()
-        .setSubject(userId.toString())
+        .setSubject(subject)
         .setIssuedAt(now)
         .setExpiration(expiry)
         .signWith(SignatureAlgorithm.HS512, jwtSecret)
         .compact();
-    log.info("token = " + token);
+    log.info("Token " + token);
+
     return token;
   }
 
@@ -55,12 +57,11 @@ public class JwtTokenService {
     return Optional.empty();
   }
 
-  public Optional<Integer> extractTokenFromClaims(Jws<Claims> claims) {
+  public Optional<String> extractTokenFromClaims(Jws<Claims> claims) {
     try {
       log.info(getClass() + "Maybe username and password " + claims.getBody().getSubject());
       return Optional
-          .of(claims.getBody().getSubject())
-          .map(Integer::parseInt);
+          .of(claims.getBody().getSubject());
     } catch (Exception x) {
       log.error(getClass() + " Exception");
       return Optional.empty();
@@ -70,12 +71,12 @@ public class JwtTokenService {
   // https://jwt.io
   public static void main(String[] args) {
     JwtTokenService ts = new JwtTokenService();
-    String t = ts.generateToken(1, false);
+    String t = ts.generateToken("Nadya", "123",false);
 
-    Optional<Integer> maybeuserId = ts.tokenToClaims(t)
+    Optional<String> maybeUsernamePassword = ts.tokenToClaims(t)
         .flatMap(ts::extractTokenFromClaims);
 
     System.out.println(t);
-    System.out.println(maybeuserId);
+    System.out.println(maybeUsernamePassword);
   }
 }

@@ -9,11 +9,11 @@ import java.util.Collection;
 @Data
 public class JwtUserDetails implements UserDetails {
 
-  private final Integer id;
+  private final String username;
 
 
-  public JwtUserDetails(Integer id) {
-    this.id = id;
+  public JwtUserDetails(String username) {
+    this.username = username;
   }
 
   @Override

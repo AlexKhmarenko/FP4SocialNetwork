@@ -40,8 +40,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
           });
 
       filterChain.doFilter(request, response);
-    } catch (Exception e) {
-      log.error(getClass() + " doFilterInternal Exception", e);
+    } catch (Exception x) {
+      log.error(getClass() + " doFilterInternal Exception", x);
     }
 
   }

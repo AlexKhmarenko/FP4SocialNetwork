@@ -20,6 +20,6 @@ public class AppController {
   @GetMapping("api")
   public String handle(Authentication a) {
     JwtUserDetails principal = (JwtUserDetails) a.getPrincipal();
-    return String.format("it works: %d", principal.getId());
+    return String.format("it works: %d", principal.getUsername());
   }
 }
