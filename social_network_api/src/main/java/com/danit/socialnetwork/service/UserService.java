@@ -8,5 +8,6 @@ public interface UserService {
   DbUser findByUsername(String username);
 
   byte[] getProfileImage(String username) throws IOException;
+
   byte[] getBackgroundImage(String username) throws IOException;
 }
