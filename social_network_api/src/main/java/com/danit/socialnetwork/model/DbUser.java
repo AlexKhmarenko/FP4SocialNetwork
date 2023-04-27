@@ -6,6 +6,7 @@ import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -39,6 +40,10 @@ public class DbUser {
   @Column(name = "name")
   private String name;
 
+  @NonNull
+  @Column(name = "birthdate")
+  private Timestamp birthdate;
+
   @Column(name = "profile_background_image_url")
   private String profileBackgroundImageUrl;
 
@@ -48,27 +53,14 @@ public class DbUser {
   @Column(name = "activation_code")
   private String activationCode;
 
-  private String roles;
-
-  private final static String DELIMITER = ":";
-
   public DbUser(String activationCode, String username, String password,
-                String email, String name, String... roles) {
+                String email, String name) {
     this.activationCode = activationCode;
     this.username = username;
     this.password = password;
     this.email = email;
     this.name = name;
-    setRoles(roles);
+
   }
 
-  public String[] getRoles() {
-    return Optional.ofNullable(roles)
-        .map(x -> x.split(DELIMITER))
-        .orElseGet(() -> new String[]{});
-  }
-
-  public void setRoles(String[] roles) {
-    this.roles = String.join(DELIMITER, roles);
-  }
 }

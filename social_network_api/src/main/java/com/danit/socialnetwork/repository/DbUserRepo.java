@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface DbUserRepo extends JpaRepository<DbUser, Integer> {
 
   Optional<DbUser> findByUsername(String username);
+  Optional<DbUser> findByUsernameAndPassword(String username, String password);
 
   DbUser findByActivationCode(String code);
 }

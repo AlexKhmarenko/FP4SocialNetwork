@@ -1,14 +1,15 @@
-package com.danit.socialnetwork.service;
+package com.danit.socialnetwork.service.impl;
 
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.DbUserRepo;
+import com.danit.socialnetwork.service.MailSender;
+import com.danit.socialnetwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,11 +17,11 @@ import java.util.UUID;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class DbUserService {
+public class UserServiceImpl implements UserService {
 
   private final DbUserRepo dbUserRepo;
   private final PasswordEncoder enc;
-
+//  private final BCryptPasswordEncoder enc;
   private final MailSender mailSender;
 
   public List findAll() {
@@ -30,13 +31,18 @@ public class DbUserService {
   public Optional<DbUser> findByUsername(String username) {
     return dbUserRepo.findByUsername(username);
   }
+  public Optional<DbUser> findByUsernameAndPassword(String username, String password) {
+    return dbUserRepo.findByUsernameAndPassword(username, password);
+  }
 
   public boolean saveUser(DbUser dbUser) {
     Optional<DbUser> userFromDb = dbUserRepo.findByUsername(dbUser.getUsername());
 
-    if(userFromDb.isPresent()) return false;
+    if (userFromDb.isPresent()) {
+      log.info("User exists!");
+      return false;
+    }
 
-    dbUser.setRoles(Collections.singleton("USER").toArray(new String[0]));
     dbUser.setActivationCode(UUID.randomUUID().toString());
     dbUser.setPassword(enc.encode(dbUser.getPassword()));
 

@@ -33,7 +33,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       extractTokenFromRequest(request)
           .flatMap(tokenService::tokenToClaims)
           .flatMap(tokenService::extractTokenFromClaims)
-          .map(u -> new JwtUserDetails(Integer.parseInt(u.substring(0, u.indexOf("*")))))
+          .map(id -> new JwtUserDetails(id))
           .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
           .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
