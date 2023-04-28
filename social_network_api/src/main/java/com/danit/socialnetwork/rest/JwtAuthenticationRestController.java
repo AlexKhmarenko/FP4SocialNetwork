@@ -1,8 +1,8 @@
-package com.danit.socialnetwork.restController;
+package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.JwtTokenService;
+import com.danit.socialnetwork.dto.JwtRequest;
+import com.danit.socialnetwork.security.JwtTokenService;
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.model.dto.JwtRequest;
 import com.danit.socialnetwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,33 +20,30 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
 public class JwtAuthenticationRestController {
 
-	private final AuthenticationManager authenticationManager;
+  private final AuthenticationManager authenticationManager;
 
   private final JwtTokenService jwtTokenService;
 
   private final UserService userService;
 
-  @RequestMapping(value = "/login", method = RequestMethod.POST)
+  @PostMapping("/login")
   public ResponseEntity<?> createAuthenticationToken(
       @RequestBody JwtRequest authRequest)
       throws Exception {
 
-		String username = authRequest.getUsername();
-		String password = authRequest.getPassword();
+    String username = authRequest.getUsername();
+    String password = authRequest.getPassword();
     boolean rememberMe = Boolean.parseBoolean(authRequest.getRememberMe());
-    Integer id = userService.findByUsername(username).get().getUserId();
 
     authenticate(username, password);
 
     final String token = jwtTokenService.generateToken(
-        id, rememberMe);
+        username, password, rememberMe);
 
-		Map<String, String> response = new HashMap<>();
-		response.put("username", username);
-		response.put("token", token);
+    Map<String, String> response = new HashMap<>();
+    response.put("token", token);
 
     return ResponseEntity.ok(response);
   }

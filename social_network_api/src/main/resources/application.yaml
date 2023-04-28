@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
 #    url: jdbc:h2:mem:tweeterDB
-    url: jdbc:h2:file:\src\main\resources\data\employees;AUTO_SERVER=true
+    url: jdbc:h2:file:~/employees;AUTO_SERVER=true
     username: tweeter
     password: tweeter2023
   jpa:

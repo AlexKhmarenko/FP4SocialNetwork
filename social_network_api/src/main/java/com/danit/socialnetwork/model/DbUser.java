@@ -6,9 +6,8 @@ import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Entity(name = "users")
 @Data
@@ -40,9 +39,9 @@ public class DbUser {
   @Column(name = "name")
   private String name;
 
+  @Column(name = "dateOfBirth")
   @NonNull
-  @Column(name = "birthdate")
-  private Timestamp birthdate;
+  private LocalDate dateOfBirth;
 
   @Column(name = "profile_background_image_url")
   private String profileBackgroundImageUrl;
@@ -50,16 +49,14 @@ public class DbUser {
   @Column(name = "profile_image_url")
   private String profileImageUrl;
 
-  @Column(name = "activation_code")
-  private String activationCode;
 
-  public DbUser(String activationCode, String username, String password,
-                String email, String name) {
-    this.activationCode = activationCode;
+  public DbUser(String username, String password,
+                String email, String name, LocalDate dateOfBirth) {
     this.username = username;
     this.password = password;
     this.email = email;
     this.name = name;
+    this.dateOfBirth = dateOfBirth;
 
   }
 

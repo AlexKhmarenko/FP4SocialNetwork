@@ -1,4 +1,4 @@
-package com.danit.socialnetwork;
+package com.danit.socialnetwork.security;
 
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
@@ -18,16 +18,17 @@ public class JwtTokenService {
   private String jwtSecret = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY4MDExMzM3NywiaWF0IjoxNjgwMTEzMzc3fQ.jFPQ9JlHR4DQQtforpePZziCmr4133-9JLYB_8noMp4";
 
   @Value("${jwt.expire.normal}")
-  private Long expiration_normal = 60 * 60 * 24* 1000L; // 1min
+  private Long expiration_normal = 60 * 60 * 24 * 1000L; // 1d
 
   @Value("${jwt.expire.remember}")
   Long expiration_remember = 60 * 60 * 24 * 1000L * 10; // 10d
 
-  public String generateToken(Integer id, boolean rememberMe) {
+  public String generateToken(String username, String password, boolean rememberMe) {
+    String subject = username + password;
     Date now = new Date();
     Date expiry = new Date(now.getTime() + (rememberMe ? expiration_remember : expiration_normal));
     String token = Jwts.builder()
-        .setSubject(id.toString())
+        .setSubject(subject)
         .setIssuedAt(now)
         .setExpiration(expiry)
         .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -48,25 +49,13 @@ public class JwtTokenService {
     return Optional.empty();
   }
 
-  public Optional<Integer> extractTokenFromClaims(Jws<Claims> claims) {
+  public Optional<String> extractTokenFromClaims(Jws<Claims> claims) {
     try {
       return Optional
-          .of(claims.getBody().getSubject())
-          .map(Integer::parseInt);
+          .of(claims.getBody().getSubject());
     } catch (Exception x) {
       return Optional.empty();
     }
   }
 
-  // https://jwt.io
-  public static void main(String[] args) {
-    JwtTokenService ts = new JwtTokenService();
-    String t = ts.generateToken(1,false);
-
-    Optional<Integer> maybeUsernamePassword = ts.tokenToClaims(t)
-        .flatMap(ts::extractTokenFromClaims);
-
-    System.out.println(t);
-    System.out.println(maybeUsernamePassword);
-  }
 }

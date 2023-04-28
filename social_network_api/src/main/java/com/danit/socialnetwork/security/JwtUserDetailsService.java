@@ -1,7 +1,6 @@
 package com.danit.socialnetwork.security;
 
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.repository.DbUserRepo;
 import com.danit.socialnetwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
 
-  private final DbUserRepo userRepo;
+  private final UserService userService;
 
   private UserDetails mapper(DbUser dbUser) {
     return User
@@ -28,7 +27,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userRepo.findByUsername(username)
+    return userService.findByUsername(username)
         .map(this::mapper)
         .orElseThrow(() -> new UsernameNotFoundException(
             String.format("user `%s` not found", username)

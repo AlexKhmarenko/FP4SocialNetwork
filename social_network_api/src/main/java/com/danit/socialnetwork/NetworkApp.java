@@ -10,4 +10,5 @@ public class NetworkApp {
   public static void main(String[] args) {
     SpringApplication.run(NetworkApp.class, args);
   }
+
 }

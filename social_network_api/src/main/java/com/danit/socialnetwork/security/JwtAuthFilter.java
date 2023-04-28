@@ -1,6 +1,5 @@
-package com.danit.socialnetwork;
+package com.danit.socialnetwork.security;
 
-import com.danit.socialnetwork.security.JwtUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +32,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       extractTokenFromRequest(request)
           .flatMap(tokenService::tokenToClaims)
           .flatMap(tokenService::extractTokenFromClaims)
-          .map(id -> new JwtUserDetails(id))
+          .map(unp -> new JwtUserDetails(unp))
           .map(ud -> new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities()))
           .ifPresent((UsernamePasswordAuthenticationToken auth) -> {
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
