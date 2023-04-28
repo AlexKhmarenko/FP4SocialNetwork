@@ -1,12 +1,27 @@
 import React from "react";
-import { Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
+import {
+    Button,
+    FormControl,
+    InputLabel,
+    Typography,
+    OutlinedInput,
+    InputAdornment,
+    Checkbox,
+    FormControlLabel,
+} from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setUserData } from "../../store/actions";
+import { setRememberMeAction, setUserPassword } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
-import { StyledHeaderModalText, StyledFormControl, StyledBlackButton } from "./loginModalStyles";
+import {
+    StyledHeaderModalText,
+    StyledFormControl,
+    StyledBlackButton,
+    StyledWhiteButton,
+    StyledCheckbox
+} from "./loginModalStyles";
 
 export function EnterPasswordModal() {
     const dispatch = useDispatch();
@@ -15,33 +30,73 @@ export function EnterPasswordModal() {
     return (
         <>
             <Typography sx={StyledHeaderModalText}>Enter your password</Typography>
-            <Formik initialValues={{
-                userName: userDataState.userName || "",
-                password: "",
-            }} validationSchema={
+            <Formik validate={async (values) => {
+                // const url = new URL("http://localhost:8080/login");
+                // url.searchParams.append("username", values.userName);
+                // url.searchParams.append("password", values.password);
+                // url.searchParams.append("rememberMe", userDataState.rememberMe);
+                // const userPassword = await fetch(url.toString());
+                // const userToken = await userExist.json();
+                const userToken = true;
+                if (!userToken) {
+                    return { password: "wrong password" };
+                }else{
+                    localStorage.setItem('userToken', JSON.stringify(userToken));
+                }
+            }}
+                    initialValues={{
+                        userName: userDataState.userName || "",
+                        password: "",
+                    }} validationSchema={
                 Yup.object(
                     {
-                        password: Yup.string().required("Username is required")
+                        password: Yup.string().required("Password is required")
                     }
                 )} onSubmit={(values) => {
-                console.log(values);
-                dispatch(setUserData(values));
+                dispatch(setUserPassword(values));
             }}>
                 <Form>
                     <FormControl sx={StyledFormControl}>
-                        <InputLabel htmlFor="userName">username</InputLabel>
-                        <Input sx={{ width: "400px" }} name={"userName"} id="userName"
-                               disabled value={userDataState.userName} type="text"/>
+                        <FormControl sx={{ width: "400px" }} variant="outlined">
+                            <InputLabel htmlFor="userName" sx={{
+                                fontFamily: "'Lato', sans-serif",
+                                fontSize: "19px",
+                                lineHeight: "23px"
+                            }}>Username</InputLabel>
+                            <OutlinedInput sx={{
+                                fontFamily: "'Lato', sans-serif",
+                                fontSize: "19px",
+                                lineHeight: "23px"
+                            }}
+                                           id="userName"
+                                           name="userName"
+                                           type="text"
+                                           value={userDataState.userName}
+                                           disabled
+                                           label="Username"
+                                           startAdornment={<InputAdornment position="start"/>}
+                            />
+                        </FormControl>
                         <FormControl sx={{
-                            marginTop: "10px",
                             ...StyledFormControl,
                         }}>
                             <Field as={InputFieldWithError} sx={{ width: "400px", marginTop: "40px" }}
-                                   label="password" name={"password"} id="password"
-                                   type="text"/>
+                                   label="Password" name={"password"} id="password"
+                                   type="password"/>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        defaultChecked
+                                        onChange={() => dispatch(setRememberMeAction())}
+                                    />
+                                }
+                                label="Remember me"
+                                sx={StyledCheckbox}
+                            />
                         </FormControl>
                         <Button type="submit"
                                 variant="contained" sx={StyledBlackButton} fullWidth={true}>Log in</Button>
+                        <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
                     </FormControl>
                 </Form>
             </Formik>

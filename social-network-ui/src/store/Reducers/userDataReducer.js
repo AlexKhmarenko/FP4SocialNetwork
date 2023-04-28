@@ -1,15 +1,36 @@
-import { SET_USER_DATA } from "../types";
+import { UPDATE_USER_DATA_USERNAME, UPDATE_USER_PASSWORD, UPDATE_REMEMBER_ME_ACTION  } from "../types";
 
 const initialState = {
-    userData: {}
+    userData: {
+        rememberMe: true,
+    }
 };
 
 export function userDataReducer(state = initialState, action) {
     switch (action.type) {
-        case SET_USER_DATA:
+        case UPDATE_USER_DATA_USERNAME:
             return {
                 ...state,
-                userData: action.payload,
+                userData: {
+                    ...state.userData,
+                    userName: action.payload.userName,
+                },
+            };
+        case UPDATE_USER_PASSWORD:
+            return {
+                ...state,
+                userData: {
+                    ...state.userData,
+                    password: action.payload.password,
+                },
+            };
+        case UPDATE_REMEMBER_ME_ACTION:
+            return {
+                ...state,
+                userData: {
+                    ...state.userData,
+                    rememberMe: !state.userData.rememberMe,
+                },
             };
         default:
             return state;

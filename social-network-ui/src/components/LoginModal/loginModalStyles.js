@@ -20,8 +20,8 @@ export const StyledBox = {
 };
 
 export const StyledTwitSvgIcon = {
-    width: "40px",
-    height: "40px",
+    width: "50px",
+    height: "50px",
     marginBottom: "20px"
 };
 
@@ -32,8 +32,13 @@ export const StyledCloseSvgIcon = {
 };
 
 export const StyledHeaderModalText = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "22px",
+    lineHeight: "23px",
+    fontWeight: "700",
+    fontStyle: "normal",
     marginBottom: "30px",
-    fontWeight: 700,
+
 };
 
 export const StyledFormControl = {
@@ -44,8 +49,13 @@ export const StyledFormControl = {
 };
 
 export const StyledBlackButton = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "15px",
+    lineHeight: "23px",
+
+    fontStyle: "normal",
     height: "45px",
-    marginTop: "40px", width: "400px", background: "#000000",
+    marginTop: "30px", width: "400px", background: "#000000",
     transition: "0.7s", "&:hover": {
         transition: "0.7s",
         backgroundColor: "#ffffff",
@@ -55,7 +65,18 @@ export const StyledBlackButton = {
     borderRadius: "20px",
 };
 
+export const StyledCheckbox = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "15px",
+    lineHeight: "23px",
+    "& .MuiSvgIcon-root": { fontSize: 21 },
+    alignSelf: "start"
+};
+
 export const StyledWhiteButton = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "15px",
+    lineHeight: "23px",
     height: "45px",
     marginTop: "20px", width: "400px", background: "#ffffff", color: "#000000",
     transition: "0.7s", "&:hover": {
@@ -68,6 +89,9 @@ export const StyledWhiteButton = {
 };
 
 export const StyledSpanElement = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "20px",
+    lineHeight: "23px",
     position: "relative",
     marginTop: "30px",
     color: "#808080",
