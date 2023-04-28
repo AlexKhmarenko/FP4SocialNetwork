@@ -18,25 +18,25 @@ public class DbUser {
   @Column(name = "user_id")
   private Integer userId;
 
-  @NonNull
   @Column(name = "username")
+  @NonNull
   private String username;
 
+  @Column(name = "passwords")
   @NonNull
-  @Column(name = "password")
   private String password;
 
-  @NonNull
   @Column(name = "email")
+  @NonNull
   private String email;
 
+  @Column(name = "created_date")
   @NonNull
   @CreationTimestamp
-  @Column(name = "created_date")
   private LocalDateTime createdDate;
 
-  @NonNull
   @Column(name = "name")
+  @NonNull
   private String name;
 
   @Column(name = "dateOfBirth")
@@ -48,7 +48,6 @@ public class DbUser {
 
   @Column(name = "profile_image_url")
   private String profileImageUrl;
-
 
   public DbUser(String username, String password,
                 String email, String name, LocalDate dateOfBirth) {

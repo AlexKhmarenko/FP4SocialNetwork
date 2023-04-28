@@ -1,26 +1,35 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.UsernameRequest;
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+
+import java.io.IOException;
 
 @Log4j2
 @RestController
 @RequiredArgsConstructor
 public class UserRestController {
 
-  private final UserServiceImpl userService;
+  private final UserService userService;
+  
+    @Autowired
+  public UserRestController(UserService theUserService) {
+    userService = theUserService;
+  }
 
   @RequestMapping(value = "registration", method = RequestMethod.POST)
   public ResponseEntity<?> handleRegistrationPost(
@@ -91,6 +100,23 @@ public class UserRestController {
       response.put("activate", "false");
     }
     return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/{username}")
+  public DbUser getUser(@PathVariable("username") String username) {
+    return userService.findByUsername(username);
+  }
+
+  @GetMapping(value = "/{username}/photo", produces = MediaType.IMAGE_PNG_VALUE)
+  @ResponseBody
+  public byte[] getProfileImage(@PathVariable("username") String username) throws IOException {
+    return userService.getProfileImage(username);
+  }
+
+  @GetMapping(value = "/{username}/header_photo", produces = MediaType.IMAGE_PNG_VALUE)
+  @ResponseBody
+  public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
+    return userService.getBackgroundImage(username);
   }
 
 }
