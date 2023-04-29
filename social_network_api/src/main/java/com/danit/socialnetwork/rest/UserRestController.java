@@ -25,7 +25,6 @@ public class UserRestController {
   @RequestMapping(value = "registration", method = RequestMethod.POST)
   public ResponseEntity<?> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
-
     int day = request.getDay();
     int month = request.getMonth();
     int year = request.getYear();

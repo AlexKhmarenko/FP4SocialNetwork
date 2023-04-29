@@ -1,6 +1,6 @@
 package com.danit.socialnetwork.security;
 
-import com.danit.socialnetwork.GuavaCache;
+import com.danit.socialnetwork.config.GuavaCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -35,12 +35,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.
-        csrf().disable()
+    http
+        .csrf().disable()
         .headers().frameOptions().disable();
 
-    http.
-        authorizeRequests().antMatchers("/login").permitAll()
+    http
+        .authorizeRequests().antMatchers("/login").permitAll()
         .antMatchers("/h2/**",
             "/sendLetter", "/activate",
             "/checkUsername", "/registration", "/").permitAll()
@@ -49,10 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.rememberMe();
 
-    http.
-        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-    http.
-        sessionManagement()
+    http
+        .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
+    http
+        .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

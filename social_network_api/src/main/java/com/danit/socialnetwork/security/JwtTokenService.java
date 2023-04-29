@@ -1,6 +1,9 @@
 package com.danit.socialnetwork.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -15,18 +18,18 @@ import java.util.Optional;
 public class JwtTokenService {
 
   @Value("${jwt.secret}")
-  private String jwtSecret = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY4MDExMzM3NywiaWF0IjoxNjgwMTEzMzc3fQ.jFPQ9JlHR4DQQtforpePZziCmr4133-9JLYB_8noMp4";
+  private String jwtSecret = "SGVsbG9Xb3JsZA==";
 
   @Value("${jwt.expire.normal}")
-  private Long expiration_normal = 60 * 60 * 24 * 1000L; // 1d
+  private Long expirationNormal = 60 * 60 * 24 * 1000L; // 1d
 
   @Value("${jwt.expire.remember}")
-  Long expiration_remember = 60 * 60 * 24 * 1000L * 10; // 10d
+  Long expirationRemember = 60 * 60 * 24 * 1000L * 10; // 10d
 
   public String generateToken(String username, String password, boolean rememberMe) {
     String subject = username + password;
     Date now = new Date();
-    Date expiry = new Date(now.getTime() + (rememberMe ? expiration_remember : expiration_normal));
+    Date expiry = new Date(now.getTime() + (rememberMe ? expirationRemember : expirationNormal));
     String token = Jwts.builder()
         .setSubject(subject)
         .setIssuedAt(now)

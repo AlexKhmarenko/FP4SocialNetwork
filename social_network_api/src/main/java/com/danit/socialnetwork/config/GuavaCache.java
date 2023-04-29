@@ -1,6 +1,10 @@
-package com.danit.socialnetwork;
+package com.danit.socialnetwork.config;
 
-import com.google.common.cache.*;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalNotification;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 

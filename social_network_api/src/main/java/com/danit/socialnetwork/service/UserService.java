@@ -13,4 +13,5 @@ public interface UserService {
   boolean save (DbUser dbUser);
 
   boolean sendLetter(String name, String email);
+
 }

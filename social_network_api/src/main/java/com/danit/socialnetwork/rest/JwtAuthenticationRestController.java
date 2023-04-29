@@ -60,7 +60,9 @@ public class JwtAuthenticationRestController {
       throw new Exception("INVALID_CREDENTIALS", e);
     }
     Optional<DbUser> dbUser = userService.findByUsername(username);
-    if (dbUser.isEmpty()) throw new UsernameNotFoundException(
-        String.format("User this username %s not found", username));
+    if (dbUser.isEmpty()) {
+      throw new UsernameNotFoundException(
+          String.format("User this username %s not found", username));
+    }
   }
 }

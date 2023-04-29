@@ -1,7 +1,3 @@
-/**
- * This package contains classes related to X functionality.
- */
-
 package com.danit.socialnetwork.security;
 
 import org.springframework.security.core.AuthenticationException;

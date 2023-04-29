@@ -1,4 +1,4 @@
-package com.danit.socialnetwork;
+package com.danit.socialnetwork.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

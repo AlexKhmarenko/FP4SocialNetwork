@@ -1,6 +1,6 @@
 package com.danit.socialnetwork.service.impl;
 
-import com.danit.socialnetwork.GuavaCache;
+import com.danit.socialnetwork.config.GuavaCache;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.DbUserRepo;
 import com.danit.socialnetwork.service.UserService;
@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
 
     try {
       String message = String.format(
-          "Hello, %s! \n " +
-              "Welcome to BlitzPost. Email confirmation code %s",
+          "Hello, %s! \n "
+              + "Welcome to BlitzPost. Email confirmation code %s",
           name, randomNumber);
       log.info(String.format(message));
       mailSender.send(email, "Activation code", message);
@@ -65,7 +65,9 @@ public class UserServiceImpl implements UserService {
 
   public boolean activateUser(Integer code) {
     Integer activationCode = guavaCache.getUnchecked("activationCode");
-    if (activationCode == null) return false;
+    if (activationCode == null) {
+      return false;
+    }
 
     return code.equals(activationCode);
   }
