@@ -11,8 +11,6 @@ public interface UserService {
 
   byte[] getBackgroundImage(String username) throws IOException;
 
-//  abstract DbUser findByUsernameO(String username);
-
   Optional<DbUser> findByUsername(String username);
 
   public boolean activateUser(Integer code);
