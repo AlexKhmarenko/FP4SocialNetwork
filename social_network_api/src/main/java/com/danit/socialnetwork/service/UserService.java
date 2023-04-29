@@ -2,16 +2,18 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.model.DbUser;
 
-import java.util.Optional;
-
 import java.io.IOException;
+import java.util.Optional;
 
 public interface UserService {
 
-  public Optional<DbUser> findByUsername(String username);
+  byte[] getProfileImage(String username) throws IOException;
 
+  byte[] getBackgroundImage(String username) throws IOException;
 
-  DbUser findByUsername(String username);
+//  abstract DbUser findByUsernameO(String username);
+
+  Optional<DbUser> findByUsername(String username);
 
   public boolean activateUser(Integer code);
 
@@ -20,9 +22,5 @@ public interface UserService {
 
 
   boolean sendLetter(String name, String email);
-
-  byte[] getProfileImage(String username) throws IOException;
-
-  byte[] getBackgroundImage(String username) throws IOException;
 
 }

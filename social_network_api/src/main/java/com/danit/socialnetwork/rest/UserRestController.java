@@ -1,7 +1,6 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
@@ -18,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Log4j2
 @RestController
@@ -57,10 +57,10 @@ public class UserRestController {
     String username = request.getUsername();
     Map<String, String> response = new HashMap<>();
 
-    if (userService.findByUsername(username).isPresent()) {
-      response.put("checkUsername", "true");
-    } else {
+    if (userService.findByUsername(username) == null) {
       response.put("checkUsername", "false");
+    } else {
+      response.put("checkUsername", "true");
     }
     return ResponseEntity.ok(response);
   }
@@ -97,7 +97,7 @@ public class UserRestController {
   }
 
   @GetMapping("/{username}")
-  public DbUser getUser(@PathVariable("username") String username) {
+  public Optional<DbUser> getUser(@PathVariable("username") String username) {
     return userService.findByUsername(username);
   }
 
