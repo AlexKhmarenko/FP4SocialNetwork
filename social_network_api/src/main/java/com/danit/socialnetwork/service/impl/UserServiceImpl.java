@@ -3,7 +3,6 @@ package com.danit.socialnetwork.service.impl;
 import com.danit.socialnetwork.GuavaCache;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.DbUserRepo;
-import com.danit.socialnetwork.service.MailSender;
 import com.danit.socialnetwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
   private final DbUserRepo dbUserRepo;
   private final PasswordEncoder enc;
-  private final MailSender mailSender;
+  private final MailSenderImpl mailSender;
   private final GuavaCache guavaCache;
 
   public Optional<DbUser> findByUsername(String username) {

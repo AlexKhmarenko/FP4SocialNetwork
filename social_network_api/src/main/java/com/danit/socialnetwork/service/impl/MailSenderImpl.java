@@ -1,14 +1,16 @@
-package com.danit.socialnetwork.service;
+package com.danit.socialnetwork.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MailSender {
+public class MailSenderImpl implements MailSender {
 
   private final JavaMailSender mailSender;
   @Value("${spring.mail.username}")
@@ -23,5 +25,15 @@ public class MailSender {
     mailMessage.setText(message);
 
     mailSender.send(mailMessage);
+  }
+
+  @Override
+  public void send(SimpleMailMessage simpleMessage) throws MailException {
+
+  }
+
+  @Override
+  public void send(SimpleMailMessage... simpleMessages) throws MailException {
+
   }
 }

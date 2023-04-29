@@ -1,4 +1,4 @@
-package com.danit.socialnetwork.config;
+package com.danit.socialnetwork;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +11,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:mail.properties")
-public class MailConfig {
+public class JavaMailSenderConfig {
   @Value("${spring.mail.host}")
   private String host;
   @Value("${spring.mail.username}")

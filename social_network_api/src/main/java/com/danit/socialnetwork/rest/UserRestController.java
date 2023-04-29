@@ -5,7 +5,7 @@ import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.UsernameRequest;
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.service.impl.UserServiceImpl;
+import com.danit.socialnetwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserRestController {
 
-  private final UserServiceImpl userService;
+  private final UserService userService;
 
   @RequestMapping(value = "registration", method = RequestMethod.POST)
   public ResponseEntity<?> handleRegistrationPost(
