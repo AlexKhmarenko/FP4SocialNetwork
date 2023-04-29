@@ -16,7 +16,7 @@ public interface UserService {
   public boolean activateUser(Integer code);
 
 
-  boolean save (DbUser dbUser);
+  boolean save(DbUser dbUser);
 
 
   boolean sendLetter(String name, String email);
