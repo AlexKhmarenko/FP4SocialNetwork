@@ -5,7 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
