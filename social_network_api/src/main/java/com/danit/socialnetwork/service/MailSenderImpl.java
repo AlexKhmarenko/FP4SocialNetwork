@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MailSenderImpl implements MailSender {
+public class MailSenderImpl {
 
   private final JavaMailSender mailSender;
   @Value("${spring.mail.username}")
@@ -27,13 +27,4 @@ public class MailSenderImpl implements MailSender {
     mailSender.send(mailMessage);
   }
 
-  @Override
-  public void send(SimpleMailMessage simpleMessage) throws MailException {
-
-  }
-
-  @Override
-  public void send(SimpleMailMessage... simpleMessages) throws MailException {
-
-  }
 }

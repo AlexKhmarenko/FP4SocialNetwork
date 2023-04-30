@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class ActivateCodeRequest {
-  Integer code;
+  private Integer code;
 }

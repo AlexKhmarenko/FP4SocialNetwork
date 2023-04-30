@@ -48,12 +48,8 @@ public class UserRestController {
     dbUser.setName(request.getName());
     dbUser.setDateOfBirth(dateOfBirth);
 
-    Map<String, String> response = new HashMap<>();
-    if (userService.save(dbUser)) {
-      response.put("registration", "true");
-    } else {
-      response.put("registration", "false");
-    }
+    Map<String, Boolean> response = new HashMap<>();
+    response.put("registration", userService.save(dbUser));
     return ResponseEntity.ok(response);
   }
 

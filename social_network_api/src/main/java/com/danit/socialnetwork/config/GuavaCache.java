@@ -27,11 +27,11 @@ public class GuavaCache {
       .expireAfterWrite(5, TimeUnit.MINUTES)
       .build();
 
-  public void put(String key, Integer value) {
+  public static void put(String key, Integer value) {
     cache.put(key, value);
   }
 
-  public Integer getUnchecked(String key) {
+  public static Integer getUnchecked(String key) {
     return cache.getIfPresent(key);
   }
 
