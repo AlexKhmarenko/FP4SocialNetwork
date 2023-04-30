@@ -1,16 +1,30 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { style } from "./style"
-import BasicButton from '../button';
-import {modalConfig} from "./modalConfig.js"
-import BasicInput from "../input"
+import { ForgotModal } from './ForgotModal';
+import { SendCodeModal } from './SendCodeModal';
+import { WeSent } from './WeSent';
+import { Choose } from './Choose';
+import { AllSet } from './AllSet';
 
 
 const BasicModal = ({handleClose, open, id}) => {
-    const {text, title, buttonText, placeholder} = modalConfig[id]
+    let content = null
+    if(id==="forgot"){
+    content = <ForgotModal handleClose={handleClose} id={id}/>
+    }
+    if(id==="sendCode"){
+        content = <SendCodeModal handleClose={handleClose} id={id}/>
+    }
+    if(id==="weSent"){
+        content = <WeSent handleClose={handleClose} id={id}/>
+    }
+    if(id==="choose"){
+        content = <Choose handleClose={handleClose} id={id}/>
+    }
+    if(id==="allSet"){
+        content = <AllSet handleClose={handleClose} id={id}/>
+    }
   return (
     <div>
       <Modal
@@ -19,27 +33,7 @@ const BasicModal = ({handleClose, open, id}) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {title}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-           {text}
-          </Typography>
-
-          <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-    <BasicInput/>
-    </Box>
-         
-      <BasicButton text={buttonText} onClick={handleClose}/>
-       </Box>
+        {content}
       </Modal>
     </div>
   );

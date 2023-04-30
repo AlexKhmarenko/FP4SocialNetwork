@@ -6,7 +6,10 @@ export const modalConfig = {
         title: "find your twitter account",
         text: "enter the email, phone number, ot username associated with your account to change your password",
         buttonText: "next",
-        placeholder: "email, phone number, or username"
+        placeholder: "email or username",
+        inputType: "text",
+        iconStatus: false,
+        typeButton: "submit"
     },
     sendCode: {
         title: "Where should we send a confirmation code?",
@@ -15,27 +18,37 @@ export const modalConfig = {
         buttonText: "next",
         secondaryButtonText: "cancel",
         link: "Twitter Support",
-        linkText: "Contact",
-        secondLinkText: "if you don't have access.",
-        boldText: "Send an email to"
+        linkText: "Contact ",
+        secondLinkText: " if you don't have access.",
+        boldText: "Send an email to",
+        typeButton: "submit",
+        secondtypeButton: "cancel"
     },
     weSent: {
         title: "We sent you a code",
         text: "Check your email to get your confirmation code, go back and reselect a confirmation",
         buttonText: "next",
         secondaryButtonText: "back",
-        placeholder: "Enter your code"
+        placeholder: "Enter your code",
+        inputType: "text",
+        typeButton: "submit",
+        typeButton: "button"
     },
     choose: {
         title: "Chooose a new password",
         link: "strong password",
-        linkText: "Make sure your new password is 8 characters or more. Try including numbers, letters, and punctuation marks for a",
+        linkText: "Make sure your new password is 8 characters or more. Try including numbers, letters, and punctuation marks for a ",
         text: "You'll be logged out of all active Twitter sessions after your password is changed.",
-        buttonText: "change password"
+        buttonText: "change password",
+        placeholder: "Enter a new password",
+        secondPlaceholder: "Confirm your password",
+        inputType: "text",
+        typeButton: "submit"
     },
     allSet: {
         boldText: "You're all set",
         text: "You've successfully changed your password.",
-        buttonText: "continue to Twitter"
+        buttonText: "continue to Twitter",
+        typeButton: "button"
     }
 }

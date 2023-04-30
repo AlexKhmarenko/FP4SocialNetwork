@@ -1,3 +1,4 @@
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 export const style = {
     position: 'absolute',
@@ -11,4 +12,21 @@ export const style = {
     p: 4,
     color: '#000000',
   };
+  
+ export const theme = createTheme({
+    typography: {
+      button: {
+        width: "100%",
+        fontSize: '1rem',
+        padding: "0.75rem",
+
+      },
+      primarybtn: {
+        backGround: "green"
+      },
+      secondarybtn: {
+        backGround: "pink"
+      }
+    },
+  });
   
