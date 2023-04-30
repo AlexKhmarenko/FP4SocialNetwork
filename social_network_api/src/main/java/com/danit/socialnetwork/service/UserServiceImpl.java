@@ -11,7 +11,6 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -21,13 +20,7 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
 
   private <T extends Object> Boolean isEmpty(T temp) {
-    Optional<T> maybeExist = Optional.ofNullable(temp);
-    if (maybeExist.isEmpty()) {
-      return true;
-    } else {
-      return false;
-    }
-
+    return Optional.ofNullable(temp).isEmpty();
   }
 
   @Override
@@ -35,9 +28,8 @@ public class UserServiceImpl implements UserService {
     DbUser maybeUser = userRepository.findByUsername(username);
     if (isEmpty(maybeUser)) {
       throw new UserNotFoundException("User with username " + username + " not found");
-    } else {
-      return maybeUser;
     }
+    return maybeUser;
   }
 
   @Override
@@ -49,9 +41,9 @@ public class UserServiceImpl implements UserService {
       InputStream in = getClass().getResourceAsStream(profileImagePath);
       if (isEmpty(in)) {
         throw new PhotoNotFoundException("Wrong path to photo for user with username " + username);
-      } else {
-        return FileCopyUtils.copyToByteArray(in);
       }
+      return FileCopyUtils.copyToByteArray(in);
+
     }
   }
 
@@ -64,9 +56,8 @@ public class UserServiceImpl implements UserService {
       InputStream in = getClass().getResourceAsStream(profileBackgroundImagePath);
       if (isEmpty(in)) {
         throw new HeaderPhotoNotFoundException("Wrong path to header photo for user with username " + username);
-      } else {
-        return FileCopyUtils.copyToByteArray(in);
       }
+      return FileCopyUtils.copyToByteArray(in);
     }
   }
 
