@@ -20,42 +20,53 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
 
-  private <T extends Object> Boolean isEmpty(T t) {
-    Optional<T> maybeExist = Optional.ofNullable(t);
-    if (maybeExist.isEmpty()) return true;
-    else return false;
+  private <T extends Object> Boolean isEmpty(T temp) {
+    Optional<T> maybeExist = Optional.ofNullable(temp);
+    if (maybeExist.isEmpty()) {
+      return true;
+    } else {
+      return false;
+    }
 
   }
 
   @Override
   public DbUser findByUsername(String username) {
     DbUser maybeUser = userRepository.findByUsername(username);
-    if (isEmpty(maybeUser)) throw new UserNotFoundException("User with username " + username + " not found");
-    else return maybeUser;
+    if (isEmpty(maybeUser)) {
+      throw new UserNotFoundException("User with username " + username + " not found");
+    } else {
+      return maybeUser;
+    }
   }
 
   @Override
   public byte[] getProfileImage(String username) throws IOException {
     String profileImagePath = userRepository.findByUsername(username).getProfileImageUrl();
-    if (isEmpty(profileImagePath))
+    if (isEmpty(profileImagePath)) {
       throw new PhotoNotFoundException("Photo for user with username " + username + " is absent");
-    else {
+    } else {
       InputStream in = getClass().getResourceAsStream(profileImagePath);
-      if (isEmpty(in)) throw new PhotoNotFoundException("Wrong path to photo for user with username " + username);
-      else return FileCopyUtils.copyToByteArray(in);
+      if (isEmpty(in)) {
+        throw new PhotoNotFoundException("Wrong path to photo for user with username " + username);
+      } else {
+        return FileCopyUtils.copyToByteArray(in);
+      }
     }
   }
 
   @Override
   public byte[] getBackgroundImage(String username) throws IOException {
     String profileBackgroundImagePath = userRepository.findByUsername(username).getProfileBackgroundImageUrl();
-    if (isEmpty(profileBackgroundImagePath))
+    if (isEmpty(profileBackgroundImagePath)) {
       throw new HeaderPhotoNotFoundException("Header photo for user with username " + username + " is absent");
-    else {
+    } else {
       InputStream in = getClass().getResourceAsStream(profileBackgroundImagePath);
-      if (isEmpty(in))
+      if (isEmpty(in)) {
         throw new HeaderPhotoNotFoundException("Wrong path to header photo for user with username " + username);
-      else return FileCopyUtils.copyToByteArray(in);
+      } else {
+        return FileCopyUtils.copyToByteArray(in);
+      }
     }
   }
 

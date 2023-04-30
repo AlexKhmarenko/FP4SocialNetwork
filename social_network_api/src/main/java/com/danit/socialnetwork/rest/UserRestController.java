@@ -19,6 +19,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class UserRestController {
   private final UserService userService;
+
   @GetMapping("/{username}")
   public DbUser getUser(@PathVariable("username") String username) {
     return userService.findByUsername(username);
