@@ -10,6 +10,4 @@ addons:
       secure: "8952699bf634374231da04463b9c0c0556de6838"
 script:
   - sonar-scanner
-
-after_success:
   - mvn -e -fsocial_network_api/ clean test jacoco:report coveralls:report
