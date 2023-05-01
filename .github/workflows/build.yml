@@ -33,9 +33,16 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
+        uses: sonarsource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: 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  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: 8952699bf634374231da04463b9c0c0556de6838
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
 #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          # указывает SonarCloud, что данный проект является проектом для сканирования
+          projectBaseDir: .
+          # указывает SonarCloud, чтобы он отображал результаты сканирования во вкладке Обсуждения (Discussions)
+          # установите значение на true, если вы хотите, чтобы результаты сканирования отображались в Обсуждениях
+          github-pr-decoration: true
         run: mvn -fsocial_network_api/ verify sonar:sonar

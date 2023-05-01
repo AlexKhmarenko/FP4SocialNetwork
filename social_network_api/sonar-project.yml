@@ -1,4 +1,0 @@
-sonar:
-  pullrequest:
-    github:
-      summary_comment: true
