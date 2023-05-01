@@ -1,8 +1,8 @@
 name: SonarCloud
-sonar:
-  pull_request:
-    github:
-      summary_comment: true
+#sonar:
+#  pull_request:
+#    github:
+#      summary_comment: true
 
 on:
   push:
