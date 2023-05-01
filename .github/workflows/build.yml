@@ -1,6 +1,6 @@
 name: SonarCloud
 sonar:
-  pullrequest:
+  pull_request:
     github:
       summary_comment: true
 
