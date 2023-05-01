@@ -18,8 +18,8 @@
 		<maven.compiler.target>17</maven.compiler.target>
 		<java.version>17</java.version>
 
-<!--		<sonar.organization>fp4socialnetwork</sonar.organization>-->
-		<sonar.organization>alexkhmarenko</sonar.organization>
+		<sonar.organization>fp4socialnetwork</sonar.organization>
+<!--		<sonar.organization>alexkhmarenko</sonar.organization>-->
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 <!--		<sonar.login>8952699bf634374231da04463b9c0c0556de6838</sonar.login>-->
 
@@ -172,11 +172,11 @@
 
 <!--			</plugin>-->
 
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.9.1.2184</version>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.sonarsource.scanner.maven</groupId>-->
+<!--				<artifactId>sonar-maven-plugin</artifactId>-->
+<!--				<version>3.9.1.2184</version>-->
+<!--			</plugin>-->
 
 		</plugins>
 	</build>
