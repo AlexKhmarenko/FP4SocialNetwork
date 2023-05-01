@@ -18,6 +18,8 @@
         <maven.compiler.target>17</maven.compiler.target>
         <java.version>17</java.version>
         <sonar.organization>fp4socialnetwork</sonar.organization>
+        <sonar.projectKey>FP4SocialNetwork</sonar.projectKey>
+        <sonar.login>8952699bf634374231da04463b9c0c0556de6838</sonar.login>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
@@ -116,6 +118,21 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.sonarsource.scanner.maven</groupId>-->
+<!--                <artifactId>sonar-maven-plugin</artifactId>-->
+<!--                <version>3.9.1.2184</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>verify</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>sonar</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
         </plugins>
     </build>
 </project>
