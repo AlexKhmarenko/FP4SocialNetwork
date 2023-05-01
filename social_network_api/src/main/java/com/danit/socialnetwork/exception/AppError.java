@@ -1,6 +1,6 @@
 package com.danit.socialnetwork.exception;
 
-public abstract class AppError extends RuntimeException{
+public abstract class AppError extends RuntimeException {
   public AppError(String message) {
     super(message);
   }
