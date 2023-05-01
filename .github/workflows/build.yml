@@ -41,7 +41,7 @@ jobs:
 #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           # указывает SonarCloud, что данный проект является проектом для сканирования
-          projectBaseDir: .
+#          projectBaseDir: .
           # указывает SonarCloud, чтобы он отображал результаты сканирования во вкладке Обсуждения (Discussions)
           # установите значение на true, если вы хотите, чтобы результаты сканирования отображались в Обсуждениях
           github-pr-decoration: true
