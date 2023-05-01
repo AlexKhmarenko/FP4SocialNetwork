@@ -1,4 +1,9 @@
 name: SonarCloud
+sonar:
+  pullrequest:
+    github:
+      summary_comment: true
+
 on:
   push:
     branches:
