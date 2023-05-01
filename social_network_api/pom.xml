@@ -24,8 +24,6 @@
         <sonar.pullrequest.github.summary_comment>true</sonar.pullrequest.github.summary_comment>
     </properties>
 
-
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
