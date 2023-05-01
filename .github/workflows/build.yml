@@ -39,10 +39,10 @@ jobs:
           SONAR_TOKEN: 8952699bf634374231da04463b9c0c0556de6838
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
 #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
+#        with:
           # указывает SonarCloud, что данный проект является проектом для сканирования
 #          projectBaseDir: .
           # указывает SonarCloud, чтобы он отображал результаты сканирования во вкладке Обсуждения (Discussions)
           # установите значение на true, если вы хотите, чтобы результаты сканирования отображались в Обсуждениях
-          github-pr-decoration: true
+#          github-pr-decoration: true
         run: mvn -fsocial_network_api/ verify sonar:sonar
