@@ -2,6 +2,8 @@ sudo: false
 install: true
 
 language: java
+jdk:
+  - openjdk17
 
 addons:
   sonarcloud:
