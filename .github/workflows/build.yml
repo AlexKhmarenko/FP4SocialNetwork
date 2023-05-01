@@ -4,11 +4,13 @@ on:
     branches:
       - master
   pull_request:
-    github:
-      summary_comment: true
+#    github:
+#      summary_comment: true
+    branches:
+      - main
     types: [opened, synchronize, reopened]
 jobs:
-  build:
+  build-and-analyze:
     name: Build and analyze
     runs-on: ubuntu-latest
     steps:
@@ -34,14 +36,8 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=FP4SocialNetwork
-            -Dsonar.organization=FP4SocialNetwork
-            -Dsonar.sources=src/main
-            -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.login=8952699bf634374231da04463b9c0c0556de6838
-          summary_comment: true
+          GITHUB_TOKEN: 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  # Needed to get PR information, if any
+          SONAR_TOKEN: 8952699bf634374231da04463b9c0c0556de6838
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -fsocial_network_api/ verify sonar:sonar
