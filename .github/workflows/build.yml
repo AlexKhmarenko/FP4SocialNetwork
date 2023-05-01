@@ -36,5 +36,7 @@ jobs:
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: 8952699bf634374231da04463b9c0c0556de6838
-        run: mvn -fsocial_network_api/ verify sonar:sonar
+#          SONAR_TOKEN: 8952699bf634374231da04463b9c0c0556de6838
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        run: mvn -fsocial_network_api/ verify sonar:sonar
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=AlexKhmarenko_FP4SocialNetwork
