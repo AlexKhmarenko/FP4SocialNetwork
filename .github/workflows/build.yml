@@ -1,9 +1,4 @@
 name: SonarCloud
-#sonar:
-#  pull_request:
-#    github:
-#      summary_comment: true
-
 on:
   push:
     branches:
@@ -41,4 +36,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=FP4SocialNetwork
+            -Dsonar.organization=FP4SocialNetwork
+            -Dsonar.sources=src/main
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.login=8952699bf634374231da04463b9c0c0556de6838
+          summary_comment: true
         run: mvn -fsocial_network_api/ verify sonar:sonar
