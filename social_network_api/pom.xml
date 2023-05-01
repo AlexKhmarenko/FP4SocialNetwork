@@ -25,7 +25,7 @@
 		<sonar.projectKey>FP4SocialNetwork</sonar.projectKey>
 		<sonar.projectName>FP4SocialNetwork</sonar.projectName>
 		<sonar.projectVersion>1.0-SNAPSHOT</sonar.projectVersion>
-		<sonar.sources>src</sonar.sources>
+		<sonar.sources>src/main/java</sonar.sources>
 		<sonar.java.binaries>target/classes</sonar.java.binaries>
 		<sonar.pullrequest.github.summary_comment>true</sonar.pullrequest.github.summary_comment>
 
