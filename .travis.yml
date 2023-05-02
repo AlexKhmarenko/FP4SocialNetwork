@@ -7,7 +7,7 @@ addons:
   sonarcloud:
     organization: "fp4socialnetwork"
     token:
-      secure: "8952699bf634374231da04463b9c0c0556de6838"
+      secure: "f81a82d401e44dc1c38e0ea337355a5ccb603671"
 script:
   - sonar-scanner
 
