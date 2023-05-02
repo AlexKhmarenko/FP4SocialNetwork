@@ -6,6 +6,5 @@ addons:
       secure: "506f185a3ff3043be69834b4b93a168e491ec88a"
 
 script:
-  - mvn -e -fsocial_network_api/ clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=AlexKhmarenko_FP4SocialNetwork
-#  - mvn -e -fsocial_network_api/ clean test jacoco:report coveralls:report
-#  - sonar-scanner
+#  - mvn -e -fsocial_network_api/ clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=AlexKhmarenko_FP4SocialNetwork
+#  - -fsocial_network_api/ sonar-scanner
