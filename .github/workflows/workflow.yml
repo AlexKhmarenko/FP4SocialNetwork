@@ -12,10 +12,10 @@ jobs:
   coveralls:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          java-version: 17
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#        with:
+#          java-version: 17
 
       #      - name: Setup Python
       #        uses: actions/setup-python@v2
