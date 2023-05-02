@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          mvn -e -fsocial_network_api/ clean test jacoco:report coveralls:report
+          mvn -fsocial_network_api/ clean test jacoco:report coveralls:report
 #      - name: Coveralls report
 #        uses: coverallsapp/github-action@master
 #        with:
