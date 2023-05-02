@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const BasicButton = ({text, onClick, type}) => {
     return (
-        <Button variant="contained" type={type} onClick={onClick}>{text}</Button>
+        <Button variant="git" type={type} onClick={onClick}>{text}</Button>
     )
 }
 
