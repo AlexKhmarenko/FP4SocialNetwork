@@ -30,10 +30,10 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
+      - name: Build and analyze2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -e -fsocial_network_api/ -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=AlexKhmarenko_FP4SocialNetwork
-      - name: jacoco
-        run: mvn -e -fsocial_network_api/ clean test jacoco:report coveralls:report
+#      - name: jacoco
+#        run: mvn -e -fsocial_network_api/ clean test jacoco:report coveralls:report
