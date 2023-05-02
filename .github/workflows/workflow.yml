@@ -1,4 +1,10 @@
 name: Coveralls
+
+language: java
+
+jdk:
+  - openjdk17
+
 on:
   push:
     branches:
