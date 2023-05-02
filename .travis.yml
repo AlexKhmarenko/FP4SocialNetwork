@@ -8,7 +8,7 @@ addons:
   sonarcloud:
     organization: "fp4socialnetwork"
     token:
-      secure: "05426a5e39ea1799bd7aeb6cf468366ff4120e94"
+      secure: "07c060f7d0d90cc1bf1bba9412f1109351c268b2"
 script:
   - mvn -e -fsocial_network_api/ clean test jacoco:report coveralls:report
   - sonar-scanner
