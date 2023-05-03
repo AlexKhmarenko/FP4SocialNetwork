@@ -27,7 +27,8 @@ jobs:
       #          pip install -r requirements.txt
 
       - name: Run tests with coverage
-        run: mvn --file social_network_api/ test jacoco:report coveralls:report
+        run: mvn test jacoco:report coveralls:report
+#        run: mvn --file social_network_api/ test jacoco:report coveralls:report
 #      - name: Coveralls report
 #        uses: coverallsapp/github-action@master
 #        with:
