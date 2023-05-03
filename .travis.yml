@@ -9,5 +9,4 @@ addons:
 
 script:
   - mvn -f social_network_api/ clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=AlexKhmarenko_FP4SocialNetwork
-#  - mvn -f social_network_api/ clean test
   - mvn -f social_network_api/ clean test jacoco:report coveralls:report
