@@ -1,4 +1,6 @@
-jdk: openjdk17
+language: java
+jdk:
+  - openjdk17
 addons:
   sonarcloud:
     organization: "fp4socialnetwork"
