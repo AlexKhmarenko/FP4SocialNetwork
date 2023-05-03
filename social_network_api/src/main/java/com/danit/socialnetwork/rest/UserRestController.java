@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -115,5 +120,15 @@ public class UserRestController {
   public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
     return userService.getBackgroundImage(username);
   }
+
+//  @GetMapping("/logout")
+//  public String logout(HttpServletRequest request, HttpServletResponse response) {
+//    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//    if (auth != null) {
+//      new SecurityContextLogoutHandler()
+//              .logout(request, response, auth);
+//    }
+//    return "redirect:/oauth2/authorization/google";
+//  }
 
 }

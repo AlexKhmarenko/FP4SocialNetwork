@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 @Entity(name = "users")
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class DbUser {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

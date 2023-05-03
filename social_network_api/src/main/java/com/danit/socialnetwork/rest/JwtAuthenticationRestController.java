@@ -55,7 +55,8 @@ public class JwtAuthenticationRestController {
     Objects.requireNonNull(password);
 
     try {
-      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(username, password));
     } catch (DisabledException e) {
       throw new Exception("USER_DISABLED", e);
     } catch (BadCredentialsException e) {
