@@ -54,4 +54,5 @@ jobs:
           cache: 'maven'
 
       - name: Compile and run tests with Maven
-        run: mvn -f social_network_api/ clean test
+        run: mvn -f social_network_api/ clean test -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=AlexKhmarenko_FP4SocialNetwork
+#        run: mvn -f social_network_api/ clean test
