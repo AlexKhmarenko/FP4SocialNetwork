@@ -55,11 +55,3 @@ jobs:
 
       - name: Compile and run tests with Maven
         run: mvn -e -fsocial_network_api/ clean test
-
-  Coveralls:
-    name: Coveralls
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Coveralls
-        run: mvn -fsocial_network_api/ clean test jacoco:report coveralls:report
