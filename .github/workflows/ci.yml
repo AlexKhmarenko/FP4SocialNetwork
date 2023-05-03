@@ -54,4 +54,4 @@ jobs:
           cache: 'maven'
 
       - name: Compile and run tests with Maven
-        run: mvn -e -fsocial_network_api/ clean test
+        run: mvn -fsocial_network_api/ clean test
