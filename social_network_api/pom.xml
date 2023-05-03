@@ -100,22 +100,22 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.0.4</version>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <version>3.8.0</version>-->
-<!--                <configuration>-->
-<!--                    <source>17</source>-->
-<!--                    <target>17</target>-->
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                            <version>1.18.20</version>-->
-<!--                        </path>-->
-<!--                    </annotationProcessorPaths>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-compiler-plugin</artifactId>-->
+            <!--                <version>3.8.0</version>-->
+            <!--                <configuration>-->
+            <!--                    <source>17</source>-->
+            <!--                    <target>17</target>-->
+            <!--                    <annotationProcessorPaths>-->
+            <!--                        <path>-->
+            <!--                            <groupId>org.projectlombok</groupId>-->
+            <!--                            <artifactId>lombok</artifactId>-->
+            <!--                            <version>1.18.20</version>-->
+            <!--                        </path>-->
+            <!--                    </annotationProcessorPaths>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -141,20 +141,23 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
-                <configuration>
-                    <testFailureIgnore>true</testFailureIgnore>
-                    <skipTests>false</skipTests>
+<!--                <configuration>-->
+
+                    <!--                    <testFailureIgnore>true</testFailureIgnore>-->
+                    <!--                    <skipTests>false</skipTests>-->
+
+
                     <!--                    <includes>-->
                     <!--                        <include>**/*IT.java</include>-->
                     <!--                    </includes>-->
 
-<!--                    <properties>-->
-<!--                        <property>-->
-<!--                            <name>listener</name>-->
-<!--                            <value>org.eluder.coveralls.maven.plugin.CoverallsListener</value>-->
-<!--                        </property>-->
-<!--                    </properties>-->
-                </configuration>
+                    <!--                    <properties>-->
+                    <!--                        <property>-->
+                    <!--                            <name>listener</name>-->
+                    <!--                            <value>org.eluder.coveralls.maven.plugin.CoverallsListener</value>-->
+                    <!--                        </property>-->
+                    <!--                    </properties>-->
+<!--                </configuration>-->
             </plugin>
 
             <plugin>
@@ -181,7 +184,7 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
                 <configuration>
-<!--                    <serviceName>FP4SocialNetwork</serviceName>-->
+                    <!--                    <serviceName>FP4SocialNetwork</serviceName>-->
                     <repoToken>eRl5LjcVyr4rBaCnjTYRJBsJLVJmFlSTi</repoToken>
                     <sourceEncoding>UTF-8</sourceEncoding>
                 </configuration>
@@ -192,14 +195,14 @@
                         <version>2.3.1</version>
                     </dependency>
                 </dependencies>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>install</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>report</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <!--                <executions>-->
+                <!--                    <execution>-->
+                <!--                        <phase>install</phase>-->
+                <!--                        <goals>-->
+                <!--                            <goal>report</goal>-->
+                <!--                        </goals>-->
+                <!--                    </execution>-->
+                <!--                </executions>-->
             </plugin>
 
 
