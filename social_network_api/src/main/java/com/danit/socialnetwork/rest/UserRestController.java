@@ -11,7 +11,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,90 +39,95 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserRestController {
 
-  private final UserService userService;
+    private final UserService userService;
 
-  @RequestMapping(value = "registration", method = RequestMethod.POST)
-  public ResponseEntity<?> handleRegistrationPost(
-      @RequestBody RegistrationRequest request) {
-    int day = request.getDay();
-    int month = request.getMonth();
-    int year = request.getYear();
-    LocalDate dateOfBirth = LocalDate.of(year, month, day);
+    @RequestMapping(value = "registration", method = RequestMethod.POST)
+    public ResponseEntity<?> handleRegistrationPost(
+            @RequestBody RegistrationRequest request) {
+        int day = request.getDay();
+        int month = request.getMonth();
+        int year = request.getYear();
+        LocalDate dateOfBirth = LocalDate.of(year, month, day);
 
-    DbUser dbUser = new DbUser();
-    dbUser.setUsername(request.getUsername());
-    dbUser.setPassword(request.getPassword());
-    dbUser.setEmail(request.getEmail());
-    dbUser.setName(request.getName());
-    dbUser.setDateOfBirth(dateOfBirth);
+        DbUser dbUser = new DbUser();
+        dbUser.setUsername(request.getUsername());
+        dbUser.setPassword(request.getPassword());
+        dbUser.setEmail(request.getEmail());
+        dbUser.setName(request.getName());
+        dbUser.setDateOfBirth(dateOfBirth);
 
-    Map<String, Boolean> response = new HashMap<>();
-    response.put("registration", userService.save(dbUser));
-    return ResponseEntity.ok(response);
-  }
-
-  @RequestMapping(value = "/checkUsername", method = RequestMethod.POST)
-  public ResponseEntity<?> handleCheckUsernamePost(
-      @RequestBody UsernameRequest request) throws IOException {
-
-    String username = request.getUsername();
-    Map<String, String> response = new HashMap<>();
-
-    if (userService.findByUsername(username) == null) {
-      response.put("checkUsername", "false");
-    } else {
-      response.put("checkUsername", "true");
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("registration", userService.save(dbUser));
+        return ResponseEntity.ok(response);
     }
-    return ResponseEntity.ok(response);
-  }
 
-  @RequestMapping(value = "/sendLetter", method = RequestMethod.POST)
-  public ResponseEntity<?> handleSendLetterPost(
-      @RequestBody UserEmailRequest request) {
+    @RequestMapping(value = "/checkUsername", method = RequestMethod.POST)
+    public ResponseEntity<?> handleCheckUsernamePost(
+            @RequestBody UsernameRequest request) throws IOException {
 
-    Map<String, String> response = new HashMap<>();
-    String name = request.getName();
-    String email = request.getEmail();
+        String username = request.getUsername();
+        Map<String, String> response = new HashMap<>();
 
-    if (userService.sendLetter(name, email)) {
-      response.put("sendLetter", "true");
-    } else {
-      response.put("sendLetter", "false");
+        if (userService.findByUsername(username) == null) {
+            response.put("checkUsername", "false");
+        } else {
+            response.put("checkUsername", "true");
+        }
+        return ResponseEntity.ok(response);
     }
-    return ResponseEntity.ok(response);
-  }
 
-  @RequestMapping(value = "/activate", method = RequestMethod.POST)
-  public ResponseEntity<?> handleActivatePost(
-      @RequestBody ActivateCodeRequest request) {
-    Integer code = request.getCode();
-    boolean isActivated = userService.activateUser(code);
-    Map<String, String> response = new HashMap<>();
+    @RequestMapping(value = "/sendLetter", method = RequestMethod.POST)
+    public ResponseEntity<?> handleSendLetterPost(
+            @RequestBody UserEmailRequest request) {
 
-    if (isActivated) {
-      response.put("activate", "true");
-    } else {
-      response.put("activate", "false");
+        Map<String, String> response = new HashMap<>();
+        String name = request.getName();
+        String email = request.getEmail();
+
+        if (userService.sendLetter(name, email)) {
+            response.put("sendLetter", "true");
+        } else {
+            response.put("sendLetter", "false");
+        }
+        return ResponseEntity.ok(response);
     }
-    return ResponseEntity.ok(response);
-  }
 
-  @GetMapping("/{username}")
-  public Optional<DbUser> getUser(@PathVariable("username") String username) throws IOException {
-    return userService.findByUsername(username);
-  }
+    @RequestMapping(value = "/activate", method = RequestMethod.POST)
+    public ResponseEntity<?> handleActivatePost(
+            @RequestBody ActivateCodeRequest request) {
+        Integer code = request.getCode();
+        boolean isActivated = userService.activateUser(code);
+        Map<String, String> response = new HashMap<>();
 
-  @GetMapping(value = "/{username}/photo", produces = MediaType.IMAGE_PNG_VALUE)
-  @ResponseBody
-  public byte[] getProfileImage(@PathVariable("username") String username) throws IOException {
-    return userService.getProfileImage(username);
-  }
+        if (isActivated) {
+            response.put("activate", "true");
+        } else {
+            response.put("activate", "false");
+        }
+        return ResponseEntity.ok(response);
+    }
 
-  @GetMapping(value = "/{username}/header_photo", produces = MediaType.IMAGE_PNG_VALUE)
-  @ResponseBody
-  public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
-    return userService.getBackgroundImage(username);
-  }
+    @GetMapping("/{username}")
+    public Optional<DbUser> getUser(@PathVariable("username") String username) throws IOException {
+        return userService.findByUsername(username);
+    }
+
+    @GetMapping(value = "/{username}/photo", produces = MediaType.IMAGE_PNG_VALUE)
+    @ResponseBody
+    public byte[] getProfileImage(@PathVariable("username") String username) throws IOException {
+        return userService.getProfileImage(username);
+    }
+
+    @GetMapping(value = "/{username}/header_photo", produces = MediaType.IMAGE_PNG_VALUE)
+    @ResponseBody
+    public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
+        return userService.getBackgroundImage(username);
+    }
+
+
+
+
+
 
 //  @GetMapping("/logout")
 //  public String logout(HttpServletRequest request, HttpServletResponse response) {
