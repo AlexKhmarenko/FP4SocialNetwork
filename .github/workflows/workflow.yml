@@ -24,4 +24,5 @@ jobs:
 #        run: mvn -f social_network_api/pom.xml -B package --file pom.xml
 
       - name: Run Tests with Jacoco
-        run: mvn -f social_network_api/ test jacoco:report coveralls:report
+        run: mvn test jacoco:report coveralls:report
+#        run: mvn -f social_network_api/ test jacoco:report coveralls:report
