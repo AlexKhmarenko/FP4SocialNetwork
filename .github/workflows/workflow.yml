@@ -12,16 +12,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+#      - name: Checkout
+#        uses: actions/checkout@v2
 
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
+#      - name: Setup Java
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: '17'
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn f social_network_api/ -B package --file pom.xml
 
       - name: Run Tests with Jacoco
         run: mvn -f social_network_api/ clean test jacoco:report coveralls:report

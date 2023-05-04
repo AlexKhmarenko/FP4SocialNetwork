@@ -178,7 +178,7 @@
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>4.3.0</version>
+				<version>4.1.0</version>
 				<configuration>
 					<!--                    <serviceName>FP4SocialNetwork</serviceName>-->
 					<repoToken>eRl5LjcVyr4rBaCnjTYRJBsJLVJmFlSTi</repoToken>
