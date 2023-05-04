@@ -183,6 +183,9 @@
 					<!--                    <serviceName>FP4SocialNetwork</serviceName>-->
 					<repoToken>eRl5LjcVyr4rBaCnjTYRJBsJLVJmFlSTi</repoToken>
 					<sourceEncoding>UTF-8</sourceEncoding>
+					<sourceDirectories>
+						<sourceDirectory>social_network_api/</sourceDirectory>
+					</sourceDirectories>
 				</configuration>
 				<dependencies>
 					<dependency>
