@@ -107,18 +107,18 @@ public class UserRestController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/@{username}")
     public Optional<DbUser> getUser(@PathVariable("username") String username) throws IOException {
         return userService.findByUsername(username);
     }
 
-    @GetMapping(value = "/{username}/photo", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/@{username}/photo", produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseBody
     public byte[] getProfileImage(@PathVariable("username") String username) throws IOException {
         return userService.getProfileImage(username);
     }
 
-    @GetMapping(value = "/{username}/header_photo", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/@{username}/header_photo", produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseBody
     public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
         return userService.getBackgroundImage(username);

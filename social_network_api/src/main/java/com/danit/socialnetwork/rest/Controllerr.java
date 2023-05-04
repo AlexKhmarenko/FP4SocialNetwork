@@ -13,8 +13,15 @@ import java.util.Map;
 
 @Controller
 public class Controllerr {
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @RequestMapping(value = "/out", method = RequestMethod.GET)
+    public String home() {
+        System.out.println("OUT");
+        return "home";
+    }
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
+        System.out.println("INDEX");
+
         return "index";
     }
 //    @ResponseBody

@@ -9,8 +9,8 @@
     <base href="/"/>
 <!--    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>-->
 <!--    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>-->
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
+<!--    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>-->
+<!--    <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>-->
 
 </head>
 <body>
@@ -28,43 +28,55 @@
 <!--        </div>-->
 </div>
 
+<!--<button onclick="logout()">Выход</button>-->
 
-<!--<div class="container authenticated" style="display: none">-->
-<div class="container unauthenticated">
-    Logged in as: <span id="user"></span>
-    <div>
-        <button onClick="logout()" class="btn btn-primary">Logout</button>
-    </div>
-</div>
-<script type="text/javascript"
-        src="/webjars/js-cookie/js.cookie.js"></script>
-<script type="text/javascript">
-    // $.ajaxSetup({
-    //     beforeSend: function (xhr, settings) {
-    //         if (settings.type == 'POST' || settings.type == 'PUT'
-    //             || settings.type == 'DELETE') {
-    //             if (!(/^http:.*/.test(settings.url) || /^https:.*/
-    //                 .test(settings.url))) {
-    //                 // Only send the token to relative URLs i.e. locally.
-    //                 xhr.setRequestHeader("X-XSRF-TOKEN",
-    //                     Cookies.get('XSRF-TOKEN'));
-    //             }
-    //         }
-    //     }
-    // });
-    $.get("/user", function (data) {
-        $("#user").html(data.userData);
-        $(".unauthenticated").hide();
-        $(".authenticated").show();
-    });
-    var logout = function () {
-        $.post("/logoutt", function () {
-            $("#user").html('');
-            $(".unauthenticated").show();
-            $(".authenticated").hide();
-        })
-        return true;
-    }
-</script>
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--<script>-->
+<!--    function logout() {-->
+<!--        $.post("/logout", function() {-->
+<!--            alert("Вы вышли из аккаунта");-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
+
+
+
+<!--&lt;!&ndash;<div class="container authenticated" style="display: none">&ndash;&gt;-->
+<!--<div class="container unauthenticated">-->
+<!--    Logged in as: <span id="user"></span>-->
+<!--    <div>-->
+<!--        <button onClick="logout()" class="btn btn-primary">Logout</button>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script type="text/javascript"-->
+<!--        src="/webjars/js-cookie/js.cookie.js"></script>-->
+<!--<script type="text/javascript">-->
+<!--    $.ajaxSetup({-->
+<!--        beforeSend: function (xhr, settings) {-->
+<!--            if (settings.type == 'POST' || settings.type == 'PUT'-->
+<!--                || settings.type == 'DELETE') {-->
+<!--                if (!(/^http:.*/.test(settings.url) || /^https:.*/-->
+<!--                    .test(settings.url))) {-->
+<!--                    // Only send the token to relative URLs i.e. locally.-->
+<!--                    xhr.setRequestHeader("X-XSRF-TOKEN",-->
+<!--                        Cookies.get('XSRF-TOKEN'));-->
+<!--                }-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!--    $.get("/user", function (data) {-->
+<!--        $("#user").html(data.userData);-->
+<!--        $(".unauthenticated").hide();-->
+<!--        $(".authenticated").show();-->
+<!--    });-->
+<!--    var logout = function () {-->
+<!--        $.post("/logout", function () {-->
+<!--            $("#user").html('');-->
+<!--            $(".unauthenticated").show();-->
+<!--            $(".authenticated").hide();-->
+<!--        })-->
+<!--        return true;-->
+<!--    }-->
+<!--</script>-->
 </body>
 </html>

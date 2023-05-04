@@ -53,9 +53,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests(a -> a
-                        .antMatchers("/home","/login")
-                        .permitAll()
-                        .antMatchers("/h2/**",
+                        .antMatchers("/index",
+                                "/login",
+                                "/out",
+                                "/h2/**",
                                 "/sendLetter",
                                 "/activate",
                                 "/checkUsername",
@@ -69,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .logout(l -> l
                         .logoutSuccessUrl("/")
-                        .logoutUrl("/logoutt")
+//                        .logoutUrl("/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
                             OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
                             log.info("User with username {} has logged out", oauth2User.getAttributes().get("name"));
@@ -95,7 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             log.info("User surname - {}", userSurname);
                             log.info("User e-mail - {}", userMail);
 
-                            response.sendRedirect("/home" /*+ userMail*/);
+                            response.sendRedirect("/out" /*+ userMail*/);
                         }));
 
         http.rememberMe();
