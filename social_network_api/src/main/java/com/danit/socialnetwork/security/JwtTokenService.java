@@ -40,6 +40,22 @@ public class JwtTokenService {
 
     return token;
   }
+  public String generateToken(String userName, String userSurname) {
+    String subject = userName + userSurname;
+    Date now = new Date();
+    Date expiry = new Date(now.getTime() + expirationNormal);
+    String token = Jwts.builder()
+        .setSubject(subject)
+        .setIssuedAt(now)
+        .setExpiration(expiry)
+        .signWith(SignatureAlgorithm.HS512, jwtSecret)
+        .compact();
+    log.info("Token " + token);
+
+    return token;
+  }
+
+
 
   public Optional<Jws<Claims>> tokenToClaims(String token) {
     try {

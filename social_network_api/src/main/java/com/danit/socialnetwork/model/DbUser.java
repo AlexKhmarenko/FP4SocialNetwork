@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 @Entity(name = "users")
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class DbUser {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +60,19 @@ public class DbUser {
     this.email = email;
     this.name = name;
     this.dateOfBirth = dateOfBirth;
-
   }
 
+//  public DbUser(@NonNull String username, @NonNull String password,
+//                @NonNull String email, @NonNull LocalDateTime createdDate,
+//                @NonNull String name, @NonNull LocalDate dateOfBirth,
+//                String profileBackgroundImageUrl, String profileImageUrl) {
+//    this.username = username;
+//    this.password = password;
+//    this.email = email;
+//    this.createdDate = createdDate;
+//    this.name = name;
+//    this.dateOfBirth = dateOfBirth;
+//    this.profileBackgroundImageUrl = profileBackgroundImageUrl;
+//    this.profileImageUrl = profileImageUrl;
+//  }
 }
