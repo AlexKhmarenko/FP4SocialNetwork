@@ -7,6 +7,8 @@ import { HeaderInformation } from "./NavigationComponents/HeaderInformation";
 import { UsersSearch } from "./NavigationComponents/UsersSearch";
 import { SideBar } from "./NavigationComponents/SideBar";
 import { ContainerStyled, ContentContainer, OutletContainer, OutletWrapper } from "./LayoutStyles";
+import { EnterUserNameModal } from "./LoginModal/EnterUserNameModal";
+import { LoginModal } from "./LoginModal/LoginModal";
 
 export function Layout() {
 
