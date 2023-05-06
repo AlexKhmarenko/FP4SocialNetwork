@@ -1,9 +1,11 @@
 export const Header = {
+    position: "fixed",
     maxHeight: "80px",
     height: "70px",
     width: "600px",
     top: 0,
-    left: "29.2%",
+    left: "50%",
+    transform: "translateX(-50%)",
     backgroundColor: "rgba(255, 255, 255, 0.85)",
     flexBasis: "650px",
     boxShadow: "none",
@@ -89,8 +91,8 @@ export const SidebarLogOutButton = {
     fontWeight: 700,
     borderRadius: "20px",
     maxWidth: "140px",
-    marginLeft: "40px",
-    marginTop: "50px"
+    marginTop: "50px",
+    alignSelf:"start",
 };
 
 export const SidebarIconBackground = {
