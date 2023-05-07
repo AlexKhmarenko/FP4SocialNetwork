@@ -3,8 +3,10 @@ package com.danit.socialnetwork.repository;
 import com.danit.socialnetwork.model.PasswordChangeRequests;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PasswordChangeRequestsRepo extends JpaRepository<PasswordChangeRequests, String> {
-    PasswordChangeRequests getPasswordChangeRequestsByEmail(String email);
+import java.util.Optional;
 
-    PasswordChangeRequests getPasswordChangeRequestsByChangeRequestContains(String uuid);
+public interface PasswordChangeRequestsRepo extends JpaRepository<PasswordChangeRequests, String> {
+  Optional<PasswordChangeRequests> getPasswordChangeRequestsByChangeRequest(String uuid);
+
+
 }

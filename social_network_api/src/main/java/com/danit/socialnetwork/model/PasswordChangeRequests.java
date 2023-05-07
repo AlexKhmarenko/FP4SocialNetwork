@@ -17,17 +17,17 @@ import java.sql.Timestamp;
 @Table(name = "pass_change_requests")
 public class PasswordChangeRequests {
 
-    @Id
-    @Column(name = "email")
-    @NotNull
-    String email;
+  @Id
+  @Column(name = "email")
+  @NotNull
+  String email;
 
-    @Column(name = "request")
-    @NotNull
-    String changeRequest;
+  @Column(name = "request")
+  @NotNull
+  String changeRequest;
 
 
-    @CreationTimestamp
-    @Column(name = "created_at")
-    Timestamp dateTime;
+  @CreationTimestamp
+  @Column(name = "created_at")
+  Timestamp dateTime;
 }

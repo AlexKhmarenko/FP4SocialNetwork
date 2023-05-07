@@ -61,18 +61,4 @@ public class DbUser {
     this.name = name;
     this.dateOfBirth = dateOfBirth;
   }
-
-//  public DbUser(@NonNull String username, @NonNull String password,
-//                @NonNull String email, @NonNull LocalDateTime createdDate,
-//                @NonNull String name, @NonNull LocalDate dateOfBirth,
-//                String profileBackgroundImageUrl, String profileImageUrl) {
-//    this.username = username;
-//    this.password = password;
-//    this.email = email;
-//    this.createdDate = createdDate;
-//    this.name = name;
-//    this.dateOfBirth = dateOfBirth;
-//    this.profileBackgroundImageUrl = profileBackgroundImageUrl;
-//    this.profileImageUrl = profileImageUrl;
-//  }
 }
