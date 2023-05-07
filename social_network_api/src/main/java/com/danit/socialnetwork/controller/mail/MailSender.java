@@ -17,9 +17,9 @@ public class MailSender {
 
   public void send(String recipientEmail, String caption, String messageText) {
     //    String username = "socialnetwork897@gmail.com";
-    //    String password = "syqscxxgtkypnmxl"; // пароли приложений
+    //    String pass = "syqscxxgtkypnmxl"; // пароли приложений
     String username = "capitweet.info@gmail.com";
-    String password = "nmujmhfrfwcrsfmg"; // пароли приложений
+    String pass = "nmujmhfrfwcrsfmg"; // пароли приложений
 
 
     Properties props = new Properties();
@@ -32,7 +32,7 @@ public class MailSender {
 
     Session session = Session.getInstance(props, new Authenticator() {
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(username, password);
+        return new PasswordAuthentication(username, pass);
       }
     });
 
