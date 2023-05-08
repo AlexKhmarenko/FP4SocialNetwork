@@ -4,6 +4,7 @@ import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } 
 import { Layout } from "./components/Layout";
 import { RegistrationPage} from "./pages/RegistrationPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { HomeScreen } from "./pages/HomeScreen";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -11,6 +12,7 @@ const router = createBrowserRouter(
             <Route path="/" element={<RegistrationPage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
             <Route path="/explore" element={<RegistrationPage/>}/>
+            <Route path="/home" element={<HomeScreen/>}/>
         </Route>
     )
 );
