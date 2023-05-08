@@ -230,5 +230,6 @@
                 </dependencies>
             </plugin>
         </plugins>
+        <testSourceDirectory>src/test/java/com/danit/socialnetwork</testSourceDirectory>
     </build>
 </project>
