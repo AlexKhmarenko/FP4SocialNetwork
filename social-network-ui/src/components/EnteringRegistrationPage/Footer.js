@@ -1,7 +1,12 @@
 import React from 'react'
 import {AppBar, Box, Button, Typography, Container} from "@mui/material"
+import {OPEN_LOGIN_MODAL, OPEN_SIGN_UP_MODAL} from "../../store/types";
+import {useDispatch} from "react-redux";
+
 
 export  function Footer () {
+
+    const dispatch = useDispatch()
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -15,9 +20,10 @@ export  function Footer () {
                         fontWeight: "400",
                         fontSize: "15px",
                         lineHeight: "1.3",
+                        fontFamily: "'Lato', sans-serif",
 
                     }}>
-                        <span style={{ fontWeight: "700", fontSize: "23px", }}>Don&rsquo;t miss what&rsquo;s happening</span>
+                        <span style={{ fontWeight: "700", fontSize: "23px" }}>Don&rsquo;t miss what&rsquo;s happening</span>
                         <br/>
                         People on Twitter are the first to know.
                     </Typography>
@@ -27,13 +33,14 @@ export  function Footer () {
                             fontWeight: "700",
                             margin: "10px",
                             textTransform: "inherit",
+                            fontFamily: "'Lato', sans-serif",
                             "&:hover": {
                                 transition: "0.7s",
                                 backgroundColor: "#000000",
                                 color: "#ffffff",
                                 borderColor: "#000000"
                             },
-                        }}>Log in</Button>
+                        }} onClick={() => {dispatch({type: OPEN_LOGIN_MODAL})}}>Log in</Button>
                         <Button variant="contained" sx={{
                             background: "#ffffff",
                             color: "#000000",
@@ -41,12 +48,13 @@ export  function Footer () {
                             fontWeight: "700",
                             margin: "10px",
                             textTransform: "inherit",
+                            fontFamily: "'Lato', sans-serif",
                             "&:hover": {
                                 transition: "0.7s",
                                 backgroundColor: "#000000",
                                 color: "#ffffff"
                             },
-                        }}>Sing up</Button>
+                        }} onClick={() => {dispatch({type: OPEN_SIGN_UP_MODAL})}}>Sign up</Button>
                     </div>
                 </Box>
                 </Container>

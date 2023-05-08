@@ -14,8 +14,8 @@ export function Newsfeed ()  {
                             height: "72px",
 
                         }}>
-                            <Typography variant="h5" component="div" sx={{color: "#000000"}}>
-                                Обзор
+                            <Typography variant="h5" component="div" sx={{color: "#000000", fontFamily: "'Lato', sans-serif"}}>
+                                Review
                             </Typography>
                         </Toolbar>
                     </AppBar>
