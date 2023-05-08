@@ -22,6 +22,7 @@ public class PasswordChanger {
         + "password for logging into your Capitweet account, "
         + "please go to the following link and enter "
         + "a new password: \n" + secretUrl;
+        
 
     mailSender.send(userEmail, "Change Capitweet password", message);
     return uuid;
