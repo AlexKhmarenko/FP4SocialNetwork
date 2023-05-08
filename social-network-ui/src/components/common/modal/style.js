@@ -1,32 +1,120 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-export const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    borderRadius: '5px',
-    boxShadow: 24,
-    p: 4,
-    color: '#000000',
-  };
-  
- export const theme = createTheme({
-    typography: {
-      button: {
-        width: "100%",
-        fontSize: '1rem',
-        padding: "0.75rem",
+export const StyledModal = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  outline: "none",
+};
 
-      },
-      primarybtn: {
-        backGround: "green"
-      },
-      secondarybtn: {
-        backGround: "pink"
-      }
-    },
-  });
-  
+export const StyledBox = {
+  width: 500,
+  height: 600,
+  background: "#ffff",
+  outline: "none",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
+  borderRadius: "10px",
+  overflow: "visible",
+  position: "relative",
+  padding: "20px",
+  textAlign: "center",
+};
+
+export const StyledHeaderModalText = {
+  fontFamily: "'Lato', sans-serif",
+  fontSize: "22px",
+  lineHeight: "23px",
+  fontWeight: "700",
+  fontStyle: "normal",
+  marginBottom: "30px",
+
+};
+
+export const StyledModalText = {
+  fontFamily: "'Lato', sans-serif",
+  fontSize: "18px",
+  lineHeight: "23px",
+  fontWeight: "400",
+  fontStyle: "normal",
+  marginBottom: "30px",
+  marginTop: "30px",
+};
+
+export const StyledFormControl = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
+};
+
+export const StyledBlackButton = {
+  fontFamily: "'Lato', sans-serif",
+  fontSize: "15px",
+  lineHeight: "23px",
+
+  fontStyle: "normal",
+  height: "45px",
+  marginTop: "30px", width: "400px", background: "#000000",
+  transition: "0.7s", "&:hover": {
+      transition: "0.7s",
+      backgroundColor: "#ffffff",
+      color: "#000000"
+  },
+  fontWeight: 700,
+  borderRadius: "20px",
+};
+
+export const StyledCheckbox = {
+  fontFamily: "'Lato', sans-serif",
+  fontSize: "15px",
+  lineHeight: "23px",
+  "& .MuiSvgIcon-root": { fontSize: 21 },
+  alignSelf: "start"
+};
+
+export const StyledWhiteButton = {
+  fontFamily: "'Lato', sans-serif",
+  fontSize: "15px",
+  lineHeight: "23px",
+  height: "45px",
+  marginTop: "20px", width: "400px", background: "#ffffff", color: "#000000",
+  transition: "0.7s", "&:hover": {
+      transition: "0.7s",
+      backgroundColor: "#000000",
+      color: "#ffffff"
+  },
+  fontWeight: 700,
+  borderRadius: "20px",
+};
+
+export const StyledSpanElement = {
+  fontFamily: "'Lato', sans-serif",
+  fontSize: "20px",
+  lineHeight: "23px",
+  position: "relative",
+  marginTop: "30px",
+  color: "#808080",
+  marginBottom: "30px",
+  "&::before": {
+      content: "\"\"",
+      position: "absolute",
+      width: "100px",
+      height: "1px",
+      backgroundColor: "#808080",
+      left: "30px",
+      top: "50%",
+      transform: "translateY(-50%)",
+  },
+  "&::after": {
+      content: "\"\"",
+      position: "absolute",
+      width: "100px",
+      height: "1px",
+      backgroundColor: "#808080",
+      right: "30px",
+      top: "50%",
+      transform: "translateY(-50%)",
+  },
+};

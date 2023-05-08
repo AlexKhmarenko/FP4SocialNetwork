@@ -1,13 +1,14 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { modalConfig } from './modalConfig';
+import { modalConfig } from '../modalConfig';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { style } from "./style"
-import BasicButton from '../button';
-import { useModal } from '../../../context/ModalContext';
-import { IconWrapper } from '../iconWrapper';
-import {Close} from "./Close"
+import { StyledBox, StyledHeaderModalText, StyledBlackButton, StyledFormControl, StyledSpanElement, StyledWhiteButton  } from "../style"
+import BasicButton from '../../button';
+import { useModal } from '../../../../context/ModalContext';
+
+import Logo from "../../icon/Logo";
+import CloseIcon from '../../icon/CloseIcon';
 
 export const AllSet = ({ id }) => {
     const {setOpenAllSet} = useModal()
@@ -18,9 +19,9 @@ export const AllSet = ({ id }) => {
             setOpenAllSet(false)
         }
     return (
-        <Box sx={style}>
-            <Close onClick={() => setOpenAllSet(false)} />
-            <IconWrapper/>
+        <Box sx={StyledBox}>
+            <CloseIcon onClick={() => setOpenForgot(false)}/>
+            <Logo/>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 {text}
             </Typography>

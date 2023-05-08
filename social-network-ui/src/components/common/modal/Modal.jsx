@@ -1,11 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Modal from '@mui/material/Modal';
-import { ForgotModal } from './ForgotModal';
-import { SendCodeModal } from './SendCodeModal';
-import { WeSent } from './WeSent';
-import { Choose } from './Choose';
-import { AllSet } from './AllSet';
+import { ForgotModal } from './forgotModal/ForgotModal';
+import { SendCodeModal } from './forgotModal/SendCodeModal';
+import { WeSent } from './forgotModal/WeSent';
+import { Choose } from './forgotModal/Choose';
+import { AllSet } from './forgotModal/AllSet';
+import {StyledModal} from "./style.js"
 
 
 const BasicModal = ({handleClose, open, id}) => {
@@ -32,7 +33,7 @@ const BasicModal = ({handleClose, open, id}) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-      >
+        sx={StyledModal}>
         {content}
       </Modal>
     </div>

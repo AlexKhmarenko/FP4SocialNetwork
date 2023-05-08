@@ -1,3 +1,8 @@
-import BasicInput from './Input';
+// import BasicInput from './Input';
 
-export default BasicInput;
+// export default BasicInput;
+
+
+import InputFieldWithError from "./Input"
+
+export default InputFieldWithError;

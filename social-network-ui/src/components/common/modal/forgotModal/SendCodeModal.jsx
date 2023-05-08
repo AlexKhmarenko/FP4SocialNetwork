@@ -1,18 +1,18 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { modalConfig } from './modalConfig';
+import { modalConfig } from '../modalConfig';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { style, theme } from "./style"
-import BasicButton from '../button';
+import { StyledBox, StyledHeaderModalText, StyledBlackButton, StyledFormControl, StyledSpanElement, StyledWhiteButton  } from "../style"
+import BasicButton from '../../button';
 import {Link} from "react-router-dom"
-import { useModal } from '../../../context/ModalContext';
-import { changeEmail } from '../../../util/util';
+import { useModal } from '../../../../context/ModalContext';
+import { changeEmail } from '../../../../util/util';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { IconWrapper } from '../iconWrapper';
-import {Close} from "./Close"
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+// import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+import Logo from "../../icon/Logo";
+import CloseIcon from '../../icon/CloseIcon';
 
 export const SendCodeModal = ({ id }) => {
     const email = "demo@gmail.com"
@@ -36,10 +36,9 @@ export const SendCodeModal = ({ id }) => {
             setOpenSendCode(false)
         }
     return (
-        <ThemeProvider theme={theme}>
-        <Box sx={style}>
-            <Close onClick={() => setOpenSendCode(false)} />
-            <IconWrapper/>
+        <Box sx={StyledBox}>
+            <CloseIcon onClick={() => setOpenForgot(false)}/>
+            <Logo/>
             <Typography id="modal-modal-title" variant="h6" component="h2">
                 {title}
             </Typography>
@@ -62,10 +61,9 @@ export const SendCodeModal = ({ id }) => {
                 {secondLinkText}
             </Typography>
 
-            <BasicButton text={buttonText} onClick={handleClick} />
-            <BasicButton variant="secondarybtn" text={secondaryButtonText} onClick={handleClose} />
+            <BasicButton color="black" text={buttonText} onClick={handleClick} />
+            <BasicButton color="white" variant="secondarybtn" text={secondaryButtonText} onClick={handleClose} />
         </Box>
-        </ThemeProvider>
     )
 }
 SendCodeModal.propTypes = {

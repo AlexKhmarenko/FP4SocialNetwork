@@ -4,7 +4,7 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 
-import { setUserName } from "../../store/actions";
+import { setUserName } from "../../../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
 import {
     StyledBlackButton,
