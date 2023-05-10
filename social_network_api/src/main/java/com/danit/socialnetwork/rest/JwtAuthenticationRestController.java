@@ -34,14 +34,16 @@ public class JwtAuthenticationRestController {
   public ResponseEntity<?> createAuthenticationToken(
       @RequestBody JwtRequest authRequest)
       throws Exception {
+
     String username = authRequest.getUsername();
     String password = authRequest.getPassword();
     boolean rememberMe = Boolean.parseBoolean(authRequest.getRememberMe());
 
     authenticate(username, password);
 
-    final String token = jwtTokenService.generateToken(
-        username, password, rememberMe);
+    Integer id = userService.findByUsername(username).get().getUserId();
+
+    final String token = jwtTokenService.generateToken(id, rememberMe);
 
     Map<String, String> response = new HashMap<>();
     response.put("token", token);

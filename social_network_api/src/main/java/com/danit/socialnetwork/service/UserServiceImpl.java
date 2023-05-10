@@ -14,8 +14,10 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -78,7 +80,8 @@ public class UserServiceImpl implements UserService {
       return false;
     }
 
-    dbUser.setPassword(enc.encode(dbUser.getPassword()));
+    String hashedPassword = enc.encode(dbUser.getPassword());
+    dbUser.setPassword(hashedPassword);
     userRepository.save(dbUser);
     log.info(String.format("save user name = %s, email = %s",
         dbUser.getName(), dbUser.getEmail()));
@@ -91,7 +94,7 @@ public class UserServiceImpl implements UserService {
     Random rand = new Random();
     int randomNumber = rand.nextInt(900000) + 100000;
 
-    guavaCache.put("activationCode", randomNumber);
+    guavaCache.putActivateCodeCache("activationCode", randomNumber);
 
     try {
       String message = String.format(
@@ -108,11 +111,23 @@ public class UserServiceImpl implements UserService {
   }
 
   public boolean activateUser(Integer code) {
-    Integer activationCode = guavaCache.getUnchecked("activationCode");
+    Integer activationCode = guavaCache.getUncheckedActivateCodeCache("activationCode");
     if (activationCode == null) {
       return false;
     }
     return code.equals(activationCode);
+  }
+
+  public List<DbUser> filterCachedUsersByName(String userSearch) {
+    List<DbUser> cachedUsers = guavaCache.getUserCache("UserCache");
+    if (cachedUsers == null) {
+      List<DbUser> cacheUsers = userRepository.findAll();
+      cachedUsers = guavaCache.putUserCache("UserCache", cacheUsers);
+    }
+
+    return cachedUsers.stream()
+        .filter(user -> user.getName().toLowerCase().contains(userSearch.toLowerCase()))
+        .collect(Collectors.toList());
   }
 
   //  @Override
