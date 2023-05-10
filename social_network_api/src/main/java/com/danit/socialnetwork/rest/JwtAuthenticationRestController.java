@@ -68,4 +68,5 @@ public class JwtAuthenticationRestController {
           String.format("User this username %s not found", username));
     }
   }
+
 }

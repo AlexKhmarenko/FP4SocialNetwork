@@ -43,5 +43,4 @@ public class JavaMailSenderConfig {
     return mailSender;
   }
 
-
 }
