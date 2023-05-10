@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @Log4j2
 @Data
 public class GuavaCache {
-  private static Cache<String, Integer> activateCodeCache = CacheBuilder.newBuilder()
+  public static Cache<String, Integer> activateCodeCache = CacheBuilder.newBuilder()
       .initialCapacity(32)
       .concurrencyLevel(8)
       .removalListener(new RemovalListener<String, Integer>() {
@@ -29,28 +29,11 @@ public class GuavaCache {
       .expireAfterWrite(5, TimeUnit.MINUTES)
       .build();
 
-  private static Cache<String, List<DbUser>> userCache = CacheBuilder.newBuilder()
+  public static Cache<String, List<DbUser>> userCache = CacheBuilder.newBuilder()
       .maximumSize(1000)
       .expireAfterWrite(5, TimeUnit.MINUTES)
       .build();
 
-  public static Integer putActivateCodeCache(String key, Integer value) {
-    activateCodeCache.put(key, value);
-    return value;
-  }
-
-  public static Integer getUncheckedActivateCodeCache(String key) {
-    return activateCodeCache.getIfPresent(key);
-  }
-
-  public static List<DbUser> putUserCache(String key, List<DbUser> cachedUsers) {
-    userCache.put(key, cachedUsers);
-    return cachedUsers;
-  }
-
-  public static List<DbUser> getUserCache(String key) {
-    return userCache.getIfPresent(key);
-  }
 }
 
 

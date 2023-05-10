@@ -41,14 +41,18 @@ public class JwtAuthenticationRestController {
 
     authenticate(username, password);
 
-    Integer id = userService.findByUsername(username).get().getUserId();
+    Optional<DbUser> optionalDbUser = userService.findByUsername(username);
+    if (optionalDbUser.isPresent()) {
+      Integer id = optionalDbUser.get().getUserId();
+      final String token = jwtTokenService.generateToken(id, rememberMe);
+      Map<String, String> response = new HashMap<>();
+      response.put("token", token);
+      return ResponseEntity.ok(response);
+    } else {
+      throw new UsernameNotFoundException(
+          String.format("User with username %s not found", username));
+    }
 
-    final String token = jwtTokenService.generateToken(id, rememberMe);
-
-    Map<String, String> response = new HashMap<>();
-    response.put("token", token);
-
-    return ResponseEntity.ok(response);
   }
 
   private void authenticate(String username, String password) throws Exception {

@@ -19,6 +19,9 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
+import static com.danit.socialnetwork.config.GuavaCache.userCache;
+
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +41,7 @@ public class UserServiceImpl implements UserService {
   public Optional<DbUser> findByUsername(String username) {
     Optional<DbUser> maybeUser = userRepository.findByUsername(username);
     if (maybeUser.isEmpty()) {
-      throw new UserNotFoundException("User with username " + username + " not found");
+      throw new UserNotFoundException(String.format("User with username %s not found", username));
     }
     return maybeUser;
   }
@@ -94,7 +97,7 @@ public class UserServiceImpl implements UserService {
     Random rand = new Random();
     int randomNumber = rand.nextInt(900000) + 100000;
 
-    guavaCache.putActivateCodeCache("activationCode", randomNumber);
+    activateCodeCache.put("activationCode", randomNumber);
 
     try {
       String message = String.format(
@@ -111,7 +114,7 @@ public class UserServiceImpl implements UserService {
   }
 
   public boolean activateUser(Integer code) {
-    Integer activationCode = guavaCache.getUncheckedActivateCodeCache("activationCode");
+    Integer activationCode = activateCodeCache.getIfPresent("activationCode");
     if (activationCode == null) {
       return false;
     }
@@ -119,15 +122,15 @@ public class UserServiceImpl implements UserService {
   }
 
   public List<DbUser> filterCachedUsersByName(String userSearch) {
-    List<DbUser> cachedUsers = guavaCache.getUserCache("UserCache");
-    if (cachedUsers == null) {
+    if (userCache.getIfPresent("UserCache") == null) {
       List<DbUser> cacheUsers = userRepository.findAll();
-      cachedUsers = guavaCache.putUserCache("UserCache", cacheUsers);
+      userCache.put("UserCache", cacheUsers);
     }
 
-    return cachedUsers.stream()
-        .filter(user -> user.getName().toLowerCase().contains(userSearch.toLowerCase()))
-        .collect(Collectors.toList());
+    return userCache.getIfPresent("UserCache").stream()
+        .filter(user -> user.getName().toLowerCase()
+            .contains(userSearch.toLowerCase()))
+        .toList();
   }
 
   //  @Override

@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
+import static com.danit.socialnetwork.config.GuavaCache.userCache;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -38,7 +40,7 @@ public class MethodWithGuavaCacheTests {
 
   @Test
   public void activateUser_WithValidActivationCode() {
-    guavaCache.putActivateCodeCache("activationCode", 123456);
+    activateCodeCache.put("activationCode", 123456);
 
     assertTrue(userService.activateUser(123456));
   }
@@ -46,7 +48,7 @@ public class MethodWithGuavaCacheTests {
 
   @Test
   public void activateUser_WithInvalidActivationCode() {
-    guavaCache.putActivateCodeCache("activationCode", 123456);
+    activateCodeCache.put("activationCode", 123456);
 
     assertFalse(userService.activateUser(654321));
   }
@@ -61,7 +63,7 @@ public class MethodWithGuavaCacheTests {
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser1);
     dbUsers.add(testDbUser2);
-    GuavaCache.putUserCache("UserCache", dbUsers);
+    userCache.put("UserCache", dbUsers);
 
     List<DbUser> testByName = userService.filterCachedUsersByName("nad");
 
@@ -74,7 +76,7 @@ public class MethodWithGuavaCacheTests {
     testDbUser.setName("Nadya");
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser);
-    GuavaCache.putUserCache("UserCache", dbUsers);
+    userCache.put("UserCache", dbUsers);
 
     List<DbUser> testByName = userService.filterCachedUsersByName("nid");
 
