@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import { Container, } from "@mui/material";
 
 import { HeaderInformation } from "./NavigationComponents/HeaderInformation";
-import { UsersSearch } from "./NavigationComponents/UsersSearch";
+import { UsersSearch } from "./NavigationComponents/UsersSearch/UsersSearch";
 import { SideBar } from "./NavigationComponents/SideBar";
 import { ContainerStyled, ContentContainer, OutletContainer, OutletWrapper } from "./LayoutStyles";
 import { EnterUserNameModal } from "./LoginModal/EnterUserNameModal";
