@@ -49,8 +49,7 @@ public class JwtAuthenticationRestController {
       response.put("token", token);
       return ResponseEntity.ok(response);
     } else {
-      throw new UsernameNotFoundException(
-          String.format("User with username %s not found", username));
+      throw new BadCredentialsException("Invalid username or password");
     }
 
   }
