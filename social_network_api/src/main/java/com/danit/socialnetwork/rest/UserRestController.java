@@ -67,6 +67,7 @@ public class UserRestController {
     String username = request.getUsername();
     Map<String, String> response = new HashMap<>();
 
+
     if (userService.findByUsername(username) == null) {
       response.put("checkUsername", "false");
     } else {

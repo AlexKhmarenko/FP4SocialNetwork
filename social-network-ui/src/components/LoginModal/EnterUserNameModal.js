@@ -37,9 +37,15 @@ export function EnterUserNameModal() {
             <Typography component="span" sx={StyledSpanElement}
             >or</Typography>
             <Formik validateOnChange={false} validate={async (values) => {
-                const url = new URL("http://localhost:8080/checkUsername");
-                url.searchParams.append("username", values.userName);
-                const userExist = await fetch(url.toString())
+                const userExist = await fetch("http://localhost:8080/checkUsername", {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        username: values.userName,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
                 const userExistData = await userExist.json();
                 if (!userExistData) {
                     return { userName: "User doesn't exist, please check your username" };

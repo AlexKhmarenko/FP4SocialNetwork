@@ -15,7 +15,7 @@ export function Layout() {
 
     return (
         <Container maxWidth="false" sx={ContainerStyled}>
-           < LoginModal/>
+           <LoginModal/>
             <div style={ContentContainer}>
                 <SideBar/>
                 <div
@@ -44,7 +44,6 @@ export function Layout() {
                 </div>
                 <UsersSearch/>
             </div>
-            <Content></Content>
         </Container>
     );
 }
