@@ -36,29 +36,33 @@ export function EnterUserNameModal() {
                 Sign in width Google</Button>
             <Typography component="span" sx={StyledSpanElement}
             >or</Typography>
-            <Formik validateOnChange={false} validate={async (values) => {
-                const userExist = await fetch("http://localhost:8080/checkUsername", {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        username: values.userName,
-                    }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-                const userExistData = await userExist.json();
-                if (!userExistData) {
-                    return { userName: "User doesn't exist, please check your username" };
-                }
-            }} initialValues={{
+            <Formik initialValues={{
                 userName: "",
             }} validationSchema={
                 Yup.object(
                     {
                         userName: Yup.string().required("Username is required")
                     }
-                )} onSubmit={async (values) => {
-                dispatch(setUserName(values));
+                )} onSubmit={async (values, { setErrors, setSubmitting }) => {
+                try {
+                    const response = await fetch("http://localhost:8080/checkUsername", {
+                        method: "POST",
+                        body: JSON.stringify({ username: values.userName }),
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    if (!response.ok) {
+                        setErrors({ userName: "User doesn't exist, please check your username" });
+                    } else {
+                        const userExistData = await response.json();
+                        dispatch(setUserName(values));
+                    }
+                } catch (error) {
+                    console.error("An error occurred:", error);
+                    setErrors({ userName: "An error occurred, please try again" });
+                } finally {
+                    setSubmitting(false); // This will trigger a re-render
+                }
             }}>
                 <Form>
                     <FormControl sx={StyledFormControl}>

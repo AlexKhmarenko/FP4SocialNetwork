@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Route } from "react-router-dom";
 
 import { Container, } from "@mui/material";
 
@@ -10,12 +10,18 @@ import { ContainerStyled, ContentContainer, OutletContainer, OutletWrapper } fro
 import {Post} from "./Posts/Post";
 import { LoginModal } from "./LoginModal/LoginModal";
 import { Content } from "./CreateAccountModal/Content";
+import { RegistrationPage } from "../pages/RegistrationPage";
+import { useSelector } from "react-redux";
+
+// <Route path="/" element={<RegistrationPage/>}/>
 
 export function Layout() {
+    const userToken = useSelector(state => state.saveUserToken.userToken);
+    console.log(userToken)
 
     return (
-        <Container maxWidth="false" sx={ContainerStyled}>
-           <LoginModal/>
+        userToken ? (<Container maxWidth="false" sx={ContainerStyled}>
+           {/*<LoginModal/>*/}
             <div style={ContentContainer}>
                 <SideBar/>
                 <div
@@ -44,7 +50,7 @@ export function Layout() {
                 </div>
                 <UsersSearch/>
             </div>
-        </Container>
+        </Container> ): (<RegistrationPage/>)
     );
 }
 

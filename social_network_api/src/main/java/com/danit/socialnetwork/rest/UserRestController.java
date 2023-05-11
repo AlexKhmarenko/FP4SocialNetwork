@@ -67,12 +67,15 @@ public class UserRestController {
     String username = request.getUsername();
     Map<String, String> response = new HashMap<>();
 
-
+    log.info("Im in");
     if (userService.findByUsername(username) == null) {
+      log.info("Im in 1");
       response.put("checkUsername", "false");
     } else {
+      log.info("Im in 2");
       response.put("checkUsername", "true");
     }
+    log.info("Im in 3");
     return ResponseEntity.ok(response);
   }
 
