@@ -1,6 +1,5 @@
 package com.danit.socialnetwork.config;
 
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@NoArgsConstructor
 public class CorsFilter implements Filter {
 
   @Override
