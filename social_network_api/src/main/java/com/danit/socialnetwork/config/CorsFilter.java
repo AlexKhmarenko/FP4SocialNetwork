@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Component
 @NoArgsConstructor
-public class CORSFilter implements Filter {
+public class CorsFilter implements Filter {
 
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
