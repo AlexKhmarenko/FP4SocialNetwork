@@ -9,7 +9,8 @@ export const modalConfig = {
         placeholder: "email or username",
         inputType: "text",
         iconStatus: false,
-        typeButton: "submit"
+        typeButton: "submit",
+        name: "userName"
     },
     sendCode: {
         title: "Where should we send a confirmation code?",
@@ -43,7 +44,9 @@ export const modalConfig = {
         placeholder: "Enter a new password",
         secondPlaceholder: "Confirm your password",
         inputType: "text",
-        typeButton: "submit"
+        typeButton: "submit",
+        name: "password",
+        secondName: "confirmPassword"
     },
     allSet: {
         boldText: "You're all set",
