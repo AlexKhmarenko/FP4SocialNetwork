@@ -1,13 +1,12 @@
 export const Header = {
-    position: "fixed",
+    position: "sticky",
     maxHeight: "80px",
     height: "70px",
-    width: "600px",
+    width:"100%",
+    maxWidth: "600px",
     top: 0,
-    left: "50%",
-    transform: "translateX(-50%)",
     backgroundColor: "rgba(255, 255, 255, 0.85)",
-    flexBasis: "650px",
+    flexBasis: "600px",
     boxShadow: "none",
     borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
 };

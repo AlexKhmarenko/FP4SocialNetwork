@@ -22,10 +22,15 @@ import {
     StyledWhiteButton,
     StyledCheckbox
 } from "./loginModalStyles";
+import {setUserToken} from "../../store/actions";
+
 
 export function EnterPasswordModal() {
     const dispatch = useDispatch();
     const userDataState = useSelector(state => state.loginUserData.userData);
+    const userToken = useSelector(state => state.saveUserToken);
+
+    console.log(userToken)
 
     return (
         <>
@@ -42,19 +47,22 @@ export function EnterPasswordModal() {
                 )}
                 onSubmit={async (values, { setErrors }) => {
                     dispatch(setUserPassword(values));
-                    const url = new URL("http://localhost:8080/login");
-                    url.searchParams.append("username", values.userName);
-                    url.searchParams.append("password", values.password);
-                    url.searchParams.append("rememberMe", userDataState.rememberMe);
-                    const userPassword = await fetch(url.toString());
-                    const userToken = await userPassword.json();
+                    // const url = new URL("http://localhost:8080/login");
+                    // url.searchParams.append("username", values.userName);
+                    // url.searchParams.append("password", values.password);
+                    // url.searchParams.append("rememberMe", userDataState.rememberMe);
+                    // const userPassword = await fetch(url.toString());
+                    // const userToken = await userPassword.json();
+                    const userToken = "kdfjfjkfkfjei"
 
                     if (!userToken) {
                         setErrors({ password: "wrong password" });
                     } else {
                         if (userDataState.rememberMe) {
+                            dispatch(setUserToken(userToken))
                             localStorage.setItem("userToken", JSON.stringify(userToken));
                         } else {
+                            dispatch(setUserToken(userToken))
                             sessionStorage.setItem("userToken", JSON.stringify(userToken));
                         }
                     }
