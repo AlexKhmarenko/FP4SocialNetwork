@@ -17,17 +17,15 @@ import java.io.IOException;
 public class CorsFilter implements Filter {
 
   @Override
-  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
+                       FilterChain filterChain) throws IOException, ServletException {
     HttpServletRequest request = (HttpServletRequest) servletRequest;
     HttpServletResponse response = (HttpServletResponse) servletResponse;
-
     response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
     response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT");
-
     if (request.getMethod().equals("OPTIONS")) {
       response.setStatus(HttpServletResponse.SC_ACCEPTED);
     }
-
     filterChain.doFilter(request, servletResponse);
   }
 
