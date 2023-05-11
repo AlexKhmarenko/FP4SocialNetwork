@@ -70,10 +70,11 @@ export const SidebarTypography = {
     fontFamily: "'Lato', sans-serif",
     flexGrow: 1,
     fontWeight: "700",
-    fontSize: "20px",
+    fontSize: "22px",
     display: "flex",
     alignItems: "center",
-    padding: "0 20px 0 10px"
+    padding: "0 20px 0 10px",
+    textTransform:"none"
 };
 
 export const SidebarLogOutButton = {

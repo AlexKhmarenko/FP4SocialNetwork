@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 // <Route path="/" element={<RegistrationPage/>}/>
 
 export function Layout() {
-    const userToken = useSelector(state => state.saveUserToken.userToken);
+    const userToken = useSelector(state => state.saveUserToken.userToken) ;
     console.log(userToken)
 
     return (
