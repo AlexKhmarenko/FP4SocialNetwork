@@ -41,13 +41,18 @@ public class JwtAuthenticationRestController {
 
     authenticate(username, password);
 
-    final String token = jwtTokenService.generateToken(
-        username, password, rememberMe);
+    Optional<DbUser> optionalDbUser = userService.findByUsername(username);
 
-    Map<String, String> response = new HashMap<>();
-    response.put("token", token);
-
-    return ResponseEntity.ok(response);
+    if (optionalDbUser.isPresent()) {
+      Integer id = optionalDbUser.get().getUserId();
+      final String token = jwtTokenService.generateToken(id, rememberMe);
+      Map<String, String> response = new HashMap<>();
+      response.put("token", token);
+      return ResponseEntity.ok(response);
+    } else {
+      throw new BadCredentialsException("Invalid username or password");
+    }
+    
   }
 
   private void authenticate(String username, String password) throws Exception {
@@ -67,4 +72,5 @@ public class JwtAuthenticationRestController {
           String.format("User this username %s not found", username));
     }
   }
+
 }
