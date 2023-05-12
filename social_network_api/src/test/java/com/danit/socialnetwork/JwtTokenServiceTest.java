@@ -1,6 +1,5 @@
 package com.danit.socialnetwork.security;
 
-import com.danit.socialnetwork.security.JwtTokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import junit.framework.TestCase;
@@ -37,15 +36,6 @@ public class JwtTokenServiceTest extends TestCase {
   }
 
   @Test
-  public void testTokenToClaims() {
-    String token = jwtTokenService.generateToken(123, true);
-    Optional<Jws<Claims>> claims = jwtTokenService.tokenToClaims(token);
-
-    assertTrue(claims.isPresent());
-    assertEquals("123", claims.get().getBody().getSubject());
-  }
-
-  @Test
   public void testExtractTokenFromClaims() {
     String token = jwtTokenService.generateToken(123, true);
     Optional<Jws<Claims>> claims = jwtTokenService.tokenToClaims(token);
@@ -55,13 +45,5 @@ public class JwtTokenServiceTest extends TestCase {
     assertTrue(userId.isPresent());
     assertEquals(Optional.of(123), Optional.of(userId.get()));
   }
-
-//  @Test
-//  void testHandle() {
-//    JwtUserDetails userDetails = new JwtUserDetails(123, "username", "password", Collections.emptyList());
-//    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, null);
-//    JwtTokenService jwtTokenService = new JwtTokenService();
-//    assertEquals(123, jwtTokenService.handle(authentication));
-//  }
 
 }
