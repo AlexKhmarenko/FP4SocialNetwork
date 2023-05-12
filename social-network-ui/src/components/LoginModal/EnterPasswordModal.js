@@ -76,10 +76,6 @@ export function EnterPasswordModal() {
                                 sessionStorage.setItem("userToken", JSON.stringify(userToken));
                                 dispatch(closeLoginModal())
                                 dispatch(setUserName({userName: ''}));
-                                console.log(userToken);
-                            } else {
-                                dispatch(setUserToken(userToken));
-                                sessionStorage.setItem("userToken", JSON.stringify(userToken));
                             }
                             navigate("/home");
                         } else {
