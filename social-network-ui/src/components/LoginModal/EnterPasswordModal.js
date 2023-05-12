@@ -14,7 +14,7 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 
-import { closeLoginModal, setRememberMeAction, setUserName, setUserPassword } from "../../store/actions";
+import { closeLoginModal, setRememberMeAction, setUserEmail, setUserPassword } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
 import {
     StyledHeaderModalText,
@@ -54,7 +54,7 @@ export function EnterPasswordModal() {
                         const userPassword = await fetch("http://localhost:8080/login", {
                             method: "POST",
                             body: JSON.stringify({
-                                username: values.userName,
+                                username: values.userEmail,
                                 password: values.password,
                                 rememberMe: userDataState.rememberMe
                             }),
@@ -70,12 +70,12 @@ export function EnterPasswordModal() {
                                 localStorage.setItem("userToken", JSON.stringify(userToken));
                                 dispatch(closeLoginModal())
                                 console.log(userToken);
-                                dispatch(setUserName({userName: ''}));
+                                dispatch(setUserEmail({userName: ''}));
                             } else {
                                 dispatch(setUserToken(userToken));
                                 sessionStorage.setItem("userToken", JSON.stringify(userToken));
                                 dispatch(closeLoginModal())
-                                dispatch(setUserName({userName: ''}));
+                                dispatch(setUserEmail({userName: ''}));
                             }
                             navigate("/home");
                         } else {
@@ -103,12 +103,12 @@ export function EnterPasswordModal() {
                                 fontSize: "19px",
                                 lineHeight: "23px"
                             }}
-                                           id="userName"
-                                           name="userName"
+                                           id="userEmail"
+                                           name="userEmail"
                                            type="text"
                                            value={userDataState.userName}
                                            disabled
-                                           label="Username"
+                                           label="Email"
                                            startAdornment={<InputAdornment position="start"/>}
                             />
                         </FormControl>

@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { Modal, Typography, Box, Link, SvgIcon } from "@mui/material";
 
 import { EnterPasswordModal } from "./EnterPasswordModal";
-import { EnterUserNameModal } from "./EnterUserNameModal";
+import { EnterEmailModal } from "./EnterEmailModal";
 import { StyledModal, StyledBox, StyledTwitSvgIcon, StyledCloseSvgIcon } from "./loginModalStyles";
 import {CLOSE_LOGIN_MODAL} from "../../store/types";
 import { openSignUpModal,  closeLoginModal } from "../../store/actions";
@@ -111,7 +111,7 @@ export function LoginModal() {
                     </g>
                 </SvgIcon>
                 {userDataState.userName ? (<EnterPasswordModal userData={userDataState}/>) : (
-                    <EnterUserNameModal userData={userDataState}/>)}
+                    <EnterEmailModal userData={userDataState}/>)}
                 <Typography sx={{ marginTop: "30px" }}>Don`t have an account? <Link href="#" onClick={OpenSignUpModalAndCloseLoginModal}>Sign Up</Link></Typography>
             </Box>
         </Modal>
