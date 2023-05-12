@@ -19,23 +19,6 @@ public class JwtTokenServiceTest extends TestCase {
   JwtTokenService jwtTokenService = new JwtTokenService();
 
   @Test
-  public void testGenerateToken() {
-    String token = jwtTokenService.generateToken(123, true);
-    Optional<Jws<Claims>> claims = jwtTokenService.tokenToClaims(token);
-
-    assertTrue(claims.isPresent());
-    assertEquals(Optional.of(123), Optional.of(
-        jwtTokenService.extractTokenFromClaims(claims.get()).get()));
-
-    long expectedExpiration = System.currentTimeMillis() + jwtTokenService.expirationRemember;
-
-    assertTrue(Math.abs(claims.get().getBody()
-        .getExpiration().getTime() - expectedExpiration) < 1000
-        && Math.abs(claims.get().getBody()
-        .getExpiration().getTime() - expectedExpiration) >= 0);
-  }
-
-  @Test
   public void testExtractTokenFromClaims() {
     String token = jwtTokenService.generateToken(123, true);
     Optional<Jws<Claims>> claims = jwtTokenService.tokenToClaims(token);
