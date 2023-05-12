@@ -35,13 +35,16 @@ public class JwtAuthenticationRestController {
       @RequestBody JwtRequest authRequest)
       throws Exception {
 
-    String username = authRequest.getUsername();
+    String email = authRequest.getEmail();
     String password = authRequest.getPassword();
     boolean rememberMe = Boolean.parseBoolean(authRequest.getRememberMe());
+
+    String username = userService.findDbUserByEmail(email).get().getUsername();
 
     authenticate(username, password);
 
     Optional<DbUser> optionalDbUser = userService.findByUsername(username);
+
 
     if (optionalDbUser.isPresent()) {
       Integer id = optionalDbUser.get().getUserId();
