@@ -15,8 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -43,11 +42,12 @@ public class JwtUserDetailsServiceTest {
     assertNotEquals(Collections.emptyList(), userDetails.getAuthorities());
   }
 
-  @Test(expected = UsernameNotFoundException.class)
+  @Test
   public void testLoadUserByUsernameWithNonexistentUser() throws Exception {
     when(userService.findByUsername("nonexistentUser")).thenReturn(Optional.empty());
-
-    assertEquals(UsernameNotFoundException.class, userDetailsService.loadUserByUsername("nonexistentUser"));
+    assertThrows(UsernameNotFoundException.class, () -> {
+      userDetailsService.loadUserByUsername("nonexistentUser");
+    });
   }
 
 }

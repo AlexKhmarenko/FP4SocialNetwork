@@ -39,14 +39,11 @@ public class JwtAuthenticationRestController {
     String password = authRequest.getPassword();
     boolean rememberMe = Boolean.parseBoolean(authRequest.getRememberMe());
 
-    String username = userService.findDbUserByEmail(email).get().getUsername();
-
-    authenticate(username, password);
-
-    Optional<DbUser> optionalDbUser = userService.findByUsername(username);
-
+    Optional<DbUser> optionalDbUser = userService.findDbUserByEmail(email);
 
     if (optionalDbUser.isPresent()) {
+      String username = optionalDbUser.get().getUsername();
+      authenticate(username, password);
       Integer id = optionalDbUser.get().getUserId();
       final String token = jwtTokenService.generateToken(id, rememberMe);
       Map<String, String> response = new HashMap<>();
