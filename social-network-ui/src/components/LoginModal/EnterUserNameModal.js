@@ -67,6 +67,7 @@ export function EnterUserNameModal() {
                 } finally {
                     setIsSubmitting(false);
                     setSubmitting(false);
+                    setSubmitting(false); // This will trigger a re-render
                 }
             }}>
                 <Form>
