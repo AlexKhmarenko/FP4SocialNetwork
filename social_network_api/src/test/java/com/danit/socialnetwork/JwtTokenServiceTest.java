@@ -19,6 +19,17 @@ public class JwtTokenServiceTest extends TestCase {
   JwtTokenService jwtTokenService = new JwtTokenService();
 
   @Test
+  public void testGenerateToken() {
+    int userId = 123;
+    String token = jwtTokenService.generateToken(userId, true);
+    Optional<Jws<Claims>> claims = jwtTokenService.tokenToClaims(token);
+
+    assertTrue(claims.isPresent());
+    assertEquals(Optional.of(userId), Optional.of(
+        jwtTokenService.extractTokenFromClaims(claims.get()).get()));
+  }
+
+  @Test
   public void testTokenToClaims() {
     int userId = 123;
     String token = jwtTokenService.generateToken(userId, true);
