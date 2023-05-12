@@ -52,7 +52,6 @@ public class JwtAuthenticationRestController {
     } else {
       throw new BadCredentialsException("Invalid username or password");
     }
-    
   }
 
   private void authenticate(String username, String password) throws Exception {

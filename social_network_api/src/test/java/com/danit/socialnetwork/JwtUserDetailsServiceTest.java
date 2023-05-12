@@ -45,6 +45,7 @@ public class JwtUserDetailsServiceTest {
   @Test
   public void testLoadUserByUsernameWithNonexistentUser() throws Exception {
     when(userService.findByUsername("nonexistentUser")).thenReturn(Optional.empty());
+
     assertThrows(UsernameNotFoundException.class, () -> {
       userDetailsService.loadUserByUsername("nonexistentUser");
     });
