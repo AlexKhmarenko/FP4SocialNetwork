@@ -73,12 +73,12 @@ export function EnterPasswordModal() {
                                 localStorage.setItem("userToken", JSON.stringify(userToken));
                                 dispatch(closeLoginModal())
                                 console.log(userToken);
-                                dispatch(setUserEmail({userName: ''}));
+                                dispatch(setUserEmail({userEmail: ''}));
                             } else {
                                 dispatch(setUserToken(userToken));
                                 sessionStorage.setItem("userToken", JSON.stringify(userToken));
                                 dispatch(closeLoginModal())
-                                dispatch(setUserEmail({userName: ''}));
+                                dispatch(setUserEmail({userEmail: ''}));
                             }
                             navigate("/home");
                         } else {
