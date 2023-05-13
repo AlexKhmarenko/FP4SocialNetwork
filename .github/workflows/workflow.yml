@@ -2,9 +2,11 @@ name: Coveralls
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      -main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   test_and_report:
@@ -12,17 +14,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      #      - name: Checkout
-      #        uses: actions/checkout@v2
-
-      #      - name: Setup Java
-      #        uses: actions/setup-java@v2
-      #        with:
-      #          java-version: '17'
-
-      #      - name: Build with Maven
-      #        run: mvn -f social_network_api/pom.xml -B package --file pom.xml
-
       - name: Run Tests with Jacoco
-        #        run: mvn test jacoco:report coveralls:report
         run: mvn -f social_network_api/ clean test jacoco:report coveralls:report
