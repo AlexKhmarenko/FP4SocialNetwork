@@ -4,7 +4,8 @@ import {
     UPDATE_REMEMBER_ME_ACTION,
     SAVE_USER_TOKEN,
     OPEN_SIGN_UP_MODAL,
-    CLOSE_LOGIN_MODAL
+    CLOSE_LOGIN_MODAL,
+    CHECK_EMAIL
 } from "./types";
 
 export const setUserName = (userData) => ({
@@ -33,3 +34,7 @@ export const closeLoginModal = () => ({
     type: CLOSE_LOGIN_MODAL
 });
 
+export const checkEmail = (data) => ({
+    type: CHECK_EMAIL,
+    payload: data
+})

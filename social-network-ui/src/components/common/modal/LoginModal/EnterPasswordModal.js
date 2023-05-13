@@ -23,7 +23,7 @@ import {
     StyledWhiteButton,
     StyledCheckbox
 } from "./loginModalStyles";
-import { setUserToken } from "../../store/actions";
+import { setUserToken } from "../../../../store/actions";
 
 export function EnterPasswordModal() {
     const dispatch = useDispatch();

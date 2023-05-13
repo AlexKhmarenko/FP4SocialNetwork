@@ -17,3 +17,7 @@ export const SET_STEP_MODAL = "SET_STEP_MODAL";
 export const SET_VALUE_MODAL = "SET_VALUE_MODAL";
 export const NEW_USER_DATA_FIRST_STEP_REGISTRATION = "NEW_USER_DATA_FIRST_STEP_REGISTRATION";
 export const step4 = "step4";
+
+export const CHECK_EMAIL = "CHECK_EMAIL"
+export const CODE_CHECK = "CODE_CHECK"
+export const NEW_PASSWORD = "NEW_PASSWORD"

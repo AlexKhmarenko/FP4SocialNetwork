@@ -10,7 +10,7 @@ import { ContainerStyled, ContentContainer, OutletContainer, OutletWrapper } fro
 // import { EnterUserNameModal } from "./LoginModal/EnterUserNameModal";
 // import { EnterUserNameModal } from "./LoginModal/EnterUserNameModal";
 import {Post} from "./Posts/Post";
-import { LoginModal } from "./LoginModal/LoginModal";
+import { LoginModal } from "../components/common/modal/LoginModal/LoginModal"
 import { Content } from "./CreateAccountModal/Content";
 import { RegistrationPage } from "../pages/RegistrationPage";
 import { useSelector } from "react-redux";

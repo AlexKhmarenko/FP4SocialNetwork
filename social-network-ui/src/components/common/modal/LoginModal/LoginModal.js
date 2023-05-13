@@ -5,8 +5,10 @@ import { Modal, Typography, Box, Link, SvgIcon } from "@mui/material";
 import { EnterPasswordModal } from "./EnterPasswordModal";
 import { EnterUserNameModal } from "./EnterUserNameModal";
 import { StyledModal, StyledBox, StyledTwitSvgIcon, StyledCloseSvgIcon } from "./loginModalStyles";
-import {CLOSE_LOGIN_MODAL} from "../../store/types";
-import { openSignUpModal,  closeLoginModal } from "../../store/actions";
+import {CLOSE_LOGIN_MODAL} from "../../../../store/types";
+import { openSignUpModal,  closeLoginModal } from "../../../../store/actions";
+import CloseIcon from "../../icon/CloseIcon"
+import Logo from "../../icon/Logo"
 
 export function LoginModal() {
     const userDataState = useSelector(state => state.loginUserData.userData);
