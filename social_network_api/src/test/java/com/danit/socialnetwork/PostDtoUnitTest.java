@@ -34,7 +34,7 @@ public class PostDtoUnitTest {
 
     Post post = Post.from(postDtoSave, user);
 
-    assertEquals(post.getUserPost().getUsername(), postDtoSave.getUserId());
+    assertEquals(post.getUserPost().getUsername(), user.getUsername());
     assertEquals(post.getWrittenText(), postDtoSave.getWrittenText());
     assertArrayEquals(Base64.getDecoder().decode(post.getPhotoFile()), postDtoSave.getPhotoFileByteArray());
   }

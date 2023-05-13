@@ -2,6 +2,7 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
+import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.UserFollower;
@@ -59,7 +60,14 @@ public class PostServiceImpl implements PostService {
   @Override
   public Post savePost(PostDtoSave thePostDtoSave) {
     Optional<DbUser> userPost = userRepository.findById(thePostDtoSave.getUserId());
-    Post thePostSave = Post.from(thePostDtoSave, userPost.get());
+    DbUser user = null;
+    if (userPost.isPresent()) {
+      user = userPost.get();
+    } else {
+      throw new UserNotFoundException(String.format("User with userId %s not found",
+          thePostDtoSave.getUserId()));
+    }
+    Post thePostSave = Post.from(thePostDtoSave, user);
     return postRepository.save(thePostSave);
 
   }
