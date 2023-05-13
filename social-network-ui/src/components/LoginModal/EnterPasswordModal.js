@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     Button,
     FormControl,
@@ -9,11 +9,12 @@ import {
     Checkbox,
     FormControlLabel,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setRememberMeAction, setUserPassword } from "../../store/actions";
+import { closeLoginModal, setRememberMeAction, setUserName, setUserPassword } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
 import {
     StyledHeaderModalText,
@@ -22,10 +23,16 @@ import {
     StyledWhiteButton,
     StyledCheckbox
 } from "./loginModalStyles";
+import { setUserToken } from "../../store/actions";
 
 export function EnterPasswordModal() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
     const userDataState = useSelector(state => state.loginUserData.userData);
+    const userToken = useSelector(state => state.saveUserToken);
+    const navigate = useNavigate();
+
+    console.log(userToken);
 
     return (
         <>
@@ -40,23 +47,46 @@ export function EnterPasswordModal() {
                         password: Yup.string().required("Password is required")
                     }
                 )}
-                onSubmit={async (values, { setErrors }) => {
-                    dispatch(setUserPassword(values));
-                    const url = new URL("http://localhost:8080/login");
-                    url.searchParams.append("username", values.userName);
-                    url.searchParams.append("password", values.password);
-                    url.searchParams.append("rememberMe", userDataState.rememberMe);
-                    const userPassword = await fetch(url.toString());
-                    const userToken = await userPassword.json();
+                onSubmit={async (values, { setErrors, setSubmitting }) => {
+                    setIsSubmitting(true);
+                    try {
+                        dispatch(setUserPassword(values));
+                        const userPassword = await fetch("http://localhost:8080/login", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                username: values.userName,
+                                password: values.password,
+                                rememberMe: userDataState.rememberMe
+                            }),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        });
 
-                    if (!userToken) {
-                        setErrors({ password: "wrong password" });
-                    } else {
-                        if (userDataState.rememberMe) {
-                            localStorage.setItem("userToken", JSON.stringify(userToken));
+                        if (userPassword.ok) {
+                            const userToken = await userPassword.json();
+                            if (userDataState.rememberMe) {
+                                dispatch(setUserToken(userToken));
+                                localStorage.setItem("userToken", JSON.stringify(userToken));
+                                dispatch(closeLoginModal())
+                                console.log(userToken);
+                                dispatch(setUserName({userName: ''}));
+                            } else {
+                                dispatch(setUserToken(userToken));
+                                sessionStorage.setItem("userToken", JSON.stringify(userToken));
+                                dispatch(closeLoginModal())
+                                dispatch(setUserName({userName: ''}));
+                            }
+                            navigate("/home");
                         } else {
-                            sessionStorage.setItem("userToken", JSON.stringify(userToken));
+                            setErrors({ password: "Wrong password" });
                         }
+                    } catch (error) {
+                        console.error("An error occurred:", error);
+                        setErrors({ password: "An error occurred, please try again" });
+                    } finally {
+                        setIsSubmitting(false);
+                        setSubmitting(false);
                     }
                 }}
             >
@@ -86,7 +116,7 @@ export function EnterPasswordModal() {
                             ...StyledFormControl,
                         }}>
                             <Field as={InputFieldWithError} sx={{ width: "400px", marginTop: "40px" }}
-                                   label="Password" name={"password"} id="password"
+                                   label="Password" disabled={isSubmitting} name={"password"} id="password"
                                    type="password"/>
                             <FormControlLabel
                                 control={
@@ -100,7 +130,7 @@ export function EnterPasswordModal() {
                             />
                         </FormControl>
                         <Button type="submit"
-                                variant="contained" sx={StyledBlackButton} fullWidth={true}>Log in</Button>
+                                variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Log in</Button>
                         <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
                     </FormControl>
                 </Form>
