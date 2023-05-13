@@ -110,7 +110,7 @@ export function LoginModal() {
 		c-4.578,0-8.294-3.705-8.294-8.294c0-4.578,3.716-8.294,8.294-8.294H424.086z"/>
                     </g>
                 </SvgIcon>
-                {userDataState.userName ? (<EnterPasswordModal userData={userDataState}/>) : (
+                {userDataState.email ? (<EnterPasswordModal userData={userDataState}/>) : (
                     <EnterEmailModal userData={userDataState}/>)}
                 <Typography sx={{ marginTop: "30px" }}>Don`t have an account? <Link href="#" onClick={OpenSignUpModalAndCloseLoginModal}>Sign Up</Link></Typography>
             </Box>

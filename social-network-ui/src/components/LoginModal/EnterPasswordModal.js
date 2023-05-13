@@ -39,7 +39,7 @@ export function EnterPasswordModal() {
             <Typography sx={StyledHeaderModalText}>Enter your password</Typography>
             <Formik
                 initialValues={{
-                    userName: userDataState.userName || "",
+                    email: userDataState.email || "",
                     password: "",
                 }} validationSchema={
                 Yup.object(
@@ -48,13 +48,14 @@ export function EnterPasswordModal() {
                     }
                 )}
                 onSubmit={async (values, { setErrors, setSubmitting }) => {
+                    console.log("values", values)
                     setIsSubmitting(true);
                     try {
                         dispatch(setUserPassword(values));
                         const userPassword = await fetch("http://localhost:8080/login", {
                             method: "POST",
                             body: JSON.stringify({
-                                username: values.userEmail,
+                                email: values.email,
                                 password: values.password,
                                 rememberMe: userDataState.rememberMe
                             }),
@@ -62,6 +63,8 @@ export function EnterPasswordModal() {
                                 "Content-Type": "application/json"
                             }
                         });
+
+                        console.log("email", values.email)
 
                         if (userPassword.ok) {
                             const userToken = await userPassword.json();
@@ -93,11 +96,11 @@ export function EnterPasswordModal() {
                 <Form>
                     <FormControl sx={StyledFormControl}>
                         <FormControl sx={{ width: "400px" }} variant="outlined">
-                            <InputLabel htmlFor="userName" sx={{
+                            <InputLabel htmlFor="email" sx={{
                                 fontFamily: "'Lato', sans-serif",
                                 fontSize: "19px",
                                 lineHeight: "23px"
-                            }}>Username</InputLabel>
+                            }}>email</InputLabel>
                             <OutlinedInput sx={{
                                 fontFamily: "'Lato', sans-serif",
                                 fontSize: "19px",
@@ -106,7 +109,7 @@ export function EnterPasswordModal() {
                                            id="userEmail"
                                            name="userEmail"
                                            type="text"
-                                           value={userDataState.userName}
+                                           value={userDataState.email}
                                            disabled
                                            label="Email"
                                            startAdornment={<InputAdornment position="start"/>}

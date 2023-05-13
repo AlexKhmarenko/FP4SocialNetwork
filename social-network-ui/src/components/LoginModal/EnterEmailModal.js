@@ -45,10 +45,9 @@ export function EnterEmailModal() {
             }} validationSchema={
                 Yup.object(
                     {
-                        email: Yup.string().required("email is required")
+                        email: Yup.string().email('Please enter a correct email').required("email is required")
                     }
                 )} onSubmit={async (values, { setErrors, setSubmitting }) => {
-                    console.log("values", values)
                 setIsSubmitting(true);
                 try {
                     const response = await fetch("http://localhost:8080/checkEmail", {
@@ -56,7 +55,6 @@ export function EnterEmailModal() {
                         body: JSON.stringify(values),
                         headers: { "Content-Type": "application/json" }
                     });
-                    console.log(values.email)
                     if (!response.ok) {
                         setErrors({ email: "User doesn't exist, please check your email" });
                     } else {
