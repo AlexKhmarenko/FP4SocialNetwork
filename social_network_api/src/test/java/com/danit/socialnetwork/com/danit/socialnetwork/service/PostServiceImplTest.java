@@ -116,7 +116,7 @@ public class PostServiceImplTest extends TestCase {
     Assertions.assertEquals(result.get(1).getWrittenText(), post2.getWrittenText());
     Assertions.assertEquals(result.get(0).getUsername(), user1.getUsername());
     Assertions.assertEquals(result.get(1).getUsername(), user2.getUsername());
-    Assertions.assertEquals(result.toArray().length, 2);
+    Assertions.assertEquals(2, result.toArray().length);
 
   }
 
@@ -159,7 +159,7 @@ public class PostServiceImplTest extends TestCase {
     System.out.println(result);
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
     Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
-    Assertions.assertEquals(result.toArray().length, 2);
+    Assertions.assertEquals(2, result.toArray().length);
 
   }
 

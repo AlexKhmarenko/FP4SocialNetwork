@@ -40,7 +40,7 @@ class PostRestControllerTest {
   PostService postService;
 
   @Test
-  public void testGetAllPosts() {
+  void testGetAllPosts() {
     PostDtoResponse postDtoResponse1 = new PostDtoResponse(1,
         "Nick", "nick", "Hello world 1",
         new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
@@ -53,7 +53,7 @@ class PostRestControllerTest {
 
     Assertions.assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
     Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
-    Assertions.assertEquals(result.toArray().length, 2);
+    Assertions.assertEquals(2, result.toArray().length);
 
 
   }
@@ -85,9 +85,9 @@ class PostRestControllerTest {
 
     when(postService.savePost(any(PostDtoSave.class))).thenReturn(post1);
     ResponseEntity<PostDtoResponse> responseEntity = postRestController.addPost(postDtoSave);
-    Assertions.assertEquals(responseEntity.getStatusCodeValue(), 201);
+    Assertions.assertEquals(201,responseEntity.getStatusCodeValue());
 //    Assertions.assertEquals(responseEntity.getHeaders().getLocation().getPath(), "/posts");
-    Assertions.assertEquals(responseEntity.getBody().getWrittenText(), "Hello world1");
+    Assertions.assertEquals("Hello world1", responseEntity.getBody().getWrittenText());
 
 
   }

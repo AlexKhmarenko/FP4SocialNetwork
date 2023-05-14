@@ -1,6 +1,5 @@
 package com.danit.socialnetwork.model;
 
-import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;

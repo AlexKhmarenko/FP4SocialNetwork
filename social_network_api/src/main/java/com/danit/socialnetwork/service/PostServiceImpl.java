@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
     List<Post> listPost = postRepository.findAll(Sort.by(Sort.Direction.DESC, "sentDateTime"));
     List<PostDtoResponse> postDtoResponseList = listPost.stream()
         .map(PostDtoResponse::from)
-        .collect(Collectors.toList());
+        .toList();
     return postDtoResponseList;
   }
 

@@ -1,6 +1,5 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.UserFollower;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
