@@ -23,12 +23,11 @@ import java.util.List;
 public class PostRestController {
   private final PostService postService;
 
-  @GetMapping(path = "/home", produces = "application/json")
+  @GetMapping(path = "/posts", produces = "application/json")
   @ResponseBody
   public List<PostDtoResponse> getAllPosts(@RequestParam(name = "userId",
       defaultValue = "0") Integer useFollowingId) {
     if (useFollowingId == 0) {
-
       return postService.getAllPosts();
     }
     return postService.getAllPostsFromToFollow(useFollowingId);

@@ -34,18 +34,12 @@ public class PostComment {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
   private LocalDateTime createdDateTime;
 
-  @Column (name = "comment_text")
+  @Column(name = "comment_text")
   @Pattern(regexp = "^[A-Z]{1,280}$", message = "Invalid input")
   private String commentText;
 
-
   @ManyToOne(targetEntity = DbUser.class)
-  @JoinColumn (name = "user_id")
+  @JoinColumn(name = "user_id")
   private DbUser userPostComment;
-
- /* @ManyToOne(targetEntity = Post.class)
-  @JoinColumn (name = "post_id")
-  private Post postPostComment;*/
-
 
 }

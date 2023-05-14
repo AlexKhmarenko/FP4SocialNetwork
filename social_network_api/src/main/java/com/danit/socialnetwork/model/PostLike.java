@@ -40,11 +40,7 @@ public class PostLike {
 
   @ManyToOne(targetEntity = Post.class)
   @JoinColumn(name = "post_id")
-  private Post postPostLike;
-
-  public static PostLike from(PostLikeDto postLikeDto) {
-    return null;
-  }
+  private Post postInPostLike;
 
 
 }

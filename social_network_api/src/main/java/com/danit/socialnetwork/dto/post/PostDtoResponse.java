@@ -21,7 +21,6 @@ public class PostDtoResponse {
   private String name;
   private String writtenText;
   private byte[] photoFileByteArray;
-  //  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
   private LocalDateTime sentDateTime;
   private List<PostLike> postLikes;
   private List<PostComment> postComments;

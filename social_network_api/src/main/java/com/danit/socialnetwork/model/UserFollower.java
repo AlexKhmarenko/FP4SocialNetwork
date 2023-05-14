@@ -32,6 +32,7 @@ public class UserFollower {
   @ManyToOne(targetEntity = DbUser.class)
   @JoinColumn(name = "user_follower_id")
   private DbUser userFollowerId;
+
   /*receivedNotificationPost by default false that means not to receive notification
   if true it means to receive notification*/
   @Column(name = "received_notification_post")

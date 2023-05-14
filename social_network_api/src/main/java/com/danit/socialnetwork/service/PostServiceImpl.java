@@ -11,6 +11,8 @@ import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
