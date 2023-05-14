@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
     Button,
     FormControl,
@@ -48,7 +48,7 @@ export function EnterPasswordModal() {
                     }
                 )}
                 onSubmit={async (values, { setErrors, setSubmitting }) => {
-                    console.log("values", values)
+                    console.log("values", values);
                     setIsSubmitting(true);
                     try {
                         dispatch(setUserPassword(values));
@@ -63,22 +63,18 @@ export function EnterPasswordModal() {
                                 "Content-Type": "application/json"
                             }
                         });
-
-                        console.log("email", values.email)
-
                         if (userPassword.ok) {
                             const userToken = await userPassword.json();
                             if (userDataState.rememberMe) {
                                 dispatch(setUserToken(userToken));
                                 localStorage.setItem("userToken", JSON.stringify(userToken));
-                                dispatch(closeLoginModal())
-                                console.log(userToken);
-                                dispatch(setUserEmail({userEmail: ''}));
+                                dispatch(closeLoginModal());
+                                dispatch(setUserEmail({ userEmail: "" }));
                             } else {
                                 dispatch(setUserToken(userToken));
                                 sessionStorage.setItem("userToken", JSON.stringify(userToken));
-                                dispatch(closeLoginModal())
-                                dispatch(setUserEmail({userEmail: ''}));
+                                dispatch(closeLoginModal());
+                                dispatch(setUserEmail({ userEmail: "" }));
                             }
                             navigate("/home");
                         } else {
@@ -133,7 +129,8 @@ export function EnterPasswordModal() {
                             />
                         </FormControl>
                         <Button type="submit"
-                                variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Log in</Button>
+                                variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Log
+                            in</Button>
                         <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
                     </FormControl>
                 </Form>

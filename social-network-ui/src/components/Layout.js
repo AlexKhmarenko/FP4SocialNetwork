@@ -12,6 +12,7 @@ import { LoginModal } from "./LoginModal/LoginModal";
 import { Content } from "./CreateAccountModal/Content";
 import { RegistrationPage } from "../pages/RegistrationPage";
 import { useSelector } from "react-redux";
+import { PostsDisplaying } from "./Posts/PostsDisplaying";
 
 // <Route path="/" element={<RegistrationPage/>}/>
 
@@ -23,6 +24,7 @@ export function Layout() {
         userToken ? (<Container maxWidth="false" sx={ContainerStyled}>
            {/*<LoginModal/>*/}
             <div style={ContentContainer}>
+               < PostsDisplaying/>
                 <SideBar/>
                 <div
                     style={{

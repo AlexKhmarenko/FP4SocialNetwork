@@ -54,6 +54,7 @@ export function EnterEmailModal() {
                         body: JSON.stringify(values),
                         headers: { "Content-Type": "application/json" }
                     });
+                    console.log(response)
                     if (!response.ok) {
                         setErrors({ email: "User doesn't exist, please check your email" });
                     } else {
