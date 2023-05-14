@@ -48,7 +48,6 @@ export function EnterPasswordModal() {
                     }
                 )}
                 onSubmit={async (values, { setErrors, setSubmitting }) => {
-                    console.log("values", values);
                     setIsSubmitting(true);
                     try {
                         dispatch(setUserPassword(values));
@@ -63,13 +62,15 @@ export function EnterPasswordModal() {
                                 "Content-Type": "application/json"
                             }
                         });
+
                         if (userPassword.ok) {
                             const userToken = await userPassword.json();
                             if (userDataState.rememberMe) {
                                 dispatch(setUserToken(userToken));
                                 localStorage.setItem("userToken", JSON.stringify(userToken));
-                                dispatch(closeLoginModal());
-                                dispatch(setUserEmail({ userEmail: "" }));
+                                dispatch(closeLoginModal())
+                                console.log(userToken);
+                                dispatch(setUserEmail({userEmail: ''}));
                             } else {
                                 dispatch(setUserToken(userToken));
                                 sessionStorage.setItem("userToken", JSON.stringify(userToken));
