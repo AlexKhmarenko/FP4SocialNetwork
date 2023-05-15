@@ -3,7 +3,6 @@ package com.danit.socialnetwork.controller;
 
 import com.danit.socialnetwork.controller.mail.MailSender;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 

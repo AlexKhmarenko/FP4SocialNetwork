@@ -37,9 +37,7 @@ public class PasswordRestController {
   @PostMapping("/api/changepassword")
   public ResponseEntity<?> changePass(@RequestBody ChangePasswordRequest changePasswordRequest) {
     String userEmail = changePasswordRequest.getEmail();
-    System.out.println(userEmail);
     Optional<DbUser> maybeUser = userRepo.findDbUserByEmail(userEmail);
-    System.out.println(maybeUser);
 
     if (maybeUser.isPresent()) {
       String secretUrl = passChanger.change(userEmail);
