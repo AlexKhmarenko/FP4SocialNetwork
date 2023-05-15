@@ -36,7 +36,7 @@ public class PostServiceImpl implements PostService {
   @Override
   public List<PostDtoResponse> getAllPosts(Integer page) {
     Pageable sortedByDateTimeDesc =
-        PageRequest.of(page, 10, Sort.by("sentDateTime").descending());
+        PageRequest.of(page, 12, Sort.by("sentDateTime").descending());
     Page<Post> listPost = postRepository.findAll(sortedByDateTimeDesc);
     List<PostDtoResponse> postDtoResponseList = listPost.stream()
         .map(PostDtoResponse::from)
@@ -49,7 +49,7 @@ public class PostServiceImpl implements PostService {
   public List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(
       Integer userFollowerId, Integer page) {
     Pageable pagedByTenPosts =
-        PageRequest.of(page, 10);
+        PageRequest.of(page, 12);
     List<Post> postList = postRepository.findAllPostsFromToFollow(
         userFollowerId, pagedByTenPosts);
     return postList.stream()
