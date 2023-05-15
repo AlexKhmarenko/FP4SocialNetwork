@@ -52,7 +52,6 @@ public class PostServiceImpl implements PostService {
         PageRequest.of(page, 5);
     List<Post> postList = postRepository.findAllPostsFromToFollow(
         userFollowerId, pagedByFivePosts);
-    System.out.println(postList);
     return postList.stream()
         .map(PostDtoResponse::from)
         .toList();
