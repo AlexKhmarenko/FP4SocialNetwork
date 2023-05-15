@@ -54,7 +54,7 @@ export  function Footer () {
                                 backgroundColor: "#000000",
                                 color: "#ffffff"
                             },
-                        }} onClick={() => {dispatch(openSignUpModal)}}>Sign up</Button>
+                        }} onClick={() => {dispatch(openSignUpModal())}}>Sign up</Button>
                     </div>
                 </Box>
                 </Container>
