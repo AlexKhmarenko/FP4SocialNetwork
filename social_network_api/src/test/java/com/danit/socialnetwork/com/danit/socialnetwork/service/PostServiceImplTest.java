@@ -105,7 +105,7 @@ public class PostServiceImplTest extends TestCase {
 
     List<Post> postList = new ArrayList<>(Arrays.asList(post1, post2));
     Pageable pagedByFivePosts =
-        PageRequest.of(0, 5);
+        PageRequest.of(0, 10);
 
     List<UserFollower> userFollowerList = new ArrayList<>(Arrays.asList(userFollower1, userFollower2));
 
@@ -154,7 +154,7 @@ public class PostServiceImplTest extends TestCase {
     });
 
     Pageable sortedByDateTimeDesc =
-        PageRequest.of(0, 5, Sort.by("sentDateTime").descending());
+        PageRequest.of(0, 10, Sort.by("sentDateTime").descending());
 
     List<Post> postList = new ArrayList<>(Arrays.asList(post1, post2));
     Page<Post> pagePost = new PageImpl<>(postList);
