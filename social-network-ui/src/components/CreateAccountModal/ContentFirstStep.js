@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { Typography, Box, FormControl, InputLabel, Button, OutlinedInput, MenuItem, Select } from "@mui/material";
+import {
+    Modal, Typography, Box, FormControl, InputLabel, Input, Button,
+    SvgIcon, OutlinedInput, MenuItem, Select
+} from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
-import { NEW_USER_DATA_FIRST_STEP_REGISTRATION } from "../../store/types";
-import {
-    StyledFirstStepFormControl, StyledFirstStepInputLabel,
+import { NEW_USER_DATA_FIRST_STEP_REGISTRATION} from "../../store/types";
+import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel,
     StyledFirstStepTypographyPlaceholder, StyledFirstStepTypographyCounter,
     StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypography,
-    StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo
-} from "./CreateAccountModalStyles";
+    StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo} from "./CreateAccountModalStyles";
 
 export function ContentFirstStep() {
     const dispatch = useDispatch();
@@ -91,7 +92,7 @@ export function ContentFirstStep() {
         name: PropTypes.string,
     };
 
-    const handleSetName = (nameValue) => {
+    const handlesetName = (nameValue) => {
         setName(nameValue);
     };
     const handleSetEmail = (emailValue) => {
@@ -123,40 +124,39 @@ export function ContentFirstStep() {
 
     return (
         <>
-            <Typography component="span" sx={StyledFirstStepTypography}>Create your account</Typography>
-            <Formik
-                initialValues={{
-                    name: name,
-                    email: email,
-                    day: day,
-                    month: month,
-                    year: year
-                }}
-                validationSchema={Yup.object({
-                    name: Yup.string()
-                        .required("Name is required")
-                        .min(5, "Must be at least 5 digits"), email: Yup.string().required("Email is required")
-                        .email("Not a proper email")
-                        .min(5, "Must be at least 5 digits"),
-                    year: Yup.date()
-                        .required("Date of birth is required")
-                        .max(
-                            new Date(new Date().getFullYear() - 7, new Date().getMonth(), new Date().getDate() - 1),
-                            "You must be at least 7 years old to create an account."
-                        ),
-                })}
-                onSubmit={(values, { setSubmitting }) => {
-                    dispatch({ type: NEW_USER_DATA_FIRST_STEP_REGISTRATION, payload: { valuesState: values } });
-                    console.log(values);
-                }}
-            >
-                {(formikProps) => (
-                    <Form onSubmit={formikProps.handleSubmit}>
-                        <FormControl sx={StyledFirstStepFormControl}>
-                            <InputLabel htmlFor="name" sx={StyledFirstStepInputLabel}>
-                                <Typography component="span" sx={StyledFirstStepTypographyPlaceholder}>name</Typography>
-                                <Typography component="span"
-                                            sx={StyledFirstStepTypographyCounter}>{nameCounter}/50</Typography>
+                <Typography component="span" sx={StyledFirstStepTypography}>Create your account</Typography>
+                <Formik
+                    initialValues={{
+                        name: name,
+                        email: email,
+                        day: day,
+                        month: month,
+                        year: year
+                    }}
+                    validationSchema={Yup.object({
+                        name: Yup.string()
+                            .required("name is required")
+                            .min(5, "Must be at least 5 digits"), email: Yup.string().required("Email is required")
+                            .email("Not a proper email")
+                            .min(5, "Must be at least 5 digits"),
+                        year: Yup.date()
+                            .required("Date of birth is required")
+                            .max(
+                                new Date(new Date().getFullYear() - 7, new Date().getMonth(), new Date().getDate() - 1),
+                                "You must be at least 7 years old to create an account."
+                            ),
+                    })}
+                    onSubmit={(values, { setSubmitting }) => {
+                        dispatch({ type: NEW_USER_DATA_FIRST_STEP_REGISTRATION, payload: { valuesState: values } });
+                        console.log(values);
+                    }}
+                >
+                    {(formikProps) => (
+                        <Form onSubmit={formikProps.handleSubmit}>
+                            <FormControl sx={StyledFirstStepFormControl}>
+                            <InputLabel htmlFor="name" sx={ StyledFirstStepInputLabel }>
+                                <Typography component="span" sx={ StyledFirstStepTypographyPlaceholder }>name</Typography>
+                                <Typography component="span" sx={StyledFirstStepTypographyCounter}>{nameCounter}/50</Typography>
                             </InputLabel>
                             <OutlinedInput
                                 id="name"
@@ -165,102 +165,97 @@ export function ContentFirstStep() {
                                 onChange={(e) => {
                                     formikProps.handleChange(e);
                                     setNameCounter(e.target.value.length);
-                                    handleSetName(e.target.value);
+                                    handlesetName(e.target.value);
                                 }}
                                 sx={{ marginBottom: "5px" }}
                             />
-                            {formikProps.touched.name && formikProps.errors.name && (
-                                <ErrorText>{formikProps.errors.name}</ErrorText>
-                            )}
-                        </FormControl>
-                        <FormControl sx={StyledFirstStepFormControl}>
-                            <InputLabel htmlFor="email" sx={StyledFirstStepInputLabel}>
-                                <Typography component="span"
-                                            sx={StyledFirstStepTypographyPlaceholder}>email</Typography>
-                                <Typography component="span"
-                                            sx={StyledFirstStepTypographyCounter}>{emailCounter}/50</Typography>
-                            </InputLabel>
-                            <OutlinedInput
-                                id="email"
-                                type="text"
-                                inputProps={{ maxLength: 50 }}
-                                onChange={(e) => {
-                                    formikProps.handleChange(e);
-                                    handleSetEmail(e.target.value);
-                                    setEmailCounter(e.target.value.length);
-                                }}/>
-                            {formikProps.touched.email && formikProps.errors.email && (
-                                <ErrorText>{formikProps.errors.email}</ErrorText>
-                            )}
-                            <Typography component="span" sx={StyledFirstStepTypographyDateofBirth}>Date of
-                                birth</Typography>
-                            <Typography component="span" sx={StyledFirstStepTypographyDateofBirthInfo}>This will not be
-                                shown publicly.
-                                Confirm your own age, even if this account is for a
+                                {formikProps.touched.name && formikProps.errors.name && (
+                                    <ErrorText>{formikProps.errors.name}</ErrorText>
+                                )}
+                            </FormControl>
+                            <FormControl sx={StyledFirstStepFormControl}>
+                                <InputLabel htmlFor="email" sx={StyledFirstStepInputLabel }>
+                                    <Typography component="span" sx={ StyledFirstStepTypographyPlaceholder }>email</Typography>
+                                    <Typography component="span" sx={ StyledFirstStepTypographyCounter }>{emailCounter}/50</Typography>
+                                </InputLabel>
+                                <OutlinedInput
+                                    id="email"
+                                    type="text"
+                                    inputProps={{ maxLength: 50 }}
+                                    onChange={(e) => {
+                                        formikProps.handleChange(e);
+                                        handleSetEmail(e.target.value);
+                                        setEmailCounter(e.target.value.length);
+                                    }}/>
+                                {formikProps.touched.email && formikProps.errors.email && (
+                                    <ErrorText>{formikProps.errors.email}</ErrorText>
+                                )}
+                                <Typography component="span" sx={StyledFirstStepTypographyDateofBirth}>Date of birth</Typography>
+                                <Typography component="span" sx={ StyledFirstStepTypographyDateofBirthInfo }>This will not be shown publicly.
+                                 Confirm your own age, even if this account is for a
                                 business, a pet or something else.</Typography>
-                            <Box sx={StyledFirstStepDateofBirthBox}>
-                                <FormControl sx={{ width: "200px" }}>
-                                    <InputLabel id="demo-simple-select-label">month</InputLabel>
-                                    <Field
-                                        as={CustomMonthSelect}
-                                        id="month"
-                                        name="month"
-                                        value={month}
-                                        label="month"
-                                        onChange={(e) => {
-                                            formikProps.handleChange(e);
-                                            handleChangeMonth(e);
-                                        }}
-                                    />
-                                    {formikProps.touched.month && formikProps.errors.month && (
-                                        <ErrorText>{formikProps.errors.month}</ErrorText>
-                                    )}
-                                </FormControl>
-                                <FormControl sx={{ width: "100px", margin: "0 10px" }}>
-                                    <InputLabel id="demo-simple-select-label">day</InputLabel>
-                                    <Field
-                                        as={CustomDaySelect}
-                                        id="day"
-                                        name="day"
-                                        value={day}
-                                        label="day"
-                                        onChange={(e) => {
-                                            formikProps.handleChange(e);
-                                            handleChangeDay(e);
-                                        }}
-                                    />
-                                    {formikProps.touched.day && formikProps.errors.day && (
-                                        <ErrorText
-                                            sx={{ marginBottom: "10px" }}>{formikProps.errors.day}</ErrorText>
-                                    )}
-                                </FormControl>
-                                <FormControl sx={{ width: "200px" }}>
-                                    <InputLabel id="demo-simple-select-label">year</InputLabel>
-                                    <Field
-                                        as={CustomYearSelect}
-                                        id="year"
-                                        name="year"
-                                        value={year}
-                                        label="year"
-                                        onChange={(e) => {
-                                            formikProps.handleChange(e);
-                                            handleChangeYear(e);
-                                        }}
-                                    />
-
-                                </FormControl>
-
-                            </Box>
-                            {formikProps.touched.year && formikProps.errors.year && (
-                                <ErrorText
-                                    sx={{ marginBottom: "10px" }}>{formikProps.errors.year}</ErrorText>
-                            )}
-                            <Button variant="contained" sx={StyledFirstStepButton} type="submit"
-                                    fullWidth={true}>Next</Button>
-                        </FormControl>
-                    </Form>
-                )}
-            </Formik>
+                                <Box sx={ StyledFirstStepDateofBirthBox }>
+                                    <FormControl sx={{ width: "200px" }}>
+                                        <InputLabel id="demo-simple-select-label">month</InputLabel>
+                                        <Field
+                                            as={CustomMonthSelect}
+                                            id="month"
+                                            name="month"
+                                            value={month}
+                                            label="month"
+                                            onChange={(e) => {
+                                                formikProps.handleChange(e);
+                                                handleChangeMonth(e);
+                                            }}
+                                        />
+                                        {formikProps.touched.month && formikProps.errors.month && (
+                                            <ErrorText>{formikProps.errors.month}</ErrorText>
+                                        )}
+                                    </FormControl>
+                                    <FormControl sx={{ width: "100px", margin: "0 10px" }}>
+                                        <InputLabel id="demo-simple-select-label">day</InputLabel>
+                                        <Field
+                                            as={CustomDaySelect}
+                                            id="day"
+                                            name="day"
+                                            value={day}
+                                            label="day"
+                                            onChange={(e) => {
+                                                formikProps.handleChange(e);
+                                                handleChangeDay(e);
+                                            }}
+                                        />
+                                        {formikProps.touched.day && formikProps.errors.day && (
+                                            <ErrorText
+                                                sx={{ marginBottom: "10px" }}>{formikProps.errors.day}</ErrorText>
+                                        )}
+                                    </FormControl>
+                                    <FormControl sx={{ width: "200px" }}>
+                                        <InputLabel id="demo-simple-select-label">year</InputLabel>
+                                        <Field
+                                            as={CustomYearSelect}
+                                            id="year"
+                                            name="year"
+                                            value={year}
+                                            label="year"
+                                            onChange={(e) => {
+                                                formikProps.handleChange(e);
+                                                handleChangeYear(e);
+                                            }}
+                                        />
+                                        
+                                    </FormControl>
+    
+                                </Box>
+                                {formikProps.touched.year && formikProps.errors.year && (
+                                            <ErrorText
+                                                sx={{ marginBottom: "10px" }}>{formikProps.errors.year}</ErrorText>
+                                        )}
+                                <Button variant="contained" sx={ StyledFirstStepButton } type="submit" fullWidth={true}>Next</Button>
+                            </FormControl>
+                        </Form>
+                    )}
+                </Formik>
         </>
     );
 }

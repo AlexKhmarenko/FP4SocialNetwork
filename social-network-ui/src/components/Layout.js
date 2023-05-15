@@ -8,6 +8,7 @@ import { HeaderInformation } from "./NavigationComponents/HeaderInformation";
 import { UsersSearch } from "./NavigationComponents/UsersSearch/UsersSearch";
 import { SideBar } from "./NavigationComponents/SideBar";
 import { ContainerStyled, ContentContainer, OutletContainer, OutletWrapper } from "./LayoutStyles";
+
 import { RegistrationPage } from "../pages/RegistrationPage";
 
 export function Layout() {
