@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 import java.util.Optional;
 
 @Log4j2
@@ -31,13 +29,12 @@ public class PasswordRestController {
   private final PasswordChangerService passwordChangerService;
   private final UserRepository userRepo;
 
-  //    @RequiredArgsConstructor
   @Data
   private static class UserEmail {
     private final String email;
   }
 
-  @PostMapping("/changepassword")
+  @PostMapping("/api/changepassword")
   public ResponseEntity<?> changePass(@RequestBody ChangePasswordRequest changePasswordRequest) {
     String userEmail = changePasswordRequest.getEmail();
     System.out.println(userEmail);
@@ -54,7 +51,7 @@ public class PasswordRestController {
     }
   }
 
-  @PostMapping("/codecheck")
+  @PostMapping("/api/codecheck")
   public ResponseEntity<?> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest) {
     String userEmail = codeCheckRequest.getEmail();
     String secretCode = codeCheckRequest.getCode();
@@ -74,7 +71,7 @@ public class PasswordRestController {
   }
 
 
-  @PostMapping("/newpassword")
+  @PostMapping("/api/newpassword")
   public ResponseEntity<?> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest) {
     String userEmail = newPasswordRequest.getEmail();
     String password = newPasswordRequest.getPassword();

@@ -12,11 +12,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -107,8 +105,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.rememberMe();
 
     http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-//    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//
+    //    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    //
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
   }
 

@@ -92,7 +92,7 @@ public class JwtAuthenticationRestController {
         Integer userId = maybeUser.get().getUserId();
         LocalDate dob = maybeUser.get().getDateOfBirth();
         String birthday = "true";
-        if(dob.isEqual(LocalDate.of(1900,1,1))){
+        if (dob.isEqual(LocalDate.of(1900, 1, 1))) {
           birthday = "false";
         }
 
