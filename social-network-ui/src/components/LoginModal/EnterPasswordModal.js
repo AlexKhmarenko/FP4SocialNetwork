@@ -28,7 +28,7 @@ import { setUserToken } from "../../store/actions";
 export function EnterPasswordModal() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
-    const userDataState = useSelector(state => state.loginUserData.userData);
+    const userDataState = useSelector(state => state.loginUserData.userLoginData);
     const userToken = useSelector(state => state.saveUserToken);
     const navigate = useNavigate();
 

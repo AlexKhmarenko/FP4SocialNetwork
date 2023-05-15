@@ -1,5 +1,6 @@
 import React from "react";
-import { Outlet, Route } from "react-router-dom";
+import { Outlet} from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { Container, } from "@mui/material";
 
@@ -7,24 +8,14 @@ import { HeaderInformation } from "./NavigationComponents/HeaderInformation";
 import { UsersSearch } from "./NavigationComponents/UsersSearch/UsersSearch";
 import { SideBar } from "./NavigationComponents/SideBar";
 import { ContainerStyled, ContentContainer, OutletContainer, OutletWrapper } from "./LayoutStyles";
-import {Post} from "./Posts/Post";
-import { LoginModal } from "./LoginModal/LoginModal";
-import { Content } from "./CreateAccountModal/Content";
 import { RegistrationPage } from "../pages/RegistrationPage";
-import { useSelector } from "react-redux";
-import { PostsDisplaying } from "./Posts/PostsDisplaying";
-
-// <Route path="/" element={<RegistrationPage/>}/>
 
 export function Layout() {
-    const userToken = useSelector(state => state.saveUserToken.userToken) ;
-    console.log(userToken)
+    const userToken = useSelector(state => state.saveUserToken.userToken);
 
     return (
         userToken ? (<Container maxWidth="false" sx={ContainerStyled}>
-           {/*<LoginModal/>*/}
             <div style={ContentContainer}>
-               < PostsDisplaying/>
                 <SideBar/>
                 <div
                     style={{
@@ -52,7 +43,7 @@ export function Layout() {
                 </div>
                 <UsersSearch/>
             </div>
-        </Container> ): (<RegistrationPage/>)
+        </Container>) : (<RegistrationPage/>)
     );
 }
 

@@ -1,34 +1,50 @@
 import React, { useEffect } from "react";
-import jwt_decode from "jwt-decode";
+import { Post } from "./Post";
+import { setPosts, setUserId } from "../../store/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { decodeToken } from "./decodeToken";
 
 export const PostsDisplaying = () => {
-    const localStorageToken = JSON.parse(localStorage.getItem("userToken"));
-    const sessionStorageToken = JSON.parse(sessionStorage.getItem("userToken"));
+        const userPosts = useSelector(state => state.Posts.posts);
+        const dispatch = useDispatch();
 
-    const newPosts = async () => {
-        if (localStorageToken || sessionStorageToken) {
-            const decodedToken = jwt_decode(
-                localStorageToken.token || sessionStorageToken.token
-            );
-            const userId = decodedToken.sub;
-            const userDataPosts = await fetch(`http://localhost:8080/posts?userId=${userId}`);
-            const userPosts = await userDataPosts.json();
-        } else {
-            const usersDataPosts = await fetch(`http://localhost:8080/posts`);
-            const usersPosts = await usersDataPosts.json();
-        }
-    }
-
-    useEffect(() => {
-        const fetchPosts = async () => {
-            try {
-                await newPosts();
-            } catch (error) {
-                console.error("Ошибка получения постов:", error);
+        const newPosts = async () => {
+            const decodedToken = decodeToken();
+            if (decodedToken) {
+                const userId = decodedToken.sub;
+                dispatch(setUserId(userId));
+                const userDataPosts = await fetch(`http://localhost:8080/posts?userId=${userId}`);
+                const usersPosts = await userDataPosts.json();
+                dispatch(setPosts(usersPosts));
+            } else {
+                const usersDataPosts = await fetch(`http://localhost:8080/posts`);
+                const usersPosts = await usersDataPosts.json();
+                dispatch(setPosts(usersPosts));
             }
         };
-        fetchPosts();
-    }, []);
 
-    return <></>;
-};
+        useEffect(() => {
+            const fetchPosts = async () => {
+                try {
+                    await newPosts();
+                } catch (error) {
+                    console.error("Ошибка получения постов:", error);
+                }
+            };
+            fetchPosts();
+        }, []);
+
+        return (
+            <>
+                {userPosts.map((post) => (
+                    <Post key={post.postId} userName={post.username}
+                          name={post.name} text={post.writtenText}
+                          photo={post.photoFileByteArray}
+                          postComments={post.postComments}
+                          postLikes={post.postLikes}
+                    />
+                ))}
+            </>
+        );
+    }
+;

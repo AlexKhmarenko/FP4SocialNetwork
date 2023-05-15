@@ -18,7 +18,7 @@ import PropTypes from "prop-types";
 
 export function EnterEmailModal() {
     const dispatch = useDispatch();
-    const userDataState = useSelector(state => state.loginUserData.userData);
+    const userDataState = useSelector(state => state.loginUserData.userLoginData);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     return (

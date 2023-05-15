@@ -4,7 +4,8 @@ import {
     UPDATE_REMEMBER_ME_ACTION,
     SAVE_USER_TOKEN,
     OPEN_SIGN_UP_MODAL,
-    CLOSE_LOGIN_MODAL
+    CLOSE_LOGIN_MODAL,
+    SET_USER_ID, SET_POSTS,
 } from "./types";
 
 export const setUserEmail = (userData) => ({
@@ -26,10 +27,21 @@ export const setUserToken = (userToken) => ({
     payload: { userToken },
 });
 
+export const setUserId = (userId) => ({
+    type: SET_USER_ID,
+    payload: userId,
+});
+
 export const openSignUpModal = () => ({
     type: OPEN_SIGN_UP_MODAL
 });
+
 export const closeLoginModal = () => ({
     type: CLOSE_LOGIN_MODAL
+});
+
+export const setPosts = (posts) => ({
+    type: SET_POSTS,
+    payload: posts,
 });
 
