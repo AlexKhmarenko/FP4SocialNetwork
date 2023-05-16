@@ -8,7 +8,7 @@ import {
     CHECK_EMAIL
 } from "./types";
 
-export const setUserName = (userData) => ({
+export const setUserEmail = (userData) => ({
     type: UPDATE_USER_DATA_USERNAME,
     payload: userData,
 });

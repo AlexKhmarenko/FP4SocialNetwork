@@ -11,6 +11,7 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import Logo from "../../icon/Logo";
 import CloseIcon from '../../icon/CloseIcon';
+import checkEmail from "../../../../store/actions"
 
 
 export const ForgotModal = ({ id }) => {
@@ -34,28 +35,39 @@ export const ForgotModal = ({ id }) => {
         setOpenSendCode(true)
     }
     return (
-        <Formik validate={async (values) => {
+        <Formik
             // const url = new URL("http://localhost:8080/login");
             // url.searchParams.append("username", values.userName);
             // url.searchParams.append("password", values.password);
             // url.searchParams.append("rememberMe", userDataState.rememberMe);
             // const userPassword = await fetch(url.toString());
             // const userToken = await userExist.json();
-            console.log(values)
-            const userToken = true;
-            if (!userToken) {
-                return { password: "wrong password" };
-            } else {
-                localStorage.setItem('userToken', JSON.stringify(userToken));
-            }
-        }}
+            // console.log(values)
+            // const userToken = true;
+            // if (!userToken) {
+            //     return { password: "wrong password" };
+            // } else {
+            //     localStorage.setItem('userToken', JSON.stringify(userToken));
+            // }
             initialValues={{
-                userName: userDataState.userName || "",
+                email: "",
             }} validationSchema={
                 Yup.object(
-                )} onSubmit={(values) => {
-                    // dispatch(setUserPassword(values));
-                }}>
+                )}
+            onSubmit={async (values) => {
+                    const res = await fetch("http://localhost:8080/api/changepassword", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            email: values.email,
+                        })
+                    })
+                    if (res.ok) {
+                        const data = await res.json()
+                        dispatch(checkEmail(data))
+                    }
+                }
+                // dispatch(setUserPassword(values));
+            }>
             <Box sx={StyledBox}>
                 <CloseIcon onClick={() => setOpenForgot(false)} />
                 <Logo />
@@ -75,9 +87,10 @@ export const ForgotModal = ({ id }) => {
                 >
                     <Field as={InputFieldWithError} sx={{ width: "400px" }} name={name}
                         id="userName"
-                        label={placeholder} type="text" />
+                        label={placeholder} type="text"
+                        value={email}
+                        />
                     <BasicButton text={buttonText} color="black" type={typeButton} />
-
                 </Box>
             </Box>
         </Formik>

@@ -12,6 +12,7 @@ import { ContainerStyled, ContentContainer, OutletContainer, OutletWrapper } fro
 import {Post} from "./Posts/Post";
 import { LoginModal } from "../components/common/modal/LoginModal/LoginModal"
 import { Content } from "./CreateAccountModal/Content";
+
 import { RegistrationPage } from "../pages/RegistrationPage";
 import { useSelector } from "react-redux";
 
@@ -52,7 +53,7 @@ export function Layout() {
                 </div>
                 <UsersSearch/>
             </div>
+
         </Container> ): (<RegistrationPage/>)
     );
 }
-
