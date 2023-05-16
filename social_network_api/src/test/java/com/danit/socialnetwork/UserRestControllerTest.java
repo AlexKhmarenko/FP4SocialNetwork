@@ -1,7 +1,6 @@
 import com.danit.socialnetwork.dto.*;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.rest.UserRestController;
-import com.danit.socialnetwork.service.PasswordChangerService;
 import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;

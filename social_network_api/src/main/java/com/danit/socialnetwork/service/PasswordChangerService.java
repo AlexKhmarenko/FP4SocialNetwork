@@ -9,38 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
-public class PasswordChangerService {
-  private final PasswordChangeRequestsRepo repo;
-  private final UserRepository userRepo;
+public interface PasswordChangerService {
+  String saveRequest(String email, String request);
 
+  boolean changePassword(String email, String password);
 
-  public String saveRequest(String email, String request) {
-    PasswordChangeRequests pcr = new PasswordChangeRequests();
-    pcr.setEmail(email);
-    pcr.setChangeRequest(request);
-    repo.save(pcr);
-    return "request to change password from " + email;
-  }
+  Optional<PasswordChangeRequests> getEmailByUuid(String uuid);
 
-  public boolean changePassword(String email, String password) {
-    Optional<DbUser> maybeUser = userRepo.findDbUserByEmail(email);
-    if (maybeUser.isPresent()) {
-      DbUser refreshUser = maybeUser.get();
-      refreshUser.setPassword(password);
-      userRepo.save(refreshUser);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  public Optional<PasswordChangeRequests> getEmailByUuid(String uuid) {
-    return repo.getPasswordChangeRequestsByChangeRequest(uuid);
-  }
-
-  public void deleteRequestByEmail(String email) {
-    repo.deleteById(email);
-  }
+  void deleteRequestByEmail(String email);
 }

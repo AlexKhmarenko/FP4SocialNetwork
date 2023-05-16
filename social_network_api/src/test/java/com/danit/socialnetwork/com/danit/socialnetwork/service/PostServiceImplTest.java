@@ -7,7 +7,7 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.model.PostLike;
-import com.danit.socialnetwork.model.UserFollower;
+import com.danit.socialnetwork.model.UserFollows;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -69,15 +69,15 @@ public class PostServiceImplTest extends TestCase {
     user2.setUsername("Jim");
     user2.setName("Jimmy");
 
-    UserFollower userFollower1 = new UserFollower();
-    userFollower1.setUserFollowId(1);
-    userFollower1.setUserFollowerId(user);
-    userFollower1.setUserFollowingId(user1);
+    UserFollows userFollows1 = new UserFollows();
+    userFollows1.setUserFollowId(1);
+    userFollows1.setUserFollowerId(user);
+    userFollows1.setUserFollowingId(user1);
 
-    UserFollower userFollower2 = new UserFollower();
-    userFollower2.setUserFollowId(2);
-    userFollower2.setUserFollowerId(user);
-    userFollower2.setUserFollowingId(user2);
+    UserFollows userFollows2 = new UserFollows();
+    userFollows2.setUserFollowId(2);
+    userFollows2.setUserFollowerId(user);
+    userFollows2.setUserFollowingId(user2);
 
     Post post1 = new Post();
     post1.setPostId(1);
@@ -107,7 +107,7 @@ public class PostServiceImplTest extends TestCase {
     Pageable pagedByFivePosts =
         PageRequest.of(0, 12);
 
-    List<UserFollower> userFollowerList = new ArrayList<>(Arrays.asList(userFollower1, userFollower2));
+    List<UserFollows> userFollowsList = new ArrayList<>(Arrays.asList(userFollows1, userFollows2));
 
     when(postRepository.findAllPostsFromToFollow(user.getUserId(), pagedByFivePosts)).thenReturn(postList);
 

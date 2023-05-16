@@ -7,7 +7,7 @@ import com.danit.socialnetwork.dto.NewPasswordRequest;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.PasswordChangeRequests;
 import com.danit.socialnetwork.repository.UserRepository;
-import com.danit.socialnetwork.service.PasswordChangerService;
+import com.danit.socialnetwork.service.PasswordChangerServiceImpl;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PasswordRestController {
   PasswordChanger passChanger = new PasswordChanger();
-  private final PasswordChangerService passwordChangerService;
+  private final PasswordChangerServiceImpl passwordChangerService;
   private final UserRepository userRepo;
 
   @Data

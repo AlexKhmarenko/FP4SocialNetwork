@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @Table(name = "user_follows")
-public class UserFollower {
+public class UserFollows {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +24,14 @@ public class UserFollower {
   private Integer userFollowId;
 
   /*userFollowingId defines who user follows*/
-  @ManyToOne(targetEntity = DbUser.class)
+//  @ManyToOne(targetEntity = DbUser.class)
   @JoinColumn(name = "user_following_id")
-  private DbUser userFollowingId;
+  private Integer userFollowingId;
 
   /*userFollowerId defines who follow user*/
-  @ManyToOne(targetEntity = DbUser.class)
+//  @ManyToOne(targetEntity = DbUser.class)
   @JoinColumn(name = "user_follower_id")
-  private DbUser userFollowerId;
+  private Integer userFollowerId;
 
   /*receivedNotificationPost by default false that means not to receive notification
   if true it means to receive notification*/

@@ -2,7 +2,7 @@ package com.danit.socialnetwork;
 
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserRepository;
-import com.danit.socialnetwork.service.PasswordChangerService;
+import com.danit.socialnetwork.service.PasswordChangerServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -22,7 +22,7 @@ public class MethodTests {
   private UserRepository userRepository;
 
   @Autowired
-  private PasswordChangerService passwordChangerService;
+  private PasswordChangerServiceImpl passwordChangerService;
 
   @Test
   public void findByUsername() {
