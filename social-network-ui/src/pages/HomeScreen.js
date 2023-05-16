@@ -13,27 +13,61 @@ import {
     PostWrapper
 } from "./pagesStyles/HomeScreenStyles";
 import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
+import { useSelector } from "react-redux";
 
 export function HomeScreen() {
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
+    const userId = useSelector(state => state.userData.userId);
 
     const handlePostTextChange = (event) => {
         setPostText(event.target.value);
+        console.log(postText)
     };
 
     const handlePostImageChange = (event) => {
         const file = event.target.files[0];
+        console.log(file)
         setPostImage(file);
     };
 
+
     const handlePostSubmit = () => {
-        // Ваш код для отправки поста, включая текст и изображение
-        console.log("Text:", postText);
-        console.log("Image:", postImage);
-        // Очистить поля после отправки
-        setPostText("");
-        setPostImage(null);
+        const formData = new FormData();
+        formData.append("writtenText", postText);
+        formData.append("userId", userId);
+
+        if (postImage) {
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                const imageArrayBuffer = new Uint8Array(reader.result);
+                const imageBlob = new Blob([imageArrayBuffer], { type: "application/octet-stream" });
+                formData.append("photoFile", imageBlob, postImage.name);
+                console.log(FormData)
+                console.log(formData.get("writtenText"));
+                console.log(formData.get("photoFile"));
+
+                fetch("http://localhost:8080/posts", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // Обработка ответа от сервера
+                        console.log(data);
+                        // Очистить поля после отправки
+                        setPostText("");
+                        setPostImage(null);
+                    })
+                    .catch((error) => {
+                        // Обработка ошибки
+                        console.error(error);
+                    });
+            };
+
+            reader.readAsArrayBuffer(postImage);
+        }
     };
 
     return (
