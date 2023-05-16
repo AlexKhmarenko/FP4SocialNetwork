@@ -1,3 +1,7 @@
-com/danit/socialnetwork/MethodWithGuavaCacheTests.class
+com/danit/socialnetwork/security/JwtAuthFilterTest.class
+com/danit/socialnetwork/security/JwtTokenServiceTest.class
 com/danit/socialnetwork/MethodTests.class
 UserServiceImplUnitTest.class
+JwtAuthenticationRestControllerTest.class
+com/danit/socialnetwork/MethodWithGuavaCacheTests.class
+com/danit/socialnetwork/security/JwtUserDetailsServiceTest.class

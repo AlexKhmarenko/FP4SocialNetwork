@@ -19,8 +19,9 @@ com/danit/socialnetwork/service/UserService.class
 com/danit/socialnetwork/repository/UserRepository.class
 com/danit/socialnetwork/config/GuavaCache.class
 com/danit/socialnetwork/rest/PasswordRestController$UserEmail.class
+com/danit/socialnetwork/dto/UserEmailForLoginRequest.class
 com/danit/socialnetwork/security/JwtAuthFilter.class
-com/danit/socialnetwork/dto/UsernameRequest.class
+com/danit/socialnetwork/config/CorsFilter.class
 com/danit/socialnetwork/exception/GlobalExceptionHandler.class
 com/danit/socialnetwork/exception/user/PhotoNotFoundException.class
 com/danit/socialnetwork/exception/user/UserNotFoundException.class

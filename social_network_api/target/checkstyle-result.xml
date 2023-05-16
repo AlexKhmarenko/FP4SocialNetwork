@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="6.11.2">
-<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/UsernameRequest.java">
-</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/ActivateCodeRequest.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/RegistrationRequest.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/JwtRequest.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/UserEmailForLoginRequest.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/SearchRequest.java">
 </file>
@@ -21,6 +21,8 @@
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/config/JavaMailSenderConfig.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/config/GuavaCache.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/config/CorsFilter.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/security/JwtTokenService.java">
 </file>
