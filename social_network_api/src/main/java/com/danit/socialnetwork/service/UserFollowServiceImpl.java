@@ -1,6 +1,6 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.model.UserFollows;
+import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,29 +19,29 @@ public class UserFollowServiceImpl implements UserFollowService {
   private final UserRepository userRepository;
 
   @Override
-  public List<UserFollows> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId) {
+  public List<UserFollow> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId) {
     return userFollowRepository
         .findAllByUserFollowerIdAndReceivedNotificationPostContaining(
             userFollowerId, true);
   }
 
   @Override
-  public List<UserFollows> getAllUserByUserFollowerId(Integer userFollowerId) {
+  public List<UserFollow> getAllUserByUserFollowerId(Integer userFollowerId) {
     return userFollowRepository
         .findAllByUserFollowerId(userFollowerId);
 //        .findAllByUserFollowerId(userRepository.findById(userFollowerId));
   }
 
   @Override
-  public String saveUserFollower(UserFollows userFollows) {
-    userFollowRepository.save(userFollows);
+  public String saveUserFollower(UserFollow userFollow) {
+    userFollowRepository.save(userFollow);
     return "following saved";
   }
 
   @Override
-  public Optional <List<UserFollows>> getUserFollowsByUserFollowerIdIs(
-      Integer userFollower) {
-    return userFollowRepository.getUserFollowsByUserFollowerIdIs(userFollower);
+  public Optional <UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
+      Integer userFollower, Integer userFollowing) {
+    return userFollowRepository.getUserFollowByUserFollowerIdAndUserFollowingId(userFollower, userFollowing);
   }
 
 

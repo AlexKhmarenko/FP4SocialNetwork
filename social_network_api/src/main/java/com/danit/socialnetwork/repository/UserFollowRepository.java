@@ -1,23 +1,16 @@
 package com.danit.socialnetwork.repository;
 
-import com.danit.socialnetwork.model.UserFollows;
+import com.danit.socialnetwork.model.UserFollow;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserFollowRepository extends JpaRepository<UserFollows, Integer> {
+public interface UserFollowRepository extends JpaRepository<UserFollow, Integer> {
 
-  List<UserFollows> findAllByUserFollowerIdAndReceivedNotificationPostContaining(
+  List<UserFollow> findAllByUserFollowerIdAndReceivedNotificationPostContaining(
       Integer userFollowerId, Boolean receivedNotificationPost
   );
-
-  List<UserFollows> findAllByUserFollowerId(Integer userFollowerId);
-
-  Optional <List<UserFollows>> getUserFollowerByUserFollowerId(
-      Integer userFollower);
-
-  Optional<List<UserFollows>> getUserFollowsByUserFollowerIdIs(Integer follower);
-
-
+  List<UserFollow> findAllByUserFollowerId(Integer userFollowerId);
+  Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(Integer follower, Integer following);
 }

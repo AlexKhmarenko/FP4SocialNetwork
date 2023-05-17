@@ -8,15 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Data
 @NoArgsConstructor
 @Table(name = "user_follows")
-public class UserFollows {
+public class UserFollow {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +23,16 @@ public class UserFollows {
 
   /*userFollowingId defines who user follows*/
 //  @ManyToOne(targetEntity = DbUser.class)
-  @JoinColumn(name = "user_following_id")
+//  @JoinColumn(name = "user_following_id")
+//  private Integer userFollowingId;
+  @Column(name = "user_following_id")
   private Integer userFollowingId;
 
   /*userFollowerId defines who follow user*/
 //  @ManyToOne(targetEntity = DbUser.class)
-  @JoinColumn(name = "user_follower_id")
+//  @JoinColumn(name = "user_follower_id")
+//  private Integer userFollowerId;
+  @Column(name = "user_follower_id")
   private Integer userFollowerId;
 
   /*receivedNotificationPost by default false that means not to receive notification
