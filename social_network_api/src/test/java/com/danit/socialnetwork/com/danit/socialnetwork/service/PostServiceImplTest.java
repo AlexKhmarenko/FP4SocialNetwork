@@ -71,13 +71,13 @@ public class PostServiceImplTest extends TestCase {
 
     UserFollow userFollow1 = new UserFollow();
     userFollow1.setUserFollowId(1);
-    userFollow1.setUserFollowerId(user);
-    userFollow1.setUserFollowingId(user1);
+    userFollow1.setUserFollowerId(user.getUserId());
+    userFollow1.setUserFollowingId(user1.getUserId());
 
     UserFollow userFollow2 = new UserFollow();
     userFollow2.setUserFollowId(2);
-    userFollow2.setUserFollowerId(user);
-    userFollow2.setUserFollowingId(user2);
+    userFollow2.setUserFollowerId(user.getUserId());
+    userFollow2.setUserFollowingId(user2.getUserId());
 
     Post post1 = new Post();
     post1.setPostId(1);
