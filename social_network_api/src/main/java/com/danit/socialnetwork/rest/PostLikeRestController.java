@@ -30,8 +30,7 @@ public class PostLikeRestController {
   @PostMapping(path = "/likes", consumes = "application/json", produces = "application/json")
   public ResponseEntity<PostLikeDto> addPostLike(@RequestBody PostLikeDto thePostLikeDto) {
     PostLike postLike = postLikeService.savePostLike(thePostLikeDto);
-    return new ResponseEntity<>(PostLikeDto.from(postLike)
-        , HttpStatus.CREATED);
+    return new ResponseEntity<>(PostLikeDto.from(postLike), HttpStatus.CREATED);
   }
 
   @GetMapping("/likes")
@@ -59,8 +58,7 @@ public class PostLikeRestController {
                                                     @RequestParam(name = "userId") Integer userId) {
 
     PostLike postLike = postLikeService.deletePostLike(postId, userId);
-    return new ResponseEntity<>(PostLikeDto.from(postLike)
-        , HttpStatus.OK);
+    return new ResponseEntity<>(PostLikeDto.from(postLike), HttpStatus.OK);
   }
 
 

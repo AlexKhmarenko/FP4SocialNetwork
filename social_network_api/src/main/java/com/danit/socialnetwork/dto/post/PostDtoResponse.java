@@ -42,9 +42,6 @@ public class PostDtoResponse {
     tempPostDto.setWrittenText(post.getWrittenText());
     tempPostDto.setPhotoFileByteArray(Base64.getDecoder().decode(post.getPhotoFile()));
     tempPostDto.setSentDateTime(post.getSentDateTime());
-//    if (Objects.nonNull(post.getPostLikes())) {
-//      tempPostDto.setPostLikes(post.getPostLikes());
-//    }
     if (Objects.nonNull(post.getPostComments())) {
       tempPostDto.setPostComments(post.getPostComments());
     }

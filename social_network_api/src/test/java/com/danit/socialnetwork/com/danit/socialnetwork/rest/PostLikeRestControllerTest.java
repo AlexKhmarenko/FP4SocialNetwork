@@ -5,6 +5,7 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.service.PostLikeService;
+import com.danit.socialnetwork.service.PostLikeServiceImpl;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -29,13 +30,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PostLikeRestControllerTest extends TestCase {
+public class PostLikeRestControllerTest{
 
   @InjectMocks
   PostLikeRestController postLikeRestController;
 
   @Mock
-  PostLikeService postLikeService;
+  PostLikeServiceImpl postLikeService;
 
   @Test
   public void testAddPostLike() {

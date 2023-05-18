@@ -13,7 +13,7 @@ public class PostLikeDto {
   private Integer postId;
   private Integer userId;
 
-  public static PostLikeDto from (PostLike thePostLike) {
+  public static PostLikeDto from(PostLike thePostLike) {
     PostLikeDto postLikeDto = new PostLikeDto();
     postLikeDto.setPostId(thePostLike.getPostInPostLike().getPostId());
     postLikeDto.setUserId(thePostLike.getUserPostLike().getUserId());

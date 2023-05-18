@@ -6,18 +6,14 @@ import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
-import junit.framework.TestCase;
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,26 +21,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
-
 @ExtendWith(MockitoExtension.class)
-class PostLikeServiceImplTest{
-  @Mock
-  PostLikeService postLikeService;
-  @Mock
-  PostRepository postRepository;
+class PostLikeServiceImplTest {
+  @InjectMocks
+  PostLikeServiceImpl postLikeService;
   @Mock
   PostLikeRepository postLikeRepository;
-  @Mock
-  ModelMapper modelMapper=new ModelMapper();
 
-  @Before
-  public void setUp() {
-    postLikeService = new PostLikeServiceImpl(postLikeRepository, postRepository);
-  }
   @Test
   void savePostLike() {
 
@@ -57,8 +43,6 @@ class PostLikeServiceImplTest{
 
     DbUser dbUser = new DbUser();
     dbUser.setUserId(userId);
-    dbUser.setUsername("John1");
-    dbUser.setName("Johny1");
 
     Post post = new Post();
     post.setPostId(postId);
@@ -73,11 +57,8 @@ class PostLikeServiceImplTest{
 
     when(postLikeRepository.findPostLikeByPostIdAndUserId(postId, userId))
         .thenReturn(Optional.of(postLike));
-    when(modelMapper.map(postLikeDto, PostLike.class)).thenReturn(postLike);
-    when(postRepository.findById(postId)).thenReturn(Optional.of(post));
-    when(postLikeRepository.save(any(PostLike.class))).thenReturn(postLike);
+
     PostLike result = postLikeService.savePostLike(postLikeDto);
-    System.out.println(result);
     Assertions.assertEquals(postId, result.getPostInPostLike().getPostId());
     Assertions.assertEquals(userId, result.getUserPostLike().getUserId());
 
@@ -109,10 +90,13 @@ class PostLikeServiceImplTest{
     postLike2.setPostInPostLike(post);
 
     List<PostLike> postLikeList = new ArrayList<>(Arrays.asList(postLike1, postLike2));
-//    when(postLikeRepository.findAllByPostId(postId)).thenReturn(postLikeList);
+    when(postLikeRepository.findAllByPostId(postId)).thenReturn(postLikeList);
     List<PostLike> result = postLikeService.getAllPostLikesByPostId(postId);
     System.out.println(result);
-
+    Assertions.assertEquals(postId, result.get(0).getPostInPostLike().getPostId());
+    Assertions.assertEquals(userId1, result.get(0).getUserPostLike().getUserId());
+    Assertions.assertEquals(userId2, result.get(1).getUserPostLike().getUserId());
+    Assertions.assertEquals(2, result.size());
 
   }
 
@@ -124,25 +108,21 @@ class PostLikeServiceImplTest{
 
     DbUser dbUser = new DbUser();
     dbUser.setUserId(userId);
-    dbUser.setUsername("John1");
-    dbUser.setName("Johny1");
 
     Post post = new Post();
     post.setPostId(postId);
     post.setUserPost(dbUser);
-
 
     PostLike postLike = new PostLike();
     postLike.setPostLikeId(4);
     postLike.setPostInPostLike(post);
     postLike.setUserPostLike(dbUser);
     postLike.setCreatedDateTime(LocalDateTime.now());
-
-//    when(postLikeRepository.findPostLikeByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(postLike));
-
+    when(postLikeRepository.findPostLikeByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(postLike));
     Boolean result = postLikeService.isPresentPostLike(postId, userId);
-    System.out.println(result);
 
+    Assertions.assertEquals(true, result);
+    Assertions.assertNotEquals(false, result);
 
   }
 
@@ -154,7 +134,6 @@ class PostLikeServiceImplTest{
     DbUser dbUser = new DbUser();
     dbUser.setUserId(userId);
     dbUser.setUsername("John1");
-    dbUser.setName("Johny1");
 
     Post post = new Post();
     post.setPostId(postId);
@@ -165,15 +144,12 @@ class PostLikeServiceImplTest{
     postLike.setPostLikeId(4);
     postLike.setPostInPostLike(post);
     postLike.setUserPostLike(dbUser);
-    postLike.setCreatedDateTime(LocalDateTime.now());
-
-//    when(postLikeRepository.findPostLikeByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(postLike));
-
-
+    when(postLikeRepository.findPostLikeByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(postLike));
     PostLike result = postLikeService.deletePostLike(postId, userId);
-    System.out.println(result);
 
-
+    Assertions.assertEquals(postId, result.getPostInPostLike().getPostId());
+    Assertions.assertEquals(userId, result.getUserPostLike().getUserId());
+    Assertions.assertEquals("John1", result.getUserPostLike().getUsername());
   }
 
 }

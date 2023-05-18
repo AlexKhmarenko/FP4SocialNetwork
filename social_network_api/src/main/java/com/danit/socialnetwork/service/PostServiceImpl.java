@@ -66,6 +66,7 @@ public class PostServiceImpl implements PostService {
           thePostDtoSave.getUserId()));
     }
     Post thePostSave = Post.from(thePostDtoSave, user);
+
     return postRepository.save(thePostSave);
 
   }

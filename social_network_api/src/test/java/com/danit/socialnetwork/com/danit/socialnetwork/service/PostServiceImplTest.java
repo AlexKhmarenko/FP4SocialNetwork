@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
@@ -33,19 +34,13 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class PostServiceImplTest extends TestCase {
-
+public class PostServiceImplTest {
+  @InjectMocks
+  PostServiceImpl postService;
   @Mock
   PostRepository postRepository;
   @Mock
   UserRepository userRepository;
-  @Mock
-  PostService postService;
-
-  @Before
-  public void setUp() {
-    postService = new PostServiceImpl(postRepository, userRepository);
-  }
 
   @Test
   public void testGetAllPostsFromToFollow() {
