@@ -17,6 +17,7 @@ import {
 } from "./LayoutStyles";
 
 import { RegistrationPage } from "../pages/RegistrationPage";
+import { BirthdateForm } from "./LoginModal/BirthdateForm";
 
 export function Layout() {
     const userToken = useSelector(state => state.saveUserToken.userToken);

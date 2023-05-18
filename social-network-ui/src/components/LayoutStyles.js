@@ -26,6 +26,7 @@ export const ContentContainer = {
 };
 
 export const OutletContainer = {
+    position: "relative",
     width: "100%",
     display: "flex",
     justifyContent: "center",
@@ -40,6 +41,7 @@ export const ItemWrapper = {
     alignItems: "center",
 };
 export const ItemWrapperContainer={
+    position:"relative",
     display: "flex",
     flexDirection: "column",
     width: "600px",

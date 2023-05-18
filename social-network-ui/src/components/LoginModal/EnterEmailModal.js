@@ -18,13 +18,18 @@ import PropTypes from "prop-types";
 
 export function EnterEmailModal() {
     const dispatch = useDispatch();
-    const userDataState = useSelector(state => state.loginUserData.userLoginData);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+   async function signWidthGoogle (){
+       let dataAboutRegistration = await fetch("http://localhost:8080/oauth2/authorization/google");
+       let informAboutRegistration = await dataAboutRegistration.json()
+       console.log(informAboutRegistration)
+    }
 
     return (
         <>
             <Typography sx={StyledHeaderModalText}>Sign in to Capitweet</Typography>
-            <Button variant="contained" sx={{ ...StyledBlackButton, marginTop: "0px" }} fullWidth={true}>
+            <Button onClick={signWidthGoogle} variant="contained" sx={{ ...StyledBlackButton, marginTop: "0px" }} fullWidth={true}>
                 <SvgIcon sx={{ marginRight: "10px" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
                          width="48px" height="48px">
                     <path fill="#FFC107"

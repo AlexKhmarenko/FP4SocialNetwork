@@ -36,6 +36,7 @@ export function HomeScreen() {
     });
 
     const fetchToSendAPost = (postObject, setSubmitting) => {
+        console.log(postObject)
         fetch("http://localhost:8080/posts", {
             method: "POST",
             body: JSON.stringify(postObject),
@@ -59,22 +60,25 @@ export function HomeScreen() {
     };
 
     const handlePostSubmit = (values, setSubmitting) => {
-        setSubmitting(true);
-        console.log(values);
-        if (!values.postText.trim()) {
-            return;
-        }
         if (postImage) {
-            console.log(values);
+            const reader = new FileReader();
             const formData = new FormData();
             formData.append("writtenText", postText);
             formData.append("userId", userId);
 
-            if (postImage) {
-                formData.append("photoFile", postImage);  // вместо 'photoFile' используйте имя поля, ожидаемое вашим сервером
-            }
-            setSubmitting(true);
-            fetchToSendAPost(formData, setSubmitting);  // передаем formData, а не postObject
+            reader.onloadend = () => {
+                const imageArrayBuffer = new Uint8Array(reader.result);
+                const photoFileByteArray = Array.from(imageArrayBuffer);
+                const postObject = {
+                    writtenText: values.postText,
+                    photoFileByteArray: photoFileByteArray,
+                    userId: userId
+                };
+                console.log(postObject);
+                setSubmitting(true);
+                fetchToSendAPost(postObject, setSubmitting);
+            };
+            reader.readAsArrayBuffer(postImage);
         } else {
             const postObject = {
                 writtenText: values.postText,
@@ -82,10 +86,10 @@ export function HomeScreen() {
                 userId: userId
             };
             setSubmitting(true);
-            fetchToSendAPost(postObject);
-
+            fetchToSendAPost(postObject, setSubmitting);
         }
     };
+
 
     return (
         <Formik
