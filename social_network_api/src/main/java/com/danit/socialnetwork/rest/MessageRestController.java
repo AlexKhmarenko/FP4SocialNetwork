@@ -1,9 +1,10 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.dto.message.MessageGetAllDtoResponse;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
-import com.danit.socialnetwork.dto.message.InboxDtoRequest;
 import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
+import com.danit.socialnetwork.dto.message.InboxDtoRequest;
 import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
@@ -35,7 +36,6 @@ public class MessageRestController {
 
   @PostMapping(path = "/message")
   public ResponseEntity<MessageDtoResponse> addMessage(@RequestBody MessageDtoRequest messageDtoRequest) {
-
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     String writtenMessage = messageDtoRequest.getWrittenMessage();
@@ -69,14 +69,15 @@ public class MessageRestController {
 
   @GetMapping(path = "/message")
   @ResponseBody
-  public ResponseEntity<List<Message>> getMessage(@RequestBody InboxParticipantsDtoRequest participantsDtoRequest) {
+  public ResponseEntity<List<MessageGetAllDtoResponse>> getMessage(
+      @RequestBody InboxParticipantsDtoRequest participantsDtoRequest) {
 
     Integer inboxUid = participantsDtoRequest.getInboxUid();
     Integer userId = participantsDtoRequest.getUserId();
     List<Message> messages =  messageService
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(inboxUid, userId, inboxUid, userId);
 
-    return new ResponseEntity<>(messages, HttpStatus.OK);
+    return new ResponseEntity<>(MessageGetAllDtoResponse.from(messages), HttpStatus.OK);
   }
 
 }
