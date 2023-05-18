@@ -54,13 +54,27 @@ public class UserServiceImplUnitTest {
 
   @Test
   public void findByUsername_shouldNotFindUser_WhenNotExists() {
-    DbUser testDbUser = new DbUser();
-    testDbUser.setUsername("TestUser");
-
-    when(userRepository.findByUsername("TestUser")).thenReturn(Optional.of(testDbUser));
     Optional<DbUser> testUser = userRepository.findByUsername("TestUser");
 
+    Assert.assertEquals(Optional.empty(), testUser);
+  }
+
+  @Test
+  public void findByUserId_shouldFindUser_WhenExists() {
+    DbUser testDbUser = new DbUser();
+    testDbUser.setUserId(28);
+
+    when(userRepository.findById(28)).thenReturn(Optional.of(testDbUser));
+    Optional<DbUser> testUser = userRepository.findById(28);
+
     Assert.assertEquals(Optional.of(testDbUser), testUser);
+  }
+
+  @Test
+  public void findByUserId_shouldNotFindUser_WhenNotExists() {
+    Optional<DbUser> testUser = userRepository.findById(10);
+
+    Assert.assertEquals(Optional.empty(), testUser);
   }
 
   @Test
@@ -96,13 +110,9 @@ public class UserServiceImplUnitTest {
 
   @Test
   public void findDbUserByEmail_shouldNotFindUser_WhenNotExists() {
-    DbUser testDbUser = new DbUser();
-    testDbUser.setEmail("TestUser@gmail.com");
-
-    when(userRepository.findDbUserByEmail("TestUser@gmail.com")).thenReturn(Optional.of(testDbUser));
     Optional<DbUser> testUser = userRepository.findDbUserByEmail("TestUser@gmail.com");
 
-    Assert.assertEquals(Optional.of(testDbUser), testUser);
+    Assert.assertEquals(Optional.empty(), testUser);
   }
 
   @Test
