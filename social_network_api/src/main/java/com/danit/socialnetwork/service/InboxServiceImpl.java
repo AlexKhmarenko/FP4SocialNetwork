@@ -23,7 +23,7 @@ public class InboxServiceImpl implements InboxService {
   }
 
   @Override
-  public Inbox saveInboxSender(Integer inboxUid, Integer userId, String writtenMessage, LocalDateTime createdAt) {
+  public Inbox saveInbox(Integer inboxUid, Integer userId, String writtenMessage, LocalDateTime createdAt) {
     Optional<Inbox> inboxSender = findByInboxUidAndLastSentUserId(inboxUid, userId);
     if (inboxSender.isEmpty()) {
       Inbox inboxNew = new Inbox();
@@ -37,28 +37,6 @@ public class InboxServiceImpl implements InboxService {
       Inbox inboxFromDb = inboxSender.get();
       inboxFromDb.setInboxId(inboxSender.get().getInboxId());
       inboxFromDb.setInboxUid(inboxSender.get().getInboxUid());
-      inboxFromDb.setLastMessage(writtenMessage);
-      inboxFromDb.setCreatedAt(createdAt);
-      inboxRepository.save(inboxFromDb);
-      return inboxFromDb;
-    }
-  }
-
-  @Override
-  public Inbox saveInboxReceiver(Integer inboxUid, Integer userId, String writtenMessage, LocalDateTime createdAt) {
-    Optional<Inbox> InboxReceiver = findByInboxUidAndLastSentUserId(userId, inboxUid);
-    if (InboxReceiver.isEmpty()) {
-      Inbox inboxNew = new Inbox();
-      inboxNew.setInboxUid(userId);
-      inboxNew.setLastMessage(writtenMessage);
-      inboxNew.setCreatedAt(createdAt);
-      inboxNew.setLastSentUserId(inboxUid);
-      inboxRepository.save(inboxNew);
-      return inboxNew;
-    } else {
-      Inbox inboxFromDb = InboxReceiver.get();
-      inboxFromDb.setInboxId(InboxReceiver.get().getInboxId());
-      inboxFromDb.setInboxUid(InboxReceiver.get().getInboxUid());
       inboxFromDb.setLastMessage(writtenMessage);
       inboxFromDb.setCreatedAt(createdAt);
       inboxRepository.save(inboxFromDb);

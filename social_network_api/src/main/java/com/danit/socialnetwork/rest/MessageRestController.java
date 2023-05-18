@@ -48,8 +48,8 @@ public class MessageRestController {
     Message dbMessage = messageService.saveMessage(message);
     LocalDateTime createdAt = dbMessage.getCreatedAt();
 
-    inboxService.saveInboxSender(inboxUid, userId, writtenMessage, createdAt);
-    inboxService.saveInboxReceiver(inboxUid, userId, writtenMessage, createdAt);
+    inboxService.saveInbox(inboxUid, userId, writtenMessage, createdAt);
+    inboxService.saveInbox(userId, inboxUid, writtenMessage, createdAt);
 
     inboxParticipantsService.saveInboxParticipantsSender(inboxUid, userId);
     inboxParticipantsService.saveInboxParticipantsReceiver(inboxUid, userId);

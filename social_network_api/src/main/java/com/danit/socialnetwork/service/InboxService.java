@@ -10,9 +10,7 @@ public interface InboxService {
 
   Optional<Inbox> findByInboxUidAndLastSentUserId(Integer inboxUid, Integer lastSentUserId);
 
-  Inbox saveInboxSender(Integer inboxUid, Integer userId, String writtenMessage, LocalDateTime createdAt);
-
-  Inbox saveInboxReceiver(Integer inboxUid, Integer userId, String writtenMessage, LocalDateTime createdAt);
+  Inbox saveInbox(Integer inboxUid, Integer userId, String writtenMessage, LocalDateTime createdAt);
 
   List<Inbox> getInboxesByInboxUid(Integer inboxUid);
 }

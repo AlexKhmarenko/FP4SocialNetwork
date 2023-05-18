@@ -43,7 +43,7 @@ public class MessageServiceImplUnitTest {
   }
 
   @Test
-  public void findByInboxUidAndUserIdOrUserIdAndInboxUid_Test() {
+  public void findByInboxUidAndUserIdOrUserIdAndInboxUid_shouldFindMessages_Test() {
     Message message1 = new Message();
     message1.setInboxUid(28);
     message1.setUserId(34);
