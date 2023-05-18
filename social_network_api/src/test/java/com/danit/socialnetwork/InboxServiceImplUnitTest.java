@@ -47,7 +47,16 @@ public class InboxServiceImplUnitTest {
   }
 
   @Test
-  public void saveInboxSender_shouldSaveInbox_WhenNotExists() {
+  public void findByInboxUidAndLastSentUserId_shouldFindInbox_WhenNotExists_Test() {
+    Optional<Inbox> testFindInbox = inboxRepository.findByInboxUidAndLastSentUserId(10, 11);
+
+    Mockito.verify(inboxRepository).findByInboxUidAndLastSentUserId(10, 11);
+
+    Assert.assertEquals(Optional.empty(), testFindInbox);
+  }
+
+  @Test
+  public void saveInbox_shouldSaveInbox_WhenNotExists() {
     Inbox testInbox = new Inbox();
     testInbox.setInboxUid(10);
     testInbox.setLastMessage("Hello World!");
@@ -65,7 +74,7 @@ public class InboxServiceImplUnitTest {
   }
 
   @Test
-  public void saveInboxReceiver_shouldSaveInbox_WhenExists() {
+  public void saveInbox_shouldSaveInbox_WhenExists() {
     Inbox existingInbox = new Inbox();
     existingInbox.setInboxUid(28);
     existingInbox.setLastMessage("Hello World!");

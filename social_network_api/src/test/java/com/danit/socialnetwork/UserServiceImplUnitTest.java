@@ -55,6 +55,9 @@ public class UserServiceImplUnitTest {
   public void findByUsername_shouldNotFindUser_WhenNotExists() {
     Optional<DbUser> testUser = userRepository.findByUsername("TestUser");
 
+    Mockito.verify(userRepository).findByUsername("TestUser");
+
+
     Assert.assertEquals(Optional.empty(), testUser);
   }
 
@@ -73,6 +76,8 @@ public class UserServiceImplUnitTest {
   public void findByUserId_shouldNotFindUser_WhenNotExists() {
     Optional<DbUser> testUser = userRepository.findById(10);
 
+    Mockito.verify(userRepository).findById(10);
+
     Assert.assertEquals(Optional.empty(), testUser);
   }
 
@@ -90,6 +95,8 @@ public class UserServiceImplUnitTest {
   @Test
   public void findDbUserByEmail_shouldNotFindUser_WhenNotExists() {
     Optional<DbUser> testUser = userRepository.findDbUserByEmail("TestUser@gmail.com");
+
+    Mockito.verify(userRepository).findDbUserByEmail("TestUser@gmail.com");
 
     Assert.assertEquals(Optional.empty(), testUser);
   }

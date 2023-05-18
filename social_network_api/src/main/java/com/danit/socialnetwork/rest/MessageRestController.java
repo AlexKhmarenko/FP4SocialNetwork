@@ -51,8 +51,8 @@ public class MessageRestController {
     inboxService.saveInbox(inboxUid, userId, writtenMessage, createdAt);
     inboxService.saveInbox(userId, inboxUid, writtenMessage, createdAt);
 
-    inboxParticipantsService.saveInboxParticipantsSender(inboxUid, userId);
-    inboxParticipantsService.saveInboxParticipantsReceiver(inboxUid, userId);
+    inboxParticipantsService.saveInboxParticipants(inboxUid, userId);
+    inboxParticipantsService.saveInboxParticipants(userId, inboxUid);
 
     return new ResponseEntity<>(MessageDtoResponse.from(dbMessage), HttpStatus.CREATED);
   }

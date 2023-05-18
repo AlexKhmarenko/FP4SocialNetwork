@@ -21,25 +21,12 @@ public class InboxParticipantsServiceImpl implements InboxParticipantsService {
   }
 
   @Override
-  public InboxParticipants saveInboxParticipantsSender(Integer inboxUid, Integer userId) {
+  public InboxParticipants saveInboxParticipants(Integer inboxUid, Integer userId) {
     Optional<InboxParticipants> inboxParticipantsSender = findByInboxUidAndUserId(inboxUid, userId);
     if (inboxParticipantsSender.isEmpty()) {
       InboxParticipants inboxParticipantsNew = new InboxParticipants();
       inboxParticipantsNew.setInboxUid(inboxUid);
       inboxParticipantsNew.setUserId(userId);
-      inboxParticipantsRepository.save(inboxParticipantsNew);
-      return inboxParticipantsNew;
-    }
-    return inboxParticipantsSender.get();
-  }
-
-  @Override
-  public InboxParticipants saveInboxParticipantsReceiver(Integer inboxUid, Integer userId) {
-    Optional<InboxParticipants> inboxParticipantsSender = findByInboxUidAndUserId(userId, inboxUid);
-    if (inboxParticipantsSender.isEmpty()) {
-      InboxParticipants inboxParticipantsNew = new InboxParticipants();
-      inboxParticipantsNew.setInboxUid(userId);
-      inboxParticipantsNew.setUserId(inboxUid);
       inboxParticipantsRepository.save(inboxParticipantsNew);
       return inboxParticipantsNew;
     }
