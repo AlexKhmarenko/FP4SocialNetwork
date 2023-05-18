@@ -5,8 +5,6 @@ import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +36,7 @@ public class PostLikeRestController {
   public List<PostLikeDto> getAllLikes(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId) {
     if (postId == 0) {
-      return new ArrayList<PostLikeDto>();
+      return new ArrayList<>();
     }
     return postLikeService.getAllPostLikesByPostId(postId)
         .stream()

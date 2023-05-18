@@ -67,7 +67,7 @@ public class PostLikeServiceImpl implements PostLikeService {
   public PostLike deletePostLike(Integer postId, Integer userId) {
     Optional<PostLike> tempPostLike = postLikeRepository.findPostLikeByPostIdAndUserId(
         postId, userId);
-    if (tempPostLike == null) {
+    if (tempPostLike.isEmpty()) {
       throw new PostLikeNotFoundException(String.format("PostLike with postId %s not found",
           postId));
     }
