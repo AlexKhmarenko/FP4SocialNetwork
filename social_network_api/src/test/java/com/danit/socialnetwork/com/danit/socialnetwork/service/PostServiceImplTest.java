@@ -6,10 +6,8 @@ import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
-import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.model.UserFollower;
 import com.danit.socialnetwork.repository.PostRepository;
-import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import junit.framework.TestCase;
 import org.junit.Before;
@@ -42,13 +40,11 @@ public class PostServiceImplTest extends TestCase {
   @Mock
   UserRepository userRepository;
   @Mock
-  UserFollowRepository userFollowRepository;
-  @Mock
   PostService postService;
 
   @Before
   public void setUp() {
-    postService = new PostServiceImpl(postRepository, userFollowRepository, userRepository);
+    postService = new PostServiceImpl(postRepository, userRepository);
   }
 
   @Test
@@ -86,8 +82,7 @@ public class PostServiceImplTest extends TestCase {
     post1.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime = LocalDateTime.now();
     post1.setSentDateTime(dateTime);
-    post1.setPostLikes(new ArrayList<PostLike>() {
-    });
+
     post1.setPostComments(new ArrayList<PostComment>() {
     });
 
@@ -98,8 +93,7 @@ public class PostServiceImplTest extends TestCase {
     post2.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime2 = LocalDateTime.now();
     post2.setSentDateTime(dateTime2);
-    post2.setPostLikes(new ArrayList<PostLike>() {
-    });
+
     post2.setPostComments(new ArrayList<PostComment>() {
     });
 
@@ -133,8 +127,6 @@ public class PostServiceImplTest extends TestCase {
     post1.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime = LocalDateTime.now();
     post1.setSentDateTime(dateTime);
-    post1.setPostLikes(new ArrayList<PostLike>() {
-    });
     post1.setPostComments(new ArrayList<PostComment>() {
     });
 
@@ -148,8 +140,7 @@ public class PostServiceImplTest extends TestCase {
     post2.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime2 = LocalDateTime.now();
     post2.setSentDateTime(dateTime2);
-    post2.setPostLikes(new ArrayList<PostLike>() {
-    });
+
     post2.setPostComments(new ArrayList<PostComment>() {
     });
 
