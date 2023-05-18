@@ -34,6 +34,7 @@ export const PostsDisplaying = () => {
             fetchPosts();
         }, []);
 
+
         return (
             <>
                 {userPosts.map((post) => (
@@ -42,6 +43,8 @@ export const PostsDisplaying = () => {
                           photo={post.photoFileByteArray}
                           postComments={post.postComments}
                           postLikes={post.postLikes}
+                          dataTime={post.sentDateTime}
+                          postId={post.postId}
                     />
                 ))}
             </>

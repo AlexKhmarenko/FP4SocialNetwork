@@ -1,57 +1,86 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 
 import { Card, CardContent, Avatar, Typography, CardActions, IconButton } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat } from "@mui/icons-material";
+import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
+import { useSelector } from "react-redux";
 
-export const Post = ({ userName, name, photo, postComments, postLikes, text }) => {
+export const Post = ({ userName, name, photo, postComments, postLikes, text, dataTime, postId }) => {
+    const userId = useSelector(state => state.userData.userData.userId);
     const [showMore, setShowMore] = useState(false);
+    let decodedString = atob(photo);
+    console.log(dataTime);
+
+    async function addLikeHandle  () {
+       let a = await fetch("http://localhost:8080/likes", {
+            method: "POST",
+            body: JSON.stringify({
+                postId: postId,
+                userId: userId,
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+       let b = await a.json()
+       console.log(" b ", b )
+    }
 
     const handleShowMore = () => {
         setShowMore(!showMore);
     };
 
+    function postDate() {
+        const date = new Date(dataTime);
+        const diffDays = differenceInDays(new Date(), date);
+
+        let dateString;
+
+        if (diffDays < 1) {
+            return formatDistanceToNow(date, { addSuffix: true });
+        } else if (diffDays < 365) {
+            return format(date, "MMM d");
+        } else {
+            return format(date, "MMM d, yyyy");
+        }
+    }
+
     const renderText = () => {
-        if (showMore) {
+        const words = text.split(" ");
+        if (showMore || words.length <= 10) {
             return text;
         } else {
-            const words = text.split(" ");
-            const truncatedWords = words.slice(0, 25);
+            const truncatedWords = words.slice(0, 10);
             return truncatedWords.join(" ") + "...";
         }
     };
 
     return (
-        <Card sx={{
-            width: "100%",
-            maxWidth: "100%",
-            borderRadius: 0,
-            mb: 1,
-            margin: "0",
-            padding: "0",
-            boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)"
-        }}>
+        <Card sx={PostCard}>
             <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
                 <Avatar alt={"asy"} src="#"/>
                 <div style={{ marginLeft: 16, flex: 1 }}>
-                    <Typography variant="subtitle1" component="div">
-                        {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · 24.11.2000
+                    <Typography variant="subtitle1" component="div" >
+                        {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
-                    <Typography variant="body1" component="div" mt={1} sx={{
-                        maxHeight: showMore ? "none" : "90px",
-                        overflowY: "hidden",
-                        padding: "0, 20px",
-                        wordWrap: "break-word", maxWidth: "500px",
-                        marginBottom: "12px"
-                    }}>{renderText()}
+                    <Typography variant="body1" component="div" mt={1}
+                                sx={{ ...PostText, maxHeight: showMore ? "none" : "90px", }}>{renderText()}
                     </Typography>
-                    <a style={{
-                        fontFamily: "'Lato', sans-serif",
-                        fontSize: "15px", fontWeight: "700", textDecoration: "none", color: "blue"
-                    }} onClick={handleShowMore} href="#">{showMore ? "hight text" : "see more"}</a>
+                    {text.split(" ").length > 10 && (
+                        <a style={ShowMoreLinkStyles} onClick={handleShowMore} href="#">
+                            {showMore ? "hight text" : "see more"}
+                        </a>
+                    )}
                 </div>
             </CardContent>
+            {
+                photo ? (<div>
+                    <img src={decodedString} alt=""/>
+                </div>) : null
+            }
+
             <CardActions sx={{ padding: "20px 20px" }}>
                 <IconButton>
                     <ChatBubbleOutline fontSize="small"/>
@@ -59,8 +88,8 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text }) =
                 <IconButton>
                     <Repeat fontSize="small"/>
                 </IconButton>
-                <IconButton>
-                    <FavoriteBorder fontSize="small"/>
+                <IconButton onClick={addLikeHandle}>
+                    <FavoriteBorder  fontSize="small"/>
                 </IconButton>
             </CardActions>
         </Card>
@@ -68,6 +97,8 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text }) =
 };
 
 Post.propTypes = {
+    postId: PropTypes.number,
+    dataTime: PropTypes.string,
     userName: PropTypes.string,
     name: PropTypes.string,
     photo: PropTypes.string,
