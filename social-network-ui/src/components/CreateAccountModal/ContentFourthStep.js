@@ -6,18 +6,17 @@ import {
 import { Formik, Form, Field } from "formik";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import Link from "@mui/material/Link";
+import Link from '@mui/material/Link';
 import * as Yup from "yup";
-import { step4, SET_VALUE_MODAL, SET_STEP_MODAL } from "../../store/types";
-import {
-    StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel,
+import { step4, SET_VALUE_MODAL } from "../../store/types";
+import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel,
     StyledFirstStepTypographyPlaceholder, StyledFirstStepTypography,
-    StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypographyCounter
-} from "./CreateAccountModalStyles";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+    StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypographyCounter } from "./CreateAccountModalStyles";
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import {closeSignUpModal} from "../../store/actions";
 
 export function ContentFourthStep() {
     const dispatch = useDispatch();
@@ -145,19 +144,21 @@ export function ContentFourthStep() {
                                             {password ? <VisibilityOff/> : <Visibility/>}
                                         </IconButton>
                                     </InputAdornment>
-                                }
-                                label="password"
-                            />
-                            {formikProps.touched.password && formikProps.errors.password && (
-                                <ErrorText>{formikProps.errors.password}</ErrorText>
-                            )}
-                        </FormControl>
-                        <Button variant="contained" sx={StyledFirstStepButton} type="submit"
-                                fullWidth={true}>Register</Button>
-                    </Form>
-                )}
-            </Formik>
+                                    }
+                                    label="password"
+                                />
+                                {formikProps.touched.password && formikProps.errors.password && (
+                                    <ErrorText>{formikProps.errors.password}</ErrorText>
+                                )}
+                                </FormControl>
+                                <Button variant="contained" sx={ StyledFirstStepButton } type="submit" fullWidth={true}
+                                        onClick={()=>{
+                                            dispatch(closeSignUpModal())
+                                            localStorage.setItem("stepInModal", JSON.stringify(1))
+                                        }}>Register</Button>
+                        </Form>
+                    )}
+                </Formik>
         </>
     );
 }
-
