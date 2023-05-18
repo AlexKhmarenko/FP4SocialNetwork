@@ -157,6 +157,7 @@ export function ContentFirstStep() {
                         })
                         if (response.ok) {
                             //// НЕ РАБОТАЕТ setErrors ///////////////////////////////////////////////////////////
+
                             setErrors({ email: "User doesn't exist, please check your email" })
                             console.log("ERROR");
                         }
