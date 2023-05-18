@@ -38,8 +38,8 @@ public class Post {
   @Column(name = "written_text")
   private String writtenText;
 
-  @Column(name = "photo_file", columnDefinition = "text")
-    private String photoFile;
+  @Column(name = "photo_file")
+  private String photoFile;
 
   @Column(name = "sent_datetime", updatable = false)
   @NonNull
