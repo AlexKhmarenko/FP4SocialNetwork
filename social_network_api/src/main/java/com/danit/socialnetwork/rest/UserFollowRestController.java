@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.dto.UserFollowerRequest;
+import com.danit.socialnetwork.dto.UserFollowRequest;
+import com.danit.socialnetwork.dto.UserUnfollowRequest;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -30,7 +31,7 @@ public class UserFollowRestController {
   }
 
   @PostMapping("api/follow")
-  public ResponseEntity<?> follow(@RequestBody UserFollowerRequest userFollow) {
+  public ResponseEntity<?> follow(@RequestBody UserFollowRequest userFollow) {
     Integer follower = userFollow.getUserFollower();
     Integer following = userFollow.getUserFollowing();
     Boolean receivedNotificationPost = userFollow.getReceiveNotifications();
@@ -56,5 +57,30 @@ public class UserFollowRestController {
     }
     newEntry.setReceivedNotificationPost(receivedNotificationPost);
     return new ResponseEntity<>(userFollowService.saveUserFollower(newEntry), HttpStatus.OK);
+  }
+
+  @PostMapping("api/unfollow")
+  public ResponseEntity<?> follow(@RequestBody UserUnfollowRequest userUnfollowRequest) {
+    Integer unfollowed = userUnfollowRequest.getUserUnfollowed();
+    Integer unfollowing = userUnfollowRequest.getUserUnfollowing();
+
+//    Optional<DbUser> maybeFollower = userRepository.findById(unfillowed);
+//    Optional<DbUser> maybeFollowing = userRepository.findById(unfollowing);
+//
+//    if (maybeFollower.isEmpty()
+//        || maybeFollowing.isEmpty()
+//        || unfillowed.equals(unfollowing)) {
+//      return new ResponseEntity<>("invalid user id", HttpStatus.BAD_REQUEST);
+//    }
+
+    Optional<UserFollow> deletedUserFollow = userFollowService
+        .getUserFollowByUserFollowerIdAndUserFollowingId(unfollowed, unfollowing);
+
+    if (deletedUserFollow.isPresent()) {
+      return new ResponseEntity<>(userFollowService
+          .deleteUserFollowByUserFollowId(deletedUserFollow.get()
+          .getUserFollowId()), HttpStatus.OK);
+    }
+    return new ResponseEntity<>("invalid user id", HttpStatus.OK);
   }
 }

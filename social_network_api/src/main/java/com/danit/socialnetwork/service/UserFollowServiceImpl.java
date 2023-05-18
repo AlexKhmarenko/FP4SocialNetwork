@@ -44,5 +44,10 @@ public class UserFollowServiceImpl implements UserFollowService {
     return userFollowRepository.getUserFollowByUserFollowerIdAndUserFollowingId(userFollower, userFollowing);
   }
 
+  public String deleteUserFollowByUserFollowId(Integer userFollowId){
+    userFollowRepository.deleteById(userFollowId);
+    return "user follow deleted";
+  }
+
 
 }

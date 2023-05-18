@@ -1,6 +1,7 @@
 package com.danit.socialnetwork;
 
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.model.PasswordChangeRequests;
 import com.danit.socialnetwork.repository.UserRepository;
 import com.danit.socialnetwork.service.PasswordChangerServiceImpl;
 import org.junit.Test;
@@ -18,11 +19,13 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MethodTests {
-  @Mock
-  private UserRepository userRepository;
 
   @Autowired
   private PasswordChangerServiceImpl passwordChangerService;
+
+  @Mock
+  private UserRepository userRepository;
+
 
   @Test
   public void findByUsername() {
@@ -48,6 +51,11 @@ public class MethodTests {
 
   @Test
   public void saveRequest() {
+    PasswordChangeRequests passwordChangeRequests = new PasswordChangeRequests();
+    String fine = "request to change password from test@test.com";
+    when(passwordChangerService.saveRequest("test@test.com", "123456")).thenReturn(fine);
+
+
     String text = passwordChangerService.saveRequest("test@test.com", "123456");
     assertEquals("request to change password from test@test.com", text);
   }
