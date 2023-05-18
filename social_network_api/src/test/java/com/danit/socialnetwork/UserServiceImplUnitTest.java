@@ -14,7 +14,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -78,6 +77,24 @@ public class UserServiceImplUnitTest {
   }
 
   @Test
+  public void findDbUserByEmail_shouldFindUser_WhenExists() {
+    DbUser testDbUser = new DbUser();
+    testDbUser.setEmail("bukan.nadya@gmail.com");
+
+    when(userRepository.findDbUserByEmail("bukan.nadya@gmail.com")).thenReturn(Optional.of(testDbUser));
+    Optional<DbUser> testUser = userRepository.findDbUserByEmail("bukan.nadya@gmail.com");
+
+    Assert.assertEquals(Optional.of(testDbUser), testUser);
+  }
+
+  @Test
+  public void findDbUserByEmail_shouldNotFindUser_WhenNotExists() {
+    Optional<DbUser> testUser = userRepository.findDbUserByEmail("TestUser@gmail.com");
+
+    Assert.assertEquals(Optional.empty(), testUser);
+  }
+
+  @Test
   public void save_shouldSaveUser_WhenNotExists() {
     DbUser testUser = new DbUser();
     testUser.setUsername("testuser");
@@ -95,24 +112,6 @@ public class UserServiceImplUnitTest {
     Mockito.verify(passwordEncoder).encode(testUser.getPassword());
 
     assertTrue(result);
-  }
-
-  @Test
-  public void findDbUserByEmail_shouldFindUser_WhenExists() {
-    DbUser testDbUser = new DbUser();
-    testDbUser.setEmail("bukan.nadya@gmail.com");
-
-    when(userRepository.findDbUserByEmail("bukan.nadya@gmail.com")).thenReturn(Optional.of(testDbUser));
-    Optional<DbUser> testUser = userRepository.findDbUserByEmail("bukan.nadya@gmail.com");
-
-    Assert.assertEquals(Optional.of(testDbUser), testUser);
-  }
-
-  @Test
-  public void findDbUserByEmail_shouldNotFindUser_WhenNotExists() {
-    Optional<DbUser> testUser = userRepository.findDbUserByEmail("TestUser@gmail.com");
-
-    Assert.assertEquals(Optional.empty(), testUser);
   }
 
   @Test

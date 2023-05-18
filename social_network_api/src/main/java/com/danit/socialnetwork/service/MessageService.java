@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MessageService {
 
-  Message saveMessage(MessageDtoRequest messageDtoRequest);
+  Message saveMessage(Message message);
 
   List<Message> findByInboxUidAndUserIdOrUserIdAndInboxUid(
       Integer inboxUid, Integer userId, Integer inboxUidIncoming, Integer userIdIncoming);

@@ -16,31 +16,12 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
 
   private final MessageRepository messageRepository;
-  private final InboxService inboxService;
-  private final InboxParticipantsService inboxParticipantsService;
 
   @Override
-  public Message saveMessage(MessageDtoRequest messageDtoRequest) {
-    Integer inboxUid = messageDtoRequest.getInboxUid();
-    Integer userId = messageDtoRequest.getUserId();
-    String writtenMessage = messageDtoRequest.getWrittenMessage();
-
-    Message message = new Message();
-    message.setInboxUid(inboxUid);
-    message.setUserId(userId);
-    message.setMessage(writtenMessage);
-
+  public Message saveMessage(Message message) {
     Message savedMessage = messageRepository.save(message);
     log.info(String.format("Save message: setInboxUid = %d, setUserId = %d, setMessage = %s",
         savedMessage.getInboxUid(), savedMessage.getUserId(), savedMessage.getMessage()));
-
-    LocalDateTime createdAt = savedMessage.getCreatedAt();
-
-    inboxService.saveInboxSender(inboxUid, userId, writtenMessage, createdAt);
-    inboxService.saveInboxReceiver(inboxUid, userId, writtenMessage, createdAt);
-
-    inboxParticipantsService.saveInboxParticipantsSender(inboxUid, userId);
-    inboxParticipantsService.saveInboxParticipantsReceiver(inboxUid, userId);
 
     return savedMessage;
   }

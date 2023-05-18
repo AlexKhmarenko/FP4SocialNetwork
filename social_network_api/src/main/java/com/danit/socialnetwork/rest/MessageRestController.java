@@ -7,6 +7,7 @@ import com.danit.socialnetwork.dto.message.MessageDtoRequest;
 import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
+import com.danit.socialnetwork.service.InboxParticipantsService;
 import com.danit.socialnetwork.service.InboxService;
 import com.danit.socialnetwork.service.MessageService;
 import com.danit.socialnetwork.service.UserService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Log4j2
@@ -28,12 +30,29 @@ import java.util.List;
 public class MessageRestController {
   private final MessageService messageService;
   private final InboxService inboxService;
+  private final InboxParticipantsService inboxParticipantsService;
   private final UserService userService;
 
   @PostMapping(path = "/message")
   public ResponseEntity<MessageDtoResponse> addMessage(@RequestBody MessageDtoRequest messageDtoRequest) {
 
-    Message dbMessage = messageService.saveMessage(messageDtoRequest);
+    Integer inboxUid = messageDtoRequest.getInboxUid();
+    Integer userId = messageDtoRequest.getUserId();
+    String writtenMessage = messageDtoRequest.getWrittenMessage();
+
+    Message message = new Message();
+    message.setInboxUid(inboxUid);
+    message.setUserId(userId);
+    message.setMessage(writtenMessage);
+
+    Message dbMessage = messageService.saveMessage(message);
+    LocalDateTime createdAt = dbMessage.getCreatedAt();
+
+    inboxService.saveInboxSender(inboxUid, userId, writtenMessage, createdAt);
+    inboxService.saveInboxReceiver(inboxUid, userId, writtenMessage, createdAt);
+
+    inboxParticipantsService.saveInboxParticipantsSender(inboxUid, userId);
+    inboxParticipantsService.saveInboxParticipantsReceiver(inboxUid, userId);
 
     return new ResponseEntity<>(MessageDtoResponse.from(dbMessage), HttpStatus.CREATED);
   }
