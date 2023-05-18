@@ -54,7 +54,6 @@ public class PostLikeRestController {
   @DeleteMapping("likes")
   public ResponseEntity<PostLikeDto> deletePostLike(@RequestParam(name = "postId") Integer postId,
                                                     @RequestParam(name = "userId") Integer userId) {
-
     PostLike postLike = postLikeService.deletePostLike(postId, userId);
     return new ResponseEntity<>(PostLikeDto.from(postLike), HttpStatus.OK);
   }
