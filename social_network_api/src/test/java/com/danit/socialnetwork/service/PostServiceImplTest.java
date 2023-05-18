@@ -11,6 +11,8 @@ import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
+import com.danit.socialnetwork.service.PostService;
+import com.danit.socialnetwork.service.PostServiceImpl;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;

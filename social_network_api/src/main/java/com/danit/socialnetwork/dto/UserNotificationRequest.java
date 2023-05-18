@@ -3,8 +3,8 @@ package com.danit.socialnetwork.dto;
 import lombok.Data;
 
 @Data
-public class UserFollowRequest {
+public class UserNotificationRequest {
   Integer userFollower;
   Integer userFollowing;
-//  Boolean receiveNotifications;
+  Boolean receiveNotifications;
 }

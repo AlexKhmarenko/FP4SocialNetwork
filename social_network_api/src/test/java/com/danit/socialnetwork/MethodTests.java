@@ -2,6 +2,7 @@ package com.danit.socialnetwork;
 
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.PasswordChangeRequests;
+import com.danit.socialnetwork.repository.PasswordChangeRequestsRepo;
 import com.danit.socialnetwork.repository.UserRepository;
 import com.danit.socialnetwork.service.PasswordChangerServiceImpl;
 import org.junit.Test;
@@ -20,18 +21,17 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class MethodTests {
 
-  @Autowired
-  private PasswordChangerServiceImpl passwordChangerService;
-
   @Mock
   private UserRepository userRepository;
+  @Mock
+  private PasswordChangeRequestsRepo passwordChangeRequestsRepo;
 
 
   @Test
   public void findByUsername() {
     DbUser dbUser = new DbUser();
     dbUser.setUsername("Alex");
-    when (userRepository.findByUsername("Alex")).thenReturn(Optional.of(dbUser));
+    when(userRepository.findByUsername("Alex")).thenReturn(Optional.of(dbUser));
 
     Optional<DbUser> user = userRepository.findByUsername("Alex");
     String username = user.get().getUsername();
@@ -43,7 +43,7 @@ public class MethodTests {
     DbUser dbUser = new DbUser();
     dbUser.setUsername("Alex");
     dbUser.setEmail("khmarenko.a@gmail.com");
-    when (userRepository.findDbUserByEmail("khmarenko.a@gmail.com")).thenReturn(Optional.of(dbUser));
+    when(userRepository.findDbUserByEmail("khmarenko.a@gmail.com")).thenReturn(Optional.of(dbUser));
     Optional<DbUser> user = userRepository.findDbUserByEmail("khmarenko.a@gmail.com");
     String username = user.get().getUsername();
     assertEquals("Alex", username);
@@ -52,11 +52,11 @@ public class MethodTests {
   @Test
   public void saveRequest() {
     PasswordChangeRequests passwordChangeRequests = new PasswordChangeRequests();
-    String fine = "request to change password from test@test.com";
-    when(passwordChangerService.saveRequest("test@test.com", "123456")).thenReturn(fine);
-
-
-    String text = passwordChangerService.saveRequest("test@test.com", "123456");
-    assertEquals("request to change password from test@test.com", text);
+    passwordChangeRequests.setEmail("test@test.com");
+    passwordChangeRequests.setChangeRequest("123456");
+    when(passwordChangeRequestsRepo.getPasswordChangeRequestsByChangeRequest("123456")).thenReturn(Optional.of(passwordChangeRequests));
+    Optional<PasswordChangeRequests> maybeRequest = passwordChangeRequestsRepo.getPasswordChangeRequestsByChangeRequest("123456");
+    String email = maybeRequest.get().getEmail();
+    assertEquals("test@test.com", email);
   }
 }

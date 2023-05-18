@@ -35,7 +35,7 @@ public class UserFollowServiceImpl implements UserFollowService {
   @Override
   public String saveUserFollower(UserFollow userFollow) {
     userFollowRepository.save(userFollow);
-    return "following saved";
+    return "changes saved";
   }
 
   @Override

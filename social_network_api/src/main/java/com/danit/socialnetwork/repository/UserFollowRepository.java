@@ -11,6 +11,8 @@ public interface UserFollowRepository extends JpaRepository<UserFollow, Integer>
   List<UserFollow> findAllByUserFollowerIdAndReceivedNotificationPostContaining(
       Integer userFollowerId, Boolean receivedNotificationPost
   );
+
   List<UserFollow> findAllByUserFollowerId(Integer userFollowerId);
+
   Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(Integer follower, Integer following);
 }

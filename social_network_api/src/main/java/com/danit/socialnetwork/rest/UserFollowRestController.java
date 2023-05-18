@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.UserFollowRequest;
+import com.danit.socialnetwork.dto.UserNotificationRequest;
 import com.danit.socialnetwork.dto.UserUnfollowRequest;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.UserFollow;
@@ -30,11 +31,62 @@ public class UserFollowRestController {
     return userFollowService.getAllUserByUserFollowerId(userId);
   }
 
-  @PostMapping("api/follow")
-  public ResponseEntity<?> follow(@RequestBody UserFollowRequest userFollow) {
+  Boolean usersExist(UserFollowRequest userFollow) {
     Integer follower = userFollow.getUserFollower();
     Integer following = userFollow.getUserFollowing();
-    Boolean receivedNotificationPost = userFollow.getReceiveNotifications();
+    Optional<DbUser> maybeFollower = userRepository.findById(follower);
+    Optional<DbUser> maybeFollowing = userRepository.findById(following);
+
+    if (maybeFollower.isEmpty()
+        || maybeFollowing.isEmpty()
+        || follower == following) {
+      return false;
+    }
+    return true;
+  }
+
+  @PostMapping("api/follow")
+  public ResponseEntity<?> follow(@RequestBody UserFollowRequest userFollowRequest) {
+
+    if (usersExist(userFollowRequest)) {
+      Integer follower = userFollowRequest.getUserFollower();
+      Integer following = userFollowRequest.getUserFollowing();
+      Optional<UserFollow> maybeUserFollow = userFollowService
+          .getUserFollowByUserFollowerIdAndUserFollowingId(follower, following);
+      if (maybeUserFollow.isPresent()) {
+        return new ResponseEntity<>("Following already exists", HttpStatus.CREATED);
+      }
+      UserFollow newEntry;
+      newEntry = new UserFollow();
+      newEntry.setUserFollowerId(follower);
+      newEntry.setUserFollowingId(following);
+      newEntry.setReceivedNotificationPost(true);
+      return new ResponseEntity<>(userFollowService.saveUserFollower(newEntry), HttpStatus.OK);
+    }
+    return new ResponseEntity<>("invalid user id", HttpStatus.BAD_REQUEST);
+  }
+
+  @PostMapping("api/unfollow")
+  public ResponseEntity<?> follow(@RequestBody UserUnfollowRequest userUnfollowRequest) {
+    Integer unfollowed = userUnfollowRequest.getUserUnfollowed();
+    Integer unfollowing = userUnfollowRequest.getUserUnfollowing();
+
+    Optional<UserFollow> deletedUserFollow = userFollowService
+        .getUserFollowByUserFollowerIdAndUserFollowingId(unfollowed, unfollowing);
+
+    if (deletedUserFollow.isPresent()) {
+      return new ResponseEntity<>(userFollowService
+          .deleteUserFollowByUserFollowId(deletedUserFollow.get()
+              .getUserFollowId()), HttpStatus.OK);
+    }
+    return new ResponseEntity<>("invalid user id", HttpStatus.OK);
+  }
+
+  @PostMapping("api/notification")
+  public ResponseEntity<?> follow(@RequestBody UserNotificationRequest userNotificationRequest) {
+    Integer follower = userNotificationRequest.getUserFollower();
+    Integer following = userNotificationRequest.getUserFollowing();
+    Boolean receivedNotificationPost = userNotificationRequest.getReceiveNotifications();
 
     Optional<DbUser> maybeFollower = userRepository.findById(follower);
     Optional<DbUser> maybeFollowing = userRepository.findById(following);
@@ -45,42 +97,18 @@ public class UserFollowRestController {
       return new ResponseEntity<>("invalid user id", HttpStatus.BAD_REQUEST);
     }
 
-    Optional<UserFollow> dbEntry = userFollowService.getUserFollowByUserFollowerIdAndUserFollowingId(follower, following);
+    Optional<UserFollow> MaybeUser = userFollowService.getUserFollowByUserFollowerIdAndUserFollowingId(follower, following);
 
     UserFollow newEntry;
-    if (dbEntry.isPresent()) {
-      newEntry = dbEntry.get();
+    if (MaybeUser.isPresent()) {
+      newEntry = MaybeUser.get();
+      newEntry.setReceivedNotificationPost(receivedNotificationPost);
     } else {
       newEntry = new UserFollow();
       newEntry.setUserFollowerId(follower);
       newEntry.setUserFollowingId(following);
+      newEntry.setReceivedNotificationPost(true);
     }
-    newEntry.setReceivedNotificationPost(receivedNotificationPost);
     return new ResponseEntity<>(userFollowService.saveUserFollower(newEntry), HttpStatus.OK);
-  }
-
-  @PostMapping("api/unfollow")
-  public ResponseEntity<?> follow(@RequestBody UserUnfollowRequest userUnfollowRequest) {
-    Integer unfollowed = userUnfollowRequest.getUserUnfollowed();
-    Integer unfollowing = userUnfollowRequest.getUserUnfollowing();
-
-//    Optional<DbUser> maybeFollower = userRepository.findById(unfillowed);
-//    Optional<DbUser> maybeFollowing = userRepository.findById(unfollowing);
-//
-//    if (maybeFollower.isEmpty()
-//        || maybeFollowing.isEmpty()
-//        || unfillowed.equals(unfollowing)) {
-//      return new ResponseEntity<>("invalid user id", HttpStatus.BAD_REQUEST);
-//    }
-
-    Optional<UserFollow> deletedUserFollow = userFollowService
-        .getUserFollowByUserFollowerIdAndUserFollowingId(unfollowed, unfollowing);
-
-    if (deletedUserFollow.isPresent()) {
-      return new ResponseEntity<>(userFollowService
-          .deleteUserFollowByUserFollowId(deletedUserFollow.get()
-          .getUserFollowId()), HttpStatus.OK);
-    }
-    return new ResponseEntity<>("invalid user id", HttpStatus.OK);
   }
 }

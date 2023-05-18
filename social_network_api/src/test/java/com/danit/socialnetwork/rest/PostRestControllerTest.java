@@ -7,6 +7,7 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.model.PostLike;
+import com.danit.socialnetwork.rest.PostRestController;
 import com.danit.socialnetwork.service.PostService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
