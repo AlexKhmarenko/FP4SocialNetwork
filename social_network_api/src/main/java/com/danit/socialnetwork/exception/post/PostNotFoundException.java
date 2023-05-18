@@ -1,6 +1,8 @@
 package com.danit.socialnetwork.exception.post;
 
-public class PostNotFoundException extends AppPostError {
+import com.danit.socialnetwork.exception.user.AppUserError;
+
+public class PostNotFoundException extends AppUserError {
   public PostNotFoundException(String message) {
     super(message);
   }
