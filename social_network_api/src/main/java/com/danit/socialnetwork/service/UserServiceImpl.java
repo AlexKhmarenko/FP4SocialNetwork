@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
     try {
       String message = String.format(
           "Hello, %s! \n "
-              + "Welcome to CapiTweet. Email confirmation code %s",
+              + "Welcome to Capitweet. Email confirmation code %s",
           name, randomNumber);
       log.info(String.format(message));
       mailSender.send(email, "Activation code", message);
