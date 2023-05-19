@@ -1,11 +1,13 @@
 package com.danit.socialnetwork.security;
 
+import com.danit.socialnetwork.config.CorsFilter;
 import com.danit.socialnetwork.config.GuavaCache;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserRepository;
 import com.ibm.icu.text.Transliterator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,10 +42,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return new GuavaCache();
   }
 
+  @Autowired
+  private CorsFilter corsFilter;
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     final String[] userName = new String[1];
+    http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+    ;
 
     http.csrf().disable().headers().frameOptions().disable();
 
@@ -87,7 +95,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 userName[0], LocalDate.of(1900, 1, 1));
             userRepository.save(newUser);
           }
-          response.sendRedirect("/home");
+          response.sendRedirect("http://localhost:3000/home");
         }).permitAll()
     );
     http.logout(l -> l
@@ -105,9 +113,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.rememberMe();
 
     http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-    //    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    //
-    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+// смвыфмвамаяв
   }
-
 }
+
+
+
+
+
+

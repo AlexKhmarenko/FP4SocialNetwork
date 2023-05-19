@@ -2,14 +2,31 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 
-import { Card, CardContent, Avatar, Typography, CardActions, IconButton } from "@mui/material";
+import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Box, Button, TextField } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat } from "@mui/icons-material";
 import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
 import { useSelector } from "react-redux";
+import { StyledBlackButton } from "../LoginModal/loginModalStyles";
 
 export const Post = ({ userName, name, photo, postComments, postLikes, text, dataTime, postId }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const [showMore, setShowMore] = useState(false);
+    const [isCommentOpen, setIsCommentOpen] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState("");
+
+    const handleCommentToggle = () => {
+        setIsCommentOpen(!isCommentOpen);
+    };
+
+    const handleAddComment = () => {
+        setComments([...comments, newComment]);
+        setNewComment("");
+    };
+
+    const handleCommentChange = (e) => {
+        setNewComment(e.target.value);
+    };
 
     async function addLikeHandle() {
         let a = await fetch("http://localhost:8080/likes", {
@@ -85,7 +102,7 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text, dat
             }
 
             <CardActions sx={{ padding: "20px 20px" }}>
-                <IconButton>
+                <IconButton onClick={handleCommentToggle}>
                     <ChatBubbleOutline fontSize="small"/>
                 </IconButton>
                 <IconButton>
@@ -95,6 +112,60 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text, dat
                     <FavoriteBorder fontSize="small"/>
                 </IconButton>
             </CardActions>
+
+
+            {isCommentOpen && (
+                <Box style={{ padding: "10px 20px", borderTop: "1px solid #ddd", overflow: "scroll", height: "50xp" }}>
+                    <Typography variant="h6" sx={{ marginBottom: "10px" }}>Comments:</Typography>
+                    {comments.map((comment, index) => (
+                        <Box key={index} style={{ marginTop: "10px", padding: "5px 0", borderTop: "1px solid #eee" }}>
+                            <Typography>{comment}</Typography>
+                        </Box>
+                    ))}
+                    <Box style={{
+                        padding: "5px 0",
+                        borderTop: "1px solid #eee",
+                        display: "flex",
+                        alignItems: "center",
+                        height:"60px"
+                    }}>
+                        <div style={{ width: "40px", height: "40px", backgroundColor: "blue", borderRadius: "30px" }}/>
+                        <Typography sx={{ marginLeft: "30px" }}>fk;lsdjf;lgm;slmg;rslgm</Typography>
+                    </Box>
+                    <Box style={{
+                        padding: "5px 0",
+                        borderTop: "1px solid #eee",
+                        display: "flex",
+                        alignItems: "center",
+                        height:"60px"
+                    }}>
+                        <div style={{ width: "40px", height: "40px", backgroundColor: "blue", borderRadius: "30px" }}/>
+                        <Typography sx={{ marginLeft: "30px" }}>fk;lsdjf;lgm;slmg;rslgm</Typography>
+                    </Box>
+                    <Box style={{
+                        padding: "5px 0",
+                        borderTop: "1px solid #eee",
+                        display: "flex",
+                        alignItems: "center",
+                        height:"60px"
+                    }}>
+                        <div style={{ width: "40px", height: "40px", backgroundColor: "blue", borderRadius: "30px" }}/>
+                        <Typography sx={{ marginLeft: "30px" }}>fk;lsdjf;lgm;slmg;rslgm</Typography>
+                    </Box>
+                    <TextField
+                        value={newComment}
+                        onChange={handleCommentChange}
+                        sx={{ "& .MuiOutlinedInput-root": { borderRadius: "40px" }, marginTop:"10px" }}
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        label="Please enter your comment"
+                        multiline
+                    />
+                    <Button onClick={handleAddComment} color="primary" variant="contained"
+                            style={{ ...StyledBlackButton, maxWidth: "140px", marginTop:"0", fontSize: "12px"}}>Add comment</Button>
+                </Box>
+            )}
         </Card>
     );
 };

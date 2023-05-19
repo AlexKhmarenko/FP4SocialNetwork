@@ -38,15 +38,15 @@ public class Post {
   @Column(name = "written_text")
   private String writtenText;
 
-  @Column(name = "photo_file")
+  @Column(name = "photo_file", columnDefinition = "text")
   private String photoFile;
+
 
   @Column(name = "sent_datetime", updatable = false)
   @NonNull
   @CreationTimestamp
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
   private LocalDateTime sentDateTime;
-
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "post_id")
   private List<PostLike> postLikes;
