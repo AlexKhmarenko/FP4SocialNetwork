@@ -7,9 +7,8 @@ import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-
 import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
 import { useSelector } from "react-redux";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
-import { getInformAboutLikesInAPost } from "../../store/actions";
 
-export const Post = ({ userName, name, photo, postComments, text, dataTime, postId }) => {
+export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const [showMore, setShowMore] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
@@ -19,9 +18,11 @@ export const Post = ({ userName, name, photo, postComments, text, dataTime, post
     const [likeArr, setLikeArr] = useState([]);
 
     const getInformAboutLikesInAPost = async () => {
-        let resp = await fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`);
-        let data2 = await resp.json();
-        setLike(data2);
+        if(userId){
+            let resp = await fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`);
+            let data2 = await resp.json();
+            setLike(data2);
+        }
     };
 
     const getInformAboutusersWhichLike = async () => {
@@ -61,7 +62,7 @@ export const Post = ({ userName, name, photo, postComments, text, dataTime, post
 
     async function addLikeHandle() {
         if (!like) {
-            let a = await fetch("http://localhost:8080/likes", {
+            await fetch("http://localhost:8080/likes", {
                 method: "POST",
                 body: JSON.stringify({
                     postId: postId,
@@ -71,15 +72,13 @@ export const Post = ({ userName, name, photo, postComments, text, dataTime, post
                     "Content-Type": "application/json"
                 }
             });
-            let b = await a.json();
         } else {
-            let a = await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
+            await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
-            let b = await a.json();
         }
         setLike(!like);
     }

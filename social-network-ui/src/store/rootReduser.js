@@ -6,6 +6,7 @@ import { userTokenSaveReducer } from "./Reducers/userTokenReducer";
 import {usersSearchReducer} from "./Reducers/usersSearchReducer";
 import { userDataReducer } from "./Reducers/userDataReducer";
 import { PostReducer } from "./Reducers/PostsReducer";
+import {PageDisplaing} from "./Reducers/PageDisplaing"
 
 const rootReducer = combineReducers({
     loginUserData: userDataLoginReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     saveUserToken: userTokenSaveReducer,
     usersSearch: usersSearchReducer,
     userData: userDataReducer,
-    Posts: PostReducer
+    Posts: PostReducer,
+    pageCount:PageDisplaing,
 });
 
 export default rootReducer;

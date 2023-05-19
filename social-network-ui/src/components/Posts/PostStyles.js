@@ -25,7 +25,7 @@ export const PostsWrapper = {
     maxWidth: "100%",
 };
 export const PostCard = {
-    width: "100%",
+    width:"600px",
     maxWidth: "100%",
     borderRadius: 0,
     mb: 1,

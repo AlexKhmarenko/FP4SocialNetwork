@@ -9,19 +9,14 @@ import {
     OPEN_LOGIN_MODAL,
     CLOSE_SIGN_UP_MODAL,
     CLOSE_LOGIN_MODAL,
-    DELETE_USERS_SUCCESS
+    DELETE_USERS_SUCCESS,
+    SET_PAGE, SET_CLEAR_POSTS
 } from "./types";
-import { createAsyncThunk } from '@reduxjs/toolkit';
 
-
-export const getInformAboutLikesInAPost = createAsyncThunk(
-    'posts/fetchLikes',
-    async ({postId, userId}) => {
-        const response = await fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`);
-        const data = await response.json();
-        return data;
-    }
-);
+export const setPage = (pageNumber) => ({
+    type: SET_PAGE,
+    payload: pageNumber,
+});
 
 export const setUserEmail = (userData) => ({
     type: UPDATE_USER_DATA_USERNAME,
@@ -56,20 +51,60 @@ export const closeLoginModal = () => ({
 });
 export const openLoginModal = () => ({
     type: OPEN_LOGIN_MODAL
-})
+});
 export const closeSignUpModal = () => ({
     type: CLOSE_SIGN_UP_MODAL
-})
+});
 export const GetUsersSuccess = (data) => ({
     type: GET_USERS_SUCCESS,
-    payload: {users : data.search}
-})
+    payload: { users: data.search }
+});
 export const DeleteUsersSuccess = () => ({
     type: DELETE_USERS_SUCCESS
-})
+});
 
 export const setPosts = (posts) => ({
     type: SET_POSTS,
     payload: posts,
 });
+
+export const setUserPostsClear = (posts) => ({
+    type: SET_CLEAR_POSTS, payload: posts
+});
+
+export const fetchPostsByUserId = (userId, page) => {
+    return async (dispatch) => {
+        const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
+        return await response.json();
+    };
+};
+
+export const fetchPostsByPage = (page) => {
+    return async (dispatch) => {
+        const response = await fetch(`http://localhost:8080/posts?page=${page}`);
+        return await response.json();
+    };
+};
+
+export const sendEmailCheckRequest = (values) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch("http://localhost:8080/checkEmail", {
+                method: "POST",
+                body: JSON.stringify(values),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            if (!response.ok) {
+                throw new Error("Request failed");
+            }
+
+            return response;
+        } catch (error) {
+            console.error("An error occurred:", error);
+            throw error;
+        }
+    };
+};
+
 

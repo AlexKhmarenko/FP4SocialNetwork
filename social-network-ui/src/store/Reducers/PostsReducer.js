@@ -1,4 +1,4 @@
-import { SET_POSTS } from "../types";
+import { SET_POSTS, SET_USER_POST, SET_CLEAR_POSTS } from "../types";
 
 const initialState = {
     posts:[]
@@ -11,6 +11,12 @@ export function PostReducer(state = initialState, action) {
             return {
                 ...state,
                 posts: [...state.posts, ...action.payload],
+            };
+        case SET_CLEAR_POSTS:
+            console.log(action.payload)
+            return {
+                ...state,
+                posts: action.payload,
             };
         default:
             return state;
