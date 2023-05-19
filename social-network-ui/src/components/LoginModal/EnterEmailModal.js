@@ -22,8 +22,7 @@ export function EnterEmailModal() {
 
    async function signWidthGoogle (){
        let dataAboutRegistration = await fetch("http://localhost:8080/oauth2/authorization/google");
-       let informAboutRegistration = await dataAboutRegistration.json()
-       console.log(informAboutRegistration)
+       console.log( dataAboutRegistration)
     }
 
     return (

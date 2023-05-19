@@ -1,19 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 
 import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Box, Button, TextField } from "@mui/material";
-import { FavoriteBorder, ChatBubbleOutline, Repeat } from "@mui/icons-material";
+import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
 import { useSelector } from "react-redux";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
+import { getInformAboutLikesInAPost } from "../../store/actions";
 
-export const Post = ({ userName, name, photo, postComments, postLikes, text, dataTime, postId }) => {
+export const Post = ({ userName, name, photo, postComments, text, dataTime, postId }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const [showMore, setShowMore] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
+    const [like, setLike] = useState(false);
+    const [likeArr, setLikeArr] = useState([]);
+
+    const getInformAboutLikesInAPost = async () => {
+        let resp = await fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`);
+        let data2 = await resp.json();
+        setLike(data2);
+    };
+
+    const getInformAboutusersWhichLike = async () => {
+        let response = await fetch(`http://localhost:8080/likes?postId=${postId}`);
+        let data = await response.json();
+        setLikeArr(data);
+    };
+
+    useEffect(() => {
+        getInformAboutLikesInAPost();
+    }, [like]);
+
+    useEffect(() => {
+        getInformAboutusersWhichLike();
+    }, [like]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await getInformAboutusersWhichLike();
+            await getInformAboutLikesInAPost();
+        };
+        fetchData();
+    }, []);
 
     const handleCommentToggle = () => {
         setIsCommentOpen(!isCommentOpen);
@@ -29,18 +60,28 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text, dat
     };
 
     async function addLikeHandle() {
-        let a = await fetch("http://localhost:8080/likes", {
-            method: "POST",
-            body: JSON.stringify({
-                postId: postId,
-                userId: userId,
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        let b = await a.json();
-        console.log(" b ", b);
+        if (!like) {
+            let a = await fetch("http://localhost:8080/likes", {
+                method: "POST",
+                body: JSON.stringify({
+                    postId: postId,
+                    userId: userId,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            let b = await a.json();
+        } else {
+            let a = await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            let b = await a.json();
+        }
+        setLike(!like);
     }
 
     const handleShowMore = () => {
@@ -109,14 +150,15 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text, dat
                     <Repeat fontSize="small"/>
                 </IconButton>
                 <IconButton onClick={addLikeHandle}>
-                    <FavoriteBorder fontSize="small"/>
+                    {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
+                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{likeArr.length}</Typography>
                 </IconButton>
             </CardActions>
 
 
             {isCommentOpen && (
                 <Box style={{ padding: "10px 20px", borderTop: "1px solid #ddd", overflow: "scroll", height: "50xp" }}>
-                    <Typography variant="h6" sx={{ marginBottom: "10px" }}>Comments:</Typography>
+                    <Typography variant="h6" sx={{ marginBottom: "10px", marginTop: "10px" }}>Comments:</Typography>
                     {comments.map((comment, index) => (
                         <Box key={index} style={{ marginTop: "10px", padding: "5px 0", borderTop: "1px solid #eee" }}>
                             <Typography>{comment}</Typography>
@@ -127,7 +169,7 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text, dat
                         borderTop: "1px solid #eee",
                         display: "flex",
                         alignItems: "center",
-                        height:"60px"
+                        height: "60px"
                     }}>
                         <div style={{ width: "40px", height: "40px", backgroundColor: "blue", borderRadius: "30px" }}/>
                         <Typography sx={{ marginLeft: "30px" }}>fk;lsdjf;lgm;slmg;rslgm</Typography>
@@ -137,7 +179,7 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text, dat
                         borderTop: "1px solid #eee",
                         display: "flex",
                         alignItems: "center",
-                        height:"60px"
+                        height: "60px"
                     }}>
                         <div style={{ width: "40px", height: "40px", backgroundColor: "blue", borderRadius: "30px" }}/>
                         <Typography sx={{ marginLeft: "30px" }}>fk;lsdjf;lgm;slmg;rslgm</Typography>
@@ -147,7 +189,7 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text, dat
                         borderTop: "1px solid #eee",
                         display: "flex",
                         alignItems: "center",
-                        height:"60px"
+                        height: "60px"
                     }}>
                         <div style={{ width: "40px", height: "40px", backgroundColor: "blue", borderRadius: "30px" }}/>
                         <Typography sx={{ marginLeft: "30px" }}>fk;lsdjf;lgm;slmg;rslgm</Typography>
@@ -155,7 +197,7 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text, dat
                     <TextField
                         value={newComment}
                         onChange={handleCommentChange}
-                        sx={{ "& .MuiOutlinedInput-root": { borderRadius: "40px" }, marginTop:"10px" }}
+                        sx={{ "& .MuiOutlinedInput-root": { borderRadius: "40px" }, marginTop: "10px" }}
                         fullWidth
                         margin="normal"
                         variant="outlined"
@@ -163,7 +205,13 @@ export const Post = ({ userName, name, photo, postComments, postLikes, text, dat
                         multiline
                     />
                     <Button onClick={handleAddComment} color="primary" variant="contained"
-                            style={{ ...StyledBlackButton, maxWidth: "140px", marginTop:"0", fontSize: "12px"}}>Add comment</Button>
+                            style={{
+                                ...StyledBlackButton,
+                                maxWidth: "140px",
+                                marginTop: "10px",
+                                marginBottom: "10px",
+                                fontSize: "12px"
+                            }}>Add comment</Button>
                 </Box>
             )}
         </Card>

@@ -11,6 +11,17 @@ import {
     CLOSE_LOGIN_MODAL,
     DELETE_USERS_SUCCESS
 } from "./types";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
+
+export const getInformAboutLikesInAPost = createAsyncThunk(
+    'posts/fetchLikes',
+    async ({postId, userId}) => {
+        const response = await fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`);
+        const data = await response.json();
+        return data;
+    }
+);
 
 export const setUserEmail = (userData) => ({
     type: UPDATE_USER_DATA_USERNAME,

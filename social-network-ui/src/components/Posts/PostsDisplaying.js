@@ -49,7 +49,6 @@ export const PostsDisplaying = () => {
                       name={post.name} text={post.writtenText}
                       photo={post.photoFileByteArray}
                       postComments={post.postComments}
-                      postLikes={post.postLikes}
                       dataTime={post.sentDateTime}
                       postId={post.postId}
                 />
