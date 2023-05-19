@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 
 import javax.persistence.CascadeType;
@@ -25,9 +26,9 @@ import java.util.List;
 
 
 @Entity
+@Table(name = "posts")
 @Data
 @NoArgsConstructor
-@Table(name = "posts")
 public class Post {
 
   @Id
@@ -47,10 +48,6 @@ public class Post {
   @CreationTimestamp
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
   private LocalDateTime sentDateTime;
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "post_id")
-  private List<PostLike> postLikes;
-
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "post_id")
   private List<PostComment> postComments;
