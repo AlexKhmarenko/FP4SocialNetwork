@@ -21,3 +21,5 @@ export const step4 = "step4";
 export const CHECK_EMAIL = "CHECK_EMAIL"
 export const CODE_CHECK = "CODE_CHECK"
 export const NEW_PASSWORD = "NEW_PASSWORD"
+export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS'
+export const DELETE_USERS_SUCCESS = 'DELETE_USERS_SUCCESS'
