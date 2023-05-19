@@ -16,7 +16,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import {closeSignUpModal} from "../../store/actions";
+import {closeSignUpModal, openLoginModal} from "../../store/actions";
 
 export function ContentFourthStep() {
     const dispatch = useDispatch();
@@ -155,6 +155,7 @@ export function ContentFourthStep() {
                                         onClick={()=>{
                                             dispatch(closeSignUpModal())
                                             localStorage.setItem("stepInModal", JSON.stringify(1))
+                                            dispatch(openLoginModal())
                                         }}>Register</Button>
                         </Form>
                     )}
