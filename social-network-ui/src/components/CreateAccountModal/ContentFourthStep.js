@@ -89,6 +89,9 @@ export function ContentFourthStep() {
                         if (response.ok) {
                             const userToken = await response.json();
                             dispatch({ type: SET_STEP_MODAL, step: 3 });
+                            dispatch(closeSignUpModal())
+                            dispatch(openLoginModal())
+                            localStorage.setItem("stepInModal", JSON.stringify(1))
                         } else {
                             setErrors({ password: "wrong data" });
                         }
@@ -151,12 +154,7 @@ export function ContentFourthStep() {
                                     <ErrorText>{formikProps.errors.password}</ErrorText>
                                 )}
                                 </FormControl>
-                                <Button variant="contained" sx={ StyledFirstStepButton } type="submit" fullWidth={true}
-                                        onClick={()=>{
-                                            dispatch(closeSignUpModal())
-                                            localStorage.setItem("stepInModal", JSON.stringify(1))
-                                            dispatch(openLoginModal())
-                                        }}>Register</Button>
+                                <Button variant="contained" sx={ StyledFirstStepButton } type="submit" fullWidth={true}>Register</Button>
                         </Form>
                     )}
                 </Formik>
