@@ -6,15 +6,13 @@ import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
-import com.danit.socialnetwork.service.PostService;
 import com.danit.socialnetwork.service.PostServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -80,7 +78,7 @@ class PostRestControllerTest {
 
     when(postService.savePost(any(PostDtoSave.class))).thenReturn(post1);
     ResponseEntity<PostDtoResponse> responseEntity = postRestController.addPost(postDtoSave);
-    Assertions.assertEquals(201,responseEntity.getStatusCodeValue());
+    Assertions.assertEquals(201, responseEntity.getStatusCodeValue());
     Assertions.assertEquals("Hello world1", responseEntity.getBody().getWrittenText());
 
 
