@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { modalConfig } from '../modalConfig';
+import { modalConfig } from './modalConfig';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { StyledBox, StyledHeaderModalText, StyledModalText, StyledFormControl, StyledSpanElement, StyledWhiteButton } from "../style"
-import BasicButton from '../../button';
-import InputFieldWithError from "../../input"
-import { useModal } from '../../../../context/ModalContext';
+import { StyledBox, StyledHeaderModalText, StyledModalText, StyledFormControl, StyledSpanElement, StyledWhiteButton } from "./style"
+import BasicButton from '../common/button';
+import InputFieldWithError from "../common/input"
+import { useModal } from '../../context/ModalContext';
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import Logo from "../../icon/Logo";
-import CloseIcon from '../../icon/CloseIcon';
-import checkEmail from "../../../../store/actions"
+import {checkEmail} from "../../store/actions"
+
+import Logo from "../common/icon/Logo";
+import CloseIcon from '../common/icon/CloseIcon';
 
 
 export const ForgotModal = ({ id }) => {

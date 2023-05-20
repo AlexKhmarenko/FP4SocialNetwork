@@ -1,18 +1,18 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { modalConfig } from '../modalConfig';
+import { modalConfig } from './modalConfig';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { StyledBox, StyledHeaderModalText, StyledBlackButton, StyledFormControl, StyledSpanElement, StyledWhiteButton  } from "../style"
-import BasicButton from '../../button';
+import { StyledBox, StyledHeaderModalText, StyledBlackButton, StyledFormControl, StyledSpanElement, StyledWhiteButton  } from "./style"
+import BasicButton from '../common/button';
 import {Link} from "react-router-dom"
-import { useModal } from '../../../../context/ModalContext';
-import { changeEmail } from '../../../../util/util';
+import { useModal } from '../../context/ModalContext';
+import { changeEmail } from '../../util/util';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 // import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-import Logo from "../../icon/Logo";
-import CloseIcon from '../../icon/CloseIcon';
+import Logo from "../common/icon/Logo";
+import CloseIcon from '../common/icon/CloseIcon';
 
 export const SendCodeModal = ({ id }) => {
     const email = "demo@gmail.com"

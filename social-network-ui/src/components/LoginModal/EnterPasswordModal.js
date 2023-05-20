@@ -14,7 +14,7 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 
-import { closeLoginModal, setRememberMeAction, setUserEmail, setUserPassword } from "../../../../store/actions";
+import { closeLoginModal, setRememberMeAction, setUserEmail, setUserPassword } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
 import {
     StyledHeaderModalText,
@@ -23,7 +23,7 @@ import {
     StyledWhiteButton,
     StyledCheckbox
 } from "./loginModalStyles";
-import { setUserToken } from "../../../../store/actions";
+import { setUserToken } from "../../store/actions";
 
 export function EnterPasswordModal() {
     const [isSubmitting, setIsSubmitting] = useState(false);

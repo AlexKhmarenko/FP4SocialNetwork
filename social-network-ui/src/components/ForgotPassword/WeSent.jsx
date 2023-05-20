@@ -1,37 +1,31 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { modalConfig } from '../modalConfig';
+import { modalConfig } from './modalConfig';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { StyledBox, StyledHeaderModalText, StyledBlackButton, StyledFormControl, StyledSpanElement, StyledWhiteButton } from "../style"
-import BasicButton from '../../button';
+import { StyledBox, StyledHeaderModalText, StyledModalText, StyledBlackButton, StyledFormControl, StyledSpanElement, StyledWhiteButton } from "./style"
+import BasicButton from '../common/button';
 // import BasicInput from "../../input"
-import InputFieldWithError from "../../input"
-import { Link } from "react-router-dom"
-import { useModal } from '../../../../context/ModalContext';
+import InputFieldWithError from "../common/input"
+import { useModal } from '../../context/ModalContext';
+
+import Logo from "../common/icon/Logo";
+import CloseIcon from '../common/icon/CloseIcon';
 
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import Logo from "../../icon/Logo";
-import CloseIcon from '../../icon/CloseIcon';
-
-export const Choose = ({ id }) => {
-    const { setOpenChoose, setOpenAllSet } = useModal()
-    const { title,
-        text,
+export const WeSent = ({ id }) => {
+    const { setOpenWeSend, setOpenChoose } = useModal()
+    const { text,
+        title,
         buttonText,
         placeholder,
         iconStatus,
-        inputType,
-        link,
-        linkText,
-        name,
-        secondName,
-        secondPlaceholder } = modalConfig[id]
+        inputType } = modalConfig[id]
     const handleClick = () => {
-        setOpenChoose(false);
-        setOpenAllSet(true)
+        setOpenWeSend(false);
+        setOpenChoose(true)
     }
     return (
         <Formik validate={async (values) => {
@@ -59,48 +53,34 @@ export const Choose = ({ id }) => {
                 )} onSubmit={(values) => {
                     // dispatch(setUserPassword(values));
                 }}>
-
             <Box sx={StyledBox}>
                 <CloseIcon onClick={() => setOpenForgot(false)} />
                 <Logo />
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography sx={StyledHeaderModalText} variant="h6" component="h2">
                     {title}
                 </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                <Typography id="modal-modal-description" sx={StyledModalText}>
                     {text}
                 </Typography>
 
                 <Box
                     component="form"
-                    sx={{
-                        '& .MuiTextField-root': { m: 1, width: '50ch' },
-                    }}
+                    sx={StyledFormControl}
                     noValidate
                     autoComplete="off"
                 >
-                    <div>
-                    <Field as={InputFieldWithError} sx={{width: "600px"}} name={name}
-                        id="password"
-                        label={placeholder} type="password" /></div>
-
-                    <Field as={InputFieldWithError} sx={{ width: "600px" }} name={secondName}
-                        id="confirm"
-                        label={secondPlaceholder} type="password" />
-
-                    {/* <InputFieldWithError/> */}
+                    {/* <InputFieldWithError /> */}
+                    <Field as={InputFieldWithError} sx={{ width: "400px" }} name={placeholder}
+                        id="userName"
+                        label={placeholder} type="text" />
                     {/* <BasicInput type={inputType} iconStatus={iconStatus} placeholder={placeholder} /> */}
                 </Box>
 
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    {linkText}
-                    <Link path="/support">{link}</Link>
-                </Typography>
-
-                <BasicButton color="black" text={buttonText} onClick={handleClick} />
+                <BasicButton text={buttonText} onClick={handleClick} />
             </Box>
         </Formik>
     )
 }
-Choose.propTypes = {
+WeSent.propTypes = {
     id: PropTypes.string
 };

@@ -5,8 +5,7 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setUserName } from "../../../../store/actions";
-import { setUserEmail } from "../../../../store/actions";
+import { setUserEmail } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
 import {
     StyledBlackButton,
@@ -16,12 +15,14 @@ import {
     StyledWhiteButton
 } from "./loginModalStyles";
 import PropTypes from "prop-types";
+import { useModal } from '../../context/ModalContext';
 
 
 export function EnterEmailModal() {
     const dispatch = useDispatch();
     const userDataState = useSelector(state => state.loginUserData.userData);
     const [isSubmitting, setIsSubmitting] = useState(false);
+	const {openForgot, openSendCode, openWeSend, openChoose, openAllSet, setOpenForgot} = useModal()
 
     return (
         <>
@@ -78,7 +79,7 @@ export function EnterEmailModal() {
                                label="Email" disabled={isSubmitting} type="text"/>
                         <Button type="submit"
                                 variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Next</Button>
-                        <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
+                        <Button variant="contained" sx={StyledWhiteButton} fullWidth={true} onClick={() => {setOpenForgot(!openForgot)}}>Forgot password?</Button>
                     </FormControl>
                 </Form>
             </Formik>

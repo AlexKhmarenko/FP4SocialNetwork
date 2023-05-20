@@ -3,10 +3,8 @@ import { AppBar, Box, Button, Typography, Container } from "@mui/material"
 import { OPEN_LOGIN_MODAL, OPEN_SIGN_UP_MODAL } from "../../store/types";
 import { useDispatch } from "react-redux";
 import { useModal } from '../../context/ModalContext';
-import BasicModal from "../common/modal"
-import {AppBar, Box, Button, Typography, Container} from "@mui/material"
-import {useDispatch} from "react-redux";
 import {openLoginModal, openSignUpModal} from "../../store/actions";
+import BasicModal from "../ForgotPassword"
 
 
 export function Footer() {
@@ -19,7 +17,7 @@ export function Footer() {
             <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, backgroundColor: "rgb(29, 155, 240)" }}>
                 <Container sx={{ minWidth: "1300px" }} >
                     <Box display="grid" gridTemplateColumns=" 0.7fr 1fr 2fr 1fr" gap={2} sx={{ height: "72px", alignItems: "center" }}>
-                    <Button variant="contained" sx={{
+                    {/* <Button variant="contained" sx={{
                                 background: "#ffffff",
                                 color: "#000000",
                                 borderRadius: "20px",
@@ -32,7 +30,7 @@ export function Footer() {
                                     backgroundColor: "#000000",
                                     color: "#ffffff"
                                 },
-                            }} onClick={() => {setOpenForgot(!openForgot)}}>Forgot password?</Button>
+                            }} onClick={() => {setOpenForgot(!openForgot)}}>Forgot password?</Button> */}
 
                         <div />
                         

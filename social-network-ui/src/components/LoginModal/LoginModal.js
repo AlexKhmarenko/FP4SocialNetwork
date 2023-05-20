@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { Modal, Typography, Box, Link, SvgIcon } from "@mui/material";
+import { useModal } from '../../context/ModalContext';
 
 import { EnterPasswordModal } from "./EnterPasswordModal";
 import { EnterEmailModal } from "./EnterEmailModal";
 import { StyledModal, StyledBox, StyledTwitSvgIcon, StyledCloseSvgIcon } from "./loginModalStyles";
-import {CLOSE_LOGIN_MODAL} from "../../../../store/types";
-import { openSignUpModal,  closeLoginModal } from "../../../../store/actions";
-import CloseIcon from "../../icon/CloseIcon"
-import Logo from "../../icon/Logo"
+import { openSignUpModal,  closeLoginModal } from "../../store/actions";
 
 export function LoginModal() {
     const userDataState = useSelector(state => state.loginUserData.userData);
@@ -31,17 +29,13 @@ export function LoginModal() {
             onClose={() => {dispatch(closeLoginModal())}}
             sx={StyledModal}>
             <Box sx={StyledBox}>
-				<CloseIcon/>
-                 {/* <SvgIcon sx={StyledCloseSvgIcon} width="30px" height="30px" viewBox="0 0 24 24" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
                 <SvgIcon sx={StyledCloseSvgIcon} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                          onClick={() => {dispatch(closeLoginModal())}}>
                     <path fillRule="evenodd" clipRule="evenodd"
                           d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
                           fill="#000000"/>
-                </SvgIcon> */}
-				<Logo/>
-                {/* <SvgIcon sx={StyledTwitSvgIcon} height="50px" width="50px" version="1.1" id="Layer_1"
+                </SvgIcon>
+                <SvgIcon sx={StyledTwitSvgIcon} height="50px" width="50px" version="1.1" id="Layer_1"
                          viewBox="0 0 512 512">
                     <g>
                         <path style={{fill:"white"}} d="M22.777,401.568l-8.014-56.122l0.776-0.781c7.63-7.674,25.377-27.488,25.377-45.704
@@ -115,7 +109,7 @@ export function LoginModal() {
                         <path  d="M424.086,122.581c4.578,0,8.294,3.716,8.294,8.294c0,4.589-3.716,8.294-8.294,8.294h-8.847
 		c-4.578,0-8.294-3.705-8.294-8.294c0-4.578,3.716-8.294,8.294-8.294H424.086z"/>
                     </g>
-                </SvgIcon> */}
+                </SvgIcon>
                 {userDataState.email ? (<EnterPasswordModal userData={userDataState}/>) : (
                     <EnterEmailModal userData={userDataState}/>)}
                 <Typography sx={{ marginTop: "30px" }}>Don`t have an account? <Link href="#" onClick={OpenSignUpModalAndCloseLoginModal}>Sign Up</Link></Typography>
