@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.model.InboxParticipants;
 import com.danit.socialnetwork.repository.InboxParticipantsRepository;
 import org.junit.Assert;
@@ -9,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -17,6 +19,7 @@ import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @RunWith(MockitoJUnitRunner.class)
+@SpringBootTest(classes = NetworkApp.class)
 public class InboxParticipantsServiceImplUnitTest {
   @Mock
   InboxParticipantsRepository inboxParticipantsRepository;

@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.dto.*;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.service.UserService;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
+@SpringBootTest(classes = NetworkApp.class)
 public class UserRestControllerTest {
 
   private MockMvc mockMvc;

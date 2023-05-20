@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.dto.JwtRequest;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.security.JwtTokenService;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +31,7 @@ import static org.mockito.BDDMockito.given;
 
 
 @RunWith(MockitoJUnitRunner.class)
+@SpringBootTest(classes = NetworkApp.class)
 public class JwtAuthenticationRestControllerTest {
 
   @Mock

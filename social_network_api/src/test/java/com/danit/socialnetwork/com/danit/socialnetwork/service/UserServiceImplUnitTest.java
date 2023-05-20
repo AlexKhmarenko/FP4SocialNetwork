@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.config.GuavaCache;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -24,6 +26,7 @@ import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @RunWith(MockitoJUnitRunner.class)
+@SpringBootTest(classes = NetworkApp.class)
 public class UserServiceImplUnitTest {
   @Mock
   UserRepository userRepository;
