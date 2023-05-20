@@ -1,6 +1,7 @@
 import com.danit.socialnetwork.dto.message.InboxDtoRequest;
 import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
+import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.InboxRepository;
@@ -8,6 +9,7 @@ import com.danit.socialnetwork.rest.MessageRestController;
 import com.danit.socialnetwork.service.InboxParticipantsService;
 import com.danit.socialnetwork.service.InboxService;
 import com.danit.socialnetwork.service.MessageService;
+import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +21,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -39,6 +43,9 @@ public class MessageRestControllerTest {
 
   @Mock
   private InboxService inboxService;
+
+  @Mock
+  UserService userService;
 
   @Mock
   private InboxRepository inboxRepository;

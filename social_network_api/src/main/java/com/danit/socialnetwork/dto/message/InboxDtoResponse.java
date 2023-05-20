@@ -6,6 +6,7 @@ import com.danit.socialnetwork.service.UserService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +21,15 @@ public class InboxDtoResponse {
   private String writtenMessage;
   private LocalDateTime createdAt;
 
-  public static List<InboxDtoResponse> from(List<Inbox> inboxes, UserService userService) {
+  public static List<InboxDtoResponse> from(List<Inbox> inboxes, UserService userService) throws IOException {
     List<InboxDtoResponse> inboxDto = new ArrayList<>();
     for (Inbox inbox : inboxes) {
       InboxDtoResponse inboxDtoResponse = new InboxDtoResponse();
       inboxDtoResponse.setInboxUid(inbox.getInboxUid());
-      try {
-        Optional<DbUser> lastSentUser = userService.findById(inbox.getLastSentUserId());
-        if (lastSentUser.isPresent()) {
-          inboxDtoResponse.setUsername(lastSentUser.get().getUsername());
-          inboxDtoResponse.setProfileImageUrl(lastSentUser.get().getProfileImageUrl());
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
+      Optional<DbUser> lastSentUser = userService.findById(inbox.getLastSentUserId());
+      if (lastSentUser.isPresent()) {
+        inboxDtoResponse.setUsername(lastSentUser.get().getUsername());
+        inboxDtoResponse.setProfileImageUrl(lastSentUser.get().getProfileImageUrl());
       }
       inboxDtoResponse.setWrittenMessage(inbox.getLastMessage());
       inboxDtoResponse.setCreatedAt(inbox.getCreatedAt());

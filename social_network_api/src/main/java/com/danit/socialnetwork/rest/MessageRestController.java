@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class MessageRestController {
 
   @GetMapping(path = "/inbox")
   @ResponseBody
-  public ResponseEntity<List<InboxDtoResponse>> getInbox(@RequestBody InboxDtoRequest inboxDtoRequest) {
+  public ResponseEntity<List<InboxDtoResponse>> getInbox(@RequestBody InboxDtoRequest inboxDtoRequest) throws IOException {
 
     Integer inboxUid = inboxDtoRequest.getInboxUid();
     List<Inbox> inboxes =  inboxService.getInboxesByInboxUid(inboxUid);
