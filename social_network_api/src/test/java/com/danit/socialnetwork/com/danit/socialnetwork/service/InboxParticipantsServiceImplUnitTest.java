@@ -1,8 +1,7 @@
-import com.danit.socialnetwork.model.Inbox;
+package com.danit.socialnetwork.service;
+
 import com.danit.socialnetwork.model.InboxParticipants;
 import com.danit.socialnetwork.repository.InboxParticipantsRepository;
-import com.danit.socialnetwork.service.InboxParticipantsService;
-import com.danit.socialnetwork.service.InboxParticipantsServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;

@@ -1,7 +1,6 @@
 package com.danit.socialnetwork.security;
 
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.security.JwtUserDetailsService;
 import com.danit.socialnetwork.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

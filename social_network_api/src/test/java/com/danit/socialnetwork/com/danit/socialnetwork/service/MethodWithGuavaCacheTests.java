@@ -1,8 +1,7 @@
-package com.danit.socialnetwork;
+package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

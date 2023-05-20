@@ -1,9 +1,8 @@
+package com.danit.socialnetwork.service;
+
 import com.danit.socialnetwork.config.GuavaCache;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserRepository;
-import com.danit.socialnetwork.service.MailSenderImpl;
-import com.danit.socialnetwork.service.UserService;
-import com.danit.socialnetwork.service.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

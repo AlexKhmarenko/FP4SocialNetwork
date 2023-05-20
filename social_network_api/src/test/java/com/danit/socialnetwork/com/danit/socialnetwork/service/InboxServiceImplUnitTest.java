@@ -1,8 +1,7 @@
+package com.danit.socialnetwork.service;
+
 import com.danit.socialnetwork.model.Inbox;
-import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.InboxRepository;
-import com.danit.socialnetwork.service.InboxService;
-import com.danit.socialnetwork.service.InboxServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,7 @@
+package com.danit.socialnetwork.service;
+
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.MessageRepository;
-import com.danit.socialnetwork.service.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

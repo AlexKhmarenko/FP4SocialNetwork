@@ -1,3 +1,5 @@
+package com.danit.socialnetwork.dto;
+
 import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.message.MessageDtoResponse;
