@@ -36,7 +36,7 @@ public class InboxParticipantsServiceImplUnitTest {
     when(inboxParticipantsRepository.findByInboxUidAndUserId(28, 34))
         .thenReturn(Optional.of(testInboxParticipants));
 
-    Optional<InboxParticipants> testFindInboxParticipants = inboxParticipantsRepository
+    Optional<InboxParticipants> testFindInboxParticipants = inboxParticipantsService
         .findByInboxUidAndUserId(28, 34);
 
     Mockito.verify(inboxParticipantsRepository).findByInboxUidAndUserId(28, 34);
@@ -46,7 +46,7 @@ public class InboxParticipantsServiceImplUnitTest {
 
   @Test
   public void findByInboxUidAndUserId_shouldFindInboxParticipants_WhenNotExists_Test() {
-    Optional<InboxParticipants> testFindInboxParticipants = inboxParticipantsRepository
+    Optional<InboxParticipants> testFindInboxParticipants = inboxParticipantsService
         .findByInboxUidAndUserId(28, 34);
 
     Mockito.verify(inboxParticipantsRepository).findByInboxUidAndUserId(28, 34);
@@ -60,7 +60,7 @@ public class InboxParticipantsServiceImplUnitTest {
     testInboxParticipants.setInboxUid(10);
     testInboxParticipants.setUserId(11);
 
-    when(inboxParticipantsRepository.findByInboxUidAndUserId(10, 11))
+    when(inboxParticipantsService.findByInboxUidAndUserId(10, 11))
         .thenReturn(Optional.empty());
 
     InboxParticipants testSaveInboxParticipants = inboxParticipantsService

@@ -37,7 +37,7 @@ public class MessageServiceImplUnitTest {
 
     when(messageRepository.save(testMessage)).thenReturn(testMessage);
 
-    Message savedMessage = messageRepository.save(testMessage);
+    Message savedMessage = messageService.saveMessage(testMessage);
     Mockito.verify(messageRepository).save(testMessage);
 
     Assert.assertEquals(testMessage, savedMessage);
@@ -62,7 +62,7 @@ public class MessageServiceImplUnitTest {
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(28, 34, 28, 34))
         .thenReturn(testMessages);
 
-    List<Message> testFindMessages = messageRepository
+    List<Message> testFindMessages = messageService
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(28, 34, 28, 34);
 
     Assert.assertEquals(testMessages, testFindMessages);

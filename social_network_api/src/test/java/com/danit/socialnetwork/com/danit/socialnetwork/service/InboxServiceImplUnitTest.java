@@ -39,7 +39,7 @@ public class InboxServiceImplUnitTest {
     when(inboxRepository.findByInboxUidAndLastSentUserId(28, 34))
         .thenReturn(Optional.of(testInbox));
 
-    Optional<Inbox> testFindInbox = inboxRepository.findByInboxUidAndLastSentUserId(28, 34);
+    Optional<Inbox> testFindInbox = inboxService.findByInboxUidAndLastSentUserId(28, 34);
     Mockito.verify(inboxRepository).findByInboxUidAndLastSentUserId(28, 34);
 
     Assert.assertEquals(Optional.of(testInbox), testFindInbox);
@@ -47,7 +47,7 @@ public class InboxServiceImplUnitTest {
 
   @Test
   public void findByInboxUidAndLastSentUserId_shouldFindInbox_WhenNotExists_Test() {
-    Optional<Inbox> testFindInbox = inboxRepository.findByInboxUidAndLastSentUserId(10, 11);
+    Optional<Inbox> testFindInbox = inboxService.findByInboxUidAndLastSentUserId(10, 11);
 
     Mockito.verify(inboxRepository).findByInboxUidAndLastSentUserId(10, 11);
 
@@ -115,7 +115,7 @@ public class InboxServiceImplUnitTest {
 
     when(inboxRepository.getInboxesByInboxUid(28)).thenReturn(testInbox);
 
-    List<Inbox> testFindInbox = inboxRepository.getInboxesByInboxUid(28);
+    List<Inbox> testFindInbox = inboxService.getInboxesByInboxUid(28);
 
     Assert.assertEquals(testInbox, testFindInbox);
   }

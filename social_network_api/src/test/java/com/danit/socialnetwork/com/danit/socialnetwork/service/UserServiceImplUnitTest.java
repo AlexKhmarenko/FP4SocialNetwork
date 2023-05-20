@@ -13,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -40,12 +41,12 @@ public class UserServiceImplUnitTest {
   }
 
   @Test
-  public void findByUsername_shouldFindUser_WhenExists() {
+  public void findByUsername_shouldFindUser_WhenExists() throws IOException {
     DbUser testDbUser = new DbUser();
     testDbUser.setUsername("Nadya");
 
     when(userRepository.findByUsername("Nadya")).thenReturn(Optional.of(testDbUser));
-    Optional<DbUser> testUser = userRepository.findByUsername("Nadya");
+    Optional<DbUser> testUser = userService.findByUsername("Nadya");
 
     Assert.assertEquals(Optional.of(testDbUser), testUser);
   }
@@ -61,18 +62,18 @@ public class UserServiceImplUnitTest {
   }
 
   @Test
-  public void findByUserId_shouldFindUser_WhenExists() {
+  public void findByUserId_shouldFindUser_WhenExists() throws IOException {
     DbUser testDbUser = new DbUser();
     testDbUser.setUserId(28);
 
     when(userRepository.findById(28)).thenReturn(Optional.of(testDbUser));
-    Optional<DbUser> testUser = userRepository.findById(28);
+    Optional<DbUser> testUser = userService.findById(28);
 
     Assert.assertEquals(Optional.of(testDbUser), testUser);
   }
 
   @Test
-  public void findByUserId_shouldNotFindUser_WhenNotExists() {
+  public void findByUserId_shouldNotFindUser_WhenNotExists() throws IOException {
     Optional<DbUser> testUser = userRepository.findById(10);
 
     Mockito.verify(userRepository).findById(10);
@@ -81,18 +82,18 @@ public class UserServiceImplUnitTest {
   }
 
   @Test
-  public void findDbUserByEmail_shouldFindUser_WhenExists() {
+  public void findDbUserByEmail_shouldFindUser_WhenExists() throws IOException {
     DbUser testDbUser = new DbUser();
     testDbUser.setEmail("bukan.nadya@gmail.com");
 
     when(userRepository.findDbUserByEmail("bukan.nadya@gmail.com")).thenReturn(Optional.of(testDbUser));
-    Optional<DbUser> testUser = userRepository.findDbUserByEmail("bukan.nadya@gmail.com");
+    Optional<DbUser> testUser = userService.findDbUserByEmail("bukan.nadya@gmail.com");
 
     Assert.assertEquals(Optional.of(testDbUser), testUser);
   }
 
   @Test
-  public void findDbUserByEmail_shouldNotFindUser_WhenNotExists() {
+  public void findDbUserByEmail_shouldNotFindUser_WhenNotExists() throws IOException {
     Optional<DbUser> testUser = userRepository.findDbUserByEmail("TestUser@gmail.com");
 
     Mockito.verify(userRepository).findDbUserByEmail("TestUser@gmail.com");
