@@ -17,6 +17,4 @@ public interface UserFollowService {
 
   Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
       Integer userFollower, Integer userFollowing);
-
-
 }

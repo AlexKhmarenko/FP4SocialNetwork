@@ -16,7 +16,6 @@ import java.util.Optional;
 public class UserFollowServiceImpl implements UserFollowService {
 
   private final UserFollowRepository userFollowRepository;
-  private final UserRepository userRepository;
 
   @Override
   public List<UserFollow> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId, boolean notify) {

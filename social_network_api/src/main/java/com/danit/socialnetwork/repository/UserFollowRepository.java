@@ -9,12 +9,17 @@ import java.util.Optional;
 
 public interface UserFollowRepository extends JpaRepository<UserFollow, Integer> {
 
-
   @Query(nativeQuery = true, value = "select * from user_follows "
       + "where user_follower_id = :userFollowerId "
       + "and received_notification_post = :receivedNotificationPost")
   List<UserFollow> findAllByUserFollowerIdAndReceivedNotificationPostContaining(
       Integer userFollowerId, Boolean receivedNotificationPost);
+
+  @Query(nativeQuery = true, value = "select * from user_follows "
+      + "where user_follower_id = :follower "
+      + "and user_following_id = :following")
+  Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
+      Integer follower, Integer following);
 
   @Query(nativeQuery = true, value = "select * from user_follows "
       + "where user_follower_id = :userFollowerId ")
@@ -23,10 +28,4 @@ public interface UserFollowRepository extends JpaRepository<UserFollow, Integer>
   @Query(nativeQuery = true, value = "select * from user_follows "
       + "where user_following_id = :userFollowingId ")
   List<UserFollow> findAllByUserFollowingId(Integer userFollowingId);
-
-  @Query(nativeQuery = true, value = "select * from user_follows "
-      + "where user_follower_id = :follower "
-      + "and user_following_id = :following")
-  Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
-      Integer follower, Integer following);
 }
