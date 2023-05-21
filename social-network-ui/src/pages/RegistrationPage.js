@@ -6,10 +6,8 @@ import {LeftNavigationBar} from "../components/EnteringRegistrationPage/LeftNavi
 import {Container, Grid,} from "@mui/material";
 import {Newsfeed} from "../components/EnteringRegistrationPage/Newsfeed";
 import {useSelector} from "react-redux";
-import {LoginModal} from "../components/LoginModal/LoginModal";
+import {LoginModal} from "../components/LoginModal/LoginModal"
 import {Content} from "../components/CreateAccountModal/Content";
-import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
-
 
 
 
@@ -24,7 +22,7 @@ export function RegistrationPage() {
 
     return (
         <>
-        <Container sx={{minWidth: "1300px"}} >
+        <Container sx={{minWidth: "1350px"}} >
             <Grid container spacing={3} >
                     <LeftNavigationBar/>
                     <Newsfeed/>
