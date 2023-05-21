@@ -13,6 +13,7 @@ import {
     SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST
 } from "./types";
 
+
 export const setPage = (pageNumber) => ({
     type: SET_PAGE,
     payload: pageNumber,
@@ -85,10 +86,12 @@ export const setUserPostsClear = (posts) => ({
 });
 
 export const fetchPostsByUserId = (userId, page) => {
-    return async (dispatch) => {
-        const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
-        return await response.json();
-    };
+    if(userId){
+        return async (dispatch) => {
+            const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
+            return await response.json();
+        };
+    }
 };
 
 export const fetchPostsByPage = (page) => {
@@ -119,38 +122,27 @@ export const sendEmailCheckRequest = (values) => {
     };
 };
 
-export const addLike = (postId, userId) => {
-    return async dispatch => {
-        try {
-            await fetch("http://localhost:8080/likes", {
-                method: "POST",
-                body: JSON.stringify({
-                    postId: postId,
-                    userId: userId,
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-};
 
-export const removeLike = (postId, userId) => {
-    return async dispatch => {
-        try {
-            await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-        } catch (error) {
-            console.log(error);
+export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
+    try {
+        const response = await fetch("http://localhost:8080/posts", {
+            method: "POST",
+            body: JSON.stringify(postObject),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error("Failed to create post");
         }
-    };
-};
+        const userPost = await response.json();
+        dispatch(setUserPostToPostsArr(userPost));
+        setSubmitting(false);
+        return userPost;
+    } catch (error) {
+        console.error("Error while sending the post:", error);
+        throw error;
+    }
+}
 
 

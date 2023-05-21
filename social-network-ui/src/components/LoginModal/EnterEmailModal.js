@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, FormControl, Typography, SvgIcon } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { setUserEmail } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";

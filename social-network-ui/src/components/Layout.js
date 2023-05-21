@@ -41,6 +41,7 @@ export function Layout() {
             data = await dispatch(fetchPostsByUserId(userId, page));
         } else {
             data = await dispatch(fetchPostsByPage(page));
+            console.log(data)
         }
         if (data.length === 0) {
             setIsEnd(true);

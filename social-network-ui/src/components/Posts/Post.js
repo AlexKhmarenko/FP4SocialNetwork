@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Box, Button, TextField } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
+
 import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
-import { useSelector } from "react-redux";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
+import { openLoginModal } from "../../store/actions";
 
 export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
     const userId = useSelector(state => state.userData.userData.userId);
+    const dispatch = useDispatch();
     const [showMore, setShowMore] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
     const [comments, setComments] = useState([]);
@@ -17,37 +20,27 @@ export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
     const [like, setLike] = useState(false);
     const [likeArr, setLikeArr] = useState([]);
 
-    const getInformAboutLikesInAPost = async () => {
-        if(userId){
-            let resp = await fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`);
-            let data2 = await resp.json();
-            setLike(data2);
-        }
-    };
-
-    const getInformAboutusersWhichLike = async () => {
-        let response = await fetch(`http://localhost:8080/likes?postId=${postId}`);
-        let data = await response.json();
-        setLikeArr(data);
-    };
-
-    useEffect(() => {
-        getInformAboutLikesInAPost();
-    }, [like]);
-
-    useEffect(() => {
-        getInformAboutusersWhichLike();
-    }, [like]);
-
     useEffect(() => {
         const fetchData = async () => {
-            if(userId){
-                await getInformAboutusersWhichLike();
+            if (userId) {
+                try {
+                    const [likesResponse, activeLikesResponse] = await Promise.all([
+                        fetch(`http://localhost:8080/likes?postId=${postId}`),
+                        fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`)
+                    ]);
+
+                    const likes = await likesResponse.json();
+                    const activeLikes = await activeLikesResponse.json();
+
+                    setLikeArr(likes);
+                    setLike(activeLikes);
+                } catch (error) {
+                    console.error("Ошибка при получении данных:", error);
+                }
             }
-            await getInformAboutLikesInAPost();
         };
         fetchData();
-    }, []);
+    }, [userId, postId]);
 
     const handleCommentToggle = () => {
         setIsCommentOpen(!isCommentOpen);
@@ -62,34 +55,40 @@ export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
         setNewComment(e.target.value);
     };
 
-    async function addLikeHandle() {
-        if (!like) {
-            await fetch("http://localhost:8080/likes", {
-                method: "POST",
-                body: JSON.stringify({
-                    postId: postId,
-                    userId: userId,
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+    const addLikeHandle = useCallback(async () => {
+        if (userId) {
+            if (!like) {
+                await fetch("http://localhost:8080/likes", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        postId: postId,
+                        userId: userId,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                setLikeArr([...likeArr, { postId: postId, userId: userId }]);
+            } else {
+                await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                setLikeArr(likeArr.filter(item => item.userId !== userId));
+            }
+            setLike(!like);
         } else {
-            await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+            dispatch(openLoginModal());
         }
-        setLike(!like);
-    }
+    }, [like, userId, postId, likeArr, dispatch]);
 
-    const handleShowMore = () => {
+    const handleShowMore = useCallback(() => {
         setShowMore(!showMore);
-    };
+    }, []);
 
-    function postDate() {
+    const postDate = useMemo(() => {
         const date = new Date(dataTime);
         const diffDays = differenceInDays(new Date(), date);
 
@@ -100,9 +99,10 @@ export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
         } else {
             return format(date, "MMM d, yyyy");
         }
-    }
+        // Все то же самое
+    }, [dataTime]);
 
-    const renderText = () => {
+    const renderText = useMemo(() => {
         const words = text.split(" ");
         if (showMore || words.length <= 10) {
             return text;
@@ -110,18 +110,18 @@ export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
             const truncatedWords = words.slice(0, 10);
             return truncatedWords.join(" ") + "...";
         }
-    };
+    }, [text, showMore]);
 
     return (
         <Card sx={PostCard}>
             <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
-                <Avatar alt={userName} src="#" />
+                <Avatar alt={userName} src="#"/>
                 <div style={{ marginLeft: 16, flex: 1 }}>
                     <Typography variant="subtitle1" component="div">
-                        {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
+                        {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
                     <Typography variant="body1" component="div" mt={1}
-                                sx={{ ...PostText, maxHeight: showMore ? "none" : "90px", }}>{renderText()}
+                                sx={{ ...PostText, maxHeight: showMore ? "none" : "90px", }}>{renderText}
                     </Typography>
                     {text.split(" ").length > 10 && (
                         <a style={ShowMoreLinkStyles} onClick={handleShowMore} href="#">
