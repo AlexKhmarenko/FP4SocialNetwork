@@ -1,6 +1,5 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
 
 import java.io.IOException;

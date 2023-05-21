@@ -137,12 +137,10 @@ public class UserRestController {
   }
 
   @GetMapping("/profile/{userId}")
-  public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) throws IOException {
+  public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
     DbUser tempUser = userService.findByUserId(userId);
     return new ResponseEntity<>(UserDtoResponse.from(tempUser), HttpStatus.OK);
   }
-
-
 
 
 }
