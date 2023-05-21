@@ -37,6 +37,7 @@ public class UserFollowRestController {
 
     return userFollowService.getAllUserByUserFollowerId(userId);
   }
+
   @PostMapping("api/follow")
   public ResponseEntity<?> follow(@RequestBody UserFollowRequest userFollowRequest) {
     Optional<DbUser> maybeFollower = userRepository.findById(userFollowRequest.getUserFollower());
@@ -59,13 +60,6 @@ public class UserFollowRestController {
       newEntry.setUserFollowingId(following);
       newEntry.setReceivedNotificationPost(true);
       response.put("message", userFollowService.saveUserFollower(newEntry));
-
-      List<UserFollow> userFollowList = userFollowService.getAllUserByUserFollowerId(1);
-      System.out.println(userFollowList);
-
-      List<UserFollow> userFollowList2 = userFollowService.getAllUserByUserFollowerIdAndReceivedNotificationPost(1, false);
-      System.out.println(userFollowList2);
-
       return ResponseEntity.ok(response);
     }
     response.put("message", "invalid user id");
