@@ -1,20 +1,25 @@
+package com.danit.socialnetwork.rest;
+
 import com.danit.socialnetwork.dto.*;
+import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.rest.UserRestController;
-import com.danit.socialnetwork.service.PasswordChangerService;
 import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -23,24 +28,24 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
-public class UserRestControllerTest {
+@ExtendWith(MockitoExtension.class)
+class UserRestControllerTest {
+
+  @Mock
+  UserService userService;
+
+  @InjectMocks
+  UserRestController controller;
 
   private MockMvc mockMvc;
 
-  @Mock
-  private UserService userService;
-
-  @InjectMocks
-  private UserRestController controller;
-
-  @Before
+  @BeforeEach
   public void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
   @Test
-  public void testHandleRegistrationPost() throws Exception {
+  void handleRegistrationPost() throws Exception {
     String email = "bukan.nadya@gmail.com";
     String username = "Nadya";
     String password = "123";
@@ -74,7 +79,7 @@ public class UserRestControllerTest {
   }
 
   @Test
-  public void testHandleCheckEmailPost() throws Exception {
+  void handleCheckUsernamePost() throws Exception {
     String email = "bukan.nadya@gmail.com";
 
     UserEmailForLoginRequest emailRequest = new UserEmailForLoginRequest();
@@ -94,7 +99,7 @@ public class UserRestControllerTest {
   }
 
   @Test
-  public void testHandleSendLetterPost() throws Exception {
+  void handleSendLetterPost() throws Exception {
     String email = "bukan.nadya@gmail.com";
     String name = "Nadya";
 
@@ -111,7 +116,7 @@ public class UserRestControllerTest {
   }
 
   @Test
-  public void testHandleActivatePost() throws Exception {
+  void handleActivatePost() throws Exception {
     Integer code = 123456;
 
     ActivateCodeRequest codeRequest = new ActivateCodeRequest();
@@ -126,7 +131,7 @@ public class UserRestControllerTest {
   }
 
   @Test
-  public void testHandleSearchPost() throws Exception {
+  void handleSearchPost() throws Exception {
     String nameSearch = "dya";
 
     SearchRequest userSearch = new SearchRequest();
@@ -140,4 +145,36 @@ public class UserRestControllerTest {
     verify(userService).filterCachedUsersByName(userSearch.getUserSearch());
   }
 
+  @Test
+  void getUser() {
+  }
+
+  @Test
+  void getProfileImage() {
+  }
+
+  @Test
+  void getBackgroundImage() {
+  }
+
+  @Test
+  void getUserById() throws IOException {
+    Integer userId = 1;
+
+    DbUser tempUser = new DbUser();
+    tempUser.setUserId(userId);
+    tempUser.setName("Nick");
+    tempUser.setUsername("Nicky");
+    tempUser.setCreatedDate(LocalDateTime.now());
+    tempUser.setProfileBackgroundImageUrl("MTA6MjQ6MjY=");
+    tempUser.setProfileImageUrl("MTA6MjQ6MjY=");
+
+    when (userService.findByUserId(userId)).thenReturn(tempUser);
+
+    ResponseEntity<UserDtoResponse> result = controller.getUserById(userId);
+
+    Assertions.assertEquals("Nick", result.getBody().getName());
+    Assertions.assertEquals("Nicky", result.getBody().getUsername());
+
+  }
 }

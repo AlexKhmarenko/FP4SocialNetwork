@@ -31,7 +31,6 @@ com/danit/socialnetwork/model/PostComment.class
 com/danit/socialnetwork/dto/ActivateCodeRequest.class
 com/danit/socialnetwork/dto/ChangePasswordRequest.class
 com/danit/socialnetwork/rest/PasswordRestController.class
-com/danit/socialnetwork/dto/post/PostCommentDtoResponse.class
 com/danit/socialnetwork/repository/PasswordChangeRequestsRepo.class
 com/danit/socialnetwork/rest/UserRestController.class
 com/danit/socialnetwork/dto/user/UserDtoRequest.class
@@ -42,19 +41,15 @@ com/danit/socialnetwork/exception/post/PostLikeNotFoundException.class
 com/danit/socialnetwork/dto/CodeCheckRequest.class
 com/danit/socialnetwork/model/UserFollower.class
 com/danit/socialnetwork/service/UserService.class
-com/danit/socialnetwork/dto/post/PostCommentDtoSave.class
 com/danit/socialnetwork/dto/post/PostDtoResponse.class
 com/danit/socialnetwork/config/GuavaCache.class
-com/danit/socialnetwork/rest/PostCommentRestController.class
 com/danit/socialnetwork/rest/PostLikeRestController.class
 com/danit/socialnetwork/security/JwtAuthFilter.class
-com/danit/socialnetwork/service/PostCommentServiceImpl.class
 com/danit/socialnetwork/service/UserFollowServiceImpl.class
 com/danit/socialnetwork/config/CorsFilter.class
 com/danit/socialnetwork/exception/GlobalExceptionHandler.class
 com/danit/socialnetwork/exception/user/PhotoNotFoundException.class
 com/danit/socialnetwork/repository/UserFollowRepository.class
-com/danit/socialnetwork/repository/PostCommentRepository.class
 com/danit/socialnetwork/security/JwtTokenService.class
 com/danit/socialnetwork/service/PostLikeService.class
 com/danit/socialnetwork/rest/JwtAuthenticationRestController.class
@@ -62,7 +57,6 @@ com/danit/socialnetwork/security/JwtUserDetails.class
 com/danit/socialnetwork/service/PostService.class
 com/danit/socialnetwork/dto/post/PostLikeDto.class
 com/danit/socialnetwork/dto/JwtRequest.class
-com/danit/socialnetwork/service/PostCommentService.class
 com/danit/socialnetwork/rest/UserFollowerRestController.class
 com/danit/socialnetwork/security/JwtUserDetailsService.class
 com/danit/socialnetwork/exception/ErrorResponse.class
