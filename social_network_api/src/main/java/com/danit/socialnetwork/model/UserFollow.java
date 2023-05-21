@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @Table(name = "user_follows")
-public class UserFollower {
+public class UserFollow {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +37,5 @@ public class UserFollower {
   if true it means to receive notification*/
   @Column(name = "received_notification_post")
   private Boolean receivedNotificationPost;
-
 
 }

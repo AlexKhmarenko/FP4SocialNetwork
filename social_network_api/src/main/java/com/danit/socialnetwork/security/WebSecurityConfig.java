@@ -44,9 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
 
     final String[] userName = new String[1];
-
     http.csrf().disable().headers().frameOptions().disable();
-
     http.authorizeRequests().antMatchers("/login",
             "/h2/**",
             "/sendLetter",
@@ -100,14 +98,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .invalidateHttpSession(true)
         .deleteCookies("JSESSIONID")
         .deleteCookies("XSRF-TOKEN").permitAll());
-
-
     http.rememberMe();
-
     http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-    //    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    //
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
   }
-
 }

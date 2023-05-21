@@ -1,6 +1,6 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.model.UserFollower;
+import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,18 +19,32 @@ public class UserFollowServiceImpl implements UserFollowService {
   private final UserRepository userRepository;
 
   @Override
-  public List<UserFollower> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId) {
+  public List<UserFollow> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId, boolean notify) {
     return userFollowRepository
         .findAllByUserFollowerIdAndReceivedNotificationPostContaining(
-            userFollowerId, true);
+            userFollowerId, notify);
   }
 
   @Override
-  public List<UserFollower> getAllUserByUserFollowerId(Integer userFollowerId) {
+  public List<UserFollow> getAllUserByUserFollowerId(Integer userFollowerId) {
     return userFollowRepository
-        .findAllByUserFollowerId(userRepository.findById(userFollowerId));
+        .findAllByUserFollowerId(userFollowerId);
+//        .findAllByUserFollowerId(userRepository.findById(userFollowerId));
   }
 
+  @Override
+  public String saveUserFollower(UserFollow userFollow) {
+    userFollowRepository.save(userFollow);
+    return "changes saved";
+  }
 
+  @Override
+  public Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(Integer userFollower, Integer userFollowing) {
+    return userFollowRepository.getUserFollowByUserFollowerIdAndUserFollowingId(userFollower, userFollowing);
+  }
 
+  public String deleteUserFollowByUserFollowId(Integer userFollowId) {
+    userFollowRepository.deleteById(userFollowId);
+    return "user follow deleted";
+  }
 }
