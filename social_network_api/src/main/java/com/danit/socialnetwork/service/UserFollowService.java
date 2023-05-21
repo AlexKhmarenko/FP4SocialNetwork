@@ -7,14 +7,14 @@ import java.util.Optional;
 
 public interface UserFollowService {
 
-  List<UserFollow> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId, boolean notify);
+  String saveUserFollower(UserFollow userFollow);
 
   List<UserFollow> getAllUserByUserFollowerId(Integer userFollowerId);
 
   List<UserFollow> getAllUserByUserFollowingId(Integer userFollowingId);
 
-  String saveUserFollower(UserFollow userFollow);
-
   Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
       Integer userFollower, Integer userFollowing);
+
+  List<UserFollow> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId, boolean notify);
 }

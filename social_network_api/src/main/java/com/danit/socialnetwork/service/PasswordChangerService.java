@@ -5,6 +5,7 @@ import com.danit.socialnetwork.model.PasswordChangeRequests;
 import java.util.Optional;
 
 public interface PasswordChangerService {
+
   String saveRequest(String email, String request);
 
   boolean changePassword(String email, String password);

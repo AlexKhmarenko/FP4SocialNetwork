@@ -40,8 +40,6 @@ import java.util.Optional;
 public class UserRestController {
 
   private final UserService userService;
-  PasswordChanger passChanger = new PasswordChanger();
-  private final PasswordChangerServiceImpl passwordChangerServiceImpl;
 
   @RequestMapping(value = "registration", method = RequestMethod.POST)
   public ResponseEntity<?> handleRegistrationPost(
@@ -70,7 +68,7 @@ public class UserRestController {
     String email = request.getEmail();
     Map<String, String> response = new HashMap<>();
 
-    if (userService.findDbUserByEmail(email) == null) {
+    if (userService.findDbUserByEmail(email).isEmpty()) {
       response.put("checkEmail", "false");
     } else {
       response.put("checkEmail", "true");

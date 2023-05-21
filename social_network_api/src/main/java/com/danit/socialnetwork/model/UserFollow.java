@@ -37,5 +37,4 @@ public class UserFollow {
   if true it means to receive notification*/
   @Column(name = "received_notification_post")
   private Boolean receivedNotificationPost;
-
 }

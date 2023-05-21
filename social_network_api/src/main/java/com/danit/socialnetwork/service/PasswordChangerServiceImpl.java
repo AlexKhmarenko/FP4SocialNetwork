@@ -46,4 +46,5 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
   public void deleteRequestByEmail(String email) {
     repo.deleteById(email);
   }
+
 }

@@ -34,7 +34,6 @@ public class UserFollowRestController {
   @GetMapping("/following/{userID}")
   @ResponseBody
   public List<UserFollow> getAllFollowing(@PathVariable("userID") Integer userId) {
-
     return userFollowService.getAllUserByUserFollowerId(userId);
   }
 
@@ -92,7 +91,6 @@ public class UserFollowRestController {
     Optional<DbUser> maybeFollower = userRepository.findById(userNotificationRequest.getUserFollower());
     Optional<DbUser> maybeFollowing = userRepository.findById(userNotificationRequest.getUserFollowing());
 
-
     Boolean receivedNotificationPost = userNotificationRequest.getReceiveNotifications();
 
     Map<String, String> response = new HashMap<>();
@@ -105,7 +103,6 @@ public class UserFollowRestController {
     }
     DbUser follower = userRepository.findById(userNotificationRequest.getUserFollower()).get();
     DbUser following = userRepository.findById(userNotificationRequest.getUserFollowing()).get();
-
 
     Optional<UserFollow> MaybeUser = userFollowService
         .getUserFollowByUserFollowerIdAndUserFollowingId(follower.getUserId(), following.getUserId());

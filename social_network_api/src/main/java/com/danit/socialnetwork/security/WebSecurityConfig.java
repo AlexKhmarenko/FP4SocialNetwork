@@ -88,6 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           response.sendRedirect("/home");
         }).permitAll()
     );
+
     http.logout(l -> l
         .logoutSuccessHandler((request, response, authentication) -> {
           log.info("User with username {} has logged out", userName[0]);

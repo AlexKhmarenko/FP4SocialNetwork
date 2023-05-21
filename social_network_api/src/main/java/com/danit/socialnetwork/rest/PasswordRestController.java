@@ -76,7 +76,6 @@ public class PasswordRestController {
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
-
   @PostMapping("/api/newpassword")
   public ResponseEntity<?> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest) {
     String userEmail = newPasswordRequest.getEmail();

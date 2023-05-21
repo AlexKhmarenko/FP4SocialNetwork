@@ -7,4 +7,5 @@ public class UserNotificationRequest {
   Integer userFollower;
   Integer userFollowing;
   Boolean receiveNotifications;
+
 }

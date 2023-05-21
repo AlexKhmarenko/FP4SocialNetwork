@@ -6,5 +6,4 @@ import lombok.Data;
 public class UserFollowRequest {
   Integer userFollower;
   Integer userFollowing;
-//  Boolean receiveNotifications;
 }
