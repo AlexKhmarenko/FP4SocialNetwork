@@ -9,6 +9,17 @@ import java.util.Optional;
 
 public interface UserFollowRepository extends JpaRepository<UserFollow, Integer> {
 
+  List<UserFollower> findAllByUserFollowingId(Optional<DbUser> user);
+
+  @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM USER_FOLLOWS UF "
+      + "WHERE UF.USER_FOLLOWING_ID= :followingId")
+  Integer findAllFollowers(Integer followingId);
+
+
+  @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM USER_FOLLOWS UF "
+      + "WHERE UF.USER_FOLLOWER_ID= :followerId")
+  Integer findAllFollowings(Integer followerId);
+
 
   @Query(nativeQuery = true, value = "select * from user_follows "
       + "where user_follower_id = :userFollowerId "
