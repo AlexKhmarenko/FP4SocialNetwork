@@ -1,17 +1,14 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.repository.InboxRepository;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,21 +17,15 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootTest(classes = NetworkApp.class)
-public class InboxServiceImplUnitTest {
+@ExtendWith(MockitoExtension.class)
+class InboxServiceImplTest {
+  @InjectMocks
+  InboxServiceImpl inboxService;
   @Mock
   InboxRepository inboxRepository;
-  InboxService inboxService;
-
-  @Before
-  public void setUp() {
-    inboxService = new InboxServiceImpl(inboxRepository);
-  }
 
   @Test
-  public void findByInboxUidAndLastSentUserId_shouldFindInbox_Test() {
+  void findByInboxUidAndLastSentUserId_shouldFindInbox_WhenExists() {
     Inbox testInbox = new Inbox();
     testInbox.setInboxUid(28);
     testInbox.setLastSentUserId(34);
@@ -49,7 +40,7 @@ public class InboxServiceImplUnitTest {
   }
 
   @Test
-  public void findByInboxUidAndLastSentUserId_shouldFindInbox_WhenNotExists_Test() {
+  void findByInboxUidAndLastSentUserId_shouldNotFindInbox_WhenNotExists() {
     Optional<Inbox> testFindInbox = inboxService.findByInboxUidAndLastSentUserId(10, 11);
 
     Mockito.verify(inboxRepository).findByInboxUidAndLastSentUserId(10, 11);
@@ -58,7 +49,7 @@ public class InboxServiceImplUnitTest {
   }
 
   @Test
-  public void saveInbox_shouldSaveInbox_WhenNotExists() {
+  void saveInbox_shouldSaveInbox_WhenNotExists() {
     Inbox testInbox = new Inbox();
     testInbox.setInboxUid(10);
     testInbox.setLastMessage("Hello World!");
@@ -76,7 +67,7 @@ public class InboxServiceImplUnitTest {
   }
 
   @Test
-  public void saveInbox_shouldSaveInbox_WhenExists() {
+  void saveInbox__shouldUpdateInbox_WhenExists() {
     Inbox existingInbox = new Inbox();
     existingInbox.setInboxUid(28);
     existingInbox.setLastMessage("Hello World!");
@@ -100,7 +91,7 @@ public class InboxServiceImplUnitTest {
   }
 
   @Test
-  public void getInboxesByInboxUid_shouldGetAllInboxesByInboxUid_Test() {
+  void getInboxesByInboxUid_shouldGetAllInboxesByInboxUid() {
     Inbox inbox1 = new Inbox();
     inbox1.setInboxUid(28);
     inbox1.setLastMessage("Hello, Asy!");
@@ -122,5 +113,4 @@ public class InboxServiceImplUnitTest {
 
     Assert.assertEquals(testInbox, testFindInbox);
   }
-
 }

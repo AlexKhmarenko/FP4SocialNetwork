@@ -1,37 +1,29 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.model.InboxParticipants;
 import com.danit.socialnetwork.repository.InboxParticipantsRepository;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootTest(classes = NetworkApp.class)
-public class InboxParticipantsServiceImplUnitTest {
+@ExtendWith(MockitoExtension.class)
+class InboxParticipantsServiceImplTest {
+  @InjectMocks
+  InboxParticipantsServiceImpl inboxParticipantsService;
   @Mock
   InboxParticipantsRepository inboxParticipantsRepository;
-  InboxParticipantsService inboxParticipantsService;
-
-  @Before
-  public void setUp() {
-    inboxParticipantsService = new InboxParticipantsServiceImpl(inboxParticipantsRepository);
-  }
 
   @Test
-  public void findByInboxUidAndUserId_shouldFindInboxParticipants_Test() {
+  void findByInboxUidAndUserId_shouldFindInboxParticipants() {
     InboxParticipants testInboxParticipants = new InboxParticipants();
     testInboxParticipants.setInboxUid(28);
     testInboxParticipants.setUserId(34);
@@ -48,7 +40,7 @@ public class InboxParticipantsServiceImplUnitTest {
   }
 
   @Test
-  public void findByInboxUidAndUserId_shouldFindInboxParticipants_WhenNotExists_Test() {
+  void findByInboxUidAndUserId_shouldNotFindInboxParticipants_WhenNotExists() {
     Optional<InboxParticipants> testFindInboxParticipants = inboxParticipantsService
         .findByInboxUidAndUserId(28, 34);
 
@@ -58,7 +50,7 @@ public class InboxParticipantsServiceImplUnitTest {
   }
 
   @Test
-  public void saveInboxParticipants_shouldSaveInboxParticipants_WhenNotExists() {
+  void saveInboxParticipants_shouldSaveInboxParticipants_WhenNotExists() {
     InboxParticipants testInboxParticipants = new InboxParticipants();
     testInboxParticipants.setInboxUid(10);
     testInboxParticipants.setUserId(11);
@@ -73,5 +65,4 @@ public class InboxParticipantsServiceImplUnitTest {
 
     Assert.assertEquals(testInboxParticipants, testSaveInboxParticipants);
   }
-
 }

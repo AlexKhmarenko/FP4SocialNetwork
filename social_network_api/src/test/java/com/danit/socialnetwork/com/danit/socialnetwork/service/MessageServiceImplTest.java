@@ -1,38 +1,29 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.MessageRepository;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootTest(classes = NetworkApp.class)
-public class MessageServiceImplUnitTest {
+@ExtendWith(MockitoExtension.class)
+class MessageServiceImplTest {
+  @InjectMocks
+  MessageServiceImpl messageService;
   @Mock
   MessageRepository messageRepository;
-  MessageService messageService;
-
-  @Before
-  public void setUp() {
-    messageService = new MessageServiceImpl(messageRepository);
-  }
 
   @Test
-  public void saveMessage_Test() {
+  void saveMessage() {
     Message testMessage = new Message();
     testMessage.setInboxUid(28);
     testMessage.setUserId(34);
@@ -47,7 +38,7 @@ public class MessageServiceImplUnitTest {
   }
 
   @Test
-  public void findByInboxUidAndUserIdOrUserIdAndInboxUid_shouldFindMessages_Test() {
+  void findByInboxUidAndUserIdOrUserIdAndInboxUid_shouldFindAllMessagesByTwoUsers () {
     Message message1 = new Message();
     message1.setInboxUid(28);
     message1.setUserId(34);
@@ -70,5 +61,4 @@ public class MessageServiceImplUnitTest {
 
     Assert.assertEquals(testMessages, testFindMessages);
   }
-
 }

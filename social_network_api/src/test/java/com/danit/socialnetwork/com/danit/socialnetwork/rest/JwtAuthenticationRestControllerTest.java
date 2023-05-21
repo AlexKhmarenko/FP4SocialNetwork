@@ -1,38 +1,33 @@
 package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.dto.JwtRequest;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.security.JwtTokenService;
 import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.mockito.ArgumentMatchers.any;
 
-import java.util.Optional;
-
-import static org.mockito.BDDMockito.given;
-
-
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootTest(classes = NetworkApp.class)
-public class JwtAuthenticationRestControllerTest {
+@ExtendWith(MockitoExtension.class)
+class JwtAuthenticationRestControllerTest {
 
   @Mock
   private AuthenticationManager authenticationManager;
@@ -48,14 +43,13 @@ public class JwtAuthenticationRestControllerTest {
 
   private MockMvc mockMvc;
 
-  @Before
+  @BeforeEach
   public void setUp() {
-    controller = new JwtAuthenticationRestController(authenticationManager, tokenService, userService);
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
   @Test
-  public void testCreateAuthenticationTokenWithValidCredentials() throws Exception {
+  void createAuthenticationToken() throws Exception {
     String email = "bukan.nadya@gmail.com";
     String username = "Nadya";
     String password = "123";
@@ -76,8 +70,7 @@ public class JwtAuthenticationRestControllerTest {
 
     given(userService.findDbUserByEmail(email)).willReturn(Optional.of(dbUser));
     given(userService.findByUsername(username)).willReturn(Optional.of(dbUser));
-    given(tokenService.generateToken(12, rememberMe)).willReturn(token)
-        .willReturn(token);  // Adjusted here
+    given(tokenService.generateToken(12, rememberMe)).willReturn(token);
 
     mockMvc.perform(post("/login")
             .contentType(MediaType.APPLICATION_JSON)
@@ -91,7 +84,7 @@ public class JwtAuthenticationRestControllerTest {
   }
 
   @Test
-  public void testCreateAuthenticationTokenWithInvalidCredentials() throws Exception {
+  void getUserId() throws Exception {
     String email = "bukan.nadya@gmail.com";
     String username = "Nadya";
     String password = "12";
@@ -119,5 +112,4 @@ public class JwtAuthenticationRestControllerTest {
     Mockito.verify(userService).findDbUserByEmail(email);
     Mockito.verify(userService).findByUsername(username);
   }
-
 }

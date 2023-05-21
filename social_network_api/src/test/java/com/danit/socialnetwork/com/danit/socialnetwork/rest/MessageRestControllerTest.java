@@ -1,6 +1,5 @@
 package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.NetworkApp;
 import com.danit.socialnetwork.dto.message.InboxDtoRequest;
 import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
@@ -12,13 +11,12 @@ import com.danit.socialnetwork.service.InboxService;
 import com.danit.socialnetwork.service.MessageService;
 import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,15 +27,13 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootTest(classes = NetworkApp.class)
-public class MessageRestControllerTest {
 
-  private MockMvc mockMvc;
+@ExtendWith(MockitoExtension.class)
+class MessageRestControllerTest {
 
   @Mock
   private MessageService messageService;
@@ -57,13 +53,15 @@ public class MessageRestControllerTest {
   @InjectMocks
   private MessageRestController controller;
 
-  @Before
+  private MockMvc mockMvc;
+
+  @BeforeEach
   public void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
   }
 
   @Test
-  public void testAddMessage_Post() throws Exception {
+  void addMessage() throws Exception {
     Integer inboxUid = 28;
     Integer userId = 34;
     String message = "Hello World!";
@@ -89,7 +87,7 @@ public class MessageRestControllerTest {
   }
 
   @Test
-  public void testGetInbox_Get() throws Exception {
+  void getInbox() throws Exception {
     Integer inboxUid = 28;
 
     InboxDtoRequest inboxDtoRequest = new InboxDtoRequest();
@@ -117,11 +115,10 @@ public class MessageRestControllerTest {
 
     verify(inboxService)
         .getInboxesByInboxUid(inboxUid);
-
   }
 
   @Test
-  public void testGetMessage_Get() throws Exception {
+  void getMessage() throws Exception {
     Integer inboxUid = 28;
     Integer userId = 34;
 
@@ -156,5 +153,4 @@ public class MessageRestControllerTest {
     verify(messageService)
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(inboxUid, userId, inboxUid, userId);
   }
-
 }
