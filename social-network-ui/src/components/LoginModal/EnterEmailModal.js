@@ -4,6 +4,7 @@ import { Button, FormControl, Typography, SvgIcon } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
+import { openSignUpModal,  closeLoginModal } from "../../store/actions";
 
 import { setUserEmail } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
@@ -27,6 +28,11 @@ export function EnterEmailModal() {
        let informAboutRegistration = await dataAboutRegistration.json()
        console.log(informAboutRegistration)
     }
+
+const handleForgot = ()=>{
+    setOpenForgot(!openForgot)
+    dispatch(closeLoginModal())
+}
 
     return (
         <>
@@ -85,7 +91,7 @@ export function EnterEmailModal() {
                         <Button type="submit"
                                 variant="contained" sx={StyledBlackButton} disabled={isSubmitting}
                                 fullWidth={true}>Next</Button>
-                        <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
+                        <Button variant="contained" sx={StyledWhiteButton} fullWidth={true} onClick={handleForgot}>Forgot password?</Button>
                     </FormControl>
                 </Form>
             </Formik>
