@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
 
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,9 +24,9 @@ import java.util.List;
 
 
 @Entity
+@Table(name = "posts")
 @Data
 @NoArgsConstructor
-@Table(name = "posts")
 public class Post {
 
   @Id
@@ -38,7 +37,7 @@ public class Post {
   @Column(name = "written_text")
   private String writtenText;
 
-  @Column(name = "photo_file")
+  @Column(name = "photo_file", columnDefinition = "text")
   private String photoFile;
 
   @Column(name = "sent_datetime", updatable = false)
@@ -47,15 +46,11 @@ public class Post {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
   private LocalDateTime sentDateTime;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "post_id")
-  private List<PostLike> postLikes;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "post_id")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "postId", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PostComment> postComments;
 
-  @ManyToOne(targetEntity = DbUser.class)
+  @ManyToOne(targetEntity = DbUser.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private DbUser userPost;
 

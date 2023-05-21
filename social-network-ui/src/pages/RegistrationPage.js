@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 
 import {Footer} from "../components/EnteringRegistrationPage/Footer";
@@ -8,6 +8,7 @@ import {Newsfeed} from "../components/EnteringRegistrationPage/Newsfeed";
 import {useSelector} from "react-redux";
 import {LoginModal} from "../components/LoginModal/LoginModal";
 import {Content} from "../components/CreateAccountModal/Content";
+import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 
 
 
@@ -16,6 +17,10 @@ export function RegistrationPage() {
 
     const isLoginModalOpen = useSelector(state => state.modal.isLoginModal)
     const isSignUpModalOpen = useSelector(state => state.modal.isSignUpModal)
+
+    useEffect(() => {
+        localStorage.setItem("stepInModal", JSON.stringify(1))
+    }, [])
 
     return (
         <>
