@@ -23,6 +23,7 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
     repo.save(pcr);
     return "request to change password from " + email;
   }
+
   @Override
   public boolean changePassword(String email, String password) {
     Optional<DbUser> maybeUser = userRepo.findDbUserByEmail(email);
@@ -35,11 +36,13 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
       return false;
     }
   }
+
   @Override
   public Optional<PasswordChangeRequests> getEmailByUuid(String uuid) {
     return repo.getPasswordChangeRequestsByChangeRequest(uuid);
   }
-@Override
+
+  @Override
   public void deleteRequestByEmail(String email) {
     repo.deleteById(email);
   }

@@ -1,3 +1,19 @@
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/MethodTests.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/MethodWithGuavaCacheTests.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/UserServiceImplUnitTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\dto\message\InboxDtoResponseTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\rest\UserRestControllerTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\rest\MessageRestControllerTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\security\JwtTokenServiceTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\security\JwtUserDetailsServiceTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\service\InboxParticipantsServiceImplTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\rest\JwtAuthenticationRestControllerTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\service\UserServiceImplTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\rest\PostLikeRestControllerTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\service\PostLikeServiceImplTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\PostDtoUnitTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\service\PostCommentServiceImplTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\repository\UserFollowRepositoryTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\dto\message\MessageDtoResponseTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\rest\PostCommentRestControllerTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\security\JwtAuthFilterTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\dto\message\MessageGetAllDtoResponseTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\service\InboxServiceImplTest.java
+D:\Java\FinalProject\FP4SocialNetwork\social_network_api\src\test\java\com\danit\socialnetwork\com\danit\socialnetwork\service\MessageServiceImplTest.java

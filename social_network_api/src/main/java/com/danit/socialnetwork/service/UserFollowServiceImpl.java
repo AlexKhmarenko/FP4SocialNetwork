@@ -39,15 +39,12 @@ public class UserFollowServiceImpl implements UserFollowService {
   }
 
   @Override
-  public Optional <UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
-      Integer userFollower, Integer userFollowing) {
+  public Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(Integer userFollower, Integer userFollowing) {
     return userFollowRepository.getUserFollowByUserFollowerIdAndUserFollowingId(userFollower, userFollowing);
   }
 
-  public String deleteUserFollowByUserFollowId(Integer userFollowId){
+  public String deleteUserFollowByUserFollowId(Integer userFollowId) {
     userFollowRepository.deleteById(userFollowId);
     return "user follow deleted";
   }
-
-
 }

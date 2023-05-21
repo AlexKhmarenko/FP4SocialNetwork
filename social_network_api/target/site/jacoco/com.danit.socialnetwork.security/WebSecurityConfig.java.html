@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebSecurityConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FP4SocialNetwork</a> &gt; <a href="index.source.html" class="el_package">com.danit.socialnetwork.security</a> &gt; <span class="el_source">WebSecurityConfig.java</span></div><h1>WebSecurityConfig.java</h1><pre class="source lang-java linenums">package com.danit.socialnetwork.security;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebSecurityConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FP4SocialNetwork</a> &gt; <a href="index.source.html" class="el_package">com.danit.socialnetwork.security</a> &gt; <span class="el_source">WebSecurityConfig.java</span></div><h1>WebSecurityConfig.java</h1><pre class="source lang-java linenums">package com.danit.socialnetwork.security;
 
 import com.danit.socialnetwork.config.GuavaCache;
 import com.danit.socialnetwork.model.DbUser;
@@ -6,31 +6,26 @@ import com.danit.socialnetwork.repository.UserRepository;
 import com.ibm.icu.text.Transliterator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-//import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.Filter;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
-<span class="fc" id="L32">@RequiredArgsConstructor</span>
-<span class="fc" id="L33">@Log4j2</span>
+<span class="fc" id="L27">@RequiredArgsConstructor</span>
+<span class="fc" id="L28">@Log4j2</span>
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtAuthFilter jwtFilter;
@@ -39,18 +34,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Bean
   @Override
   public AuthenticationManager authenticationManagerBean() throws Exception {
-<span class="fc" id="L42">    return super.authenticationManagerBean();</span>
+<span class="fc" id="L37">    return super.authenticationManagerBean();</span>
   }
 
   @Bean
   GuavaCache guavaCache() {
-<span class="fc" id="L47">    return new GuavaCache();</span>
+<span class="fc" id="L42">    return new GuavaCache();</span>
   }
+
+  @Autowired
+  private Filter corsFilter;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-<span class="fc" id="L53">    final String[] userName = new String[1];</span>
+<span class="fc" id="L51">    final String[] userName = new String[1];</span>
+<span class="fc" id="L52">    http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)</span>
+<span class="fc" id="L53">        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;</span>
 
 <span class="fc" id="L55">    http.csrf().disable().headers().frameOptions().disable();</span>
 
@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             &quot;/h2/**&quot;,
             &quot;/sendLetter&quot;,
             &quot;/activate&quot;,
-            &quot;/checkUsername&quot;,
+            &quot;/checkEmail&quot;,
             &quot;/registration&quot;,
             &quot;/changepassword*&quot;,
             &quot;/newpassword&quot;,
@@ -91,7 +91,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 <span class="nc" id="L92">            DbUser newUser = new DbUser(latinName,</span>
 <span class="nc" id="L93">                UUID.randomUUID().toString(), userMail,</span>
-<span class="nc" id="L94">                userName[0], LocalDate.of(1970, 1, 1));</span>
+<span class="nc" id="L94">                userName[0], LocalDate.of(1900, 1, 1));</span>
 <span class="nc" id="L95">            userRepository.save(newUser);</span>
           }
 <span class="nc" id="L97">          response.sendRedirect(&quot;/home&quot;);</span>
@@ -112,31 +112,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 <span class="fc" id="L112">    http.rememberMe();</span>
 
 <span class="fc" id="L114">    http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);</span>
-<span class="fc" id="L115">    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);</span>
 
-<span class="fc" id="L117">    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);</span>
+//    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-//        http.logout().logoutRequestMatcher(new AntPathRequestMatcher(&quot;/&quot;));
-<span class="fc" id="L120">  }</span>
+<span class="fc" id="L118">  }</span>
 
-  //   CORS filter
-  //  @Bean
-  //  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-  //    return http.cors(Customizer.withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
-  //        .authorizeRequests(auth -&gt; auth.anyRequest().authenticated()).httpBasic(Customizer.withDefaults()).build();
-  //  }
-
-  // CORS configuration
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-<span class="fc" id="L132">    CorsConfiguration configuration = new CorsConfiguration();</span>
-<span class="fc" id="L133">    configuration.setAllowedOrigins(Arrays.asList(&quot;http://localhost:3000&quot;));</span>
-<span class="fc" id="L134">    configuration.setAllowedMethods(Arrays.asList(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;));</span>
-<span class="fc" id="L135">    configuration.setAllowedHeaders(List.of(&quot;Authorization&quot;));</span>
-<span class="fc" id="L136">    configuration.setMaxAge(3600L);</span>
-<span class="fc" id="L137">    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span>
-<span class="fc" id="L138">    source.registerCorsConfiguration(&quot;/**&quot;, configuration);</span>
-<span class="fc" id="L139">    return source;</span>
-  }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

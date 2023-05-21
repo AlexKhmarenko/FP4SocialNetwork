@@ -11,12 +11,10 @@ public interface UserFollowService {
 
   List<UserFollow> getAllUserByUserFollowerId(Integer userFollowerId);
 
-  String saveUserFollower (UserFollow userFollow);
+  String saveUserFollower(UserFollow userFollow);
 
-  public Optional <UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
+  Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
       Integer userFollower, Integer userFollowing);
-
-
 
 
 }

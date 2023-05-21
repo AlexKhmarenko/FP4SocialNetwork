@@ -24,5 +24,4 @@ public class NetworkApp {
   public ModelMapper getModelMapper() {
     return new ModelMapper();
   }
-
 }

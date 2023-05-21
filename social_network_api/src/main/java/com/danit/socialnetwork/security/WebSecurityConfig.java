@@ -112,8 +112,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.rememberMe();
 
     http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-    //    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    //
+
 //    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
   }

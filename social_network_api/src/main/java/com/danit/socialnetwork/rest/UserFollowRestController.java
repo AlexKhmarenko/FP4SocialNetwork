@@ -11,9 +11,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Log4j2
@@ -48,11 +55,13 @@ public class UserFollowRestController {
   @PostMapping("api/follow")
   public ResponseEntity<?> follow(@RequestBody UserFollowRequest userFollowRequest) {
 
+    Map<String, String> response = new HashMap<>();
     if (usersExist(userFollowRequest)) {
       Integer follower = userFollowRequest.getUserFollower();
       Integer following = userFollowRequest.getUserFollowing();
       Optional<UserFollow> maybeUserFollow = userFollowService
           .getUserFollowByUserFollowerIdAndUserFollowingId(follower, following);
+
       if (maybeUserFollow.isPresent()) {
         return new ResponseEntity<>("Following already exists", HttpStatus.CREATED);
       }
@@ -61,9 +70,11 @@ public class UserFollowRestController {
       newEntry.setUserFollowerId(follower);
       newEntry.setUserFollowingId(following);
       newEntry.setReceivedNotificationPost(true);
-      return new ResponseEntity<>(userFollowService.saveUserFollower(newEntry), HttpStatus.OK);
+      response.put("message", userFollowService.saveUserFollower(newEntry));
+      return ResponseEntity.ok(response);
     }
-    return new ResponseEntity<>("invalid user id", HttpStatus.BAD_REQUEST);
+    response.put("message", "invalid user id");
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
   @PostMapping("api/unfollow")
@@ -74,12 +85,17 @@ public class UserFollowRestController {
     Optional<UserFollow> deletedUserFollow = userFollowService
         .getUserFollowByUserFollowerIdAndUserFollowingId(unfollowed, unfollowing);
 
+    Map<String, String> response = new HashMap<>();
+
     if (deletedUserFollow.isPresent()) {
-      return new ResponseEntity<>(userFollowService
+
+      response.put("message", userFollowService
           .deleteUserFollowByUserFollowId(deletedUserFollow.get()
-              .getUserFollowId()), HttpStatus.OK);
+              .getUserFollowId()));
+      return ResponseEntity.ok(response);
     }
-    return new ResponseEntity<>("invalid user id", HttpStatus.OK);
+    response.put("message", "invalid user id");
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
   @PostMapping("api/notification")
@@ -91,10 +107,13 @@ public class UserFollowRestController {
     Optional<DbUser> maybeFollower = userRepository.findById(follower);
     Optional<DbUser> maybeFollowing = userRepository.findById(following);
 
+    Map<String, String> response = new HashMap<>();
+
     if (maybeFollower.isEmpty()
         || maybeFollowing.isEmpty()
         || follower.equals(following)) {
-      return new ResponseEntity<>("invalid user id", HttpStatus.BAD_REQUEST);
+      response.put("message", "invalid user id");
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     Optional<UserFollow> MaybeUser = userFollowService.getUserFollowByUserFollowerIdAndUserFollowingId(follower, following);
@@ -109,6 +128,7 @@ public class UserFollowRestController {
       newEntry.setUserFollowingId(following);
       newEntry.setReceivedNotificationPost(true);
     }
-    return new ResponseEntity<>(userFollowService.saveUserFollower(newEntry), HttpStatus.OK);
+    response.put("message", userFollowService.saveUserFollower(newEntry));
+    return ResponseEntity.ok(response);
   }
 }
