@@ -14,14 +14,18 @@ public interface UserService {
 
   Optional<DbUser> findByUsername(String username) throws IOException;
 
+  Optional<DbUser> findById(Integer userId) throws IOException;
+
   Optional<DbUser> findDbUserByEmail(String email) throws IOException;
 
-  public boolean activateUser(Integer code);
+  boolean activateUser(Integer code);
 
   boolean save(DbUser dbUser);
 
   boolean sendLetter(String name, String email);
 
   List<DbUser> filterCachedUsersByName(String userSearch);
+
+  DbUser findByUserId(Integer userId);
 
 }
