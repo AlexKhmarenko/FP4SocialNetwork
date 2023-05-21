@@ -44,7 +44,7 @@ public class UserFollowRestController {
     Map<String, String> response = new HashMap<>();
     if (maybeFollower.isPresent()
         && maybeFollowing.isPresent()
-        || !maybeFollower.equals(maybeFollowing)) {
+        && !maybeFollower.equals(maybeFollowing)) {
       DbUser follower = maybeFollower.get();
       DbUser following = maybeFollowing.get();
       Optional<UserFollow> maybeUserFollow = userFollowService

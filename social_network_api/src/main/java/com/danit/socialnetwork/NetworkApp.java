@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-@CrossOrigin
 public class NetworkApp {
   public static void main(String[] args) {
     SpringApplication.run(NetworkApp.class, args);
