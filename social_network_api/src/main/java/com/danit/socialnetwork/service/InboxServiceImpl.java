@@ -48,5 +48,4 @@ public class InboxServiceImpl implements InboxService {
   public List<Inbox> getInboxesByInboxUid(Integer inboxUid) {
     return inboxRepository.getInboxesByInboxUid(inboxUid);
   }
-
 }

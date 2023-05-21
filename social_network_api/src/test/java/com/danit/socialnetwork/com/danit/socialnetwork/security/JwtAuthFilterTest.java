@@ -64,5 +64,4 @@ class JwtAuthFilterTest {
     authentication = SecurityContextHolder.getContext().getAuthentication();
     assertTrue(authentication.isAuthenticated());
   }
-
 }

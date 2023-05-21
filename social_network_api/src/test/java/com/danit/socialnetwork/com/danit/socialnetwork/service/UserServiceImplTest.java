@@ -202,5 +202,4 @@ class UserServiceImplTest {
 
     Assert.assertEquals(Optional.empty(), testUser);
   }
-
 }

@@ -63,5 +63,4 @@ public class Message {
     this.message = message;
     this.createdAt = createdAt;
   }
-
 }

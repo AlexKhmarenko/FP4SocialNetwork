@@ -151,4 +151,5 @@ class UserRestControllerTest {
   @Test
   void getBackgroundImage() {
   }
+
 }

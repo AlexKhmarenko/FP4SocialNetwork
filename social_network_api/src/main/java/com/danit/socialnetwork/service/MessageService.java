@@ -11,5 +11,4 @@ public interface MessageService {
 
   List<Message> findByInboxUidAndUserIdOrUserIdAndInboxUid(
       Integer inboxUid, Integer userId, Integer inboxUidIncoming, Integer userIdIncoming);
-
 }

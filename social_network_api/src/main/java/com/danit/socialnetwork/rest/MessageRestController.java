@@ -80,5 +80,4 @@ public class MessageRestController {
 
     return new ResponseEntity<>(MessageGetAllDtoResponse.from(messages), HttpStatus.OK);
   }
-
 }

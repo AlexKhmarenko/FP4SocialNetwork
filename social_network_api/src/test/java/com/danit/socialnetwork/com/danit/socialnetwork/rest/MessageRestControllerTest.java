@@ -153,4 +153,5 @@ class MessageRestControllerTest {
     verify(messageService)
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(inboxUid, userId, inboxUid, userId);
   }
+
 }

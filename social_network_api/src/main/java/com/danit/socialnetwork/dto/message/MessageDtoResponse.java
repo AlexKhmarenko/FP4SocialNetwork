@@ -22,4 +22,5 @@ public class MessageDtoResponse {
     messageDto.setCreatedAt(message.getCreatedAt());
     return messageDto;
   }
+
 }

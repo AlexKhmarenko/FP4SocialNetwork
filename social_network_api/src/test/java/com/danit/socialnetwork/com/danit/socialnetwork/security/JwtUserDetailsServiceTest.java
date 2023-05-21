@@ -46,5 +46,4 @@ class JwtUserDetailsServiceTest {
       userDetailsService.loadUserByUsername("nonexistentUser");
     });
   }
-
 }

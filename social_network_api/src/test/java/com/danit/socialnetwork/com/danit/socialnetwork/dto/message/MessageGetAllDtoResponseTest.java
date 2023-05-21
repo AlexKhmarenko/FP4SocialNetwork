@@ -49,5 +49,4 @@ class MessageGetAllDtoResponseTest {
 
     Assert.assertEquals(testMessagesResponse, messagesConvert);
   }
-
 }

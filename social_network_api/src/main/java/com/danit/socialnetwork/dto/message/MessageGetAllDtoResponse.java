@@ -28,5 +28,4 @@ public class MessageGetAllDtoResponse {
     }
     return messagesDto;
   }
-
 }

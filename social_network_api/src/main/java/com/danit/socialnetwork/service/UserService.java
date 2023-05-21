@@ -25,5 +25,4 @@ public interface UserService {
   boolean sendLetter(String name, String email);
 
   List<DbUser> filterCachedUsersByName(String userSearch);
-
 }

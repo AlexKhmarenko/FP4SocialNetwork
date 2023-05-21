@@ -32,5 +32,4 @@ public class InboxParticipantsServiceImpl implements InboxParticipantsService {
     }
     return inboxParticipantsSender.get();
   }
-
 }

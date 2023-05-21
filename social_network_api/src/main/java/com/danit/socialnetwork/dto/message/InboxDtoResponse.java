@@ -37,5 +37,4 @@ public class InboxDtoResponse {
     }
     return inboxDto;
   }
-
 }

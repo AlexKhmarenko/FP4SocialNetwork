@@ -70,4 +70,5 @@ class InboxDtoResponseTest {
 
     Assert.assertEquals(testInboxDtoResponse, testInboxConvert);
   }
+
 }

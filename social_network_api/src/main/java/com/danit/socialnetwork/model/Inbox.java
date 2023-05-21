@@ -61,5 +61,4 @@ public class Inbox {
     this.lastMessage = lastMessage;
     this.lastSentUserId = lastSentUserId;
   }
-
 }

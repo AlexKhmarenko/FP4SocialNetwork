@@ -31,5 +31,4 @@ public class MessageServiceImpl implements MessageService {
       Integer inboxUid, Integer userId, Integer inboxUidIncoming, Integer userIdIncoming) {
     return messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(inboxUid, userId, inboxUid, userId);
   }
-
 }

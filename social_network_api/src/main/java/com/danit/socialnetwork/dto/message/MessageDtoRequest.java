@@ -7,5 +7,4 @@ public class MessageDtoRequest {
   private Integer inboxUid;   // inboxUid = sender_id (current user)
   private Integer userId;     // userId = receiver_id
   private String writtenMessage;
-
 }

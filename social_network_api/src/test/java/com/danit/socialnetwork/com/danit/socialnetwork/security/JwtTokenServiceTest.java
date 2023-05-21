@@ -47,4 +47,5 @@ class JwtTokenServiceTest {
     assertTrue(userId.isPresent());
     assertEquals(Optional.of(123), Optional.of(userId.get()));
   }
+
 }

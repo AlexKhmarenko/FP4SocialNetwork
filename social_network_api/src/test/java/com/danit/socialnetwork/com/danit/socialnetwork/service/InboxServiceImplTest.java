@@ -113,4 +113,5 @@ class InboxServiceImplTest {
 
     Assert.assertEquals(testInbox, testFindInbox);
   }
+
 }

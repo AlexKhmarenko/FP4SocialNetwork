@@ -61,4 +61,5 @@ class MessageServiceImplTest {
 
     Assert.assertEquals(testMessages, testFindMessages);
   }
+
 }

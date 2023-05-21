@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface InboxParticipantsRepository extends JpaRepository<InboxParticipants, Integer> {
 
   Optional<InboxParticipants> findByInboxUidAndUserId(Integer inboxUid, Integer userId);
+
 }

@@ -13,5 +13,4 @@ public interface InboxRepository extends JpaRepository<Inbox, Integer> {
   Optional<Inbox> findByInboxUidAndLastSentUserId(Integer inboxUid, Integer lastSentUserId);
 
   List<Inbox> getInboxesByInboxUid(Integer inboxUid);
-
 }

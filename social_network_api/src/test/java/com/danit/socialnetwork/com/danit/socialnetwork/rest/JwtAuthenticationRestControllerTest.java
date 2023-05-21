@@ -112,4 +112,5 @@ class JwtAuthenticationRestControllerTest {
     Mockito.verify(userService).findDbUserByEmail(email);
     Mockito.verify(userService).findByUsername(username);
   }
+
 }

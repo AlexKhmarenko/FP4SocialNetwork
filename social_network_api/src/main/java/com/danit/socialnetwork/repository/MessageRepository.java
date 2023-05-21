@@ -11,5 +11,4 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 
   List<Message> findByInboxUidAndUserIdOrUserIdAndInboxUid(
       Integer inboxUid, Integer userId, Integer inboxUidIncoming, Integer userIdIncoming);
-
 }

@@ -13,4 +13,5 @@ public interface InboxService {
   Inbox saveInbox(Integer inboxUid, Integer userId, String writtenMessage, LocalDateTime createdAt);
 
   List<Inbox> getInboxesByInboxUid(Integer inboxUid);
+
 }

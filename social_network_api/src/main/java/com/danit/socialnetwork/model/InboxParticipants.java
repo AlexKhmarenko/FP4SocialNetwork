@@ -48,5 +48,4 @@ public class InboxParticipants {
     this.userId = userId;
     this.inboxUid = inboxUid;
   }
-
 }

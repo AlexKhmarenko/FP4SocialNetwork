@@ -65,4 +65,5 @@ class InboxParticipantsServiceImplTest {
 
     Assert.assertEquals(testInboxParticipants, testSaveInboxParticipants);
   }
+
 }
