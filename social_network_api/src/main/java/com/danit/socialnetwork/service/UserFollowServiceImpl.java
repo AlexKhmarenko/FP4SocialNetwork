@@ -29,7 +29,11 @@ public class UserFollowServiceImpl implements UserFollowService {
   public List<UserFollow> getAllUserByUserFollowerId(Integer userFollowerId) {
     return userFollowRepository
         .findAllByUserFollowerId(userFollowerId);
-//        .findAllByUserFollowerId(userRepository.findById(userFollowerId));
+  }
+
+  public List<UserFollow> getAllUserByUserFollowingId(Integer userFollowingId) {
+    return userFollowRepository
+        .findAllByUserFollowingId(userFollowingId);
   }
 
   @Override

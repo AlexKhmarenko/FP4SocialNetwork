@@ -11,6 +11,8 @@ public interface UserFollowService {
 
   List<UserFollow> getAllUserByUserFollowerId(Integer userFollowerId);
 
+  List<UserFollow> getAllUserByUserFollowingId(Integer userFollowingId);
+
   String saveUserFollower(UserFollow userFollow);
 
   Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(

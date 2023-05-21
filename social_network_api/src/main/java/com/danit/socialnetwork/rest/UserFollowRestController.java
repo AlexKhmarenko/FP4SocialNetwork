@@ -37,21 +37,6 @@ public class UserFollowRestController {
 
     return userFollowService.getAllUserByUserFollowerId(userId);
   }
-
-  Boolean usersExist(UserFollowRequest userFollow) {
-    Integer follower = userFollow.getUserFollower();
-    Integer following = userFollow.getUserFollowing();
-    Optional<DbUser> maybeFollower = userRepository.findById(follower);
-    Optional<DbUser> maybeFollowing = userRepository.findById(following);
-
-    if (maybeFollower.isEmpty()
-        || maybeFollowing.isEmpty()
-        || follower.equals(following)) {
-      return false;
-    }
-    return true;
-  }
-
   @PostMapping("api/follow")
   public ResponseEntity<?> follow(@RequestBody UserFollowRequest userFollowRequest) {
     Optional<DbUser> maybeFollower = userRepository.findById(userFollowRequest.getUserFollower());
