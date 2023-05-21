@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import {useDispatch} from "react-redux"
 import { modalConfig } from './modalConfig';
 import { Button, Typography, Box, FormControl } from "@mui/material";
-import { StyledBox, StyledHeaderModalText, StyledModalText, StyledFormControl, StyledSpanElement, StyledWhiteButton } from "./style"
-import BasicButton from '../common/button';
+import { StyledBox, StyledModalText } from "./style"
 import InputFieldWithError from "../common/input"
 import { useModal } from '../../context/ModalContext';
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { checkEmail } from "../../store/actions"
+import {
+    StyledBlackButton,
+    StyledFormControl,
+    StyledHeaderModalText
+} from "../LoginModal/loginModalStyles"
 
 import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
 
 
 export const ForgotModal = ({ id }) => {
+ const dispatch = useDispatch()
     const { setOpenForgot, setOpenSendCode } = useModal()
-    // const [credential, setCredential] = useState("")
-    // const userDataState = useSelector(state => state.loginUserData.userData);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const userDataState = {};
     const { text,
         title,
         buttonText,
-        placeholder,
         name,
-        iconStatus,
         inputType,
         typeButton } = modalConfig[id]
     return (
@@ -45,7 +46,6 @@ export const ForgotModal = ({ id }) => {
                     email: Yup.string().email("Please enter a correct email").required("email is required")
                 })} onSubmit={async (values, { setErrors, setSubmitting }) => {
                     setIsSubmitting(true);
-                    console.log(1)
                     try {
                         const res = await fetch("http://localhost:8080/api/changepassword", {
                             method: "POST",
@@ -54,9 +54,14 @@ export const ForgotModal = ({ id }) => {
                                 email: values.email,
                             })
                         })
+                        console.log(res)
                         if (res.ok) {
-                            const data = await res.json()
-                            dispatch(checkEmail(data))
+                            const data = await res.text()
+const array = data.split(" ")
+const email = array[array.length -1]
+                            dispatch(checkEmail(email))
+                            setOpenForgot(false)
+                            setOpenSendCode(true)
                         }
                     }
                     catch (error) {
@@ -70,29 +75,15 @@ export const ForgotModal = ({ id }) => {
                 }>
                 <Form>
                     <FormControl sx={StyledFormControl}>
-                        {/* <Field as={InputFieldWithError} sx={{ width: "400px" }} name={name}
-                        id="userName"
-                        label={placeholder} disabled={isSubmitting} type="text"
-                        value={email}
-                         /> */}
-                        <Field as={InputFieldWithError} sx={{ width: "400px" }} name={"email"}
-                            id="email"
-                            label="Email" disabled={isSubmitting} type="text" />
-
-                        {/* <BasicButton text={buttonText} color="black" type={typeButton} /> */}
-                        <Button type="submit"
+                        <Field as={InputFieldWithError} sx={{ width: "400px" }} name={name}
+                            id={name}
+                            label="Email" disabled={isSubmitting} type={inputType} />
+                        <Button type={typeButton}
                             variant="contained" disabled={isSubmitting}
+                            sx={{ ...StyledBlackButton, marginTop: "20px" }}
                             fullWidth={true}>{buttonText}</Button>
                     </FormControl>
                 </Form>
-                {/* <Box
-                    component="form"
-                    sx={StyledFormControl}
-                    noValidate
-                    autoComplete="off"
-                    onSubmit={handleSubmit}
-                > */}
-                {/* </Box> */}
             </Formik>
         </Box>
     )

@@ -1,3 +1,4 @@
+com/danit/socialnetwork/service/PostCommentServiceImplTest.class
 PostDtoUnitTest.class
 com/danit/socialnetwork/security/JwtAuthFilterTest.class
 com/danit/socialnetwork/rest/PostLikeRestControllerTest.class
@@ -7,6 +8,7 @@ UserRestControllerTest.class
 com/danit/socialnetwork/service/PostServiceImplTest$1.class
 JwtAuthenticationRestControllerTest.class
 com/danit/socialnetwork/MethodWithGuavaCacheTests.class
+com/danit/socialnetwork/rest/PostCommentRestControllerTest.class
 com/danit/socialnetwork/security/JwtUserDetailsServiceTest.class
 PostDtoUnitTest$1.class
 com/danit/socialnetwork/service/PostServiceImplTest$3.class
