@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
 
 import java.io.IOException;
@@ -18,11 +19,14 @@ public interface UserService {
 
   Optional<DbUser> findDbUserByEmail(String email) throws IOException;
 
-  public boolean activateUser(Integer code);
+  boolean activateUser(Integer code);
 
   boolean save(DbUser dbUser);
 
   boolean sendLetter(String name, String email);
 
   List<DbUser> filterCachedUsersByName(String userSearch);
+
+  UserDtoResponse findByUserId(Integer userId);
+
 }

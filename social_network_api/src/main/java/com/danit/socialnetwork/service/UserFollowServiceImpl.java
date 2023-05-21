@@ -30,6 +30,7 @@ public class UserFollowServiceImpl implements UserFollowService {
         .findAllByUserFollowerId(userFollowerId);
   }
 
+
   public List<UserFollow> getAllUserByUserFollowingId(Integer userFollowingId) {
     return userFollowRepository
         .findAllByUserFollowingId(userFollowingId);
@@ -39,6 +40,7 @@ public class UserFollowServiceImpl implements UserFollowService {
   public String saveUserFollower(UserFollow userFollow) {
     userFollowRepository.save(userFollow);
     return "changes saved";
+
   }
 
   @Override
