@@ -70,6 +70,7 @@ public class PostServiceImpl implements PostService {
     return postRepository.save(thePostSave);
 
   }
+
   /*Method returns all posts done by user*/
   @Override
   public List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer page) {
@@ -85,7 +86,7 @@ public class PostServiceImpl implements PostService {
   public List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer page) {
     Pageable pagedByTenPosts =
         PageRequest.of(page, 10);
-    List<Post> postList = postRepository.findAllByUserIdLiked (userId, pagedByTenPosts);
+    List<Post> postList = postRepository.findAllByUserIdLiked(userId, pagedByTenPosts);
     return postList.stream()
         .map(PostDtoResponse::from)
         .toList();
