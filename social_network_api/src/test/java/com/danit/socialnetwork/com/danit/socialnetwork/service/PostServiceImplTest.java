@@ -6,7 +6,7 @@ import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
-import com.danit.socialnetwork.model.UserFollower;
+import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -58,12 +58,12 @@ public class PostServiceImplTest {
     user2.setUsername("Jim");
     user2.setName("Jimmy");
 
-    UserFollower userFollower1 = new UserFollower();
+    UserFollow userFollower1 = new UserFollow();
     userFollower1.setUserFollowId(1);
     userFollower1.setUserFollowerId(user);
     userFollower1.setUserFollowingId(user1);
 
-    UserFollower userFollower2 = new UserFollower();
+    UserFollow userFollower2 = new UserFollow();
     userFollower2.setUserFollowId(2);
     userFollower2.setUserFollowerId(user);
     userFollower2.setUserFollowingId(user2);
@@ -94,7 +94,7 @@ public class PostServiceImplTest {
     Pageable pagedByFivePosts =
         PageRequest.of(0, 12);
 
-    List<UserFollower> userFollowerList = new ArrayList<>(Arrays.asList(userFollower1, userFollower2));
+    List<UserFollow> userFollowerList = new ArrayList<>(Arrays.asList(userFollower1, userFollower2));
 
     when(postRepository.findAllPostsFromToFollow(user.getUserId(), pagedByFivePosts)).thenReturn(postList);
 

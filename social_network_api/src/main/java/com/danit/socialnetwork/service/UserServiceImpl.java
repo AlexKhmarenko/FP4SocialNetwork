@@ -151,8 +151,8 @@ public class UserServiceImpl implements UserService {
       throw new UserNotFoundException(String.format("User with userId %s not found", userId));
     }
     UserDtoResponse userDtoResponse = UserDtoResponse.from(maybeUser.get());
-    userDtoResponse.setFollowers(userFollowRepository.findAllFollowers(userId));
-    userDtoResponse.setFollowings(userFollowRepository.findAllFollowings(userId));
+    userDtoResponse.setFollowers(userFollowRepository.findAllByUserFollowingId(userId));
+    userDtoResponse.setFollowings(userFollowRepository.findAllByUserFollowerId(userId));
     return userDtoResponse;
   }
 

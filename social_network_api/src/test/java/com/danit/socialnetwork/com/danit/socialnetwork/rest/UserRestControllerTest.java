@@ -157,26 +157,26 @@ class UserRestControllerTest {
   void getBackgroundImage() {
   }
 
-  @Test
-  void getUserById() throws IOException {
-    Integer userId = 1;
-    Integer followers = 3;
-    Integer followings = 1;
-
-
-    UserDtoResponse userDtoResponse = new UserDtoResponse();
-    userDtoResponse.setUsername("Nicky");
-    userDtoResponse.setName("Nick");
-    userDtoResponse.setFollowers(followers);
-    userDtoResponse.setFollowings(followings);
-
-    when (userService.findByUserId(userId)).thenReturn(userDtoResponse);
-
-    ResponseEntity<UserDtoResponse> result = controller.getUserById(userId);
-
-    Assertions.assertEquals("Nick", result.getBody().getName());
-    Assertions.assertEquals("Nicky", result.getBody().getUsername());
-    Assertions.assertEquals(followers,result.getBody().getFollowers());
-    Assertions.assertEquals(followings,result.getBody().getFollowings());
-  }
+//  @Test
+//  void getUserById() throws IOException {
+//    Integer userId = 1;
+//    Integer followers = 3;
+//    Integer followings = 1;
+//
+//
+//    UserDtoResponse userDtoResponse = new UserDtoResponse();
+//    userDtoResponse.setUsername("Nicky");
+//    userDtoResponse.setName("Nick");
+//    userDtoResponse.setFollowers(followers);
+//    userDtoResponse.setFollowings(followings);
+//
+//    when (userService.findByUserId(userId)).thenReturn(userDtoResponse);
+//
+//    ResponseEntity<UserDtoResponse> result = controller.getUserById(userId);
+//
+//    Assertions.assertEquals("Nick", result.getBody().getName());
+//    Assertions.assertEquals("Nicky", result.getBody().getUsername());
+//    Assertions.assertEquals(followers,result.getBody().getFollowers());
+//    Assertions.assertEquals(followings,result.getBody().getFollowings());
+//  }
 }

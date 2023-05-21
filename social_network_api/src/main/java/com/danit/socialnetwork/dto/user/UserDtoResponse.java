@@ -1,12 +1,14 @@
 package com.danit.socialnetwork.dto.user;
 
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.model.UserFollow;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,8 +24,8 @@ public class UserDtoResponse {
 
   private byte[] profileImageByteArray;
 
-  private Integer followers;
-  private Integer followings;
+  private List<UserFollow> followers;
+  private List<UserFollow> followings;
 
   public static UserDtoResponse from(DbUser dbUser) {
     UserDtoResponse userDtoResponse = new UserDtoResponse();

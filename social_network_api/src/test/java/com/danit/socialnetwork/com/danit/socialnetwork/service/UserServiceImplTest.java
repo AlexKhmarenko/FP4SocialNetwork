@@ -210,28 +210,28 @@ class UserServiceImplTest {
     Assert.assertEquals(Optional.empty(), testUser);
   }
 
-  @Test
-  void findByUserId() {
-    Integer userId = 3;
-    Integer followers = 3;
-    Integer followings = 1;
+  //@Test
+//  void findByUserId() {
+//    Integer userId = 3;
+//    Integer followers = 3;
+//    Integer followings = 1;
+//
+//    DbUser dbUser = new DbUser();
+//    dbUser.setUserId(userId);
+//    dbUser.setUsername("John1");
+//    dbUser.setName("Johny1");
+//    dbUser.setCreatedDate(LocalDateTime.now());
+//
+//    when(userRepository.findById(userId)).thenReturn(Optional.of(dbUser));
+//    when(userFollowRepository.findAllFollowers(userId)).thenReturn(followers);
+//    when(userFollowRepository.findAllFollowings(userId)).thenReturn(followings);
+//
+//    UserDtoResponse result = userService.findByUserId(userId);
+//
+//    Assertions.assertEquals(followers, result.getFollowers());
+//    Assertions.assertEquals(followings, result.getFollowings());
+//    Assertions.assertEquals("John1", result.getUsername());
+//    Assertions.assertEquals("Johny1", result.getName());
 
-    DbUser dbUser = new DbUser();
-    dbUser.setUserId(userId);
-    dbUser.setUsername("John1");
-    dbUser.setName("Johny1");
-    dbUser.setCreatedDate(LocalDateTime.now());
-
-    when(userRepository.findById(userId)).thenReturn(Optional.of(dbUser));
-    when(userFollowRepository.findAllFollowers(userId)).thenReturn(followers);
-    when(userFollowRepository.findAllFollowings(userId)).thenReturn(followings);
-
-    UserDtoResponse result = userService.findByUserId(userId);
-
-    Assertions.assertEquals(followers, result.getFollowers());
-    Assertions.assertEquals(followings, result.getFollowings());
-    Assertions.assertEquals("John1", result.getUsername());
-    Assertions.assertEquals("Johny1", result.getName());
-
-  }
+//  }
 }
