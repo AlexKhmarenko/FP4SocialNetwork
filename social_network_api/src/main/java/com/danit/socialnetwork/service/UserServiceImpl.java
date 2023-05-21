@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
 import static com.danit.socialnetwork.config.GuavaCache.userCache;
@@ -42,6 +41,15 @@ public class UserServiceImpl implements UserService {
     Optional<DbUser> maybeUser = userRepository.findByUsername(username);
     if (maybeUser.isEmpty()) {
       throw new UserNotFoundException(String.format("User with username %s not found", username));
+    }
+    return maybeUser;
+  }
+
+  @Override
+  public Optional<DbUser> findById(Integer userId) {
+    Optional<DbUser> maybeUser = userRepository.findById(userId);
+    if (maybeUser.isEmpty()) {
+      throw new UserNotFoundException(String.format("User with userId %s not found", userId));
     }
     return maybeUser;
   }
@@ -102,7 +110,7 @@ public class UserServiceImpl implements UserService {
     try {
       String message = String.format(
           "Hello, %s! \n "
-              + "Welcome to BlitzPost. Email confirmation code %s",
+              + "Welcome to Capitweet. Email confirmation code %s",
           name, randomNumber);
       log.info(String.format(message));
       mailSender.send(email, "Activation code", message);
@@ -133,6 +141,15 @@ public class UserServiceImpl implements UserService {
         .toList();
   }
 
+  @Override
+  public DbUser findByUserId(Integer userId) {
+    Optional<DbUser> maybeUser = userRepository.findById(userId);
+    if (maybeUser.isEmpty()) {
+      throw new UserNotFoundException(String.format("User with userId %s not found", userId));
+    }
+    return maybeUser.get();
+  }
+
   //  @Override
   public Optional<DbUser> findDbUserByEmail(String email) {
     Optional<DbUser> maybeUser = userRepository.findDbUserByEmail(email);
@@ -141,4 +158,5 @@ public class UserServiceImpl implements UserService {
     }
     return maybeUser;
   }
+
 }

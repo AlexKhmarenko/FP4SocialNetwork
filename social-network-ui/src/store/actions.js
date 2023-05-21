@@ -4,12 +4,14 @@ import {
     UPDATE_REMEMBER_ME_ACTION,
     SAVE_USER_TOKEN,
     OPEN_SIGN_UP_MODAL,
-    SET_USER_ID, SET_POSTS,
+    SET_USER_ID,
+    SET_POSTS,
     GET_USERS_SUCCESS,
     OPEN_LOGIN_MODAL,
     CLOSE_SIGN_UP_MODAL,
     CLOSE_LOGIN_MODAL,
     DELETE_USERS_SUCCESS,
+    CHECK_EMAIL,
     SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST
 } from "./types";
 
@@ -81,6 +83,10 @@ export const setPosts = (posts) => ({
     payload: posts,
 });
 
+export const checkEmail = (data) => ({
+    type: CHECK_EMAIL,
+    payload: data
+})
 export const setUserPostsClear = (posts) => ({
     type: SET_CLEAR_POSTS, payload: posts
 });
