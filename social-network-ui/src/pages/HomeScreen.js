@@ -4,8 +4,9 @@ import { Button, TextField, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import CircularProgress from '@mui/material/CircularProgress';
 
-import { setPage, setPosts, setUserId, setUserPostsClear } from "../store/actions";
+import { setPage, setPosts, setUserId, setUserPostsClear, setUserPostToPostsArr } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
@@ -45,21 +46,17 @@ export function HomeScreen() {
             headers: {
                 "Content-Type": "application/json"
             }
-        }).then((response) => {
-            dispatch(setUserPostsClear([]))
+        }).then(async (response) => {
+            const userPost = await response.json()
+            dispatch(setUserPostToPostsArr(userPost))
             if (!response.ok) {
                 throw new Error("Failed to create post");
             }
-            return response.json();
         }).then(async () => {
             setPostImage(null);
             setPostText("");
-
         }).finally(async () => {
             setSubmitting(false);
-            let a = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${0}`);
-            let b = await a.json();
-            dispatch(setPosts(b));
         });
     };
 

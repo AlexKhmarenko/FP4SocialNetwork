@@ -7,6 +7,7 @@ import {usersSearchReducer} from "./Reducers/usersSearchReducer";
 import { userDataReducer } from "./Reducers/userDataReducer";
 import { PostReducer } from "./Reducers/PostsReducer";
 import {PageDisplaing} from "./Reducers/PageDisplaing"
+import {likeReducer} from  "./Reducers/likeReducer"
 
 const rootReducer = combineReducers({
     loginUserData: userDataLoginReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     userData: userDataReducer,
     Posts: PostReducer,
     pageCount:PageDisplaing,
+    isLikedPost:likeReducer
 });
 
 export default rootReducer;

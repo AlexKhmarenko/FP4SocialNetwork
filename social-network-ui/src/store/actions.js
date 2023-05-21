@@ -10,13 +10,20 @@ import {
     CLOSE_SIGN_UP_MODAL,
     CLOSE_LOGIN_MODAL,
     DELETE_USERS_SUCCESS,
-    SET_PAGE, SET_CLEAR_POSTS
+    SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST
 } from "./types";
 
 export const setPage = (pageNumber) => ({
     type: SET_PAGE,
     payload: pageNumber,
 });
+
+export const setLike = (like) => {
+    return {
+        type: "SET_LIKE",
+        payload: like,
+    };
+};
 
 export const setUserEmail = (userData) => ({
     type: UPDATE_USER_DATA_USERNAME,
@@ -63,6 +70,11 @@ export const DeleteUsersSuccess = () => ({
     type: DELETE_USERS_SUCCESS
 });
 
+export const setUserPostToPostsArr = (post) => ({
+    type: SET_USER_POST,
+    payload: post
+});
+
 export const setPosts = (posts) => ({
     type: SET_POSTS,
     payload: posts,
@@ -103,6 +115,40 @@ export const sendEmailCheckRequest = (values) => {
         } catch (error) {
             console.error("An error occurred:", error);
             throw error;
+        }
+    };
+};
+
+export const addLike = (postId, userId) => {
+    return async dispatch => {
+        try {
+            await fetch("http://localhost:8080/likes", {
+                method: "POST",
+                body: JSON.stringify({
+                    postId: postId,
+                    userId: userId,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+};
+
+export const removeLike = (postId, userId) => {
+    return async dispatch => {
+        try {
+            await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        } catch (error) {
+            console.log(error);
         }
     };
 };

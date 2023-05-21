@@ -24,14 +24,12 @@ import { decodeToken } from "./Posts/decodeToken";
 export function Layout() {
     const userToken = useSelector(state => state.saveUserToken.userToken);
     const page = useSelector(state=>state.pageCount.page)
+    const [isEnd, setIsEnd] = useState(false);
     const dispatch = useDispatch();
 
-    const [isEnd, setIsEnd] = useState(false);
-    // const [page, setPage] = useState(0);
 
     useEffect(() => {
         fetchPosts(page);
-        console.log(page);
     }, [page]);
 
     const fetchPosts = async (page) => {
@@ -47,14 +45,9 @@ export function Layout() {
         if (data.length === 0) {
             setIsEnd(true);
         } else {
-            // Проверьте, используете ли вы setPosts или addPosts
             dispatch(setPosts(data));
         }
     };
-
-    useEffect(() => {
-        console.log(page);
-    }, [page]);
 
     const handleScroll = (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;

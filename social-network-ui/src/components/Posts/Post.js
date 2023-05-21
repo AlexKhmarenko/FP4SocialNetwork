@@ -41,7 +41,9 @@ export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await getInformAboutusersWhichLike();
+            if(userId){
+                await getInformAboutusersWhichLike();
+            }
             await getInformAboutLikesInAPost();
         };
         fetchData();
@@ -113,7 +115,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
     return (
         <Card sx={PostCard}>
             <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
-                <Avatar alt={"asy"} src="#"/>
+                <Avatar alt={userName} src="#" />
                 <div style={{ marginLeft: 16, flex: 1 }}>
                     <Typography variant="subtitle1" component="div">
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
