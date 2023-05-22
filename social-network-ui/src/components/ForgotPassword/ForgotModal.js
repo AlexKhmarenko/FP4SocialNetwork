@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {useDispatch} from "react-redux"
+import { useDispatch } from "react-redux"
 import { modalConfig } from './modalConfig';
 import { Button, Typography, Box, FormControl } from "@mui/material";
 import { StyledBox, StyledModalText } from "./style"
@@ -20,7 +20,7 @@ import CloseIcon from '../common/icon/CloseIcon';
 
 
 export const ForgotModal = ({ id }) => {
- const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const { setOpenForgot, setOpenSendCode } = useModal()
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { text,
@@ -46,31 +46,35 @@ export const ForgotModal = ({ id }) => {
                     email: Yup.string().email("Please enter a correct email").required("email is required")
                 })} onSubmit={async (values, { setErrors, setSubmitting }) => {
                     setIsSubmitting(true);
-                    try {
-                        const res = await fetch("http://localhost:8080/api/changepassword", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                email: values.email,
-                            })
-                        })
-                        console.log(res)
-                        if (res.ok) {
-                            const data = await res.text()
-const array = data.split(" ")
-const email = array[array.length -1]
-                            dispatch(checkEmail(email))
-                            setOpenForgot(false)
-                            setOpenSendCode(true)
-                        }
-                    }
-                    catch (error) {
-                        console.error("An error occurred:", error);
-                        setErrors({ email: "An error occurred, please try again" });
-                    } finally {
-                        setIsSubmitting(false);
-                        setSubmitting(false);
-                    }
+                    dispatch(checkEmail(values.email))
+                    setOpenForgot(false)
+                    setOpenSendCode(true)
+
+                    //                     try {
+                    //                         const res = await fetch("http://localhost:8080/api/changepassword", {
+                    //                             method: "POST",
+                    //                             headers: { "Content-Type": "application/json" },
+                    //                             body: JSON.stringify({
+                    //                                 email: values.email,
+                    //                             })
+                    //                         })
+                    //                         console.log(res)
+                    //                         if (res.ok) {
+                    //                             const data = await res.text()
+                    // const array = data.split(" ")
+                    // const email = array[array.length -1]
+                    //                             dispatch(checkEmail(email))
+                    //                             setOpenForgot(false)
+                    //                             setOpenSendCode(true)
+                    //                         }
+                    //                     }
+                    //                     catch (error) {
+                    //                         console.error("An error occurred:", error);
+                    //                         setErrors({ email: "An error occurred, please try again" });
+                    //                     } finally {
+                    //                         setIsSubmitting(false);
+                    //                         setSubmitting(false);
+                    //                     }
                 }
                 }>
                 <Form>

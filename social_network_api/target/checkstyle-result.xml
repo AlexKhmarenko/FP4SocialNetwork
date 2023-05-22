@@ -4,7 +4,11 @@
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/post/PostDtoSave.java">
 </file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/post/PostCommentDtoSave.java">
+</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/post/PostDtoResponse.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/post/PostCommentDtoResponse.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/post/PostLikeDto.java">
 </file>
@@ -12,7 +16,21 @@
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/RegistrationRequest.java">
 </file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/message/InboxParticipantsDtoRequest.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/message/MessageDtoResponse.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/message/MessageGetAllDtoResponse.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/message/MessageDtoRequest.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/message/InboxDtoResponse.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/message/InboxDtoRequest.java">
+</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/user/UserDtoRequest.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/user/UserDtoResponse.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/JwtRequest.java">
 </file>
@@ -26,17 +44,20 @@
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/dto/UserEmailRequest.java">
 </file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/repository/InboxRepository.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/repository/MessageRepository.java">
+</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/repository/UserFollowRepository.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/repository/PasswordChangeRequestsRepo.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/repository/PostRepository.java">
 </file>
-<<<<<<< HEAD
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/repository/InboxParticipantsRepository.java">
+</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/repository/PostCommentRepository.java">
 </file>
-=======
->>>>>>> main
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/repository/UserRepository.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/repository/PostLikeRepository.java">
@@ -67,6 +88,10 @@
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/model/Post.java">
 </file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/model/Message.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/model/InboxParticipants.java">
+</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/model/DbUser.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/model/PasswordChangeRequests.java">
@@ -75,30 +100,41 @@
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/model/PostLike.java">
 </file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/model/Inbox.java">
+</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/model/PostShared.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/model/PostComment.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/PostServiceImpl.java">
 </file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/MessageServiceImpl.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/InboxParticipantsService.java">
+</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/UserService.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/InboxParticipantsServiceImpl.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/PostLikeService.java">
 </file>
-<<<<<<< HEAD
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/PostCommentService.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/PostCommentServiceImpl.java">
 </file>
-=======
->>>>>>> main
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/MailSenderImpl.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/InboxServiceImpl.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/UserFollowService.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/UserServiceImpl.java">
 </file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/MessageService.java">
+</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/UserFollowServiceImpl.java">
+</file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/InboxService.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/service/PasswordChangerService.java">
 </file>
@@ -122,6 +158,8 @@
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/exception/ErrorResponse.java">
 </file>
+<file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/rest/MessageRestController.java">
+</file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/rest/UserFollowerRestController.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/rest/PostLikeRestController.java">
@@ -132,11 +170,8 @@
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/rest/JwtAuthenticationRestController.java">
 </file>
-<<<<<<< HEAD
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/rest/PostCommentRestController.java">
 </file>
-=======
->>>>>>> main
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/java/com/danit/socialnetwork/rest/PasswordRestController.java">
 </file>
 <file name="/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/main/resources/jwt.properties">

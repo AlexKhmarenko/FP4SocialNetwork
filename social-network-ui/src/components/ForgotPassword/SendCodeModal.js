@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from "react-redux"
 import PropTypes from 'prop-types';
 import { modalConfig } from './modalConfig';
 import {
@@ -8,6 +9,7 @@ import {
     Box,
     FormControlLabel,
 } from "@mui/material";
+import { checkEmail } from "../../store/actions"
 import {
     StyledHeaderModalText,
     StyledFormControl,
@@ -16,22 +18,23 @@ import {
     StyledCheckbox
 } from "../LoginModal/loginModalStyles";
 
-import { StyledBox} from "./style"
+import { StyledBox } from "./style"
 import BasicButton from '../common/button';
 import { Link } from "react-router-dom"
 import { useModal } from '../../context/ModalContext';
 import { changeEmail } from '../../util/util';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useSelector } from 'react-redux';
 // import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
 
 export const SendCodeModal = ({ id }) => {
+    const dispatch = useDispatch()
     const email = useSelector(state => state.forgot.forgotPasswordEmail)
+    console.log(email)
     const updatedEmail = changeEmail(email)
-    // console.log(updatedEmail)
+
     const { setOpenSendCode, setOpenWeSend } = useModal()
     const { title,
         text,
@@ -42,9 +45,27 @@ export const SendCodeModal = ({ id }) => {
         linkText,
         secondLinkText,
         boldText } = modalConfig[id]
-    const handleClick = () => {
-        setOpenSendCode(false);
-        setOpenWeSend(true)
+    const handleClick = async (event) => {
+        event.preventDefault()
+        try {
+            const res = await fetch("http://localhost:8080/api/changepassword", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: email,
+                })
+            })
+            if (res.ok) {
+                const data = await res.json()
+                dispatch(checkEmail(data.email))
+                setOpenSendCode(false);
+                setOpenWeSend(true)
+            }
+        }
+        catch (error) {
+            console.error("An error occurred:", error);
+            setErrors({ email: "An error occurred, please try again" });
+        }
     }
     const handleClose = () => {
         setOpenSendCode(false)
@@ -66,7 +87,7 @@ export const SendCodeModal = ({ id }) => {
 
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 {boldText} {updatedEmail}
-                <CheckCircleIcon/>
+                <CheckCircleIcon />
             </Typography>
 
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -76,7 +97,7 @@ export const SendCodeModal = ({ id }) => {
             </Typography>
             <Button type="submit"
                 variant="contained" sx={StyledBlackButton} onClick={handleClick} fullWidth={true}>{buttonText}
-                in</Button>
+            </Button>
             <Button variant="contained" sx={StyledWhiteButton} fullWidth={true} onClick={handleClose} >{secondaryButtonText}</Button>
         </Box>
     )
