@@ -1,16 +1,11 @@
 package com.danit.socialnetwork.security;
 
-//import com.danit.socialnetwork.config.CorsFilter;
-
 import com.danit.socialnetwork.config.GuavaCache;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserRepository;
 import com.ibm.icu.text.Transliterator;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,8 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -47,16 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return new GuavaCache();
   }
 
-  @Autowired
-  private CorsFilter corsFilter;
-
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     final String[] userName = new String[1];
-    http.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-    ;
 
     http.csrf().disable().headers().frameOptions().disable();
 
@@ -100,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 userName[0], LocalDate.of(1900, 1, 1));
             userRepository.save(newUser);
           }
-          response.sendRedirect("http://localhost:3000/home");
+          response.sendRedirect("/home");
         }).permitAll()
     );
     http.logout(l -> l
@@ -118,9 +105,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.rememberMe();
 
     http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
+    //    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    //
+    http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
   }
-}
 
+}
 
 
 
