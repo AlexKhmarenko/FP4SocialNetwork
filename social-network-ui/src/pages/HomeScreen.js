@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
@@ -6,6 +6,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
 import { setUserPostToPostsArr, sendPost } from "../store/actions";
+import {setPosts, setUserData} from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
@@ -25,6 +26,15 @@ export function HomeScreen() {
     const [postImage, setPostImage] = useState(null);
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (userId) {
+       fetch(`http://localhost:8080/profile/${userId}`)
+           .then(r => r.json())
+           .then(data => dispatch(setUserData(data)))
+        }
+
+    }, [userId])
 
     const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];

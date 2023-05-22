@@ -12,7 +12,8 @@ import {
     CLOSE_LOGIN_MODAL,
     DELETE_USERS_SUCCESS,
     CHECK_EMAIL,
-    SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST
+    SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST,
+    SET_USER_DATA
 } from "./types";
 
 
@@ -52,6 +53,16 @@ export const setUserId = (userId) => ({
     payload: userId,
 });
 
+export const setUserData = (data) => ({
+    type: SET_USER_DATA,
+    payload: {
+        userName: data.username,
+        name: data.name,
+        date: new Date(data.createdDateTime).toDateString().slice(4),
+        image: data.profileImageByteArray,
+        background: data.profileBackgroundImageByteArray,
+    }
+})
 export const openSignUpModal = () => ({
     type: OPEN_SIGN_UP_MODAL
 });
