@@ -37,8 +37,7 @@ public class PostServiceImpl implements PostService {
     PostDtoResponse postDtoResponse = PostDtoResponse.from(post);
     postDtoResponse.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(post.getPostId()));
-    postDtoResponse.setPostCommentsCount(postCommentRepository
-        .findCountAllPostCommentsByPostId(post.getPostId()));
+    postDtoResponse.setPostCommentsCount(post.getPostComments().size());
     return postDtoResponse;
   }
 
