@@ -28,9 +28,6 @@ public class PostServiceImpl implements PostService {
 
   private final PostRepository postRepository;
   private final UserRepository userRepository;
-
-  private final PostCommentRepository postCommentRepository;
-
   private final PostLikeRepository postLikeRepository;
 
   private PostDtoResponse from(Post post) {
@@ -49,7 +46,7 @@ public class PostServiceImpl implements PostService {
         PageRequest.of(page, 12, Sort.by("sentDateTime").descending());
     Page<Post> listPost = postRepository.findAll(sortedByDateTimeDesc);
     return listPost.stream()
-        .map(post -> from(post))
+        .map(this::from)
         .toList();
   }
 
@@ -62,7 +59,7 @@ public class PostServiceImpl implements PostService {
     List<Post> postList = postRepository.findAllPostsFromToFollow(
         userFollowerId, pagedByTenPosts);
     return postList.stream()
-        .map(post -> from(post))
+        .map(this::from)
         .toList();
   }
 
@@ -89,7 +86,7 @@ public class PostServiceImpl implements PostService {
         PageRequest.of(page, 10);
     List<Post> listPost = postRepository.findAllByUserId(userId, pagedByTenPosts);
     return listPost.stream()
-        .map(post -> from(post))
+        .map(this::from)
         .toList();
   }
 
@@ -100,7 +97,7 @@ public class PostServiceImpl implements PostService {
         PageRequest.of(page, 10);
     List<Post> postList = postRepository.findAllByUserIdLiked(userId, pagedByTenPosts);
     return postList.stream()
-        .map(post -> from(post))
+        .map(this::from)
         .toList();
   }
 
