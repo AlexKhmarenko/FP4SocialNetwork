@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, TextField, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import { setPosts } from "../store/actions";
+import {setPosts, setUserData} from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
@@ -25,6 +25,15 @@ export function HomeScreen() {
     const [postImage, setPostImage] = useState(null);
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (userId) {
+       fetch(`http://localhost:8080/profile/${userId}`)
+           .then(r => r.json())
+           .then(data => dispatch(setUserData(data)))
+        }
+
+    }, [userId])
 
     const handlePostImageChange = (event) => {
         const file = event.target.files[0];
