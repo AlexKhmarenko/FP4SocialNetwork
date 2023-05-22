@@ -104,7 +104,6 @@ export const setUserPostsClear = (posts) => ({
 
 export const fetchPostsByUserId = (userId, page) => {
         return async (dispatch) => {
-            console.log("aloha")
             const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
             return await response.json();
         }

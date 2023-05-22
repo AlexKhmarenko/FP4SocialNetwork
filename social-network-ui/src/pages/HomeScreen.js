@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect} from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
@@ -6,7 +6,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
 import { setUserPostToPostsArr, sendPost } from "../store/actions";
-import {setPosts, setUserData} from "../store/actions";
+import { setPosts, setUserData } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
@@ -22,19 +22,24 @@ import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 
 export function HomeScreen() {
+    const userData = useSelector(state => state.userData.userData);
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
 
     useEffect(() => {
+        const fetchData = async () => {
+            if (userId) {
+                const response = await fetch(`http://localhost:8080/profile/${userId}`);
+                const userData = await response.json();
+                dispatch(setUserData(userData));
+            }
+        };
         if (userId) {
-       fetch(`http://localhost:8080/profile/${userId}`)
-           .then(r => r.json())
-           .then(data => dispatch(setUserData(data)))
+            fetchData();
         }
-
-    }, [userId])
+    }, [userId]);
 
     const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];
@@ -95,10 +100,17 @@ export function HomeScreen() {
                     <div style={HomeScreenWrapper}>
                         <div style={PostWrapper}>
                             <div style={SvgWrapper}>
-                                <CapybaraSvgPhoto/>
+                                <img src={`data:image/png;base64,${userData.image}`}
+                                     style={{ width: "70px", height: "70px", borderRadius: "50px", margin: "0,auto" }}
+                                     alt=""/>
+                                {/*<CapybaraSvgPhoto/>*/}
                             </div>
                             <div style={WrittenPostWrapper}>
-                                <h2 style={NameOfUser}>Capybara name</h2>
+                                <div style={{ display: "flex", width: "120px", justifyContent: "space-between" }}>
+                                    <h2 style={NameOfUser}>{userData.name}</h2>
+                                    <h2 style={{...NameOfUser, color: "grey"}}>@ {userData.userName}</h2>
+
+                                </div>
                                 <Field
                                     values={postText}
                                     component={SendPostInput}
@@ -111,7 +123,7 @@ export function HomeScreen() {
                                 <div style={CharactersTextWrapper}>
                                     {
                                         280 - values.postText.length >= 0 ?
-                                            (280 - values.postText.length + " characters") : ("maximum number of characters 280")
+                                            (280 - values.postText.length + "characters") : ("maximum number of characters 280")
                                     }
                                 </div>
                                 <Box sx={PostImgWrapper}>

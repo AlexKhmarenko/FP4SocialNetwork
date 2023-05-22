@@ -10,7 +10,7 @@ import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
 import { openLoginModal } from "../../store/actions";
 
-export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
+export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
     const [showMore, setShowMore] = useState(false);
@@ -24,15 +24,11 @@ export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
         const fetchData = async () => {
             if (userId) {
                 try {
-                    const [likesResponse, activeLikesResponse] = await Promise.all([
-                        fetch(`http://localhost:8080/likes?postId=${postId}`),
+                    const [ activeLikesResponse] = await Promise.all([
                         fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`)
                     ]);
-
-                    const likes = await likesResponse.json();
                     const activeLikes = await activeLikesResponse.json();
 
-                    setLikeArr(likes);
                     setLike(activeLikes);
                 } catch (error) {
                     console.error("Ошибка при получении данных:", error);
@@ -139,7 +135,8 @@ export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
                     justifyContent: "center",
                     alignItems: "center"
                 }}>
-                    <img src={`data:image/png;base64,${photo}`} style={{ width: "450px", margin: "0,auto" }} alt=""/>
+                    <img src={photo ? `data:image/png;base64,${photo}` : ''} style={{ width: "450px", margin: "0 auto" }} alt="" />
+
                 </div>) : null
             }
 
@@ -152,7 +149,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId }) => {
                 </IconButton>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
-                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{likeArr.length}</Typography>
+                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postLikes}</Typography>
                 </IconButton>
             </CardActions>
 
@@ -226,7 +223,7 @@ Post.propTypes = {
     name: PropTypes.string,
     photo: PropTypes.string,
     postComments: PropTypes.array,
-    postLikes: PropTypes.array,
+    postLikes: PropTypes.number,
     text: PropTypes.string,
 };
 

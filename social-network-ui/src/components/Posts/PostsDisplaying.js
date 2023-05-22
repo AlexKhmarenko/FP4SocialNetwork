@@ -14,6 +14,7 @@ export const PostsDisplaying = () => {
                       postComments={post.postComments}
                       dataTime={post.sentDateTime}
                       postId={post.postId}
+                      postLikes={post.likesCount}
                 />
             ))}
         </div>)

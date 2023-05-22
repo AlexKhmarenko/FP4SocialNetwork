@@ -15,7 +15,7 @@ export const PostImgWrapper = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginTop: "10px",
+    marginTop: "0px",
 };
 
 export const PostsWrapper = {

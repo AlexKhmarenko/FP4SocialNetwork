@@ -15,6 +15,7 @@ import {
     OutletContainer,
     OutletWrapper
 } from "./LayoutStyles";
+import {useNavigate} from "react-router-dom";
 
 import { RegistrationPage } from "../pages/RegistrationPage";
 import { setPosts, setUserId, setPage, fetchPostsByUserId, fetchPostsByPage } from "../store/actions";
@@ -25,6 +26,7 @@ export function Layout() {
     const userToken = useSelector(state => state.saveUserToken.userToken);
     const page = useSelector(state=>state.pageCount.page)
     const [isEnd, setIsEnd] = useState(false);
+    const navigate = useNavigate()
     const dispatch = useDispatch();
 
 
@@ -39,7 +41,7 @@ export function Layout() {
             const userId = decodedToken.sub;
             dispatch(setUserId(userId));
             data = await dispatch(fetchPostsByUserId(userId, page));
-        } else {
+        } else if(!decodedToken || navigate==="/explore"){
             data = await dispatch(fetchPostsByPage(page));
             console.log(data)
         }

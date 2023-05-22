@@ -7,7 +7,6 @@ const initialState = {
 export function PostReducer(state = initialState, action) {
     switch (action.type) {
         case SET_POSTS:
-            console.log(action.payload)
             return {
                 ...state,
                 posts: [...state.posts, ...action.payload],
