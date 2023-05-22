@@ -100,10 +100,9 @@ export function HomeScreen() {
                     <div style={HomeScreenWrapper}>
                         <div style={PostWrapper}>
                             <div style={SvgWrapper}>
-                                <img src={`data:image/png;base64,${userData.image}`}
+                                {userData.image ? <img src={ `data:image/png;base64,${userData.image}`}
                                      style={{ width: "70px", height: "70px", borderRadius: "50px", margin: "0,auto" }}
-                                     alt=""/>
-                                {/*<CapybaraSvgPhoto/>*/}
+                                     alt=""/> : <CapybaraSvgPhoto/>}
                             </div>
                             <div style={WrittenPostWrapper}>
                                 <div style={{ display: "flex", width: "120px", justifyContent: "space-between" }}>

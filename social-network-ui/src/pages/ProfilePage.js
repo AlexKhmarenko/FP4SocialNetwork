@@ -21,9 +21,8 @@ export function ProfilePage () {
         <div>
             <div style={ProfilePageStyles}>
                 <div>
-                    {userData.image ? <img src={userData.image ? `data:image/png;base64,${userData.image}` : ''}
-                                           style={{ width: "150px", height: "150px", borderRadius: "80px", margin: "0,auto" }}
-                                           alt=""/> :<Avatar sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px" }}>N</Avatar> }
+                    {userData.image ? <img src={`${userData.image}`} style={{ width: "150px", height: "150px", borderRadius: "80px", margin: "0,auto" }} alt=""/>
+                        :<Avatar sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px" }}>N</Avatar> }
                 </div>
                 <div>
                 <div style={{ margin: "15px 0", display: "flex", flexDirection: "column", gap: "5px" }}>

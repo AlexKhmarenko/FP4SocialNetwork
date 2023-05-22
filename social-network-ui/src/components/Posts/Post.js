@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Box, Button, TextField } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
@@ -19,16 +20,14 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
     const [newComment, setNewComment] = useState("");
     const [like, setLike] = useState(false);
     const [likeArr, setLikeArr] = useState([]);
+    const [likeCount, setLikeCount] = useState(postLikes)
 
     useEffect(() => {
         const fetchData = async () => {
             if (userId) {
                 try {
-                    const [ activeLikesResponse] = await Promise.all([
-                        fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`)
-                    ]);
+                    const activeLikesResponse = await fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`);
                     const activeLikes = await activeLikesResponse.json();
-
                     setLike(activeLikes);
                 } catch (error) {
                     console.error("Ошибка при получении данных:", error);
@@ -64,6 +63,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
                         "Content-Type": "application/json"
                     }
                 });
+                setLikeCount(likeCount+1)
                 setLikeArr([...likeArr, { postId: postId, userId: userId }]);
             } else {
                 await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
@@ -72,17 +72,19 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
                         "Content-Type": "application/json"
                     }
                 });
+                setLikeCount(likeCount-1)
                 setLikeArr(likeArr.filter(item => item.userId !== userId));
             }
+
             setLike(!like);
         } else {
             dispatch(openLoginModal());
         }
     }, [like, userId, postId, likeArr, dispatch]);
 
-    const handleShowMore = useCallback(() => {
+    const handleShowMore =() => {
         setShowMore(!showMore);
-    }, []);
+    }
 
     const postDate = useMemo(() => {
         const date = new Date(dataTime);
@@ -98,7 +100,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
         // Все то же самое
     }, [dataTime]);
 
-    const renderText = useMemo(() => {
+    const renderText = () => {
         const words = text.split(" ");
         if (showMore || words.length <= 10) {
             return text;
@@ -106,7 +108,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
             const truncatedWords = words.slice(0, 10);
             return truncatedWords.join(" ") + "...";
         }
-    }, [text, showMore]);
+    };
 
     return (
         <Card sx={PostCard}>
@@ -117,10 +119,10 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
                     <Typography variant="body1" component="div" mt={1}
-                                sx={{ ...PostText, maxHeight: showMore ? "none" : "90px", }}>{renderText}
+                                sx={{ ...PostText, maxHeight: showMore ? "none" : "90px", }}>{renderText()}
                     </Typography>
                     {text.split(" ").length > 10 && (
-                        <a style={ShowMoreLinkStyles} onClick={handleShowMore} href="#">
+                        <a href="#" style={ShowMoreLinkStyles} onClick={handleShowMore}>
                             {showMore ? "hight text" : "see more"}
                         </a>
                     )}
@@ -130,12 +132,13 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
                 photo ? (<div style={{
                     maxWidth: "600px",
                     width: "600px",
-                    margin: "0,auto",
+                    margin: "10px auto",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center"
                 }}>
-                    <img src={photo ? `data:image/png;base64,${photo}` : ''} style={{ width: "450px", margin: "0 auto" }} alt="" />
+                    <img src={photo ? `data:image/png;base64,${photo}` : ""}
+                         style={{ width: "450px", margin: "0 auto" }} alt=""/>
 
                 </div>) : null
             }
@@ -149,7 +152,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
                 </IconButton>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
-                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postLikes}</Typography>
+                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{likeCount}</Typography>
                 </IconButton>
             </CardActions>
 
