@@ -5,6 +5,8 @@ import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.repository.PostCommentRepository;
+import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,19 @@ public class PostServiceImpl implements PostService {
   private final PostRepository postRepository;
   private final UserRepository userRepository;
 
+  private final PostCommentRepository postCommentRepository;
+
+  private final PostLikeRepository postLikeRepository;
+
+  private PostDtoResponse from(Post post) {
+    PostDtoResponse postDtoResponse = PostDtoResponse.from(post);
+    postDtoResponse.setLikesCount(postLikeRepository
+        .findCountAllLikesByPostId(post.getPostId()));
+    postDtoResponse.setPostCommentsCount(postCommentRepository
+        .findCountAllPostCommentsByPostId(post.getPostId()));
+    return postDtoResponse;
+  }
+
 
   // Method returns all available posts
   @Override
@@ -34,10 +49,9 @@ public class PostServiceImpl implements PostService {
     Pageable sortedByDateTimeDesc =
         PageRequest.of(page, 12, Sort.by("sentDateTime").descending());
     Page<Post> listPost = postRepository.findAll(sortedByDateTimeDesc);
-    List<PostDtoResponse> postDtoResponseList = listPost.stream()
-        .map(PostDtoResponse::from)
+    return listPost.stream()
+        .map(post -> from(post))
         .toList();
-    return postDtoResponseList;
   }
 
   // Method returns  all posts from users that a user follows by his id
@@ -49,9 +63,8 @@ public class PostServiceImpl implements PostService {
     List<Post> postList = postRepository.findAllPostsFromToFollow(
         userFollowerId, pagedByTenPosts);
     return postList.stream()
-        .map(PostDtoResponse::from)
+        .map(post -> from(post))
         .toList();
-
   }
 
   // Method save the post and returns it
@@ -66,7 +79,6 @@ public class PostServiceImpl implements PostService {
           thePostDtoSave.getUserId()));
     }
     Post thePostSave = Post.from(thePostDtoSave, user);
-
     return postRepository.save(thePostSave);
 
   }
@@ -78,17 +90,18 @@ public class PostServiceImpl implements PostService {
         PageRequest.of(page, 10);
     List<Post> listPost = postRepository.findAllByUserId(userId, pagedByTenPosts);
     return listPost.stream()
-        .map(PostDtoResponse::from)
+        .map(post -> from(post))
         .toList();
   }
 
+  /*Method returns all posts liked by user*/
   @Override
   public List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer page) {
     Pageable pagedByTenPosts =
         PageRequest.of(page, 10);
     List<Post> postList = postRepository.findAllByUserIdLiked(userId, pagedByTenPosts);
     return postList.stream()
-        .map(PostDtoResponse::from)
+        .map(post -> from(post))
         .toList();
   }
 

@@ -7,6 +7,8 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.model.UserFollower;
+import com.danit.socialnetwork.repository.PostCommentRepository;
+import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -39,6 +41,12 @@ public class PostServiceImplTest {
   PostRepository postRepository;
   @Mock
   UserRepository userRepository;
+
+  @Mock
+  PostLikeRepository postLikeRepository;
+
+  @Mock
+  PostCommentRepository postCommentRepository;
 
   @Test
   public void testGetAllPostsFromToFollow() {
