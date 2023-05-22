@@ -22,6 +22,9 @@ public class UserDtoResponse {
 
   private byte[] profileImageByteArray;
 
+  private Integer followers;
+  private Integer followings;
+
   public static UserDtoResponse from(DbUser dbUser) {
     UserDtoResponse userDtoResponse = new UserDtoResponse();
     userDtoResponse.setName(dbUser.getName());
@@ -31,13 +34,13 @@ public class UserDtoResponse {
       userDtoResponse.setProfileImageByteArray(Base64.getDecoder()
           .decode(dbUser.getProfileImageUrl()));
     } else {
-      userDtoResponse.setProfileImageByteArray(new byte[]{});
+      userDtoResponse.setProfileImageByteArray(null);
     }
     if (dbUser.getProfileBackgroundImageUrl() != null) {
       userDtoResponse.setProfileBackgroundImageByteArray(Base64.getDecoder()
           .decode(dbUser.getProfileBackgroundImageUrl()));
     } else {
-      userDtoResponse.setProfileBackgroundImageByteArray(new byte[]{});
+      userDtoResponse.setProfileBackgroundImageByteArray(null);
     }
     return userDtoResponse;
   }
