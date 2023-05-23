@@ -63,7 +63,7 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("registration", FALSE);
-      return new  ResponseEntity(response, HttpStatus.BAD_REQUEST);
+      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -79,7 +79,7 @@ public class UserRestController {
       return new  ResponseEntity(response, HttpStatus.NOT_FOUND);
     } else {
       response.put("checkEmail", TRUE);
-      return new  ResponseEntity(response, HttpStatus.FOUND);
+      return new  ResponseEntity<>(response, HttpStatus.FOUND);
 
     }
   }
@@ -97,7 +97,7 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("sendLetter", FALSE);
-      return new  ResponseEntity(response, HttpStatus.BAD_REQUEST);
+      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -113,7 +113,7 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("activate", FALSE);
-      return new  ResponseEntity(response, HttpStatus.BAD_REQUEST);
+      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
