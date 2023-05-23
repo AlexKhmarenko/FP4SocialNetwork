@@ -37,10 +37,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserRestController {
 
+  private static final String FALSE = "false";
+  private static final String TRUE = "true";
+
   private final UserService userService;
 
   @RequestMapping(value = "registration", method = RequestMethod.POST)
-  public ResponseEntity<?> handleRegistrationPost(
+  public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     int day = request.getDay();
     int month = request.getMonth();
@@ -56,33 +59,33 @@ public class UserRestController {
 
     Map<String, String> response = new HashMap<>();
     if (userService.save(dbUser)) {
-      response.put("registration", "true");
+      response.put("registration", TRUE);
       return ResponseEntity.ok(response);
     } else {
-      response.put("registration", "false");
+      response.put("registration", FALSE);
       return new  ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
   }
 
   @PostMapping(value = "/checkEmail")
-  public ResponseEntity<?> handleCheckEmailPost(
+  public ResponseEntity<Map<String, String>> handleCheckEmailPost(
       @RequestBody UserEmailForLoginRequest request) throws IOException {
 
     String email = request.getEmail();
     Map<String, String> response = new HashMap<>();
 
     if (userService.findDbUserByEmail(email) == null) {
-      response.put("checkEmail", "false");
+      response.put("checkEmail", FALSE);
       return new  ResponseEntity(response, HttpStatus.NOT_FOUND);
     } else {
-      response.put("checkEmail", "true");
+      response.put("checkEmail", TRUE);
       return new  ResponseEntity(response, HttpStatus.FOUND);
 
     }
   }
 
   @RequestMapping(value = "/sendLetter", method = RequestMethod.POST)
-  public ResponseEntity handleSendLetterPost(
+  public ResponseEntity<Map<String, String>> handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
 
     Map<String, String> response = new HashMap<>();
@@ -90,32 +93,32 @@ public class UserRestController {
     String email = request.getEmail();
 
     if (userService.sendLetter(name, email)) {
-      response.put("sendLetter", "true");
+      response.put("sendLetter", TRUE);
       return ResponseEntity.ok(response);
     } else {
-      response.put("sendLetter", "false");
+      response.put("sendLetter", FALSE);
       return new  ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
   }
 
   @RequestMapping(value = "/activate", method = RequestMethod.POST)
-  public ResponseEntity<?> handleActivatePost(
+  public ResponseEntity<Map<String, String>> handleActivatePost(
       @RequestBody ActivateCodeRequest request) {
     Integer code = request.getCode();
     boolean isActivated = userService.activateUser(code);
     Map<String, String> response = new HashMap<>();
 
     if (isActivated) {
-      response.put("activate", "true");
+      response.put("activate", TRUE);
       return ResponseEntity.ok(response);
     } else {
-      response.put("activate", "false");
+      response.put("activate", FALSE);
       return new  ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
   }
 
   @RequestMapping(value = "/search", method = RequestMethod.POST)
-  public ResponseEntity<?> handleSearchPost(
+  public ResponseEntity<List<SearchDtoResponse>> handleSearchPost(
       @RequestBody SearchRequest request) {
     String userSearch = request.getUserSearch();
     List<DbUser> search = userService.filterCachedUsersByName(userSearch);

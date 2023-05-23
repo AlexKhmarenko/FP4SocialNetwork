@@ -16,7 +16,7 @@ public class SearchDtoResponse {
   private byte[] profileImageUrl;
 
   public static List<SearchDtoResponse> from(List<DbUser> users) {
-    List<SearchDtoResponse> searchDto = users.stream().map(u -> {
+    return users.stream().map(u -> {
       SearchDtoResponse searchDtoResponse = new SearchDtoResponse();
       searchDtoResponse.setUserId(u.getUserId());
       searchDtoResponse.setUsername(u.getUsername());
@@ -28,6 +28,6 @@ public class SearchDtoResponse {
       }
       return searchDtoResponse;
     }).collect(Collectors.toList());
-    return searchDto;
   }
+
 }

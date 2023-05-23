@@ -18,14 +18,14 @@ public class MessageGetAllDtoResponse {
   private LocalDateTime createdAt;
 
   public static List<MessageGetAllDtoResponse> from(List<Message> messages) {
-    List<MessageGetAllDtoResponse> messagesDto = messages.stream().map(m -> {
+    return messages.stream().map(m -> {
       MessageGetAllDtoResponse messageGetAllDtoResponse = new MessageGetAllDtoResponse();
       messageGetAllDtoResponse.setInboxUid(m.getInboxUid());
       messageGetAllDtoResponse.setUserId(m.getUserId());
       messageGetAllDtoResponse.setWrittenMessage(m.getMessage());
       messageGetAllDtoResponse.setCreatedAt(m.getCreatedAt());
       return messageGetAllDtoResponse;
-    }).collect(Collectors.toList());
-    return messagesDto;
+    }).toList();
   }
+
 }
