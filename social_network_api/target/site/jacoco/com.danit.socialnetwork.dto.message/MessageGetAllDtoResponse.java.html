@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageGetAllDtoResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FP4SocialNetwork</a> &gt; <a href="index.source.html" class="el_package">com.danit.socialnetwork.dto.message</a> &gt; <span class="el_source">MessageGetAllDtoResponse.java</span></div><h1>MessageGetAllDtoResponse.java</h1><pre class="source lang-java linenums">package com.danit.socialnetwork.dto.message;
+
+import com.danit.socialnetwork.model.Message;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="pc bpc" id="L11" title="27 of 38 branches missed.">@Data</span>
+<span class="fc" id="L12">@NoArgsConstructor</span>
+public class MessageGetAllDtoResponse {
+<span class="fc" id="L14">  private Integer inboxUid;</span>
+<span class="fc" id="L15">  private Integer userId;</span>
+<span class="fc" id="L16">  private String writtenMessage;</span>
+<span class="fc" id="L17">  private LocalDateTime createdAt;</span>
+
+  public static List&lt;MessageGetAllDtoResponse&gt; from(List&lt;Message&gt; messages) {
+<span class="fc" id="L20">    List&lt;MessageGetAllDtoResponse&gt; messagesDto = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">    for (Message message : messages) {</span>
+<span class="fc" id="L22">      MessageGetAllDtoResponse messageGetAllDtoResponse = new MessageGetAllDtoResponse();</span>
+<span class="fc" id="L23">      messageGetAllDtoResponse.setInboxUid(message.getInboxUid());</span>
+<span class="fc" id="L24">      messageGetAllDtoResponse.setUserId(message.getUserId());</span>
+<span class="fc" id="L25">      messageGetAllDtoResponse.setWrittenMessage(message.getMessage());</span>
+<span class="fc" id="L26">      messageGetAllDtoResponse.setCreatedAt(message.getCreatedAt());</span>
+<span class="fc" id="L27">      messagesDto.add(messageGetAllDtoResponse);</span>
+<span class="fc" id="L28">    }</span>
+<span class="fc" id="L29">    return messagesDto;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostLikeRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FP4SocialNetwork</a> &gt; <a href="index.source.html" class="el_package">com.danit.socialnetwork.rest</a> &gt; <span class="el_source">PostLikeRestController.java</span></div><h1>PostLikeRestController.java</h1><pre class="source lang-java linenums">package com.danit.socialnetwork.rest;
+
+import com.danit.socialnetwork.dto.post.PostLikeDto;
+import com.danit.socialnetwork.model.PostLike;
+import com.danit.socialnetwork.service.PostLikeService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="fc" id="L21">@Log4j2</span>
+@RestController
+<span class="fc" id="L23">@RequiredArgsConstructor</span>
+public class PostLikeRestController {
+
+  private final PostLikeService postLikeService;
+
+  @PostMapping(path = &quot;/likes&quot;, consumes = &quot;application/json&quot;, produces = &quot;application/json&quot;)
+  public ResponseEntity&lt;PostLikeDto&gt; addPostLike(@RequestBody PostLikeDto thePostLikeDto) {
+<span class="fc" id="L30">    PostLike postLike = postLikeService.savePostLike(thePostLikeDto);</span>
+<span class="fc" id="L31">    return new ResponseEntity&lt;&gt;(PostLikeDto.from(postLike), HttpStatus.CREATED);</span>
+  }
+
+  @GetMapping(&quot;/likes&quot;)
+  @ResponseBody
+  public List&lt;PostLikeDto&gt; getAllLikes(@RequestParam(name = &quot;postId&quot;,
+      defaultValue = &quot;0&quot;) Integer postId) {
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">    if (postId == 0) {</span>
+<span class="nc" id="L39">      return new ArrayList&lt;&gt;();</span>
+    }
+<span class="fc" id="L41">    return postLikeService.getAllPostLikesByPostId(postId)</span>
+<span class="fc" id="L42">        .stream()</span>
+<span class="fc" id="L43">        .map(PostLikeDto::from)</span>
+<span class="fc" id="L44">        .toList();</span>
+  }
+
+  @GetMapping(&quot;/likes/active&quot;)
+  @ResponseBody
+  public Boolean isExistPostLike(@RequestParam(name = &quot;postId&quot;) Integer postId,
+                                 @RequestParam(name = &quot;userId&quot;) Integer userId) {
+<span class="fc" id="L51">    return postLikeService.isPresentPostLike(postId, userId);</span>
+  }
+
+  @DeleteMapping(&quot;likes&quot;)
+  public ResponseEntity&lt;PostLikeDto&gt; deletePostLike(@RequestParam(name = &quot;postId&quot;) Integer postId,
+                                                    @RequestParam(name = &quot;userId&quot;) Integer userId) {
+<span class="fc" id="L57">    PostLike postLike = postLikeService.deletePostLike(postId, userId);</span>
+<span class="fc" id="L58">    return new ResponseEntity&lt;&gt;(PostLikeDto.from(postLike), HttpStatus.OK);</span>
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

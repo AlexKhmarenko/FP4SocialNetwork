@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostLikeServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FP4SocialNetwork</a> &gt; <a href="index.source.html" class="el_package">com.danit.socialnetwork.service</a> &gt; <span class="el_source">PostLikeServiceImpl.java</span></div><h1>PostLikeServiceImpl.java</h1><pre class="source lang-java linenums">package com.danit.socialnetwork.service;
+
+import com.danit.socialnetwork.dto.post.PostLikeDto;
+import com.danit.socialnetwork.exception.post.PostLikeNotFoundException;
+import com.danit.socialnetwork.exception.post.PostNotFoundException;
+import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.model.PostLike;
+import com.danit.socialnetwork.repository.PostLikeRepository;
+import com.danit.socialnetwork.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L21">@RequiredArgsConstructor</span>
+<span class="fc" id="L22">@Log4j2</span>
+public class PostLikeServiceImpl implements PostLikeService {
+
+  private final PostLikeRepository postLikeRepository;
+  private final PostRepository postRepository;
+  @Autowired
+  private ModelMapper modelMapper;
+
+  @Override
+  public PostLike savePostLike(PostLikeDto postLikeDto) {
+<span class="fc" id="L32">    Optional&lt;PostLike&gt; tempPostLike = postLikeRepository.findPostLikeByPostIdAndUserId(</span>
+<span class="fc" id="L33">        postLikeDto.getPostId(), postLikeDto.getUserId()</span>
+    );
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">    if (tempPostLike.isPresent()) {</span>
+<span class="fc" id="L36">      return tempPostLike.get();</span>
+    }
+
+<span class="nc" id="L39">    PostLike postLike = this.modelMapper.map(postLikeDto, PostLike.class);</span>
+<span class="nc" id="L40">    postLike.setPostLikeId(0);</span>
+<span class="nc" id="L41">    postLike.setCreatedDateTime(LocalDateTime.now());</span>
+<span class="nc" id="L42">    Optional&lt;Post&gt; tempPost = postRepository.findById(postLikeDto.getPostId());</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">    if (tempPost.isPresent()) {</span>
+<span class="nc" id="L44">      postLike.setPostInPostLike(tempPost.get());</span>
+    } else {
+<span class="nc" id="L46">      throw new PostNotFoundException(String.format(&quot;Post with postId %s not found&quot;,</span>
+<span class="nc" id="L47">          postLikeDto.getPostId()));</span>
+    }
+<span class="nc" id="L49">    return postLikeRepository.save(postLike);</span>
+  }
+
+  @Override
+  public List&lt;PostLike&gt; getAllPostLikesByPostId(Integer postId) {
+<span class="fc" id="L54">    return postLikeRepository.findAllPostLikesByPostId(postId);</span>
+  }
+
+  @Override
+  public Boolean isPresentPostLike(Integer postId, Integer userId) {
+<span class="fc" id="L59">    Optional&lt;PostLike&gt; tempPostLike = postLikeRepository.findPostLikeByPostIdAndUserId(postId, userId);</span>
+<span class="fc" id="L60">    return tempPostLike.isPresent();</span>
+  }
+
+  @Override
+  public PostLike deletePostLike(Integer postId, Integer userId) {
+<span class="fc" id="L65">    Optional&lt;PostLike&gt; tempPostLike = postLikeRepository.findPostLikeByPostIdAndUserId(</span>
+        postId, userId);
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">    if (tempPostLike.isEmpty()) {</span>
+<span class="nc" id="L68">      throw new PostLikeNotFoundException(String.format(&quot;PostLike with postId %s not found&quot;,</span>
+          postId));
+    }
+<span class="fc" id="L71">    postLikeRepository.delete(tempPostLike.get());</span>
+<span class="fc" id="L72">    return tempPostLike.get();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

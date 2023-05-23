@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FP4SocialNetwork</a> &gt; <a href="index.source.html" class="el_package">com.danit.socialnetwork.rest</a> &gt; <span class="el_source">MessageRestController.java</span></div><h1>MessageRestController.java</h1><pre class="source lang-java linenums">package com.danit.socialnetwork.rest;
+
+import com.danit.socialnetwork.dto.message.MessageGetAllDtoResponse;
+import com.danit.socialnetwork.dto.message.InboxDtoResponse;
+import com.danit.socialnetwork.dto.message.MessageDtoResponse;
+import com.danit.socialnetwork.dto.message.MessageDtoRequest;
+import com.danit.socialnetwork.dto.message.InboxDtoRequest;
+import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
+import com.danit.socialnetwork.model.Inbox;
+import com.danit.socialnetwork.model.Message;
+import com.danit.socialnetwork.service.InboxParticipantsService;
+import com.danit.socialnetwork.service.InboxService;
+import com.danit.socialnetwork.service.MessageService;
+import com.danit.socialnetwork.service.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
+
+<span class="fc" id="L29">@Log4j2</span>
+@RestController
+<span class="fc" id="L31">@RequiredArgsConstructor</span>
+public class MessageRestController {
+  private final MessageService messageService;
+  private final InboxService inboxService;
+  private final InboxParticipantsService inboxParticipantsService;
+  private final UserService userService;
+
+  @PostMapping(path = &quot;/message&quot;)
+  public ResponseEntity&lt;MessageDtoResponse&gt; addMessage(@RequestBody MessageDtoRequest messageDtoRequest) {
+<span class="fc" id="L40">    Integer inboxUid = messageDtoRequest.getInboxUid();</span>
+<span class="fc" id="L41">    Integer userId = messageDtoRequest.getUserId();</span>
+<span class="fc" id="L42">    String writtenMessage = messageDtoRequest.getWrittenMessage();</span>
+
+<span class="fc" id="L44">    Message message = new Message();</span>
+<span class="fc" id="L45">    message.setInboxUid(inboxUid);</span>
+<span class="fc" id="L46">    message.setUserId(userId);</span>
+<span class="fc" id="L47">    message.setMessage(writtenMessage);</span>
+
+<span class="fc" id="L49">    Message dbMessage = messageService.saveMessage(message);</span>
+<span class="fc" id="L50">    LocalDateTime createdAt = dbMessage.getCreatedAt();</span>
+
+<span class="fc" id="L52">    inboxService.saveInbox(inboxUid, userId, writtenMessage, createdAt);</span>
+<span class="fc" id="L53">    inboxService.saveInbox(userId, inboxUid, writtenMessage, createdAt);</span>
+
+<span class="fc" id="L55">    inboxParticipantsService.saveInboxParticipants(inboxUid, userId);</span>
+<span class="fc" id="L56">    inboxParticipantsService.saveInboxParticipants(userId, inboxUid);</span>
+
+<span class="fc" id="L58">    return new ResponseEntity&lt;&gt;(MessageDtoResponse.from(dbMessage), HttpStatus.CREATED);</span>
+  }
+
+  @GetMapping(path = &quot;/inbox&quot;)
+  @ResponseBody
+  public ResponseEntity&lt;List&lt;InboxDtoResponse&gt;&gt; getInbox(@RequestBody InboxDtoRequest inboxDtoRequest) throws IOException {
+
+<span class="fc" id="L65">    Integer inboxUid = inboxDtoRequest.getInboxUid();</span>
+<span class="fc" id="L66">    List&lt;Inbox&gt; inboxes =  inboxService.getInboxesByInboxUid(inboxUid);</span>
+
+<span class="fc" id="L68">    return new ResponseEntity&lt;&gt;(InboxDtoResponse.from(inboxes, userService), HttpStatus.OK);</span>
+  }
+
+  @GetMapping(path = &quot;/message&quot;)
+  @ResponseBody
+  public ResponseEntity&lt;List&lt;MessageGetAllDtoResponse&gt;&gt; getMessage(
+      @RequestBody InboxParticipantsDtoRequest participantsDtoRequest) {
+
+<span class="fc" id="L76">    Integer inboxUid = participantsDtoRequest.getInboxUid();</span>
+<span class="fc" id="L77">    Integer userId = participantsDtoRequest.getUserId();</span>
+<span class="fc" id="L78">    List&lt;Message&gt; messages =  messageService</span>
+<span class="fc" id="L79">        .findByInboxUidAndUserIdOrUserIdAndInboxUid(inboxUid, userId, inboxUid, userId);</span>
+
+<span class="fc" id="L81">    return new ResponseEntity&lt;&gt;(MessageGetAllDtoResponse.from(messages), HttpStatus.OK);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

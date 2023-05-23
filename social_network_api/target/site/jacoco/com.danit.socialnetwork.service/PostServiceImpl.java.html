@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FP4SocialNetwork</a> &gt; <a href="index.source.html" class="el_package">com.danit.socialnetwork.service</a> &gt; <span class="el_source">PostServiceImpl.java</span></div><h1>PostServiceImpl.java</h1><pre class="source lang-java linenums">package com.danit.socialnetwork.service;
+
+import com.danit.socialnetwork.dto.post.PostDtoResponse;
+import com.danit.socialnetwork.dto.post.PostDtoSave;
+import com.danit.socialnetwork.exception.user.UserNotFoundException;
+import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.repository.PostLikeRepository;
+import com.danit.socialnetwork.repository.PostRepository;
+import com.danit.socialnetwork.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L23">@RequiredArgsConstructor</span>
+<span class="fc" id="L24">@Log4j2</span>
+public class PostServiceImpl implements PostService {
+
+  private final PostRepository postRepository;
+  private final UserRepository userRepository;
+  private final PostLikeRepository postLikeRepository;
+
+  private PostDtoResponse from(Post post) {
+<span class="fc" id="L32">    PostDtoResponse postDtoResponse = PostDtoResponse.from(post);</span>
+<span class="fc" id="L33">    postDtoResponse.setLikesCount(postLikeRepository</span>
+<span class="fc" id="L34">        .findCountAllLikesByPostId(post.getPostId()));</span>
+<span class="fc" id="L35">    postDtoResponse.setPostCommentsCount(post.getPostComments().size());</span>
+<span class="fc" id="L36">    return postDtoResponse;</span>
+  }
+
+
+  // Method returns all available posts
+  @Override
+  public List&lt;PostDtoResponse&gt; getAllPosts(Integer page) {
+<span class="fc" id="L43">    Pageable sortedByDateTimeDesc =</span>
+<span class="fc" id="L44">        PageRequest.of(page, 12, Sort.by(&quot;sentDateTime&quot;).descending());</span>
+<span class="fc" id="L45">    Page&lt;Post&gt; listPost = postRepository.findAll(sortedByDateTimeDesc);</span>
+<span class="fc" id="L46">    return listPost.stream()</span>
+<span class="fc" id="L47">        .map(this::from)</span>
+<span class="fc" id="L48">        .toList();</span>
+  }
+
+  // Method returns  all posts from users that a user follows by his id
+  @Override
+  public List&lt;PostDtoResponse&gt; getAllPostsFromToFollowWithNativeQuery(
+      Integer userFollowerId, Integer page) {
+<span class="fc" id="L55">    Pageable pagedByTenPosts =</span>
+<span class="fc" id="L56">        PageRequest.of(page, 12);</span>
+<span class="fc" id="L57">    List&lt;Post&gt; postList = postRepository.findAllPostsFromToFollow(</span>
+        userFollowerId, pagedByTenPosts);
+<span class="fc" id="L59">    return postList.stream()</span>
+<span class="fc" id="L60">        .map(this::from)</span>
+<span class="fc" id="L61">        .toList();</span>
+  }
+
+  // Method save the post and returns it
+  @Override
+  public Post savePost(PostDtoSave thePostDtoSave) {
+<span class="fc" id="L67">    Optional&lt;DbUser&gt; userPost = userRepository.findById(thePostDtoSave.getUserId());</span>
+<span class="fc" id="L68">    DbUser user = null;</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">    if (userPost.isPresent()) {</span>
+<span class="fc" id="L70">      user = userPost.get();</span>
+    } else {
+<span class="nc" id="L72">      throw new UserNotFoundException(String.format(&quot;User with userId %s not found&quot;,</span>
+<span class="nc" id="L73">          thePostDtoSave.getUserId()));</span>
+    }
+<span class="fc" id="L75">    Post thePostSave = Post.from(thePostDtoSave, user);</span>
+<span class="fc" id="L76">    return postRepository.save(thePostSave);</span>
+
+  }
+
+  /*Method returns all posts done by user*/
+  @Override
+  public List&lt;PostDtoResponse&gt; getAllOwnPosts(Integer userId, Integer page) {
+<span class="fc" id="L83">    Pageable pagedByTenPosts =</span>
+<span class="fc" id="L84">        PageRequest.of(page, 10);</span>
+<span class="fc" id="L85">    List&lt;Post&gt; listPost = postRepository.findAllByUserId(userId, pagedByTenPosts);</span>
+<span class="fc" id="L86">    return listPost.stream()</span>
+<span class="fc" id="L87">        .map(this::from)</span>
+<span class="fc" id="L88">        .toList();</span>
+  }
+
+  /*Method returns all posts liked by user*/
+  @Override
+  public List&lt;PostDtoResponse&gt; getAllLikedPosts(Integer userId, Integer page) {
+<span class="fc" id="L94">    Pageable pagedByTenPosts =</span>
+<span class="fc" id="L95">        PageRequest.of(page, 10);</span>
+<span class="fc" id="L96">    List&lt;Post&gt; postList = postRepository.findAllByUserIdLiked(userId, pagedByTenPosts);</span>
+<span class="fc" id="L97">    return postList.stream()</span>
+<span class="fc" id="L98">        .map(this::from)</span>
+<span class="fc" id="L99">        .toList();</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
