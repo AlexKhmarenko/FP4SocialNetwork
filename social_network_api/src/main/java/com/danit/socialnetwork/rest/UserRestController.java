@@ -76,7 +76,7 @@ public class UserRestController {
 
     if (userService.findDbUserByEmail(email) == null) {
       response.put("checkEmail", FALSE);
-      return new  ResponseEntity(response, HttpStatus.NOT_FOUND);
+      return new  ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     } else {
       response.put("checkEmail", TRUE);
       return new  ResponseEntity<>(response, HttpStatus.FOUND);

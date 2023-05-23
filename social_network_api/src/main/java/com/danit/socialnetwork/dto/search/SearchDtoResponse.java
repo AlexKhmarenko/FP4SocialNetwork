@@ -27,6 +27,6 @@ public class SearchDtoResponse {
         searchDtoResponse.setProfileImageUrl(Base64.getDecoder().decode(u.getProfileImageUrl()));
       }
       return searchDtoResponse;
-    }).collect(Collectors.toList());
+    }).toList();
   }
 }
