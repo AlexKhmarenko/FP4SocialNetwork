@@ -5,61 +5,73 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.ManyToMany;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = &quot;users&quot;)
-<span class="pc bpc" id="L17" title="85 of 90 branches missed.">@Data</span>
-<span class="fc" id="L18">@NoArgsConstructor(force = true)</span>
+<span class="pc bpc" id="L20" title="81 of 114 branches missed.">@Data</span>
+<span class="fc" id="L21">@NoArgsConstructor(force = true)</span>
 public class DbUser {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = &quot;user_id&quot;)
-<span class="nc" id="L23">  private Integer userId;</span>
+<span class="fc" id="L26">  private Integer userId;</span>
 
   @Column(name = &quot;username&quot;)
   @NonNull
-<span class="fc" id="L27">  private String username;</span>
+<span class="fc" id="L30">  private String username;</span>
 
   @Column(name = &quot;passwords&quot;)
   @NonNull
-<span class="fc" id="L31">  private String password;</span>
+<span class="fc" id="L34">  private String password;</span>
 
   @Column(name = &quot;email&quot;)
   @NonNull
-<span class="fc" id="L35">  private String email;</span>
+<span class="fc" id="L38">  private String email;</span>
 
   @Column(name = &quot;created_date&quot;)
   @NonNull
   @CreationTimestamp
-<span class="nc" id="L40">  private LocalDateTime createdDate;</span>
+<span class="fc" id="L43">  private LocalDateTime createdDate;</span>
 
   @Column(name = &quot;name&quot;)
   @NonNull
-<span class="fc" id="L44">  private String name;</span>
+<span class="fc" id="L47">  private String name;</span>
 
   @Column(name = &quot;dateOfBirth&quot;)
   @NonNull
-<span class="nc" id="L48">  private LocalDate dateOfBirth;</span>
+<span class="fc" id="L51">  private LocalDate dateOfBirth;</span>
 
-  @Column(name = &quot;profile_background_image_url&quot;)
-<span class="nc" id="L51">  private String profileBackgroundImageUrl;</span>
+  @Column(name = &quot;profile_background_image_url&quot;, columnDefinition = &quot;text&quot;)
+<span class="fc" id="L54">  private String profileBackgroundImageUrl;</span>
 
-  @Column(name = &quot;profile_image_url&quot;)
-<span class="nc" id="L54">  private String profileImageUrl;</span>
+  @Column(name = &quot;profile_image_url&quot;, columnDefinition = &quot;text&quot;)
+<span class="fc" id="L57">  private String profileImageUrl;</span>
+
+<span class="fc" id="L59">  @ManyToMany(mappedBy = &quot;dbUsers&quot;)</span>
+<span class="fc" id="L60">  private Set&lt;Message&gt; messages = new HashSet&lt;&gt;();</span>
+
+<span class="fc" id="L62">  @ManyToMany(mappedBy = &quot;dbUsers&quot;)</span>
+<span class="fc" id="L63">  private Set&lt;InboxParticipants&gt; inboxParticipants = new HashSet&lt;&gt;();</span>
+
+<span class="fc" id="L65">  @ManyToMany(mappedBy = &quot;dbUsers&quot;)</span>
+<span class="fc" id="L66">  private Set&lt;Inbox&gt; inbox = new HashSet&lt;&gt;();</span>
 
   public DbUser(String username, String password,
-<span class="nc" id="L57">                String email, String name, LocalDate dateOfBirth) {</span>
-<span class="nc" id="L58">    this.username = username;</span>
-<span class="nc" id="L59">    this.password = password;</span>
-<span class="nc" id="L60">    this.email = email;</span>
-<span class="nc" id="L61">    this.name = name;</span>
-<span class="nc" id="L62">    this.dateOfBirth = dateOfBirth;</span>
-<span class="nc" id="L63">  }</span>
+<span class="fc" id="L69">                String email, String name, LocalDate dateOfBirth) {</span>
+<span class="fc" id="L70">    this.username = username;</span>
+<span class="fc" id="L71">    this.password = password;</span>
+<span class="fc" id="L72">    this.email = email;</span>
+<span class="fc" id="L73">    this.name = name;</span>
+<span class="fc" id="L74">    this.dateOfBirth = dateOfBirth;</span>
+<span class="fc" id="L75">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -7,7 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-<span class="fc" id="L10">@RequiredArgsConstructor</span>
+<span class="nc" id="L10">@RequiredArgsConstructor</span>
 public class MailSenderImpl {
 
   private final JavaMailSender mailSender;
@@ -15,15 +15,15 @@ public class MailSenderImpl {
   private String username;
 
   public void send(String emailTo, String subject, String message) {
-<span class="fc" id="L18">    SimpleMailMessage mailMessage = new SimpleMailMessage();</span>
+<span class="nc" id="L18">    SimpleMailMessage mailMessage = new SimpleMailMessage();</span>
 
-<span class="fc" id="L20">    mailMessage.setFrom(username);</span>
-<span class="fc" id="L21">    mailMessage.setTo(emailTo);</span>
-<span class="fc" id="L22">    mailMessage.setSubject(subject);</span>
-<span class="fc" id="L23">    mailMessage.setText(message);</span>
+<span class="nc" id="L20">    mailMessage.setFrom(username);</span>
+<span class="nc" id="L21">    mailMessage.setTo(emailTo);</span>
+<span class="nc" id="L22">    mailMessage.setSubject(subject);</span>
+<span class="nc" id="L23">    mailMessage.setText(message);</span>
 
-<span class="fc" id="L25">    mailSender.send(mailMessage);</span>
-<span class="fc" id="L26">  }</span>
+<span class="nc" id="L25">    mailSender.send(mailMessage);</span>
+<span class="nc" id="L26">  }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

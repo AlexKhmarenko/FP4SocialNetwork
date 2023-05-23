@@ -6,11 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
 import java.util.Properties;
 
 @Configuration
 @PropertySource(&quot;classpath:mail.properties&quot;)
-<span class="fc" id="L13">public class JavaMailSenderConfig {</span>
+<span class="nc" id="L14">public class JavaMailSenderConfig {</span>
   @Value(&quot;${spring.mail.host}&quot;)
   private String host;
   @Value(&quot;${spring.mail.username}&quot;)
@@ -28,19 +29,19 @@ import java.util.Properties;
 
   @Bean
   public JavaMailSender getJavaMailSender() {
-<span class="fc" id="L31">    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();</span>
-<span class="fc" id="L32">    mailSender.setHost(host);</span>
-<span class="fc" id="L33">    mailSender.setPort(port);</span>
+<span class="nc" id="L32">    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();</span>
+<span class="nc" id="L33">    mailSender.setHost(host);</span>
+<span class="nc" id="L34">    mailSender.setPort(port);</span>
 
-<span class="fc" id="L35">    mailSender.setUsername(username);</span>
-<span class="fc" id="L36">    mailSender.setPassword(password);</span>
+<span class="nc" id="L36">    mailSender.setUsername(username);</span>
+<span class="nc" id="L37">    mailSender.setPassword(password);</span>
 
-<span class="fc" id="L38">    Properties props = mailSender.getJavaMailProperties();</span>
-<span class="fc" id="L39">    props.put(&quot;mail.smtp.auth&quot;, auth);</span>
-<span class="fc" id="L40">    props.put(&quot;mail.smtp.starttls.enable&quot;, enable);</span>
-<span class="fc" id="L41">    props.put(&quot;mail.debug&quot;, debug);</span>
+<span class="nc" id="L39">    Properties props = mailSender.getJavaMailProperties();</span>
+<span class="nc" id="L40">    props.put(&quot;mail.smtp.auth&quot;, auth);</span>
+<span class="nc" id="L41">    props.put(&quot;mail.smtp.starttls.enable&quot;, enable);</span>
+<span class="nc" id="L42">    props.put(&quot;mail.debug&quot;, debug);</span>
 
-<span class="fc" id="L43">    return mailSender;</span>
+<span class="nc" id="L44">    return mailSender;</span>
   }
 
 }

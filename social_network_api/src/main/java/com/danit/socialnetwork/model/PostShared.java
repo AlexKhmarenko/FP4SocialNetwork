@@ -25,7 +25,7 @@ public class PostShared {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "post_shared_id")
-  private Integer postLikeId;
+  private Integer postSharedId;
 
   @Column(name = "created_datetime", updatable = false)
   @NonNull
@@ -35,5 +35,13 @@ public class PostShared {
 
   @ManyToOne(targetEntity = DbUser.class)
   @JoinColumn(name = "user_id")
-  private DbUser userPostShared;
+  private DbUser userId;
+
+  @ManyToOne(targetEntity = Post.class)
+  @JoinColumn(name = "post_id")
+  private Post postId;
+
+
+
+
 }

@@ -19,20 +19,20 @@ public class JwtUserDetailsService implements UserDetailsService {
   private final UserService userService;
 
   private UserDetails mapper(DbUser dbUser) {
-<span class="nc" id="L22">    return User</span>
-<span class="nc" id="L23">        .withUsername(dbUser.getUsername())</span>
-<span class="nc" id="L24">        .password(dbUser.getPassword())</span>
-<span class="nc" id="L25">        .authorities(new ArrayList&lt;&gt;())</span>
-<span class="nc" id="L26">        .build();</span>
+<span class="fc" id="L22">    return User</span>
+<span class="fc" id="L23">        .withUsername(dbUser.getUsername())</span>
+<span class="fc" id="L24">        .password(dbUser.getPassword())</span>
+<span class="fc" id="L25">        .authorities(new ArrayList&lt;&gt;())</span>
+<span class="fc" id="L26">        .build();</span>
   }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     try {
-<span class="nc" id="L32">      return userService.findByUsername(username)</span>
-<span class="nc" id="L33">          .map(this::mapper)</span>
-<span class="nc" id="L34">          .orElseThrow(() -&gt; new UsernameNotFoundException(</span>
-<span class="nc" id="L35">              String.format(&quot;user `%s` not found&quot;, username)</span>
+<span class="fc" id="L32">      return userService.findByUsername(username)</span>
+<span class="fc" id="L33">          .map(this::mapper)</span>
+<span class="fc" id="L34">          .orElseThrow(() -&gt; new UsernameNotFoundException(</span>
+<span class="fc" id="L35">              String.format(&quot;user `%s` not found&quot;, username)</span>
           ));
 <span class="nc" id="L37">    } catch (IOException e) {</span>
 <span class="nc" id="L38">      throw new RuntimeException(e);</span>
