@@ -3,7 +3,8 @@ package com.danit.socialnetwork.rest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
-import com.danit.socialnetwork.dto.SearchRequest;
+import com.danit.socialnetwork.dto.search.SearchDtoResponse;
+import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.service.UserService;
@@ -53,13 +54,18 @@ public class UserRestController {
     dbUser.setName(request.getName());
     dbUser.setDateOfBirth(dateOfBirth);
 
-    Map<String, Boolean> response = new HashMap<>();
-    response.put("registration", userService.save(dbUser));
-    return ResponseEntity.ok(response);
+    Map<String, String> response = new HashMap<>();
+    if (userService.save(dbUser)) {
+      response.put("registration", "true");
+      return ResponseEntity.ok(response);
+    } else {
+      response.put("registration", "false");
+      return new  ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @PostMapping(value = "/checkEmail")
-  public ResponseEntity<?> handleCheckUsernamePost(
+  public ResponseEntity<?> handleCheckEmailPost(
       @RequestBody UserEmailForLoginRequest request) throws IOException {
 
     String email = request.getEmail();
@@ -67,10 +73,12 @@ public class UserRestController {
 
     if (userService.findDbUserByEmail(email) == null) {
       response.put("checkEmail", "false");
+      return new  ResponseEntity(response, HttpStatus.NOT_FOUND);
     } else {
       response.put("checkEmail", "true");
+      return new  ResponseEntity(response, HttpStatus.FOUND);
+
     }
-    return ResponseEntity.ok(response);
   }
 
   @RequestMapping(value = "/sendLetter", method = RequestMethod.POST)
@@ -83,10 +91,11 @@ public class UserRestController {
 
     if (userService.sendLetter(name, email)) {
       response.put("sendLetter", "true");
+      return ResponseEntity.ok(response);
     } else {
       response.put("sendLetter", "false");
+      return new  ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
-    return ResponseEntity.ok(response);
   }
 
   @RequestMapping(value = "/activate", method = RequestMethod.POST)
@@ -98,10 +107,11 @@ public class UserRestController {
 
     if (isActivated) {
       response.put("activate", "true");
+      return ResponseEntity.ok(response);
     } else {
       response.put("activate", "false");
+      return new  ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
-    return ResponseEntity.ok(response);
   }
 
   @RequestMapping(value = "/search", method = RequestMethod.POST)
@@ -109,10 +119,8 @@ public class UserRestController {
       @RequestBody SearchRequest request) {
     String userSearch = request.getUserSearch();
     List<DbUser> search = userService.filterCachedUsersByName(userSearch);
-    Map<String, List<DbUser>> response = new HashMap<>();
-    response.put("search", search);
 
-    return ResponseEntity.ok(response);
+    return new ResponseEntity<>(SearchDtoResponse.from(search), HttpStatus.FOUND);
   }
 
   @GetMapping("/{username}")
