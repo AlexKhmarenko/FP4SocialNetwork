@@ -17,6 +17,7 @@ import {
 
 import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
+import { ContactSupportOutlined } from '@mui/icons-material';
 
 
 export const ForgotModal = ({ id }) => {
@@ -29,6 +30,7 @@ export const ForgotModal = ({ id }) => {
         name,
         inputType,
         typeButton } = modalConfig[id]
+        console.log(id)
     return (
         <Box sx={StyledBox}>
             <CloseIcon onClick={() => setOpenForgot(false)} />
@@ -47,7 +49,8 @@ export const ForgotModal = ({ id }) => {
                 })} onSubmit={async (values, { setErrors, setSubmitting }) => {
                     setIsSubmitting(true);
                     dispatch(checkEmail(values.email))
-                    setOpenForgot(false)
+                    // setOpenForgot(false)
+                    console.log(values.email)
                     setOpenSendCode(true)
 
                     //                     try {

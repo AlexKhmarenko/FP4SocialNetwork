@@ -21,7 +21,7 @@ import { useModal } from '../../context/ModalContext';
 export function EnterEmailModal() {
     const dispatch = useDispatch();
     const [isSubmitting, setIsSubmitting] = useState(false);
-	const {openForgot, openSendCode, openWeSend, openChoose, openAllSet, setOpenForgot} = useModal()
+	const {openForgot, setOpenForgot} = useModal()
 
    async function signWidthGoogle (){
        let dataAboutRegistration = await fetch("http://localhost:8080/oauth2/authorization/google");
@@ -30,7 +30,7 @@ export function EnterEmailModal() {
     }
 
 const handleForgot = ()=>{
-    setOpenForgot(!openForgot)
+setOpenForgot(true)
     dispatch(closeLoginModal())
 }
 

@@ -20,5 +20,3 @@ root.render(
         </ModalProvider>
     </Provider>
 );
-
-
