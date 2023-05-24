@@ -1,2 +1,4 @@
 PostDtoUnitTest.class
 PostDtoUnitTest$1.class
+com/danit/socialnetwork/service/UserFollowServiceImplTest.class
+com/danit/socialnetwork/rest/UserFollowRestControllerTest.class

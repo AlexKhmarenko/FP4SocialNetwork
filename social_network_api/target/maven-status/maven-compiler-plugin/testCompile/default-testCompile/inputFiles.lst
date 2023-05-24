@@ -3,12 +3,14 @@
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/dto/message/InboxDtoResponseTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/UserServiceImplTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/PostServiceImplTest.java
+/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/UserFollowRestControllerTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/JwtAuthenticationRestControllerTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/dto/message/MessageGetAllDtoResponseTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/PostLikeServiceImplTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/PostLikeRestControllerTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/security/JwtUserDetailsServiceTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/PostCommentRestControllerTest.java
+/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/UserFollowServiceImplTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/InboxServiceImplTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/security/JwtTokenServiceTest.java
 /Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/PostDtoUnitTest.java
