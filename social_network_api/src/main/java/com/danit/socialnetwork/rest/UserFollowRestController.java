@@ -34,7 +34,8 @@ public class UserFollowRestController {
 
   @GetMapping("/following/{userID}")
   public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowings(@PathVariable("userID") Integer userId) {
-    return new ResponseEntity(userFollowService.getAllUsersByUserFollowerId(userId), HttpStatus.OK);
+    List<UserFollowDtoResponse> responseList = userFollowService.getAllUsersByUserFollowerId(userId);
+    return new ResponseEntity(responseList, HttpStatus.OK);
   }
 
   @GetMapping("/followers/{userID}")
