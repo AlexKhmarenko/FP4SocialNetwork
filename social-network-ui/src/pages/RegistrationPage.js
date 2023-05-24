@@ -35,8 +35,8 @@ if(isAllSetModal) id="allSet"
 console.log(id)
     return (
         <>
-        <Container sx={{minWidth: "1350px"}} >
-            <Grid container spacing={3} >
+        <Container sx={{minWidth: "1350px", height:"100vh"}} >
+            <Grid container spacing={3} sx={{height:"100vh"}}>
                     <LeftNavigationBar/>
                     <Newsfeed/>
             </Grid>
