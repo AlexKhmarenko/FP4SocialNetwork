@@ -2,10 +2,9 @@ package com.danit.socialnetwork.mappers;
 
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.model.DbUser;
-import lombok.Data;
 
 import java.util.Base64;
-@Data
+
 public class MapperUtils {
   public static byte[] decodeProfile(DbUser dbUser) {
     String profile = dbUser.getProfileImageUrl();
@@ -24,7 +23,7 @@ public class MapperUtils {
   }
 
   public static String encodeProfile(EditingDtoRequest editingDtoRequest) {
-    byte [] profile = editingDtoRequest.getProfileImageUrl();
+    byte[] profile = editingDtoRequest.getProfileImageUrl();
     if (profile == null) {
       return null;
     }
