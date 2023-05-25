@@ -202,11 +202,11 @@ class UserServiceImplTest {
     List<DbUser> resultSearchDto3 = userService.filterCachedUsersByName("na");
 
     Assert.assertTrue(resultSearchDto1.size() <= 8);
-    Assert.assertTrue(resultSearchDto1.size() == 2);
+    Assert.assertEquals(2, resultSearchDto1.size());
     Assert.assertTrue(resultSearchDto2.size() <= 8);
-    Assert.assertTrue(resultSearchDto2.size() == 2);
+    Assert.assertEquals(2,resultSearchDto2.size());
     Assert.assertTrue(resultSearchDto3.size() <= 8);
-    Assert.assertTrue(resultSearchDto3.size() == 4);
+    Assert.assertEquals(4,resultSearchDto3.size());
     Assert.assertTrue(resultSearchDto1.get(0).getName().toUpperCase().contains("nad".toUpperCase()));
     Assert.assertTrue(resultSearchDto2.get(0).getName().toUpperCase().contains("ro".toUpperCase()));
     Assert.assertTrue(resultSearchDto3.get(0).getName().toUpperCase().contains("na".toUpperCase()));
@@ -223,7 +223,7 @@ class UserServiceImplTest {
 
     List<DbUser> testByName = userService.filterCachedUsersByName("nid");
 
-    Assert.assertTrue(testByName.size() == 0);
+    Assert.assertEquals(0, testByName.size());
     Assert.assertFalse(dbUsers.get(0).getName().toUpperCase().contains("nid".toUpperCase()));
   }
 

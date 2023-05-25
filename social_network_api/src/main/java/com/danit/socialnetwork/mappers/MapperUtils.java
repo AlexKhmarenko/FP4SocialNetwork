@@ -6,6 +6,9 @@ import com.danit.socialnetwork.model.DbUser;
 import java.util.Base64;
 
 public class MapperUtils {
+  private MapperUtils() {
+  }
+
   public static byte[] decodeProfile(DbUser dbUser) {
     String profile = dbUser.getProfileImageUrl();
     if (profile == null) {
