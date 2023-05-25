@@ -18,7 +18,6 @@ export function PostReducer(state = initialState, action) {
                 posts: action.payload,
             };
         case SET_USER_POST:
-            console.log(action.payload);
             return {
                 ...state,
                 posts: [action.payload, ...state.posts]
