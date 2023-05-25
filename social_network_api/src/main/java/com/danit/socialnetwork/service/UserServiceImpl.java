@@ -1,10 +1,12 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
+import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
 import com.danit.socialnetwork.exception.user.HeaderPhotoNotFoundException;
+import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -137,7 +139,7 @@ public class UserServiceImpl implements UserService {
       List<DbUser> cacheUsers = userRepository.findAll();
       userCache.put("UserCache", cacheUsers);
     }
-
+    log.debug("filterCachedUsersByName: " + userSearch + ". Should find all users by name.");
     return userCache.getIfPresent("UserCache").stream()
         .filter(user -> user.getName().toLowerCase()
             .contains(userSearch.toLowerCase()))
