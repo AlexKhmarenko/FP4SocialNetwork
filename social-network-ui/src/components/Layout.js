@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Outlet, useLocation  } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
 import { Container, } from "@mui/material";
 
 import { HeaderInformation } from "./NavigationComponents/HeaderInformation";
@@ -14,6 +15,7 @@ import {
     OutletContainer,
     OutletWrapper
 } from "./LayoutStyles";
+import {useNavigate} from "react-router-dom";
 
 
 import { RegistrationPage } from "../pages/RegistrationPage";
