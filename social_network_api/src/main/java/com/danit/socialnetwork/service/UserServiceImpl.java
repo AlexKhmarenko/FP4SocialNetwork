@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
         throw new PhotoNotFoundException("Wrong path to photo for user with username " + username);
       }
       return FileCopyUtils.copyToByteArray(in);
-
     }
   }
 
@@ -80,7 +79,8 @@ public class UserServiceImpl implements UserService {
     } else {
       InputStream in = getClass().getResourceAsStream(profileBackgroundImagePath);
       if (isEmpty(in)) {
-        throw new HeaderPhotoNotFoundException("Wrong path to header photo for user with username " + username);
+        throw new HeaderPhotoNotFoundException("Wrong path to header photo for user with username "
+            + username);
       }
       return FileCopyUtils.copyToByteArray(in);
     }
@@ -97,8 +97,7 @@ public class UserServiceImpl implements UserService {
     String hashedPassword = enc.encode(dbUser.getPassword());
     dbUser.setPassword(hashedPassword);
     userRepository.save(dbUser);
-    log.info(String.format("save user name = %s, email = %s",
-        dbUser.getName(), dbUser.getEmail()));
+    log.info(String.format("save user name = %s, email = %s", dbUser.getName(), dbUser.getEmail()));
     return true;
   }
 
@@ -113,8 +112,7 @@ public class UserServiceImpl implements UserService {
     try {
       String message = String.format(
           "Hello, %s! \n "
-              + "Welcome to Capitweet. Email confirmation code %s",
-          name, randomNumber);
+              + "Welcome to Capitweet. Email confirmation code %s", name, randomNumber);
       log.info(String.format(message));
       mailSender.send(email, "Activation code", message);
       log.info(String.format("mail Send to user name = %s, email = %s ", name, email));

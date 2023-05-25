@@ -8,7 +8,7 @@ public interface PasswordChangerService {
 
   String saveRequest(String email, String request);
 
-  boolean changePassword(String email, String password);
+  boolean changedPassword(String email, String password);
 
   Optional<PasswordChangeRequests> getEmailByUuid(String uuid);
 
