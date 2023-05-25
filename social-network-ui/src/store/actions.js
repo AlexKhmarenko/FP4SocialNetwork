@@ -104,6 +104,7 @@ export const setUserPostsClear = (posts) => ({
 
 export const fetchPostsByUserId = (userId, page) => {
         return async (dispatch) => {
+            // dispatch(setUserPostsClear([]));
             const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
             return await response.json();
         }
@@ -111,6 +112,7 @@ export const fetchPostsByUserId = (userId, page) => {
 
 export const fetchPostsByPage = (page) => {
     return async (dispatch) => {
+        // dispatch(setUserPostsClear([]));
         const response = await fetch(`http://localhost:8080/posts?page=${page}`);
         return await response.json();
     };

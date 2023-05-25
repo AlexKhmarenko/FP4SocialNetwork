@@ -45,11 +45,11 @@ export function Layout() {
             console.log(userId)
             data = await dispatch(fetchPostsByUserId(userId, page));
             console.log(data)
-        } else if(!decodedToken){
+        } else if(!decodedToken || location.pathname !== "/explore"){
             data = await dispatch(fetchPostsByPage(page));
             console.log(data)
         }
-        console.log(data)
+
         if (data.length === 0) {
             setIsEnd(true);
         } else {

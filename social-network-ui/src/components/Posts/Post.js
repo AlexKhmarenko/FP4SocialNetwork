@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Box, Button, TextField } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
@@ -50,7 +49,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
         setNewComment(e.target.value);
     };
 
-    const addLikeHandle = useCallback(async () => {
+    const addLikeHandle = async () => {
         if (userId) {
             if (!like) {
                 await fetch("http://localhost:8080/likes", {
@@ -80,7 +79,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
         } else {
             dispatch(openLoginModal());
         }
-    }, [like, userId, postId, likeArr, dispatch]);
+    };
 
     const handleShowMore =() => {
         setShowMore(!showMore);
