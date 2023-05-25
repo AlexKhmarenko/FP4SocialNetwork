@@ -12,7 +12,7 @@ public class MapperUtils {
   public static byte[] decodeProfile(DbUser dbUser) {
     String profile = dbUser.getProfileImageUrl();
     if (profile == null) {
-      return new byte[0];
+      return null;
     }
     return Base64.getDecoder().decode(profile);
   }
@@ -20,7 +20,7 @@ public class MapperUtils {
   public static byte[] decodeProfileBackground(DbUser dbUser) {
     String profileBackground = dbUser.getProfileBackgroundImageUrl();
     if (profileBackground == null) {
-      return new byte[0];
+      return null;
     }
     return Base64.getDecoder().decode(profileBackground);
   }
