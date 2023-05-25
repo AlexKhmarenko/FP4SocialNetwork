@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation  } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import { Container, } from "@mui/material";
 
 import { HeaderInformation } from "./NavigationComponents/HeaderInformation";
@@ -15,7 +14,7 @@ import {
     OutletContainer,
     OutletWrapper
 } from "./LayoutStyles";
-import {useNavigate} from "react-router-dom";
+
 
 import { RegistrationPage } from "../pages/RegistrationPage";
 import { setPosts, setUserId, setPage, fetchPostsByUserId, fetchPostsByPage } from "../store/actions";
@@ -23,11 +22,13 @@ import { useState } from "react";
 import { decodeToken } from "./Posts/decodeToken";
 
 export function Layout() {
+    const localStorageToken = JSON.parse(localStorage.getItem("userToken"));
+    const sessionStorageToken = JSON.parse(sessionStorage.getItem("userToken"));
     const userToken = useSelector(state => state.saveUserToken.userToken);
     const page = useSelector(state=>state.pageCount.page)
     const [isEnd, setIsEnd] = useState(false);
-    const navigate = useNavigate()
     const dispatch = useDispatch();
+    let location = useLocation();
 
 
     useEffect(() => {
@@ -37,14 +38,18 @@ export function Layout() {
     const fetchPosts = async (page) => {
         const decodedToken = decodeToken();
         let data;
-        if (decodedToken) {
+        if (decodedToken && location.pathname !== "/explore") {
+            console.log(location.pathname)
             const userId = decodedToken.sub;
             dispatch(setUserId(userId));
+            console.log(userId)
             data = await dispatch(fetchPostsByUserId(userId, page));
-        } else if(!decodedToken || navigate==="/explore"){
+            console.log(data)
+        } else if(!decodedToken){
             data = await dispatch(fetchPostsByPage(page));
             console.log(data)
         }
+        console.log(data)
         if (data.length === 0) {
             setIsEnd(true);
         } else {
