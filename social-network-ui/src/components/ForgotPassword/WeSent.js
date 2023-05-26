@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from "react-redux"
 import PropTypes from 'prop-types';
 import { modalConfig } from './modalConfig';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { Button, Typography, Box, FormControl } from "@mui/material";
 import { StyledBox, StyledHeaderModalText, StyledModalText, StyledBlackButton, StyledFormControl, StyledSpanElement, StyledWhiteButton } from "./style"
 import BasicButton from '../common/button';
 // import BasicInput from "../../input"
@@ -27,7 +26,8 @@ export const WeSent = ({ id }) => {
         buttonText,
         placeholder,
         iconStatus,
-        inputType } = modalConfig[id]
+        inputType,
+    typeButton } = modalConfig[id]
     const handleClick = () => {
     }
     return (
@@ -41,15 +41,17 @@ export const WeSent = ({ id }) => {
                     }
                 )} onSubmit= {async (values, { setErrors, setSubmitting }) => {
 
-                
+                console.log(1)
                     try {
                         const res = await fetch("http://localhost:8080/api/codecheck", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({
-                                email: email,
+                                    email: email,
+                                    code: values.password
                             })
                         })
+                        console.log(res)
                         if (res.ok) {
                             const data = await res.json()
                             console.log(data)
@@ -76,20 +78,32 @@ export const WeSent = ({ id }) => {
                     {text}
                 </Typography>
 
-                <Box
+                <Form>
+                    <FormControl sx={StyledFormControl}>
+                        <Field as={InputFieldWithError} sx={{ width: "400px" }} name={name}
+                            id={name}
+                            label={placeholder} disabled={isSubmitting} type={inputType} />
+                        <Button type={typeButton}
+                            variant="contained" disabled={isSubmitting}
+                            sx={{ ...StyledBlackButton, marginTop: "20px" }}
+                            fullWidth={true}>{buttonText}</Button>
+                    </FormControl>
+                </Form>
+
+                {/* <Box
                     component="form"
                     sx={StyledFormControl}
                     noValidate
                     autoComplete="off"
-                >
+                > */}
                     {/* <InputFieldWithError /> */}
-                    <Field as={InputFieldWithError} sx={{ width: "400px" }} name={placeholder}
+                    {/* <Field as={InputFieldWithError} sx={{ width: "400px" }} name={placeholder}
                         id="userName"
-                        label={placeholder} type="text" />
+                        label={placeholder} type="text" /> */}
                     {/* <BasicInput type={inputType} iconStatus={iconStatus} placeholder={placeholder} /> */}
-                </Box>
-
-                <BasicButton text={buttonText} onClick={handleClick} />
+                {/* </Box>
+ */}
+                {/* <BasicButton text={buttonText} onClick={handleClick} /> */}
             </Box>
         </Formik>
     )
