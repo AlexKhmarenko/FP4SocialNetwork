@@ -1,14 +1,16 @@
 package com.danit.socialnetwork.dto.user;
 
 import lombok.Data;
-
-import java.time.LocalDate;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class EditingDtoRequest {
   private Integer userId;
   private String name;
-  private LocalDate dateOfBirth;
+  private Integer day;
+  private Integer month;
+  private Integer year;
   private byte [] profileBackgroundImageUrl;
   private byte [] profileImageUrl;
 

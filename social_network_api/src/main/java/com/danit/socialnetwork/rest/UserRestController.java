@@ -6,6 +6,7 @@ import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.service.UserService;
@@ -128,6 +129,19 @@ public class UserRestController {
     log.debug("filterCachedUsersByName: " + userSearch + ". Find all users by name.");
     List<SearchDto> searchDto = search.stream().map(searchMapper::dbUserToSearchDto).toList();
     return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
+  }
+
+  @RequestMapping(value = "edition", method = RequestMethod.PUT)
+  public ResponseEntity<Map<String, String>> handleEditionPost(
+      @RequestBody EditingDtoRequest request) {
+    Map<String, String> response = new HashMap<>();
+    if (userService.update(request)) {
+      response.put("edition", TRUE);
+      return ResponseEntity.ok(response);
+    } else {
+      response.put("edition", FALSE);
+      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @GetMapping("/{username}")

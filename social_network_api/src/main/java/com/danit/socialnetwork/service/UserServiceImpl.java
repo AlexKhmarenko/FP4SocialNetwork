@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
+import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
@@ -16,6 +17,8 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -87,9 +90,16 @@ public class UserServiceImpl implements UserService {
   }
 
   public boolean save(DbUser dbUser) {
-    Optional<DbUser> userFromDb = userRepository.findByUsername(dbUser.getUsername());
+    Optional<DbUser> userFromDbByUsername = userRepository.findByUsername(dbUser.getUsername());
 
-    if (userFromDb.isPresent()) {
+    if (userFromDbByUsername.isPresent()) {
+      log.info("User exists!");
+      return false;
+    }
+
+    Optional<DbUser> userFromDbByEmail = userRepository.findDbUserByEmail(dbUser.getEmail());
+
+    if (userFromDbByEmail.isPresent()) {
       log.info("User exists!");
       return false;
     }
@@ -163,6 +173,38 @@ public class UserServiceImpl implements UserService {
       throw new UserNotFoundException("User with e-mail " + email + " not found");
     }
     return maybeUser;
+  }
+
+  public boolean update(EditingDtoRequest request) {
+    Integer userId = request.getUserId();
+    int day = request.getDay();
+    int month = request.getMonth();
+    int year = request.getYear();
+    LocalDate dateOfBirth = LocalDate.of(year, month, day);
+    Optional<DbUser> userFromDb = userRepository.findById(userId);
+    if (userFromDb.isEmpty()) {
+      log.debug(String.format("User with e-mail " + userId + " not found", userId));
+      return false;
+    } else {
+      DbUser updateUser = userFromDb.get();
+      updateUser.setName(request.getName());
+      updateUser.setDateOfBirth(dateOfBirth);
+      byte[] Profile = request.getProfileImageUrl();
+      byte[] ProfileBackground = request.getProfileBackgroundImageUrl();
+      if (Profile == null) {
+        updateUser.setProfileImageUrl(null);
+      } else {
+        updateUser.setProfileImageUrl(Base64.getEncoder().encodeToString(Profile));
+      }
+      if (ProfileBackground == null) {
+        updateUser.setProfileBackgroundImageUrl(null);
+      } else {
+        updateUser.setProfileBackgroundImageUrl(Base64.getEncoder().encodeToString(ProfileBackground));
+      }
+      userRepository.save(updateUser);
+      log.debug(String.format("save user id = %s", userId));
+      return true;
+    }
   }
 
 }
