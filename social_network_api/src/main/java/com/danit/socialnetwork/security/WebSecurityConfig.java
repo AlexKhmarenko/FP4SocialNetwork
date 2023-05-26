@@ -114,7 +114,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .deleteCookies("XSRF-TOKEN").permitAll());
 
 
-    //    http.rememberMe();
+        http.rememberMe();
     http.sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.NEVER);
 

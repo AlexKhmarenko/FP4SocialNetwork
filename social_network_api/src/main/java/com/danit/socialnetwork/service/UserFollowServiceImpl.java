@@ -27,6 +27,8 @@ public class UserFollowServiceImpl implements UserFollowService {
 
   private final UserFollowRepository userFollowRepository;
   private final UserRepository userRepository;
+  String message = "message";
+  String invalidId = "invalid user id";
 
   @Override
   public List<UserFollow> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId, boolean notify) {
@@ -84,7 +86,7 @@ public class UserFollowServiceImpl implements UserFollowService {
           follower.getUserId(), following.getUserId());
 
       if (maybeUserFollow.isPresent()) {
-        response.put("message", "Following already exists");
+        response.put(message, "Following already exists");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
       }
       UserFollow newEntry;
@@ -92,10 +94,10 @@ public class UserFollowServiceImpl implements UserFollowService {
       newEntry.setUserFollowerId(follower);
       newEntry.setUserFollowingId(following);
       newEntry.setReceivedNotificationPost(true);
-      response.put("message", saveUserFollower(newEntry));
+      response.put(message, saveUserFollower(newEntry));
       return ResponseEntity.ok(response);
     }
-    response.put("message", "invalid user id");
+    response.put(message, invalidId);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
@@ -110,11 +112,11 @@ public class UserFollowServiceImpl implements UserFollowService {
 
     if (deletedUserFollow.isPresent()) {
 
-      response.put("message", deleteUserFollowByUserFollowId(deletedUserFollow.get()
+      response.put(message, deleteUserFollowByUserFollowId(deletedUserFollow.get()
           .getUserFollowId()));
       return ResponseEntity.ok(response);
     }
-    response.put("message", "invalid user id");
+    response.put(message, invalidId);
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
@@ -130,18 +132,18 @@ public class UserFollowServiceImpl implements UserFollowService {
     if (maybeFollower.isEmpty()
         || maybeFollowing.isEmpty()
         || maybeFollower.equals(maybeFollowing)) {
-      response.put("message", "invalid user id");
+      response.put(message, invalidId);
       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
     DbUser follower = userRepository.findById(userNotificationRequest.getUserFollower()).get();
     DbUser following = userRepository.findById(userNotificationRequest.getUserFollowing()).get();
 
-    Optional<UserFollow> MaybeUser = getUserFollowByUserFollowerIdAndUserFollowingId(
+    Optional<UserFollow> maybeUser = getUserFollowByUserFollowerIdAndUserFollowingId(
         follower.getUserId(), following.getUserId());
 
     UserFollow newEntry;
-    if (MaybeUser.isPresent()) {
-      newEntry = MaybeUser.get();
+    if (maybeUser.isPresent()) {
+      newEntry = maybeUser.get();
       newEntry.setReceivedNotificationPost(receivedNotificationPost);
     } else {
       newEntry = new UserFollow();
@@ -149,7 +151,7 @@ public class UserFollowServiceImpl implements UserFollowService {
       newEntry.setUserFollowingId(following);
       newEntry.setReceivedNotificationPost(true);
     }
-    response.put("message", saveUserFollower(newEntry));
+    response.put(message, saveUserFollower(newEntry));
     return ResponseEntity.ok(response);
   }
 }

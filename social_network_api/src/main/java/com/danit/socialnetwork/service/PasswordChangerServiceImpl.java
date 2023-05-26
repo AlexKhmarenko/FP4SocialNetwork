@@ -28,6 +28,9 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
   private final UserRepository userRepo;
   private final PasswordChanger passChanger = new PasswordChanger();
 
+  String email = "email";
+  String message = "message";
+
   @Override
   public String saveRequest(@RequestBody CodeCheckRequest codeCheckRequest) {
     PasswordChangeRequests pcr = new PasswordChangeRequests();
@@ -48,12 +51,12 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
       codeCheckRequest.setEmail(userEmail);
       codeCheckRequest.setCode(secretCode);
       log.info(saveRequest(codeCheckRequest));
-      response.put("email", userEmail);
-      response.put("message", "Instructions sent on, " + userEmail);
+      response.put(email, userEmail);
+      response.put(message, "Instructions sent on, " + userEmail);
       return ResponseEntity.ok(response);
     } else {
-      response.put("email", userEmail);
-      response.put("message", "User with email " + userEmail + " is not registered");
+      response.put(email, userEmail);
+      response.put(message, "User with email " + userEmail + " is not registered");
       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
@@ -75,18 +78,18 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
     Optional<PasswordChangeRequests> maybeRequest = getEmailBySecretCode(secretCode);
     Map<String, String> response = new HashMap<>();
     if (maybeRequest.isPresent()) {
-      String email = maybeRequest.get().getEmail();
-      if (email.equals(userEmail)) {
-        log.info("Change password page call from e-mail " + email);
+      String maybeEmail = maybeRequest.get().getEmail();
+      if (maybeEmail.equals(userEmail)) {
+        log.info("Change password page call from e-mail " + maybeEmail);
         deleteRequestByEmail(maybeRequest.get().getEmail());
-        response.put("email", userEmail);
-        response.put("message", "code accessed");
+        response.put(email, userEmail);
+        response.put(message, "code accessed");
         return ResponseEntity.ok(response);
       }
     }
     log.info("Invalid code from codeCheckRequest");
-    response.put("email", userEmail);
-    response.put("message", "Invalid code");
+    response.put(email, userEmail);
+    response.put(message, "Invalid code");
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
@@ -118,13 +121,13 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
       newPasswordRequest1.setEmail(userEmail);
       newPasswordRequest1.setPassword(encodedPass);
       if (changedPassword(newPasswordRequest1)) {
-        response.put("email", userEmail);
-        response.put("message", "Password changed");
+        response.put(email, userEmail);
+        response.put(message, "Password changed");
         return ResponseEntity.ok(response);
       }
     }
-    response.put("email", userEmail);
-    response.put("message", "User with email " + userEmail + " is not registered");
+    response.put(email, userEmail);
+    response.put(message, "User with email " + userEmail + " is not registered");
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 }
