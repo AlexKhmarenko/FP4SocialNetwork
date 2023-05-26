@@ -28,22 +28,26 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
   private final UserRepository userRepo;
   private final PasswordChanger passChanger = new PasswordChanger();
 
-
-  public String saveRequest(String email, String request) {
+  @Override
+  public String saveRequest(@RequestBody CodeCheckRequest codeCheckRequest) {
     PasswordChangeRequests pcr = new PasswordChangeRequests();
-    pcr.setEmail(email);
-    pcr.setChangeRequest(request);
+    pcr.setEmail(codeCheckRequest.getEmail());
+    pcr.setChangeRequest(codeCheckRequest.getCode());
     passwordChangeRequestsRepo.save(pcr);
-    return "request to change password from " + email;
+    return "request to change password from " + codeCheckRequest.getEmail();
   }
 
+  @Override
   public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
     String userEmail = changePasswordRequest.getEmail();
     Optional<DbUser> maybeUser = userRepo.findDbUserByEmail(userEmail);
     Map<String, String> response = new HashMap<>();
     if (maybeUser.isPresent()) {
-      String secretUrl = passChanger.change(userEmail);
-      log.info(saveRequest(userEmail, secretUrl));
+      String secretCode = passChanger.change(userEmail);
+      CodeCheckRequest codeCheckRequest = new CodeCheckRequest();
+      codeCheckRequest.setEmail(userEmail);
+      codeCheckRequest.setCode(secretCode);
+      log.info(saveRequest(codeCheckRequest));
       response.put("email", userEmail);
       response.put("message", "Instructions sent on, " + userEmail);
       return ResponseEntity.ok(response);
@@ -54,18 +58,21 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
     }
   }
 
-  public Optional<PasswordChangeRequests> getEmailByUuid(String uuid) {
-    return passwordChangeRequestsRepo.getPasswordChangeRequestsByChangeRequest(uuid);
+  @Override
+  public Optional<PasswordChangeRequests> getEmailBySecretCode(String secretCode) {
+    return passwordChangeRequestsRepo.getPasswordChangeRequestsByChangeRequest(secretCode);
   }
 
+  @Override
   public void deleteRequestByEmail(String email) {
     passwordChangeRequestsRepo.deleteById(email);
   }
 
+  @Override
   public ResponseEntity<?> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest) {
     String userEmail = codeCheckRequest.getEmail();
     String secretCode = codeCheckRequest.getCode();
-    Optional<PasswordChangeRequests> maybeRequest = getEmailByUuid(secretCode);
+    Optional<PasswordChangeRequests> maybeRequest = getEmailBySecretCode(secretCode);
     Map<String, String> response = new HashMap<>();
     if (maybeRequest.isPresent()) {
       String email = maybeRequest.get().getEmail();
@@ -83,11 +90,12 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
     return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 
-  public boolean changedPassword(String email, String password) {
-    Optional<DbUser> maybeUser = userRepo.findDbUserByEmail(email);
+  @Override
+  public boolean changedPassword(@RequestBody NewPasswordRequest newPasswordRequest) {
+    Optional<DbUser> maybeUser = userRepo.findDbUserByEmail(newPasswordRequest.getEmail());
     if (maybeUser.isPresent()) {
       DbUser refreshUser = maybeUser.get();
-      refreshUser.setPassword(password);
+      refreshUser.setPassword(newPasswordRequest.getPassword());
       userRepo.save(refreshUser);
       return true;
     } else {
@@ -95,6 +103,7 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
     }
   }
 
+  @Override
   public ResponseEntity<?> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest) {
     String userEmail = newPasswordRequest.getEmail();
     String password = newPasswordRequest.getPassword();
@@ -105,7 +114,10 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
     if (maybeUser.isPresent()) {
       BCryptPasswordEncoder bcenc = new BCryptPasswordEncoder();
       String encodedPass = bcenc.encode(password);
-      if (changedPassword(userEmail, encodedPass)) {
+      NewPasswordRequest newPasswordRequest1 = new NewPasswordRequest();
+      newPasswordRequest1.setEmail(userEmail);
+      newPasswordRequest1.setPassword(encodedPass);
+      if (changedPassword(newPasswordRequest1)) {
         response.put("email", userEmail);
         response.put("message", "Password changed");
         return ResponseEntity.ok(response);
