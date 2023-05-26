@@ -69,7 +69,7 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
   }
 
   @Override
-  public ResponseEntity<?> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest) {
+  public ResponseEntity<Map<String, String>> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest) {
     String userEmail = codeCheckRequest.getEmail();
     String secretCode = codeCheckRequest.getCode();
     Optional<PasswordChangeRequests> maybeRequest = getEmailBySecretCode(secretCode);
@@ -104,7 +104,7 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
   }
 
   @Override
-  public ResponseEntity<?> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest) {
+  public ResponseEntity<Map<String, String>> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest) {
     String userEmail = newPasswordRequest.getEmail();
     String password = newPasswordRequest.getPassword();
 

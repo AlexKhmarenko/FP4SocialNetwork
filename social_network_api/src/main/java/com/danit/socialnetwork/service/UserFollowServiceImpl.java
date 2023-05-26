@@ -71,7 +71,7 @@ public class UserFollowServiceImpl implements UserFollowService {
   }
 
   @Override
-  public ResponseEntity<?> follow(@RequestBody UserFollowRequest userFollowRequest) {
+  public ResponseEntity<Map<String, String>> follow(@RequestBody UserFollowRequest userFollowRequest) {
     Optional<DbUser> maybeFollower = userRepository.findById(userFollowRequest.getUserFollower());
     Optional<DbUser> maybeFollowing = userRepository.findById(userFollowRequest.getUserFollowing());
     Map<String, String> response = new HashMap<>();
