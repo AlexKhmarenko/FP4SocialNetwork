@@ -1,17 +1,16 @@
 import React from "react";
 import { Post } from "./Post";
-import { useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
+import PropTypes from "prop-types";
 
-export const PostsDisplaying = () => {
-    const userPosts = useSelector(state => state.Posts.posts);
+export const PostsDisplaying = ({userPosts}) => {
     return (
         userPosts.length === 0 ? (<CircularProgress sx={{ marginTop: "20%" }}/>) : (<div style={{ height: "100vh" }}>
             {userPosts.map((post) => (
                 <Post key={post.postId} userName={post.username}
                       name={post.name} text={post.writtenText}
                       photo={post.photoFileByteArray}
-                      postComments={post.postComments}
+                      postComments={post.postCommentsCount}
                       dataTime={post.sentDateTime}
                       postId={post.postId}
                       postLikes={post.likesCount}
@@ -20,3 +19,7 @@ export const PostsDisplaying = () => {
         </div>)
     );
 };
+
+PostsDisplaying.propTypes = {
+    userPosts: PropTypes.array.isRequired,
+ }

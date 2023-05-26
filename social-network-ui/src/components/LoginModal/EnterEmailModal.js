@@ -26,16 +26,13 @@ export function EnterEmailModal() {
     const handleGoogleLogin = async () => {
         try {
             const response = await fetch("http://localhost:8080/oauth2/authorization/google");
+            console.log(response)
             if (response.ok) {
                 const data = await response.json();
-                // Обработка полученных данных
-                console.log(data);
             } else {
-                // Обработка ошибки, если запрос не успешен
                 console.error("Request failed:", response.status);
             }
         } catch (error) {
-            // Обработка ошибки, если произошла ошибка при выполнении запроса
             console.error("An error occurred:", error);
         }
     };
@@ -83,8 +80,7 @@ const handleForgot = ()=>{
                         body: JSON.stringify(values),
                         headers: { "Content-Type": "application/json" }
                     });
-                    console.log(response)
-                    if (!response.ok) {
+                    if (response.status !== 302) {
                         setErrors({ email: "User doesn't exist, please check your email" });
                     } else {
                         const userExistData = await response.json();
