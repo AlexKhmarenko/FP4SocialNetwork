@@ -42,9 +42,6 @@ public class DbUser {
   @NonNull
   private String email;
 
-  @Column
-  private String address;
-
   @Column(name = "created_date")
   @NonNull
   @CreationTimestamp
