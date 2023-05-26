@@ -283,6 +283,7 @@ class UserServiceImplTest {
     testUser.setCreatedDate(LocalDateTime.of(2023, 5, 25, 0, 0));
     testUser.setName("TestUser");
     testUser.setDateOfBirth(LocalDate.of(2000, 01, 01));
+    testUser.setAddress(null);
     testUser.setProfileImageUrl("https://klike.net/uploads/posts/2022-06/1655707539_1.jpg");
     testUser.setProfileBackgroundImageUrl("https://klike.net/uploads/posts/2022-06/1655707539_1.jpg");
 
@@ -294,6 +295,7 @@ class UserServiceImplTest {
     testUpdateUser.setCreatedDate(LocalDateTime.of(2023, 5, 25, 0, 0));
     testUpdateUser.setName("TestUpdateUser");
     testUpdateUser.setDateOfBirth(LocalDate.of(2010, 10, 10));
+    testUpdateUser.setAddress("XXX");
     testUpdateUser.setProfileImageUrl(null);
     testUpdateUser.setProfileBackgroundImageUrl(null);
 
@@ -303,6 +305,7 @@ class UserServiceImplTest {
     request.setDay(10);
     request.setMonth(10);
     request.setYear(2010);
+    request.setAddress("XXX");
     request.setProfileImageUrl(null);
     request.setProfileBackgroundImageUrl(null);
 
@@ -312,6 +315,7 @@ class UserServiceImplTest {
 
     assertEquals(testUpdateUser.getName(), testUser.getName());
     assertEquals(testUpdateUser.getDateOfBirth(), testUser.getDateOfBirth());
+    assertEquals(testUpdateUser.getAddress(), testUser.getAddress());
     assertEquals(testUpdateUser.getProfileImageUrl(), testUser.getProfileImageUrl());
     assertEquals(testUpdateUser.getProfileBackgroundImageUrl(), testUser.getProfileBackgroundImageUrl());
     assertTrue(result);

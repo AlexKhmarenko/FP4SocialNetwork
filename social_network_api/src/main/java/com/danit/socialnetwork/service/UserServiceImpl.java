@@ -187,6 +187,7 @@ public class UserServiceImpl implements UserService {
       DbUser updateUser = userFromDb.get();
       updateUser.setName(request.getName());
       updateUser.setDateOfBirth(dateOfBirth);
+      updateUser.setAddress(request.getAddress());
       byte[] profile = request.getProfileImageUrl();
       byte[] profileBackground = request.getProfileBackgroundImageUrl();
       if (profile == null) {
