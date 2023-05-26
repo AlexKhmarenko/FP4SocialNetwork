@@ -293,7 +293,7 @@ class UserRestControllerTest {
   }
 
   @Test
-  public void testHandleEditionPost_successfulUpdate() {
+  void testHandleEditionPost_successfulUpdate() {
     EditingDtoRequest request = new EditingDtoRequest();
     when(userService.update(request)).thenReturn(true);
 
@@ -304,7 +304,7 @@ class UserRestControllerTest {
   }
 
   @Test
-  public void testHandleEditionPost_failedUpdate() {
+  void testHandleEditionPost_failedUpdate() {
     EditingDtoRequest request = new EditingDtoRequest();
     when(userService.update(request)).thenReturn(false);
 
