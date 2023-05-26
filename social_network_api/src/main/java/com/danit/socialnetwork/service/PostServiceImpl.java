@@ -42,11 +42,7 @@ public class PostServiceImpl implements PostService {
     postRepostDtoMix.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(post.getPostId()));
     postRepostDtoMix.setPostCommentsCount(post.getPostComments().size());
-    if (!post.getUserPost().getUserId().equals(userId)) {
-      postRepostDtoMix.setIsRepost(true);
-    } else {
-      postRepostDtoMix.setIsRepost(false);
-    }
+    postRepostDtoMix.setIsRepost(!post.getUserPost().getUserId().equals(userId));
     return postRepostDtoMix;
 
   }
@@ -66,8 +62,8 @@ public class PostServiceImpl implements PostService {
   @Override
   public List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(
       Integer userFollowerId, Integer page) {
-    Pageable pagedByTenPosts =
-        PageRequest.of(page, 12);
+    int pageSize = 12;
+    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> postList = postRepository.findAllPostsFromToFollow(
         userFollowerId, pagedByTenPosts);
     return postList.stream()
@@ -94,8 +90,8 @@ public class PostServiceImpl implements PostService {
   /*Method returns all posts done by user*/
   @Override
   public List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer page) {
-    Pageable pagedByTenPosts =
-        PageRequest.of(page, 10);
+    int pageSize = 10;
+    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> listPost = postRepository.findAllByUserId(userId, pagedByTenPosts);
     return listPost.stream()
         .map(this::from)
@@ -105,8 +101,8 @@ public class PostServiceImpl implements PostService {
   /*Method returns all posts liked by user*/
   @Override
   public List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer page) {
-    Pageable pagedByTenPosts =
-        PageRequest.of(page, 10);
+    int pageSize = 10;
+    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> postList = postRepository.findAllByUserIdLiked(userId, pagedByTenPosts);
     return postList.stream()
         .map(this::from)
@@ -117,14 +113,15 @@ public class PostServiceImpl implements PostService {
    they were posted (for own posts) and reposted (for reposts) by user*/
   @Override
   public List<PostRepostDtoMix> getAllPostsAndRepostsByUserId(Integer userId, Integer page) {
-    Pageable pagedByTenPosts =
-        PageRequest.of(page, 10);
+    int pageSize = 10;
+    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> postList = postRepository.findAllPostsAndRepostsByUserIdAsPost(userId, pagedByTenPosts);
-    List<PostRepostDtoMix> postRepostDtoMixes = postList.stream()
-        .map(p -> from(p, userId))
+    return postList.stream()
+        .map(post -> from(post, userId))
         .toList();
-    return postRepostDtoMixes;
   }
 
-
 }
+
+
+
