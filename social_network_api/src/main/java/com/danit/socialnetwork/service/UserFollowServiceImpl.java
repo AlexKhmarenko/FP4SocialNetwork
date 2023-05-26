@@ -100,7 +100,7 @@ public class UserFollowServiceImpl implements UserFollowService {
   }
 
   @Override
-  public ResponseEntity<?> unFollow(@RequestBody UserUnfollowRequest userUnfollowRequest) {
+  public ResponseEntity<Map<String, String>> unFollow(@RequestBody UserUnfollowRequest userUnfollowRequest) {
     Integer unfollowed = userUnfollowRequest.getUserUnfollowed();
     Integer unfollowing = userUnfollowRequest.getUserUnfollowing();
 
@@ -119,7 +119,7 @@ public class UserFollowServiceImpl implements UserFollowService {
   }
 
   @Override
-  public ResponseEntity<?> notification(@RequestBody UserNotificationRequest userNotificationRequest) {
+  public ResponseEntity<Map<String, String>> notification(@RequestBody UserNotificationRequest userNotificationRequest) {
     Optional<DbUser> maybeFollower = userRepository.findById(userNotificationRequest.getUserFollower());
     Optional<DbUser> maybeFollowing = userRepository.findById(userNotificationRequest.getUserFollowing());
 

@@ -96,35 +96,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             if (!dob.isEqual(LocalDate.of(1900, 1, 1))) {
               birthday = "true";
             }
-
-
           }
-          //          response.sendRedirect("/home");
           String token = jwtTokenService.generateToken(userId, true);
-          //              boolean dob = true;
-
-          //          String jsonBody = "{\"userToken\": \"" + token + "\",\"dob\": \"" + dob + "\"}";
-
-          //          RestTemplate restTemplate = new RestTemplate();
-
-          //          HttpHeaders headers = new HttpHeaders();
-          //          headers.setContentType(MediaType.APPLICATION_JSON);
-
-          log.info("TEST");
-
-
-          //          HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
-          //          log.info(entity);
-
-          //          String url = "http://localhost:3000/google"; // Ваш URL
-          //          String url = "http://localhost:3000/oauth2login"; // Ваш URL
-          //          HttpMethod method = HttpMethod.POST;
-
-          //          log.info(restTemplate.exchange(url, method, entity, String.class));
-
-          //          log.info("FALSE");
-
-
+          log.info("token:" + token);
           response.sendRedirect("http://localhost:3000?token=" + token + "&" + "birthday=" + birthday);
         }).permitAll()
 
@@ -132,7 +106,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.logout(l -> l
         .logoutSuccessHandler((request, response, authentication) -> {
           log.info("User with username {} has logged out", userName[0]);
-          //                    response.sendRedirect("/oauth2/authorization/google");
           response.sendRedirect("/login");
         })
         .clearAuthentication(true)

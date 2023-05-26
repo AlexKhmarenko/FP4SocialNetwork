@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserFollowService {
@@ -26,9 +27,9 @@ public interface UserFollowService {
 
   String deleteUserFollowByUserFollowId(Integer userFollowId);
 
-  ResponseEntity<?> follow(@RequestBody UserFollowRequest userFollowRequest);
+  ResponseEntity<Map<String, String>> follow(@RequestBody UserFollowRequest userFollowRequest);
 
-  ResponseEntity<?> unFollow(@RequestBody UserUnfollowRequest userUnfollowRequest);
+  ResponseEntity<Map<String, String>> unFollow(@RequestBody UserUnfollowRequest userUnfollowRequest);
 
-  ResponseEntity<?> notification(@RequestBody UserNotificationRequest userNotificationRequest);
+  ResponseEntity<Map<String, String>> notification(@RequestBody UserNotificationRequest userNotificationRequest);
 }

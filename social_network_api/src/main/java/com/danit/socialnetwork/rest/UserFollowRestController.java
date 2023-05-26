@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RestController
@@ -37,20 +38,20 @@ public class UserFollowRestController {
   }
 
   @PostMapping("api/follow")
-  public ResponseEntity<?> follow(@RequestBody UserFollowRequest userFollowRequest) {
-    ResponseEntity<?> responseEntity = userFollowService.follow(userFollowRequest);
+  public ResponseEntity<Map<String, String>> follow(@RequestBody UserFollowRequest userFollowRequest) {
+    ResponseEntity<Map<String, String>> responseEntity = userFollowService.follow(userFollowRequest);
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
   @PostMapping("api/unfollow")
-  public ResponseEntity<?> unFollow(@RequestBody UserUnfollowRequest userUnfollowRequest) {
-    ResponseEntity<?> responseEntity = userFollowService.unFollow(userUnfollowRequest);
+  public ResponseEntity<Map<String, String>> unFollow(@RequestBody UserUnfollowRequest userUnfollowRequest) {
+    ResponseEntity<Map<String, String>> responseEntity = userFollowService.unFollow(userUnfollowRequest);
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
   @PostMapping("api/notification")
-  public ResponseEntity<?> notification(@RequestBody UserNotificationRequest userNotificationRequest) {
-    ResponseEntity<?> responseEntity = userFollowService.notification(userNotificationRequest);
+  public ResponseEntity<Map<String, String>> notification(@RequestBody UserNotificationRequest userNotificationRequest) {
+    ResponseEntity<Map<String, String>> responseEntity = userFollowService.notification(userNotificationRequest);
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 }

@@ -7,6 +7,7 @@ import com.danit.socialnetwork.model.PasswordChangeRequests;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface PasswordChangerService {
@@ -17,11 +18,11 @@ public interface PasswordChangerService {
 
   void deleteRequestByEmail(String email);
 
-  ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest);
+  ResponseEntity<Map<String, String>> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest);
 
-  ResponseEntity<?> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest);
+  ResponseEntity<Map<String, String>> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest);
 
-  ResponseEntity<?> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest);
+  ResponseEntity<Map<String, String>> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest);
 
   boolean changedPassword(@RequestBody NewPasswordRequest newPasswordRequest);
 }

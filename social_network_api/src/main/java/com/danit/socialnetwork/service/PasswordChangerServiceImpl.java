@@ -38,7 +38,7 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
   }
 
   @Override
-  public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+  public ResponseEntity<Map<String, String>> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
     String userEmail = changePasswordRequest.getEmail();
     Optional<DbUser> maybeUser = userRepo.findDbUserByEmail(userEmail);
     Map<String, String> response = new HashMap<>();
