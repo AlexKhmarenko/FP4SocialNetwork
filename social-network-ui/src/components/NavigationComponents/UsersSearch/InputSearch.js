@@ -1,14 +1,16 @@
 import React, {useEffect} from 'react';
-import {TextField, Autocomplete, Typography, Grid, Avatar} from "@mui/material";
+import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/material";
 import {UserSearchTextField} from "../NavigationStyles";
 import {useDispatch, useSelector} from "react-redux";
 import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../store/actions";
+import {useNavigate} from "react-router-dom";
 
 export const InputSearch = ({ ...props }) => {
 
     const users = useSelector(state => state.usersSearch.users)
     const userId = useSelector(state => state.userData.searchData.userId);
     const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,7 +29,6 @@ export const InputSearch = ({ ...props }) => {
             <Autocomplete
                 getOptionLabel={(option) => option.username}
                 filterOptions={(x) => x}
-                // options={users.map((option) => option)}
                 options={users}
                 autoComplete
                 includeInputInList
@@ -46,15 +47,23 @@ export const InputSearch = ({ ...props }) => {
                     return (
                         <li {...props} key={option.userId}>
                             <Grid container alignItems="center" onClick={() => {
-                                dispatch(setSearchId(option.userId))
+                                dispatch(setSearchId(String(option.userId)))
+                                console.log(option)
+                                navigate("/view")
                                 ////////////////// добавить переход на страничку пользователя   ////////////////////////////
                             }}>
                                 <Grid item sx={{ display: 'flex', width: 44 }}>
                                     <Avatar alt={option.username} src={option.profileImageUrl}/>
                                 </Grid>
                                 <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
+                                        <Box
+                                            component="span"
+                                            sx={{ fontWeight: 'bold' }}
+                                        >
+                                            {option.name}
+                                        </Box>
                                     <Typography variant="body2" color="text.secondary">
-                                        {option.username}
+                                        @{option.username}
                                     </Typography>
                                 </Grid>
                             </Grid>

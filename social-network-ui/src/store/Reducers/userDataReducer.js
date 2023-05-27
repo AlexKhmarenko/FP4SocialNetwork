@@ -33,6 +33,7 @@ export function userDataReducer(state = initialState, action) {
                     background: action.payload.background,
                     followers: action.payload.followers,
                     followings: action.payload.followings,
+                    address: action.payload.address,
                 },
             };
         case SET_SEARCH_ID:
@@ -54,6 +55,7 @@ export function userDataReducer(state = initialState, action) {
                     background: action.payload.background,
                     followers: action.payload.followers,
                     followings: action.payload.followings,
+                    address: action.payload.address,
                 },
             };
         default:

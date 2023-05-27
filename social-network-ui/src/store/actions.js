@@ -67,6 +67,7 @@ export const setUserData = (data) => ({
         background: data.profileBackgroundImageByteArray,
         followers: data.followers,
         followings: data.followings,
+        address: data.address,
     }
 })
 export const setSearchData = (data) => ({
@@ -79,6 +80,7 @@ export const setSearchData = (data) => ({
         background: data.profileBackgroundImageByteArray,
         followers: data.followers,
         followings: data.followings,
+        address: data.address,
     }
 })
 export const openSignUpModal = () => ({
