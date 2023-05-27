@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect, useState  } from "react";
 import { AppBar, Box, Card, CardContent, Toolbar, Typography, Grid } from "@mui/material";
 import { RightSideMenu } from "./RightSideMenu";
 import { PostsDisplaying } from "../Posts/PostsDisplaying";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPostsByPage } from "../../store/actions";
 
 export function Newsfeed() {
     const registrationPageUsersPosts = useSelector(state => state.Posts.registrationPagePosts);
+    const page = useSelector(state => state.pageCount.page);
+    const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        async function fetchPosts() {
+            setIsLoading(true);
+            try {
+                await dispatch(fetchPostsByPage(page));
+                setIsLoading(false);
+            } catch (error) {
+                console.error(error);
+                setIsLoading(false);
+            }
+        }
+        fetchPosts();
+    }, []);
 
     return (
         <Grid item xs={9}>
@@ -40,7 +58,7 @@ export function Newsfeed() {
                         </AppBar>
                     </CardContent>
                     <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <PostsDisplaying userPosts={registrationPageUsersPosts}/>
+                        <PostsDisplaying userPosts={registrationPageUsersPosts} isLoading={isLoading}/>
                     </div>
                 </Card>
                 <RightSideMenu/>

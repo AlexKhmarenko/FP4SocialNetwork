@@ -27,12 +27,27 @@ export function HomeScreen() {
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
     const userId = useSelector(state => state.userData.userData.userId);
+    const [isLoading, setIsLoading] = useState(false)
     const userPosts = useSelector(state => state.Posts.posts);
     const dispatch = useDispatch();
 
     const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];
         setPostImage(file);
+    }, []);
+
+    const fetchData = async (userId) => {
+        setIsLoading(true)
+        if (userId){
+            const response = await fetch(`http://localhost:8080/profile/${userId}`);
+            const userData = await response.json();
+            dispatch(setUserData(userData));
+            setIsLoading(false)
+        }
+    };
+
+    useEffect(() => {
+        fetchData(userId);
     }, []);
 
     const handlePostSubmit = useCallback(async (values, setSubmitting) => {
@@ -100,9 +115,9 @@ export function HomeScreen() {
                                                            alt=""/> : <CapybaraSvgPhoto/>}
                                 </div>
                                 <div style={WrittenPostWrapper}>
-                                    <div style={{ display: "flex", width: "120px", justifyContent: "space-between" }}>
+                                    <div style={{ display: "flex", minWidth: "120px", justifyContent: "space-between" }}>
                                         <h2 style={NameOfUser}>{userData.name}</h2>
-                                        <h2 style={{ ...NameOfUser, color: "grey" }}>@ {userData.userName}</h2>
+                                        <h2 style={{ ...NameOfUser, color: "grey", marginLeft:"10px" }}>@ {userData.userName}</h2>
 
                                     </div>
                                     <Field
@@ -164,7 +179,7 @@ export function HomeScreen() {
                 )}
             </Formik>
             <div style={PostsWrapper}>
-                <PostsDisplaying userPosts={userPosts}/>
+                <PostsDisplaying userPosts={userPosts} isLoading={isLoading}/>
             </div>
         </>
     );

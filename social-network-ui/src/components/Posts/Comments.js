@@ -21,7 +21,7 @@ export function Comments({ comments, postId, userId }) {
     return (
        <Formik
             initialValues={{ comment: "" }}
-            onSubmit={async (values, actions) => {
+            onSubmit={async (values,  actions) => {
                 console.log(userId, postId, values.comment,);
                 let userCommentResponse = await fetch("http://localhost:8080/comments", {
                     method: "POST",
@@ -36,7 +36,8 @@ export function Comments({ comments, postId, userId }) {
                 });
                 let userCommentData = await userCommentResponse.json();
                 console.log(userCommentData)
-                // dispatch(setCommentFromUser(b))
+                dispatch(setCommentFromUser(userCommentData))
+                actions.resetForm();
             }
             }
             validationSchema={validationSchema}

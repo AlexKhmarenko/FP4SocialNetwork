@@ -133,6 +133,13 @@ export const fetchPostsByPage = (page) => {
     };
 };
 
+export const setUserBirthday = (flag) => {
+    return {
+        type: 'SET_USER_BIRTHDAY',
+        payload: flag,
+    };
+};
+
 export const fetchExplorePosts = (page) => {
     return async (dispatch) => {
         const response = await fetch(`http://localhost:8080/posts?page=${page}`);

@@ -9,7 +9,7 @@ const initialState = {
 export function PostReducer(state = initialState, action) {
     switch (action.type) {
         case SET_POSTS:
-            console.log(action.payload);
+            console.log("you are on home page");
             return {
                 ...state,
                 posts: [...state.posts, ...action.payload],
@@ -31,6 +31,7 @@ export function PostReducer(state = initialState, action) {
                 explorePosts: [...state.explorePosts, ...action.payload],
             };
         case ADD_REGISTRATION_POSTS:
+            console.log(action.payload)
             console.log("Alooha")
             return {
                 ...state,
