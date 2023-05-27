@@ -95,6 +95,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         } else {
             return format(date, "MMM d, yyyy");
         }
+        // Все то же самое
     }, [dataTime]);
 
     const renderText = () => {

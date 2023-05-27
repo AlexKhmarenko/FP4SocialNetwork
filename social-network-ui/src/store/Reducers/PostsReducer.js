@@ -15,6 +15,7 @@ export function PostReducer(state = initialState, action) {
                 posts: [...state.posts, ...action.payload],
             };
         case SET_CLEAR_POSTS:
+            console.log(action.payload);
             return {
                 ...state,
                 posts: action.payload,
