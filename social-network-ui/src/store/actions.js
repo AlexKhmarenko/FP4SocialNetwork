@@ -13,7 +13,7 @@ import {
     DELETE_USERS_SUCCESS,
     CHECK_EMAIL,
     SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST,
-    SET_USER_DATA
+    SET_USER_DATA, SET_SEARCH_ID, SET_SEARCH_DATA
 } from "./types";
 
 
@@ -52,9 +52,25 @@ export const setUserId = (userId) => ({
     type: SET_USER_ID,
     payload: userId,
 });
+export const setSearchId = (userId) => ({
+    type: SET_SEARCH_ID,
+    payload: userId
+})
 
 export const setUserData = (data) => ({
     type: SET_USER_DATA,
+    payload: {
+        userName: data.username,
+        name: data.name,
+        date: new Date(data.createdDateTime).toDateString().slice(4),
+        image: data.profileImageByteArray,
+        background: data.profileBackgroundImageByteArray,
+        followers: data.followers,
+        followings: data.followings,
+    }
+})
+export const setSearchData = (data) => ({
+    type: SET_SEARCH_DATA,
     payload: {
         userName: data.username,
         name: data.name,
@@ -80,7 +96,7 @@ export const closeSignUpModal = () => ({
 });
 export const GetUsersSuccess = (data) => ({
     type: GET_USERS_SUCCESS,
-    payload: { users: data.search }
+    payload: { users: data }
 });
 export const DeleteUsersSuccess = () => ({
     type: DELETE_USERS_SUCCESS
