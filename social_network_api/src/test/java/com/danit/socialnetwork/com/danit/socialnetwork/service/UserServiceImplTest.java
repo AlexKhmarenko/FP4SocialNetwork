@@ -1,6 +1,9 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.search.SearchDto;
+import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
+import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -23,18 +26,17 @@ import java.util.Optional;
 
 import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
 import static com.danit.socialnetwork.config.GuavaCache.userCache;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
   @InjectMocks
-  UserServiceImpl userService;
+  UserServiceImpl userServiceImp;
   @Mock
   UserRepository userRepository;
-
   @Mock
   UserFollowRepository userFollowRepository;
   @Mock
@@ -43,6 +45,10 @@ class UserServiceImplTest {
   MailSenderImpl mailSender;
   @Mock
   GuavaCache guavaCache;
+  @Mock
+  SearchDto searchDto;
+  @Mock
+  SearchMapper searchMapper;
 
   @Test
   void findByUsername_shouldFindUser_WhenExists() {
@@ -50,7 +56,7 @@ class UserServiceImplTest {
     testDbUser.setUsername("Nadya");
 
     when(userRepository.findByUsername("Nadya")).thenReturn(Optional.of(testDbUser));
-    Optional<DbUser> testUser = userService.findByUsername("Nadya");
+    Optional<DbUser> testUser = userServiceImp.findByUsername("Nadya");
 
     Assert.assertEquals(Optional.of(testDbUser), testUser);
   }
@@ -71,7 +77,7 @@ class UserServiceImplTest {
     testDbUser.setUserId(28);
 
     when(userRepository.findById(28)).thenReturn(Optional.of(testDbUser));
-    Optional<DbUser> testUser = userService.findById(28);
+    Optional<DbUser> testUser = userServiceImp.findById(28);
 
     Assert.assertEquals(Optional.of(testDbUser), testUser);
   }
@@ -103,9 +109,10 @@ class UserServiceImplTest {
     testUser.setDateOfBirth(LocalDate.of(2000, 01, 01));
 
     when(userRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.empty());
+    when(userRepository.findDbUserByEmail(testUser.getEmail())).thenReturn(Optional.empty());
     when(passwordEncoder.encode(testUser.getPassword())).thenReturn("password");
 
-    boolean result = userService.save(testUser);
+    boolean result = userServiceImp.save(testUser);
 
     Mockito.verify(userRepository).save(testUser);
     Mockito.verify(passwordEncoder).encode(testUser.getPassword());
@@ -131,8 +138,8 @@ class UserServiceImplTest {
     dbUser.setEmail("Test@gmail.com");
     dbUser.setDateOfBirth(LocalDate.of(1999, 01, 27));
 
-    boolean result = userService.save(dbUser);
-    Mockito.verify(userRepository, never()).save(Mockito.any(DbUser.class));
+    boolean result = userServiceImp.save(dbUser);
+    Mockito.verify(userRepository, never()).save(any(DbUser.class));
 
     assertFalse(result);
   }
@@ -142,7 +149,7 @@ class UserServiceImplTest {
     String name = "Nadya";
     String email = "Test@gmail.com";
 
-    boolean result = userService.sendLetter(name, email);
+    boolean result = userServiceImp.sendLetter(name, email);
 
     assertTrue(result);
   }
@@ -151,14 +158,14 @@ class UserServiceImplTest {
   void activateUser_WithValidActivationCode() {
     activateCodeCache.put("activationCode", 123456);
 
-    assertTrue(userService.activateUser(123456));
+    assertTrue(userServiceImp.activateUser(123456));
   }
 
   @Test
   void activateUser_WithInvalidActivationCode() {
     activateCodeCache.put("activationCode", 123456);
 
-    assertFalse(userService.activateUser(654321));
+    assertFalse(userServiceImp.activateUser(654321));
   }
 
   @Test
@@ -167,27 +174,58 @@ class UserServiceImplTest {
     testDbUser1.setName("Nadya");
     DbUser testDbUser2 = new DbUser();
     testDbUser2.setName("Nadin");
+    DbUser testDbUser3 = new DbUser();
+    testDbUser3.setName("Ron");
+    DbUser testDbUser4 = new DbUser();
+    testDbUser4.setName("Dima");
+    DbUser testDbUser5 = new DbUser();
+    testDbUser5.setName("Roma");
+    DbUser testDbUser6 = new DbUser();
+    testDbUser6.setName("Lena");
+    DbUser testDbUser7 = new DbUser();
+    testDbUser7.setName("Lina");
+    DbUser testDbUser8 = new DbUser();
+    testDbUser8.setName("Lenok");
+
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser1);
     dbUsers.add(testDbUser2);
+    dbUsers.add(testDbUser3);
+    dbUsers.add(testDbUser4);
+    dbUsers.add(testDbUser5);
+    dbUsers.add(testDbUser6);
+    dbUsers.add(testDbUser7);
+    dbUsers.add(testDbUser8);
     userCache.put("UserCache", dbUsers);
 
-    List<DbUser> testByName = userService.filterCachedUsersByName("nad");
+    List<DbUser> resultSearchDto1 = userServiceImp.filterCachedUsersByName("nad");
+    List<DbUser> resultSearchDto2 = userServiceImp.filterCachedUsersByName("ro");
+    List<DbUser> resultSearchDto3 = userServiceImp.filterCachedUsersByName("na");
 
-    Assert.assertEquals(dbUsers, testByName);
+    Assert.assertTrue(resultSearchDto1.size() <= 8);
+    Assert.assertEquals(2, resultSearchDto1.size());
+    Assert.assertTrue(resultSearchDto2.size() <= 8);
+    Assert.assertEquals(2, resultSearchDto2.size());
+    Assert.assertTrue(resultSearchDto3.size() <= 8);
+    Assert.assertEquals(4, resultSearchDto3.size());
+    Assert.assertTrue(resultSearchDto1.get(0).getName().toUpperCase().contains("nad".toUpperCase()));
+    Assert.assertTrue(resultSearchDto2.get(0).getName().toUpperCase().contains("ro".toUpperCase()));
+    Assert.assertTrue(resultSearchDto3.get(0).getName().toUpperCase().contains("na".toUpperCase()));
   }
 
   @Test
   void filterCachedUsersByName_WhenNotExists() {
     DbUser testDbUser = new DbUser();
     testDbUser.setName("Nadya");
+
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser);
     userCache.put("UserCache", dbUsers);
 
-    List<DbUser> testByName = userService.filterCachedUsersByName("nid");
+    List<DbUser> testByName = userServiceImp.filterCachedUsersByName("nid");
 
-    Assert.assertNotEquals(dbUsers, testByName);
+    Assert.assertEquals(0, testByName.size());
+    Assert.assertFalse(dbUsers.get(0).getName().toUpperCase().contains("nid".toUpperCase()));
   }
 
   @Test
@@ -196,7 +234,7 @@ class UserServiceImplTest {
     testDbUser.setEmail("Test@gmail.com");
 
     when(userRepository.findDbUserByEmail("Test@gmail.com")).thenReturn(Optional.of(testDbUser));
-    Optional<DbUser> testUser = userService.findDbUserByEmail("Test@gmail.com");
+    Optional<DbUser> testUser = userServiceImp.findDbUserByEmail("Test@gmail.com");
 
     Assert.assertEquals(Optional.of(testDbUser), testUser);
   }
@@ -226,7 +264,7 @@ class UserServiceImplTest {
     when(userFollowRepository.findAllFollowers(userId)).thenReturn(followers);
     when(userFollowRepository.findAllFollowings(userId)).thenReturn(followings);
 
-    UserDtoResponse result = userService.findByUserId(userId);
+    UserDtoResponse result = userServiceImp.findByUserId(userId);
 
     Assertions.assertEquals(followers, result.getFollowers());
     Assertions.assertEquals(followings, result.getFollowings());
@@ -234,4 +272,53 @@ class UserServiceImplTest {
     Assertions.assertEquals("Johny1", result.getName());
 
   }
+
+  @Test
+  void update_shouldUpdateUser_WhenExists() {
+    DbUser testUser = new DbUser();
+    testUser.setUserId(1);
+    testUser.setUsername("TestUser");
+    testUser.setPassword("123");
+    testUser.setEmail("Testuser@gmail.com");
+    testUser.setCreatedDate(LocalDateTime.of(2023, 5, 25, 0, 0));
+    testUser.setName("TestUser");
+    testUser.setDateOfBirth(LocalDate.of(2000, 01, 01));
+    testUser.setAddress(null);
+    testUser.setProfileImageUrl("https://klike.net/uploads/posts/2022-06/1655707539_1.jpg");
+    testUser.setProfileBackgroundImageUrl("https://klike.net/uploads/posts/2022-06/1655707539_1.jpg");
+
+    DbUser testUpdateUser = new DbUser();
+    testUpdateUser.setUserId(1);
+    testUpdateUser.setUsername("TestUser");
+    testUpdateUser.setPassword("123");
+    testUpdateUser.setEmail("Testuser@gmail.com");
+    testUpdateUser.setCreatedDate(LocalDateTime.of(2023, 5, 25, 0, 0));
+    testUpdateUser.setName("TestUpdateUser");
+    testUpdateUser.setDateOfBirth(LocalDate.of(2010, 10, 10));
+    testUpdateUser.setAddress("XXX");
+    testUpdateUser.setProfileImageUrl(null);
+    testUpdateUser.setProfileBackgroundImageUrl(null);
+
+    EditingDtoRequest request = new EditingDtoRequest();
+    request.setUserId(1);
+    request.setName("TestUpdateUser");
+    request.setDay(10);
+    request.setMonth(10);
+    request.setYear(2010);
+    request.setAddress("XXX");
+    request.setProfileImageUrl(null);
+    request.setProfileBackgroundImageUrl(null);
+
+    when(userRepository.findById(1)).thenReturn(Optional.of(testUser));
+
+    boolean result = userServiceImp.update(request);
+
+    assertEquals(testUpdateUser.getName(), testUser.getName());
+    assertEquals(testUpdateUser.getDateOfBirth(), testUser.getDateOfBirth());
+    assertEquals(testUpdateUser.getAddress(), testUser.getAddress());
+    assertEquals(testUpdateUser.getProfileImageUrl(), testUser.getProfileImageUrl());
+    assertEquals(testUpdateUser.getProfileBackgroundImageUrl(), testUser.getProfileBackgroundImageUrl());
+    assertTrue(result);
+  }
+
 }
