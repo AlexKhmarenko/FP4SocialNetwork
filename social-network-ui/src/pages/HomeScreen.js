@@ -35,6 +35,7 @@ export function HomeScreen() {
                 const userData = await response.json();
                 dispatch(setUserData(userData));
         };
+
         if (userId) {
             fetchData();
         }

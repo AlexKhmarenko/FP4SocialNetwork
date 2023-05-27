@@ -1,12 +1,15 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.dto.ActivateCodeRequest;
+import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
-import com.danit.socialnetwork.dto.ActivateCodeRequest;
-import com.danit.socialnetwork.dto.search.SearchDtoResponse;
+import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
-import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
+import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.service.UserService;
 import com.danit.socialnetwork.model.DbUser;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +18,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -41,6 +44,8 @@ public class UserRestController {
   private static final String TRUE = "true";
 
   private final UserService userService;
+
+  private final SearchMapper searchMapper;
 
   @RequestMapping(value = "registration", method = RequestMethod.POST)
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
@@ -63,7 +68,7 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("registration", FALSE);
-      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -76,10 +81,10 @@ public class UserRestController {
 
     if (userService.findDbUserByEmail(email) == null) {
       response.put("checkEmail", FALSE);
-      return new  ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     } else {
       response.put("checkEmail", TRUE);
-      return new  ResponseEntity<>(response, HttpStatus.FOUND);
+      return new ResponseEntity<>(response, HttpStatus.FOUND);
 
     }
   }
@@ -97,7 +102,7 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("sendLetter", FALSE);
-      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -113,17 +118,31 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("activate", FALSE);
-      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
   @RequestMapping(value = "/search", method = RequestMethod.POST)
-  public ResponseEntity<List<SearchDtoResponse>> handleSearchPost(
+  public ResponseEntity<List<SearchDto>> handleSearchPost(
       @RequestBody SearchRequest request) {
     String userSearch = request.getUserSearch();
     List<DbUser> search = userService.filterCachedUsersByName(userSearch);
+    log.debug("filterCachedUsersByName: " + userSearch + ". Find all users by name.");
+    List<SearchDto> searchDto = search.stream().map(searchMapper::dbUserToSearchDto).toList();
+    return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
+  }
 
-    return new ResponseEntity<>(SearchDtoResponse.from(search), HttpStatus.FOUND);
+  @PutMapping(value = "edition")
+  public ResponseEntity<Map<String, String>> handleEditionPost(
+      @RequestBody EditingDtoRequest request) {
+    Map<String, String> response = new HashMap<>();
+    if (userService.update(request)) {
+      response.put("edition", TRUE);
+      return ResponseEntity.ok(response);
+    } else {
+      response.put("edition", FALSE);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @GetMapping("/{username}")
@@ -147,5 +166,11 @@ public class UserRestController {
   public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
     UserDtoResponse tempUser = userService.findByUserId(userId);
     return new ResponseEntity<>(tempUser, HttpStatus.OK);
+  }
+
+  @PostMapping("/api/change_dob")
+  public ResponseEntity<Map<String, String>> dbUserDobChange(
+      @RequestBody UserDobChangeRequest userDobChangeRequest) {
+    return userService.dbUserDobChange(userDobChangeRequest);
   }
 }
