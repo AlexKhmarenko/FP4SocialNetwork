@@ -50,34 +50,7 @@ export const ForgotModal = ({ id }) => {
                     setIsSubmitting(true);
                     dispatch(checkEmail(values.email))
                     // setOpenForgot(false)
-                    console.log(values.email)
                     setOpenSendCode(true)
-
-                    //                     try {
-                    //                         const res = await fetch("http://localhost:8080/api/changepassword", {
-                    //                             method: "POST",
-                    //                             headers: { "Content-Type": "application/json" },
-                    //                             body: JSON.stringify({
-                    //                                 email: values.email,
-                    //                             })
-                    //                         })
-                    //                         console.log(res)
-                    //                         if (res.ok) {
-                    //                             const data = await res.text()
-                    // const array = data.split(" ")
-                    // const email = array[array.length -1]
-                    //                             dispatch(checkEmail(email))
-                    //                             setOpenForgot(false)
-                    //                             setOpenSendCode(true)
-                    //                         }
-                    //                     }
-                    //                     catch (error) {
-                    //                         console.error("An error occurred:", error);
-                    //                         setErrors({ email: "An error occurred, please try again" });
-                    //                     } finally {
-                    //                         setIsSubmitting(false);
-                    //                         setSubmitting(false);
-                    //                     }
                 }
                 }>
                 <Form>

@@ -25,12 +25,12 @@ export const modalConfig = {
     },
     weSent: {
         title: "We sent you a code",
-        name: "code",
+        name: "password",
         text: "Check your email to get your confirmation code, go back and reselect a confirmation",
         buttonText: "next",
         secondaryButtonText: "back",
         placeholder: "Enter your code",
-        inputType: "text",
+        inputType: "password",
         typeButton: "submit"
     },
     choose: {

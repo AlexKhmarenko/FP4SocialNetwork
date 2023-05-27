@@ -27,11 +27,19 @@ export const WeSent = ({ id }) => {
         placeholder,
         iconStatus,
         inputType,
+        name,
     typeButton } = modalConfig[id]
-    const handleClick = () => {
-    }
     return (
-        <Formik
+        <Box sx={StyledBox}>
+        <CloseIcon onClick={() => setOpenForgot(false)} />
+        <Logo />
+        <Typography sx={StyledHeaderModalText} variant="h6" component="h2">
+            {title}
+        </Typography>
+        <Typography id="modal-modal-description" sx={StyledModalText}>
+            {text}
+        </Typography>
+                <Formik
             initialValues={{
                 password: "",
             }} validationSchema={
@@ -40,8 +48,6 @@ export const WeSent = ({ id }) => {
                         password: Yup.string().required("Password is required")
                     }
                 )} onSubmit= {async (values, { setErrors, setSubmitting }) => {
-
-                console.log(1)
                     try {
                         const res = await fetch("http://localhost:8080/api/codecheck", {
                             method: "POST",
@@ -54,9 +60,8 @@ export const WeSent = ({ id }) => {
                         console.log(res)
                         if (res.ok) {
                             const data = await res.json()
-                            console.log(data)
-                            // setOpenWeSend(false);
-                            // setOpenChoose(true)
+                            setOpenWeSend(false);
+                            setOpenChoose(true)
                     
                         }
                     }
@@ -65,19 +70,7 @@ export const WeSent = ({ id }) => {
                         setErrors({ email: "An error occurred, please try again" });
                     }
             
-
-                    // dispatch(setUserPassword(values));
-                }}>
-            <Box sx={StyledBox}>
-                <CloseIcon onClick={() => setOpenForgot(false)} />
-                <Logo />
-                <Typography sx={StyledHeaderModalText} variant="h6" component="h2">
-                    {title}
-                </Typography>
-                <Typography id="modal-modal-description" sx={StyledModalText}>
-                    {text}
-                </Typography>
-
+            }}>
                 <Form>
                     <FormControl sx={StyledFormControl}>
                         <Field as={InputFieldWithError} sx={{ width: "400px" }} name={name}
@@ -89,23 +82,8 @@ export const WeSent = ({ id }) => {
                             fullWidth={true}>{buttonText}</Button>
                     </FormControl>
                 </Form>
-
-                {/* <Box
-                    component="form"
-                    sx={StyledFormControl}
-                    noValidate
-                    autoComplete="off"
-                > */}
-                    {/* <InputFieldWithError /> */}
-                    {/* <Field as={InputFieldWithError} sx={{ width: "400px" }} name={placeholder}
-                        id="userName"
-                        label={placeholder} type="text" /> */}
-                    {/* <BasicInput type={inputType} iconStatus={iconStatus} placeholder={placeholder} /> */}
-                {/* </Box>
- */}
-                {/* <BasicButton text={buttonText} onClick={handleClick} /> */}
-            </Box>
         </Formik>
+        </Box>
     )
 }
 WeSent.propTypes = {

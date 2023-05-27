@@ -34,27 +34,20 @@ export const Choose = ({ id }) => {
         setOpenAllSet(true)
     }
     return (
-        <Formik validate={async (values) => {
-            // const url = new URL("http://localhost:8080/login");
-            // url.searchParams.append("username", values.userName);
-            // url.searchParams.append("password", values.password);
-            // url.searchParams.append("rememberMe", userDataState.rememberMe);
-            // const userPassword = await fetch(url.toString());
-            // const userToken = await userExist.json();
-            const userToken = true;
-            if (!userToken) {
-                return { password: "wrong password" };
-            } else {
-                localStorage.setItem('userToken', JSON.stringify(userToken));
-            }
-        }}
+        <Formik
             initialValues={{
-                // userName: userDataState.userName || "",
-                // password: "",
+             confirmPassword:"",
+             password: "",
             }} validationSchema={
                 Yup.object(
                     {
-                        password: Yup.string().required("Password is required")
+                        password: Yup.string()
+                        .required("Password is required")
+                        .min(8, "Must be at least 8 digits"),
+                        confirmPassword: Yup.string()
+                        .required("Password is required")
+                        .min(8, "Must be at least 8 digits")
+                        .validate(password === confirmPassword)
                     }
                 )} onSubmit={(values) => {
                     // dispatch(setUserPassword(values));
