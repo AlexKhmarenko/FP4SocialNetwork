@@ -4,10 +4,9 @@ import { Button, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { decodeToken } from "../components/Posts/decodeToken";
 
-import { setUserPostToPostsArr, sendPost } from "../store/actions";
-import { setPosts, setUserData } from "../store/actions";
+import { sendPost } from "../store/actions";
+import { setUserData } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
@@ -27,7 +26,7 @@ export function HomeScreen() {
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
     const userId = useSelector(state => state.userData.userData.userId);
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
     const userPosts = useSelector(state => state.Posts.posts);
     const dispatch = useDispatch();
 
@@ -37,12 +36,12 @@ export function HomeScreen() {
     }, []);
 
     const fetchData = async (userId) => {
-        setIsLoading(true)
-        if (userId){
+        setIsLoading(true);
+        if (userId) {
             const response = await fetch(`http://localhost:8080/profile/${userId}`);
             const userData = await response.json();
             dispatch(setUserData(userData));
-            setIsLoading(false)
+            setIsLoading(false);
         }
     };
 
@@ -115,9 +114,14 @@ export function HomeScreen() {
                                                            alt=""/> : <CapybaraSvgPhoto/>}
                                 </div>
                                 <div style={WrittenPostWrapper}>
-                                    <div style={{ display: "flex", minWidth: "120px", justifyContent: "space-between" }}>
+                                    <div
+                                        style={{ display: "flex", minWidth: "120px", justifyContent: "space-between" }}>
                                         <h2 style={NameOfUser}>{userData.name}</h2>
-                                        <h2 style={{ ...NameOfUser, color: "grey", marginLeft:"10px" }}>@ {userData.userName}</h2>
+                                        <h2 style={{
+                                            ...NameOfUser,
+                                            color: "grey",
+                                            marginLeft: "10px"
+                                        }}>@ {userData.userName}</h2>
 
                                     </div>
                                     <Field
