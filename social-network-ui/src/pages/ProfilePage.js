@@ -1,16 +1,20 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Profile} from "../components/Profile/Profile/Profile";
+import {openEditModal} from "../store/actions";
+import {EditProfile} from "../components/EditProfile/EditProfile";
 
 export function ProfilePage () {
 
     const userData = useSelector(state => state.userData.userData)
+    const isEditpModalOpen = useSelector(state => state.modal.isEditModal)
     const dispatch = useDispatch();
 
 
 
     return (
-        <Profile buttonText="Change profile"
+        <>
+        <Profile buttonText="Edit profile"
                  buttonColor="#ffffff"
                  textColor="#000000"
                  image={userData.image}
@@ -21,7 +25,12 @@ export function ProfilePage () {
                  followings={userData.followings}
                  followers={userData.followers}
                  userId={userData.userId}
+                 btnClick={() => dispatch(openEditModal())}
         />
+            {isEditpModalOpen &&
+                (<EditProfile/>)
+            }
+        </>
     )
 }
 

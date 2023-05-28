@@ -79,7 +79,7 @@ export function Profile (props) {
                         fontWeight: 700,
                         borderRadius: "20px",
                         fontFamily: "'Lato', sans-serif",
-                    }} fullWidth={true} onClick={() => console.log("gogi")}>{props.buttonText}</Button>
+                    }} fullWidth={true} onClick={() => props.btnClick()}>{props.buttonText}</Button>
                 </div>
                 <div>
                     <div style={{ margin: "15px 0", display: "flex", flexDirection: "column", gap: "5px" }}>
@@ -137,5 +137,6 @@ Profile.propTypes = {
     followers: PropTypes.number.isRequired,
     userId: PropTypes.string.isRequired,
     buttonColor: PropTypes.string.isRequired,
-    textColor: PropTypes.string.isRequired
+    textColor: PropTypes.string.isRequired,
+    btnClick: PropTypes.func.isRequired
 };

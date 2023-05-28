@@ -48,9 +48,7 @@ export const InputSearch = ({ ...props }) => {
                         <li {...props} key={option.userId}>
                             <Grid container alignItems="center" onClick={() => {
                                 dispatch(setSearchId(String(option.userId)))
-                                console.log(option)
                                 navigate("/view")
-                                ////////////////// добавить переход на страничку пользователя   ////////////////////////////
                             }}>
                                 <Grid item sx={{ display: 'flex', width: 44 }}>
                                     <Avatar alt={option.username} src={option.profileImageUrl}/>

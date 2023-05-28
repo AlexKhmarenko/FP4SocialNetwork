@@ -15,7 +15,7 @@ import {
     SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST,
     SET_SEARCH_ID, SET_SEARCH_DATA,
     SET_USER_DATA, ADD_EXPLORE_POSTS, ADD_REGISTRATION_POSTS,
-    SET_PROFILE_POSTS,
+    SET_PROFILE_POSTS, OPEN_EDIT_MODAL, CLOSE_EDIT_MODAL,
 } from "./types";
 
 export const setPage = (pageNumber) => ({
@@ -111,6 +111,12 @@ export const openLoginModal = () => ({
 export const closeSignUpModal = () => ({
     type: CLOSE_SIGN_UP_MODAL
 });
+export const openEditModal = () => ({
+    type: OPEN_EDIT_MODAL
+})
+export const closeEditModal = () => ({
+    type: CLOSE_EDIT_MODAL
+})
 export const GetUsersSuccess = (data) => ({
     type: GET_USERS_SUCCESS,
     payload: { users: data }
