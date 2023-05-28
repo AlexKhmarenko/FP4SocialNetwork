@@ -238,4 +238,10 @@ export const setProfileReposts = (posts) => ({
     payload: posts
 });
 
+export const setPageZero = () => {
+    return {
+        type: 'SET_PAGE_ZERO'
+    }
+}
+
 
