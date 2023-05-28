@@ -8,7 +8,7 @@ import {TabStyles} from "./ProfileSwipeableViewsStyles";
 import {PostsWrapper} from "../../Posts/PostStyles";
 import {PostsDisplaying} from "../../Posts/PostsDisplaying";
 import {useEffect} from "react";
-import {setPosts, setProfilePosts, setUserData, setUserPostsClear} from "../../../store/actions";
+import {setPosts, setProfilePosts, setUserData, setUserPostsClear} from '../../../store/actions';
 import {useDispatch, useSelector} from "react-redux";
 
 function TabPanel(props) {
