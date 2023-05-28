@@ -8,7 +8,7 @@ import {TabStyles} from "./ProfileSwipeableViewsStyles";
 import {PostsWrapper} from "../../Posts/PostStyles";
 import {PostsDisplaying} from "../../Posts/PostsDisplaying";
 import {useEffect} from "react";
-import {setPosts, setUserData, setUserPostsClear} from "../../../store/actions";
+import {setPosts, setProfilePosts, setUserData, setUserPostsClear} from "../../../store/actions";
 import {useDispatch, useSelector} from "react-redux";
 
 function TabPanel(props) {
@@ -41,14 +41,24 @@ function a11yProps(index) {
 export function ProfileSwipeableViews (props) {
     const [value, setValue] = React.useState(0);
     // const userId = useSelector(state => state.userData.userData.userId);
+    const profilePosts = useSelector(state => state.Posts.profilePosts)
+
+    const [isLoading, setIsLoading] = React.useState(false)
     const dispatch = useDispatch();
 
 
     useEffect(() => {
         const fetchUserPosts = async () => {
-            const response = await fetch(`http://localhost:8080/posts/${props.userId}?page=0`);
-            const userPosts = await response.json();
-            dispatch(setPosts(userPosts))
+            try {
+                setIsLoading(true)
+                const response = await fetch(`http://localhost:8080/posts/${props.userId}?page=0`);
+                const userPosts = await response.json();
+                dispatch(setProfilePosts(userPosts))
+            } catch (err) {
+                console.log(err)
+            } finally {
+                setIsLoading(false)
+            }
         }
         const fetchUserLikedPosts = async () => {
             const response = await fetch(`http://localhost:8080/posts/liked/${props.userId}?page=0`);
@@ -82,7 +92,7 @@ export function ProfileSwipeableViews (props) {
             <TabPanel value={value} index={0}>
                 Posts
                 <div style={PostsWrapper}>
-                    <PostsDisplaying/>
+                    <PostsDisplaying userPosts={profilePosts} isLoading={isLoading}/>
                 </div>
             </TabPanel>
             <TabPanel value={value} index={1}>
@@ -91,7 +101,7 @@ export function ProfileSwipeableViews (props) {
             <TabPanel value={value} index={2}>
                 Likes
                 <div style={PostsWrapper}>
-                    <PostsDisplaying/>
+                    {/*<PostsDisplaying userPosts={profilePosts} isLoading={isLoading}/>*/}
                 </div>
             </TabPanel>
         </Box>
@@ -102,4 +112,7 @@ TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
+};
+ProfileSwipeableViews.propTypes = {
+    userId: PropTypes.string,
 };

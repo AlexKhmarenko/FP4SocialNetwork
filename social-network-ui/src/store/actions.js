@@ -13,9 +13,10 @@ import {
     DELETE_USERS_SUCCESS,
     CHECK_EMAIL,
     SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST,
-    SET_USER_DATA, SET_SEARCH_ID, SET_SEARCH_DATA
+    SET_SEARCH_ID, SET_SEARCH_DATA,
+    SET_USER_DATA, ADD_EXPLORE_POSTS, ADD_REGISTRATION_POSTS,
+    SET_PROFILE_POSTS,
 } from "./types";
-
 
 export const setPage = (pageNumber) => ({
     type: SET_PAGE,
@@ -28,6 +29,20 @@ export const setLike = (like) => {
         payload: like,
     };
 };
+
+export const setComments = (comments) => {
+    return {
+        type: "SET_COMMENTS",
+        payload: comments
+    }
+}
+
+export const setCommentFromUser = (comment) => {
+    return {
+        type: "SET_COMMENT_FROM_USER",
+        payload: comment
+    }
+}
 
 export const setUserEmail = (userData) => ({
     type: UPDATE_USER_DATA_USERNAME,
@@ -82,7 +97,7 @@ export const setSearchData = (data) => ({
         followings: data.followings,
         address: data.address,
     }
-})
+});
 export const openSignUpModal = () => ({
     type: OPEN_SIGN_UP_MODAL
 });
@@ -117,24 +132,49 @@ export const setPosts = (posts) => ({
 export const checkEmail = (data) => ({
     type: CHECK_EMAIL,
     payload: data
-})
+});
 export const setUserPostsClear = (posts) => ({
     type: SET_CLEAR_POSTS, payload: posts
 });
 
 export const fetchPostsByUserId = (userId, page) => {
-        return async (dispatch) => {
-            const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
-            return await response.json();
-        }
+    return async (dispatch) => {
+        const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
+        const data = await response.json();
+        dispatch(setPosts(data));
+    };
 };
 
 export const fetchPostsByPage = (page) => {
     return async (dispatch) => {
         const response = await fetch(`http://localhost:8080/posts?page=${page}`);
-        return await response.json();
+        let posts = await response.json();
+        dispatch(addRegistrationPosts(posts));
     };
 };
+
+export const setUserBirthday = (flag) => {
+    return {
+        type: 'SET_USER_BIRTHDAY',
+        payload: flag,
+    };
+};
+
+export const fetchExplorePosts = (page) => {
+    return async (dispatch) => {
+        const response = await fetch(`http://localhost:8080/posts?page=${page}`);
+        let posts = await response.json();
+        dispatch(addExplorePosts(posts));
+    };
+};
+
+export const addExplorePosts = (posts) => ({
+    type: ADD_EXPLORE_POSTS, payload: posts
+});
+
+export const addRegistrationPosts = (posts) => ({
+    type: ADD_REGISTRATION_POSTS, payload: posts
+});
 
 export const sendEmailCheckRequest = (values) => {
     return async (dispatch) => {
@@ -157,7 +197,6 @@ export const sendEmailCheckRequest = (values) => {
     };
 };
 
-
 export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
     try {
         const response = await fetch("http://localhost:8080/posts", {
@@ -178,6 +217,9 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
         console.error("Error while sending the post:", error);
         throw error;
     }
-}
-
+};
+export const setProfilePosts = (posts) => ({
+    type: SET_PROFILE_POSTS,
+    payload: posts
+})
 

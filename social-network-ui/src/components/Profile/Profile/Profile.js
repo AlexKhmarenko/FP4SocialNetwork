@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {
     BgImgStyle, infoTextStyles,
@@ -10,9 +10,45 @@ import {
 import {Avatar, Button, SvgIcon, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import {ProfileSwipeableViews} from "../ProfilePageSwipeableViews/ProfileSwipeableViews";
+import {sendPost} from "../../../store/actions";
 
 export function Profile (props) {
 
+    // const handlePostSubmit = useCallback(async (values, setSubmitting) => {
+    //     if (values.postText.trim() !== "" || postImage) {
+    //         setSubmitting(true);
+    //
+    //         let photoFileByteArray = [];
+    //         if (postImage) {
+    //             const reader = new FileReader();
+    //
+    //             reader.onloadend = async () => {
+    //                 const imageArrayBuffer = new Uint8Array(reader.result);
+    //                 photoFileByteArray = Array.from(imageArrayBuffer);
+    //
+    //                 const postObject = {
+    //                     writtenText: values.postText,
+    //                     photoFileByteArray: photoFileByteArray,
+    //                     userId: userId
+    //                 };
+    //
+    //                 await dispatch(sendPost(postObject, setSubmitting));
+    //             };
+    //
+    //             reader.readAsArrayBuffer(postImage);
+    //         } else {
+    //             const postObject = {
+    //                 writtenText: values.postText,
+    //                 photoFileByteArray: [],
+    //                 userId: userId
+    //             };
+    //             await dispatch(sendPost(postObject, setSubmitting));
+    //         }
+    //
+    //         setPostImage(null);
+    //         setPostText("");
+    //     }
+    // }, [postImage, postText, userId]);
 
     return (
 
@@ -23,6 +59,9 @@ export function Profile (props) {
                 <div style={imgStyle}>
                     {/*{props.image ? <img src={`${props.image}`} style={{ width: "150px", height: "150px", borderRadius: "80px", margin: "0,auto" }} alt=""/>*/}
                     {/*    :<Avatar sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}></Avatar> }*/}
+
+                    {/*<Avatar alt={props.name} src={URL.createObjectURL(props.image)} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>*/}
+
                     <Avatar alt={props.name} src={props.image} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
 
                     <Button type="submit"
