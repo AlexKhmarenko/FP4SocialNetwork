@@ -1,0 +1,131 @@
+2023-05-28 14:41:43,717 INFO com.danit.socialnetwork.security.JwtTokenService [main] Token eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2ODUyNzQxMDMsImV4cCI6MTY4NjEzODEwM30.ILJ3GlF--L5V9FocxR2XUzGs07TgvDHFX5nlcZF8TUzR8WibVy5-61LC-wSkV73DGH0QXJ_U_YdpD1GHg-K9tQ
+2023-05-28 14:41:43,737 INFO com.danit.socialnetwork.security.JwtTokenService [main] Token eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2ODUyNzQxMDMsImV4cCI6MTY4NjEzODEwM30.ILJ3GlF--L5V9FocxR2XUzGs07TgvDHFX5nlcZF8TUzR8WibVy5-61LC-wSkV73DGH0QXJ_U_YdpD1GHg-K9tQ
+2023-05-28 14:41:43,740 INFO com.danit.socialnetwork.security.JwtTokenService [main] Token eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2ODUyNzQxMDMsImV4cCI6MTY4NjEzODEwM30.ILJ3GlF--L5V9FocxR2XUzGs07TgvDHFX5nlcZF8TUzR8WibVy5-61LC-wSkV73DGH0QXJ_U_YdpD1GHg-K9tQ
+2023-05-28 14:41:43,926 INFO com.danit.socialnetwork.service.UserServiceImpl [main] save user name = Testuser, email = testuser@example.com
+2023-05-28 14:41:43,932 INFO com.danit.socialnetwork.service.UserServiceImpl [main] User exists!
+2023-05-28 14:41:43,958 INFO com.danit.socialnetwork.config.GuavaCache$1 [main] Removed entry: activationCode -> 589543
+2023-05-28 14:41:43,959 INFO com.danit.socialnetwork.config.GuavaCache$1 [main] Cause: REPLACED
+2023-05-28 14:41:43,961 INFO com.danit.socialnetwork.config.GuavaCache$1 [main] Removed entry: activationCode -> 123456
+2023-05-28 14:41:43,961 INFO com.danit.socialnetwork.config.GuavaCache$1 [main] Cause: REPLACED
+2023-05-28 14:41:44,011 INFO com.danit.socialnetwork.service.PasswordChangerServiceImpl [main] Change password page call from e-mail test@test.com
+2023-05-28 14:41:44,043 INFO com.danit.socialnetwork.service.MessageServiceImpl [main] Save message: setInboxUid = 28, setUserId = 34, setMessage = Hallo world!
+2023-05-28 14:41:44,240 INFO org.hibernate.validator.internal.util.Version [main] HV000001: Hibernate Validator 6.2.5.Final
+2023-05-28 14:41:44,500 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,500 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,502 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 2 ms
+2023-05-28 14:41:44,574 INFO com.danit.socialnetwork.rest.JwtAuthenticationRestController [main] {token=null}
+2023-05-28 14:41:44,591 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,591 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,592 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,594 INFO com.danit.socialnetwork.rest.JwtAuthenticationRestController [main] {token=null}
+2023-05-28 14:41:44,647 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,647 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,647 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,661 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,661 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,661 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,678 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,678 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,678 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,692 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,692 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,693 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 1 ms
+2023-05-28 14:41:44,703 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,703 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,703 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,711 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,711 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,712 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 1 ms
+2023-05-28 14:41:44,717 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,718 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,718 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,727 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,727 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,727 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,736 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,736 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,736 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,742 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,742 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,742 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,749 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,749 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,749 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,755 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,756 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,756 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,763 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,763 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,764 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,773 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,774 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,774 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,781 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,782 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,782 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,787 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,787 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,787 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,797 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,797 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,798 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:41:44,802 INFO org.springframework.mock.web.MockServletContext [main] Initializing Spring TestDispatcherServlet ''
+2023-05-28 14:41:44,803 INFO org.springframework.web.servlet.FrameworkServlet [main] Initializing Servlet ''
+2023-05-28 14:41:44,803 INFO org.springframework.web.servlet.FrameworkServlet [main] Completed initialization in 0 ms
+2023-05-28 14:42:02,274 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.5.Final
+2023-05-28 14:42:02,283 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting NetworkApp using Java 17.0.7 on MacBook-Air with PID 61722 (/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/target/classes started by Asya in /Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api)
+2023-05-28 14:42:02,283 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to 1 default profile: "default"
+2023-05-28 14:42:02,316 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-05-28 14:42:02,316 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-05-28 14:42:02,572 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-05-28 14:42:02,606 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 30 ms. Found 10 JPA repository interfaces.
+2023-05-28 14:42:02,849 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2023-05-28 14:42:02,853 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2023-05-28 14:42:02,853 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2023-05-28 14:42:02,854 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.71]
+2023-05-28 14:42:02,879 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2023-05-28 14:42:02,879 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 563 ms
+2023-05-28 14:42:02,893 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2023-05-28 14:42:04,635 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2023-05-28 14:42:05,742 INFO org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:postgresql://isilo.db.elephantsql.com/yofcgaph'
+2023-05-28 14:42:05,838 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-05-28 14:42:05,855 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.6.15.Final
+2023-05-28 14:42:05,914 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-05-28 14:42:05,957 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2023-05-28 14:42:14,122 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-05-28 14:42:14,142 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-05-28 14:42:14,326 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-05-28 14:42:14,557 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@226cc973, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1018b011, org.springframework.security.web.context.SecurityContextPersistenceFilter@356c4617, org.springframework.security.web.header.HeaderWriterFilter@73e72580, org.springframework.security.web.authentication.logout.LogoutFilter@2223a5b1, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@bc9e3c5, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@6cf1e41c, com.danit.socialnetwork.security.JwtAuthFilter@2e82dfbc, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7c33aaa, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2307475f, org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter@60d17cb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@57418273, org.springframework.security.web.session.SessionManagementFilter@4ed48468, org.springframework.security.web.access.ExceptionTranslationFilter@18d15aab, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5bff7d76]
+2023-05-28 14:42:14,697 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2023-05-28 14:42:14,704 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2023-05-28 14:42:14,710 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2023-05-28 14:42:14,716 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started NetworkApp in 12.583 seconds (JVM running for 12.812)
+2023-05-28 14:42:17,586 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-28 14:42:17,586 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2023-05-28 14:42:17,587 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+2023-05-28 14:42:38,497 WARN com.zaxxer.hikari.pool.PoolBase [http-nio-8080-exec-3] HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@31e344e3 (?????????? ??? ???? ???????). Possibly consider using a shorter maxLifetime value.
+2023-05-28 14:42:39,663 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-3] Resolved [com.danit.socialnetwork.exception.user.UserNotFoundException: User with e-mail slonotop2103@gmail.com not found.]
+2023-05-28 14:43:16,769 INFO com.danit.socialnetwork.service.UserServiceImpl [http-nio-8080-exec-9] save user name = Anastasiia, email = slonotop2103@gmail.com
+2023-05-28 14:43:29,954 INFO com.danit.socialnetwork.security.JwtTokenService [http-nio-8080-exec-3] Token eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MiIsImlhdCI6MTY4NTI3NDIwOSwiZXhwIjoxNjg2MTM4MjA5fQ.UbRbK3uAXXjU1eevRaqotXrh6uddz1ZSPNUM8NF15gjyfDaAlSTzim82vHPYivyDxvL6BdoinkkuB9HwkqA2pg
+2023-05-28 14:43:29,955 INFO com.danit.socialnetwork.rest.JwtAuthenticationRestController [http-nio-8080-exec-3] {token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MiIsImlhdCI6MTY4NTI3NDIwOSwiZXhwIjoxNjg2MTM4MjA5fQ.UbRbK3uAXXjU1eevRaqotXrh6uddz1ZSPNUM8NF15gjyfDaAlSTzim82vHPYivyDxvL6BdoinkkuB9HwkqA2pg}
+2023-05-28 15:43:23,286 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=49m18s482ms).
+2023-05-28 15:45:04,469 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m41s183ms).
+2023-05-28 15:46:05,946 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [com.danit.socialnetwork.exception.user.UserNotFoundException: User with userId 62 not found]
+2023-05-28 15:46:06,303 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-9] Resolved [com.danit.socialnetwork.exception.user.UserNotFoundException: User with userId 62 not found]
+2023-05-28 15:46:23,380 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-1] Resolved [com.danit.socialnetwork.exception.user.UserNotFoundException: User with e-mail slonotop2103@gmail.com not found.]
+2023-05-28 15:46:27,765 INFO com.danit.socialnetwork.config.GuavaCache$1 [http-nio-8080-exec-10] Removed entry: activationCode -> 135523
+2023-05-28 15:46:27,766 INFO com.danit.socialnetwork.config.GuavaCache$1 [http-nio-8080-exec-10] Cause: EXPIRED
+2023-05-28 15:46:52,392 INFO com.danit.socialnetwork.service.UserServiceImpl [http-nio-8080-exec-8] save user name = Anastasiia, email = slonotop2103@gmail.com
+2023-05-28 15:47:04,178 INFO com.danit.socialnetwork.security.JwtTokenService [http-nio-8080-exec-1] Token eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MyIsImlhdCI6MTY4NTI3ODAyNCwiZXhwIjoxNjg2MTQyMDI0fQ.DP0rXUNUJkyrEnSIRs8mkkIZWeMuRe7A4hCR-MUW1Ys6icz3ldI3HA1gxk2uXlIO-_R6C_nA67zDjYvFNDGixQ
+2023-05-28 15:47:04,178 INFO com.danit.socialnetwork.rest.JwtAuthenticationRestController [http-nio-8080-exec-1] {token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MyIsImlhdCI6MTY4NTI3ODAyNCwiZXhwIjoxNjg2MTQyMDI0fQ.DP0rXUNUJkyrEnSIRs8mkkIZWeMuRe7A4hCR-MUW1Ys6icz3ldI3HA1gxk2uXlIO-_R6C_nA67zDjYvFNDGixQ}
+2023-05-28 15:55:33,685 WARN com.zaxxer.hikari.pool.PoolBase [http-nio-8080-exec-7] HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@782f89ea (?????????? ??? ???? ???????). Possibly consider using a shorter maxLifetime value.
+2023-05-28 15:55:33,806 WARN com.zaxxer.hikari.pool.PoolBase [http-nio-8080-exec-7] HikariPool-1 - Failed to validate connection org.postgresql.jdbc.PgConnection@3226dfd2 (?????????? ??? ???? ???????). Possibly consider using a shorter maxLifetime value.
+2023-05-28 16:50:26,157 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=50m21s593ms).
+2023-05-28 17:24:27,515 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=34m1s358ms).
+2023-05-28 18:30:17,212 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h5m49s697ms).
+2023-05-28 19:38:22,938 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h8m5s726ms).
+2023-05-28 20:21:37,798 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=43m14s860ms).
+2023-05-28 20:26:29,106 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m51s308ms).
+2023-05-28 20:27:05,023 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-05-28 20:27:05,027 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2023-05-28 20:27:05,374 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
