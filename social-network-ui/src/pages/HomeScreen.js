@@ -150,7 +150,7 @@ export function HomeScreen() {
                                     <div style={CharactersTextWrapper}>
                                         {
                                             280 - values.postText.length >= 0 ?
-                                                (280 - values.postText.length + "characters") : ("maximum number of characters 280")
+                                                (280 - values.postText.length + " characters") : ("maximum number of characters 280")
                                         }
                                     </div>
                                     <Box sx={PostImgWrapper}>
