@@ -12,8 +12,6 @@ export function ProfilePage () {
 
 
 
-
-
     return (
         <>
         <Profile buttonText="Edit profile"
