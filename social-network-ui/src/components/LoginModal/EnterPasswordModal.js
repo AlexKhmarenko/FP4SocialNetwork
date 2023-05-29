@@ -29,10 +29,8 @@ export function EnterPasswordModal() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
     const userDataState = useSelector(state => state.loginUserData.userLoginData);
-    const userToken = useSelector(state => state.saveUserToken);
     const navigate = useNavigate();
 
-    console.log(userToken);
 
     return (
         <>
@@ -69,7 +67,6 @@ export function EnterPasswordModal() {
                                 dispatch(setUserToken(userToken));
                                 localStorage.setItem("userToken", JSON.stringify(userToken));
                                 dispatch(closeLoginModal())
-                                console.log(userToken);
                                 dispatch(setUserEmail({userEmail: ''}));
                             } else {
                                 dispatch(setUserToken(userToken));
