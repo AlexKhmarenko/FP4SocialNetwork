@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from "react-redux"
+import {useSelector } from "react-redux"
 import PropTypes from 'prop-types';
 import { modalConfig } from './modalConfig';
 import { Button, Typography, Box, FormControl } from "@mui/material";
-import { StyledBox, StyledHeaderModalText, StyledModalText, StyledBlackButton, StyledFormControl, StyledSpanElement, StyledWhiteButton } from "./style"
-import BasicButton from '../common/button';
-// import BasicInput from "../../input"
+import { StyledBox, StyledHeaderModalText, StyledModalText, StyledBlackButton, StyledFormControl} from "./style"
 import InputFieldWithError from "../common/input"
 import { useModal } from '../../context/ModalContext';
 import {useState} from "react"
@@ -25,7 +23,6 @@ export const WeSent = ({ id }) => {
         title,
         buttonText,
         placeholder,
-        iconStatus,
         inputType,
         name,
     typeButton } = modalConfig[id]

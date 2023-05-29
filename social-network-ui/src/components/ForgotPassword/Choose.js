@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { modalConfig } from './modalConfig';
 import { Button, Typography, Box, FormControl } from "@mui/material";
-import { StyledBox, StyledHeaderModalText, StyledInput, StyledBlackButton, StyledFormControl, StyledModalText, StyledSpanElement, StyledWhiteButton } from "./style"
+import { StyledBox, StyledHeaderModalText, StyledInput, StyledBlackButton, StyledFormControl, StyledModalText} from "./style"
 import {useSelector} from "react-redux"
 import InputFieldWithError from "../common/input"
 import { useModal } from '../../context/ModalContext';
@@ -19,10 +19,7 @@ export const Choose = ({ id }) => {
         text,
         buttonText,
         placeholder,
-        iconStatus,
         inputType,
-        link,
-        linkText,
         name,
         typeButton,
         secondName,
@@ -57,7 +54,7 @@ export const Choose = ({ id }) => {
                         .required("Password is required")
                         .min(8, "Must be at least 8 digits")
                     }
-                    )}  onSubmit={async (values, { setErrors, setSubmitting }) => {
+                    )}  onSubmit={async (values, { setErrors}) => {
                 setIsSubmitting(true);
                 try {
                     const res = await fetch("http://localhost:8080/api/newpassword", {
@@ -71,7 +68,6 @@ export const Choose = ({ id }) => {
                     if (res.ok) {
                         const data = await res.json()
                         console.log(data)
-                        // dispatch(checkEmail(data.email))
         setOpenChoose(false);
         setOpenAllSet(true)
 }

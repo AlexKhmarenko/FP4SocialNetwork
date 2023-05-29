@@ -17,8 +17,6 @@ import {
 
 import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
-import { ContactSupportOutlined } from '@mui/icons-material';
-
 
 export const ForgotModal = ({ id }) => {
     const dispatch = useDispatch()
@@ -45,11 +43,10 @@ export const ForgotModal = ({ id }) => {
             }} validationSchema={
                 Yup.object({
                     email: Yup.string().email("Please enter a correct email").required("email is required")
-                })} onSubmit={async (values, { setErrors, setSubmitting }) => {
+                })} onSubmit={async (values) => {
                     setIsSubmitting(true);
                     dispatch(checkEmail(values.email))
                     setOpenSendCode(true)
-                    // setOpenForgot(false)
                 }
                 }>
                 <Form>

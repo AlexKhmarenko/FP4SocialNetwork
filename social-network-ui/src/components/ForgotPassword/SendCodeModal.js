@@ -4,27 +4,20 @@ import PropTypes from 'prop-types';
 import { modalConfig } from './modalConfig';
 import {
     Button,
-    FormControl,
     Typography,
-    Box,
-    FormControlLabel,
+    Box
 } from "@mui/material";
 import { checkEmail } from "../../store/actions"
 import {
-    StyledHeaderModalText,
-    StyledFormControl,
-    StyledBlackButton,
-    StyledWhiteButton,
-    StyledCheckbox
+StyledBlackButton,
+    StyledWhiteButton
 } from "../LoginModal/loginModalStyles";
 
 import { StyledBox } from "./style"
-import BasicButton from '../common/button';
 import { Link } from "react-router-dom"
 import { useModal } from '../../context/ModalContext';
 import { changeEmail } from '../../util/util';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-// import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
@@ -54,6 +47,7 @@ export const SendCodeModal = ({ id }) => {
                     email: email,
                 })
             })
+            console.log(res)
             if (res.ok) {
                 const data = await res.json()
                 dispatch(checkEmail(data.email))
