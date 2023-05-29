@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Profile} from "../components/Profile/Profile/Profile";
 import {openEditModal} from "../store/actions";
@@ -12,12 +12,15 @@ export function ProfilePage () {
 
 
 
+
+
     return (
         <>
         <Profile buttonText="Edit profile"
                  buttonColor="#ffffff"
                  textColor="#000000"
                  image={userData.image}
+                 background={userData.background}
                  name={userData.name}
                  userName={userData.userName}
                  date={userData.date}
@@ -28,7 +31,7 @@ export function ProfilePage () {
                  btnClick={() => dispatch(openEditModal())}
         />
             {isEditpModalOpen &&
-                (<EditProfile name={userData.name}/>)
+                (<EditProfile name={userData.name} userId={userData.userId} address={userData.address} image={userData.image} background={userData.background}/>)
             }
         </>
     )
