@@ -29,13 +29,11 @@ export function HomeScreen() {
     const userId = useSelector(state => state.userData.userData.userId);
     const [isLoading, setIsLoading] = useState(false);
     const userPosts = useSelector(state => state.Posts.posts);
-    console.log(userPosts)
     const dispatch = useDispatch();
     const page = useSelector(state => state.pageCount.page);
 
     const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];
-        console.log(file);
         setPostImage(file);
     }, []);
 

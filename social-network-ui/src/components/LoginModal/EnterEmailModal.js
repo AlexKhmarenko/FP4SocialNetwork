@@ -28,6 +28,7 @@ export function EnterEmailModal() {
         dispatch(closeLoginModal());
     };
 
+
     return (
         <>
             <Typography sx={StyledHeaderModalText}>Sign in to Capitweet</Typography>
