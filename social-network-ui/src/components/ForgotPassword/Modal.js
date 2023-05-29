@@ -37,6 +37,7 @@ openAllSet
     if(id==="allSet"){
         content = <AllSet id={id}/>
     }
+    //render
   return (
     <div>
       <Modal
