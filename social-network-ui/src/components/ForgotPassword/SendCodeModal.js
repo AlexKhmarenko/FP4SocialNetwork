@@ -32,10 +32,9 @@ import CloseIcon from '../common/icon/CloseIcon';
 export const SendCodeModal = ({ id }) => {
     const dispatch = useDispatch()
     const email = useSelector(state => state.forgot.forgotPasswordEmail)
-    console.log(email)
     const updatedEmail = changeEmail(email)
 
-    const { setOpenSendCode, setOpenWeSend } = useModal()
+    const { setOpenSendCode, setOpenWeSend, setOpenForgot } = useModal()
     const { title,
         text,
         secondText,
@@ -67,12 +66,13 @@ export const SendCodeModal = ({ id }) => {
             setErrors({ email: "An error occurred, please try again" });
         }
     }
-    const handleClose = () => {
-        setOpenSendCode(false)
+    const onclose = () => {
+        setOpenSendCode(false),
+        setOpenForgot(false)
     }
     return (
         <Box sx={StyledBox}>
-            <CloseIcon onClick={handleClose} />
+            <CloseIcon  onClick={onclose} />
             <Logo />
             <Typography id="modal-modal-title" variant="h6" component="h2">
                 {title}
@@ -98,7 +98,7 @@ export const SendCodeModal = ({ id }) => {
             <Button type="submit"
                 variant="contained" sx={StyledBlackButton} onClick={handleClick} fullWidth={true}>{buttonText}
             </Button>
-            <Button variant="contained" sx={StyledWhiteButton} fullWidth={true} onClick={handleClose} >{secondaryButtonText}</Button>
+            <Button variant="contained" sx={StyledWhiteButton} fullWidth={true} onClick={onclose}>{secondaryButtonText}</Button>
         </Box>
     )
 }

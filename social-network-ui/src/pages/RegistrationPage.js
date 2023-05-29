@@ -32,7 +32,6 @@ if(isSendCodeModal) id="sendCode"
 if(isWeSendModal) id="weSent"
 if(isChooseModal) id="choose"
 if(isAllSetModal) id="allSet"
-console.log(id)
     return (
         <>
         <Container sx={{minWidth: "1350px", height:"100vh"}} >

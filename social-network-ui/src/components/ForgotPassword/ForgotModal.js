@@ -30,7 +30,6 @@ export const ForgotModal = ({ id }) => {
         name,
         inputType,
         typeButton } = modalConfig[id]
-        console.log(id)
     return (
         <Box sx={StyledBox}>
             <CloseIcon onClick={() => setOpenForgot(false)} />
@@ -49,8 +48,8 @@ export const ForgotModal = ({ id }) => {
                 })} onSubmit={async (values, { setErrors, setSubmitting }) => {
                     setIsSubmitting(true);
                     dispatch(checkEmail(values.email))
-                    // setOpenForgot(false)
                     setOpenSendCode(true)
+                    // setOpenForgot(false)
                 }
                 }>
                 <Form>

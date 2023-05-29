@@ -11,8 +11,17 @@ import { useModal } from '../../context/ModalContext';
 
 
 export const ForgotPasswordModal = ({id}) => {
-  const {openForgot, setOpenForgot} = useModal()
-  console.log(id)
+  const {openForgot, setOpenForgot,
+    openSendCode, setOpenSendCode,
+    openWeSend, setOpenWeSend,
+    openChoose, setOpenChoose,
+    openAllSet, setOpenAllSet} = useModal()
+const isOpen = openForgot ||
+openSendCode ||
+openWeSend ||
+openChoose ||
+openAllSet
+console.log(isOpen, openForgot, openSendCode)
     let content = null
     if(id==="forgot"){
     content = <ForgotModal id={id}/>
@@ -32,7 +41,7 @@ export const ForgotPasswordModal = ({id}) => {
   return (
     <div>
       <Modal
-        open={openForgot}
+        open={isOpen}
         // onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

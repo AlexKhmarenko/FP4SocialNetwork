@@ -18,7 +18,7 @@ import * as Yup from "yup";
 
 export const WeSent = ({ id }) => {
     const email = useSelector(state => state.forgot.forgotPasswordEmail)
-    const { setOpenWeSend, setOpenChoose } = useModal()
+    const { setOpenWeSend, setOpenChoose, setOpenForgot } = useModal()
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { text,
@@ -29,9 +29,15 @@ export const WeSent = ({ id }) => {
         inputType,
         name,
     typeButton } = modalConfig[id]
+    
+    const onclose = () => {
+        setOpenWeSend(false),
+        setOpenForgot(false)
+    }
+
     return (
         <Box sx={StyledBox}>
-        <CloseIcon onClick={() => setOpenForgot(false)} />
+        <CloseIcon onClick={onclose} />
         <Logo />
         <Typography sx={StyledHeaderModalText} variant="h6" component="h2">
             {title}

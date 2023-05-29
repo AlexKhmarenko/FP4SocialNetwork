@@ -11,16 +11,18 @@ import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
 
 export const AllSet = ({ id }) => {
-    const {setOpenAllSet} = useModal()
+    const {setOpenAllSet, setOpenForgot} = useModal()
     const { text,
         boldText,
         buttonText } = modalConfig[id]
-        const handleClick = () => {
-            setOpenAllSet(false)
+        const onclose = () => {
+            setOpenAllSet(false),
+            setOpenForgot(false)
         }
+
     return (
         <Box sx={StyledBox}>
-            <CloseIcon onClick={() => setOpenForgot(false)}/>
+            <CloseIcon onClick={onclose}/>
             <Logo/>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 {text}
@@ -30,7 +32,7 @@ export const AllSet = ({ id }) => {
                 {boldText}
             </Typography>
 
-            <BasicButton text={buttonText} onClick={handleClick} />
+            <BasicButton text={buttonText} onClick={onclose} />
         </Box>
     )
 }
