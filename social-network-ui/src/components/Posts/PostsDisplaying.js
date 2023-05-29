@@ -7,6 +7,7 @@ export const PostsDisplaying = ({userPosts, isLoading}) => {
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>
     } else if (userPosts.length === 0) {
+        console.log(userPosts)
         return <div style={{ marginTop: "20%",   fontWeight: "400",
             lineHeight: "20px",
             fontSize: "22px",

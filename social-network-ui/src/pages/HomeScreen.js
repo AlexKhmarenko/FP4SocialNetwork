@@ -29,20 +29,27 @@ export function HomeScreen() {
     const userId = useSelector(state => state.userData.userData.userId);
     const [isLoading, setIsLoading] = useState(false);
     const userPosts = useSelector(state => state.Posts.posts);
+    console.log(userPosts)
     const dispatch = useDispatch();
     const page = useSelector(state => state.pageCount.page);
 
     const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];
+        console.log(file);
         setPostImage(file);
     }, []);
 
     const fetchData = async (userId) => {
-        setIsLoading(true);
-        if (userId) {
-            const response = await fetch(`http://localhost:8080/profile/${userId}`);
-            const userData = await response.json();
-            dispatch(setUserData(userData));
+        try {
+            setIsLoading(true);
+            if (userId) {
+                const response = await fetch(`http://localhost:8080/profile/${userId}`);
+                const userData = await response.json();
+                dispatch(setUserData(userData));
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
             setIsLoading(false);
         }
     };
@@ -54,12 +61,19 @@ export function HomeScreen() {
     }, [location.pathname]);
 
     const fetchPosts = async (page) => {
-        const decodedToken = decodeToken();
-        if (decodedToken) {
-            const userId = decodedToken.sub;
-            dispatch(setUserId(userId));
-            dispatch(fetchPostsByUserId(userId, page));
-            await fetchData(userId);
+        try {
+            setIsLoading(true);
+            const decodedToken = decodeToken();
+            if (decodedToken) {
+                const userId = decodedToken.sub;
+                dispatch(setUserId(userId));
+                dispatch(fetchPostsByUserId(userId, page));
+                await fetchData(userId);
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -70,7 +84,7 @@ export function HomeScreen() {
             let photoFileByteArray = [];
             if (postImage) {
                 const reader = new FileReader();
-
+                reader.readAsArrayBuffer(postImage);
                 reader.onloadend = async () => {
                     const imageArrayBuffer = new Uint8Array(reader.result);
                     photoFileByteArray = Array.from(imageArrayBuffer);
@@ -83,8 +97,6 @@ export function HomeScreen() {
 
                     await dispatch(sendPost(postObject, setSubmitting));
                 };
-
-                reader.readAsArrayBuffer(postImage);
             } else {
                 const postObject = {
                     writtenText: values.postText,
