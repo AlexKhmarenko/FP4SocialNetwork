@@ -47,7 +47,7 @@ export function UsersSearch() {
                 </Formik>
                 <Paper elevation={3} sx={{
                     minWidth: "200px",
-                    minHeight: "570px",
+                    minHeight: "620px",
                     width: "250px",
                     marginTop: "20%",
                     marginLeft: "9%",

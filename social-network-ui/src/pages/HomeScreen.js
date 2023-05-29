@@ -131,7 +131,7 @@ export function HomeScreen() {
                                     {userData.image ? <img src={`data:image/png;base64,${userData.image}`}
                                                            style={{
                                                                width: "70px",
-                                                               height: "70px",
+                                                               height: "65px",
                                                                borderRadius: "50px",
                                                                margin: "0,auto"
                                                            }}
