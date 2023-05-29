@@ -23,6 +23,7 @@ export const PostsDisplaying = ({userPosts, isLoading}) => {
                           dataTime={post.sentDateTime}
                           postId={post.postId}
                           postLikes={post.likesCount}
+                          userIdWhoSendPost={post.userId}
                     />
                 ))}
             </div>
