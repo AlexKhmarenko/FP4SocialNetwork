@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class    PostLikeDto {
+public class PostLikeDto {
 
   private Integer postId;
   private Integer userId;

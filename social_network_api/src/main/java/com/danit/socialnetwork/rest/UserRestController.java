@@ -5,7 +5,7 @@ import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
-import com.danit.socialnetwork.dto.user.UserDtoForPostLikeDtoResponse;
+import com.danit.socialnetwork.dto.user.UserDtoForPostLikeResponse;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
@@ -182,14 +182,14 @@ public class UserRestController {
 
   @GetMapping("/users/likes")
   @ResponseBody
-  public List<UserDtoForPostLikeDtoResponse> getUsersWhoLikedPostByPostId(@RequestParam(name = "postId",
+  public List<UserDtoForPostLikeResponse> getUsersWhoLikedPostByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (postId == 0) {
       return new ArrayList<>();
     }
     return userService.getUsersWhoLikedPostByPostId(postId, page)
         .stream()
-        .map(UserDtoForPostLikeDtoResponse::from)
+        .map(UserDtoForPostLikeResponse::from)
         .toList();
   }
 

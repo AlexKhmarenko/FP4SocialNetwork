@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserDtoForPostLikeDtoResponse {
+public class UserDtoForPostLikeResponse {
 
   private Integer userId;
 
@@ -14,8 +14,8 @@ public class UserDtoForPostLikeDtoResponse {
 
   private String name;
 
-  public static UserDtoForPostLikeDtoResponse from(DbUser dbUser) {
-    UserDtoForPostLikeDtoResponse userDtoResponse = new UserDtoForPostLikeDtoResponse();
+  public static UserDtoForPostLikeResponse from(DbUser dbUser) {
+    UserDtoForPostLikeResponse userDtoResponse = new UserDtoForPostLikeResponse();
     userDtoResponse.setName(dbUser.getName());
     userDtoResponse.setUsername(dbUser.getUsername());
     userDtoResponse.setUserId(dbUser.getUserId());

@@ -1,7 +1,7 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.*;
-import com.danit.socialnetwork.dto.user.UserDtoForPostLikeDtoResponse;
+import com.danit.socialnetwork.dto.user.UserDtoForPostLikeResponse;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoForSidebar;
@@ -320,7 +320,7 @@ class UserRestControllerTest {
     List<DbUser> dbUserList = Arrays.asList(dbUser1, dbUser2);
 
     when(userService.getUsersWhoLikedPostByPostId(1, 1)).thenReturn(dbUserList);
-    List<UserDtoForPostLikeDtoResponse> list = controller.getUsersWhoLikedPostByPostId(1, 1);
+    List<UserDtoForPostLikeResponse> list = controller.getUsersWhoLikedPostByPostId(1, 1);
 
     Assertions.assertEquals(2, list.size());
 
