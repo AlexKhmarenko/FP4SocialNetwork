@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,4 +38,8 @@ public interface UserService {
   boolean update(EditingDtoRequest request);
 
   ResponseEntity<Map<String, String>> dbUserDobChange(@RequestBody UserDobChangeRequest userDobChangeRequest);
+
+  List<DbUser> getUsersWhoLikedPostByPostId(Integer postId, Integer page);
+
+  List<DbUser> getUsersWhoMostPopular(Integer page);
 }
