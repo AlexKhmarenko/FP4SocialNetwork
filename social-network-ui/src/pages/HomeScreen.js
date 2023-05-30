@@ -46,8 +46,26 @@ export function HomeScreen() {
             setIsLoading(false);
         }
     };
+    // const fetchFollow = async (userId) => {
+    //
+    //         const response = await fetch(`http://localhost:8080/api/follow`, {
+    //             method: "POST",
+    //             body: JSON.stringify({
+    //                 userFollower: userId,
+    //                 userFollowing: userId,
+    //             }),
+    //             headers: { "Content-Type": "application/json" }
+    //         })
+    //         const userFollow = await response.json();
+    //
+    //         console.log(userFollow)
+    //
+    //
+    //
+    // };
 
     useEffect(() => {
+        // fetchFollow(userId)
         fetchData(userId);
         fetchPosts(page);
         setPageZero();
