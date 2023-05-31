@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://ruby.db.elephantsql.com:5432/txxwqzcm
+    username: txxwqzcm
+    password: zONa5d08Ds-7JC7X2pHk6egAIN2F4y-a
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 0
+  jpa:
+    generate-ddl: true
+    show-sql: true
+  #    defer-datasource-initialization: true
+  #  sql:
+  #    init:
+  #      mode: always
+  main:
+    banner-mode: off
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 429648578915-3m7p1im834dvg26q30gvbvb940adac83.apps.googleusercontent.com
+            client-secret: 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
+
+#        provider:
+#          google:
+#            authorization-uri: "https://accounts.google.com/o/oauth2/auth?prompt=consent"
+#            token-uri: https://oauth2.googleapis.com/token
+#            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+#            user-name-attribute: email
+
+
+logging:
+  level:
+    root: info
+    org: info
