@@ -57,5 +57,13 @@ public class RepostRestController {
   }
 
 
+  @GetMapping("/reposts/active")
+  @ResponseBody
+  public Boolean isExistPostLike(@RequestParam(name = "postId") Integer postId,
+                                 @RequestParam(name = "userId") Integer userId) {
+    return repostService.isActiveRepost(postId, userId);
+  }
+
+
 
 }

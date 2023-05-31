@@ -12,4 +12,6 @@ public interface RepostService {
 
 
   Repost deleteRepost(Integer postId, Integer userId);
+
+  Boolean isActiveRepost(Integer postId, Integer userId);
 }

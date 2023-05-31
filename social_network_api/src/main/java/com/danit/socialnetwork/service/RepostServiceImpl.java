@@ -3,6 +3,7 @@ package com.danit.socialnetwork.service;
 import com.danit.socialnetwork.dto.post.RepostDtoResponse;
 import com.danit.socialnetwork.exception.post.PostLikeNotFoundException;
 import com.danit.socialnetwork.exception.post.RepostNotFoundException;
+import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.RepostRepository;
@@ -68,5 +69,10 @@ public class RepostServiceImpl implements RepostService {
 
   }
 
+  @Override
+  public Boolean isActiveRepost(Integer postId, Integer userId) {
+    Optional<Repost> tempRepost = repostRepository.findRepostByPostIdAndUserId(postId, userId);
+    return tempRepost.isPresent();
+  }
 
 }
