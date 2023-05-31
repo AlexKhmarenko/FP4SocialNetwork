@@ -32,8 +32,8 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         let dataAboutUsersWhoLike = await fetch(`http://localhost:8080/users/likes?postld=${postId}&page=0`);
         let usersWhoLike2 = await dataAboutUsersWhoLike.json();
         console.log(usersWhoLike2)
-        setUsersWhoLike(usersWhoLike2);
         console.log(postId)
+        setUsersWhoLike(usersWhoLike2);
     };
 
     useEffect(() => {
