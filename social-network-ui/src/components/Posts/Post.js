@@ -26,6 +26,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const [showLike, setShowLike] = useState(false);
     const [usersWhoLike, setUsersWhoLike] = useState([]);
 
+
     const ShowUsersWhoLike = async () => {
         setShowLike(!showLike);
         let dataAboutUsersWhoLike = await fetch(`http://localhost:8080/users/likes?postld=${postId}&page=0`);
@@ -147,7 +148,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     return (
         <Card sx={{ ...PostCard, position: "relative" }}>
             <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
-                <Avatar alt={userName} src="#"/>
+              <Avatar alt={userName} src="#"/>
                 <div style={{ marginLeft: 16, flex: 1 }}>
                     <Typography variant="subtitle1" component="div"
                                 sx={{ textDecoration: "underline", cursor: "pointer" }} onClick={toAnotherUserPage}>
@@ -199,7 +200,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
                         left: "170px",
                         overflow: "scroll"
                     }}>
-                        mdmnmnf
+                        тут будуть юзери які лайкнули пост)
                         {usersWhoLike.map(user => (
                             <div key={postId} style={{
                                 display: "flex",
