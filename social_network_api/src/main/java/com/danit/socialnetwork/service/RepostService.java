@@ -11,4 +11,5 @@ public interface RepostService {
   List<RepostDtoResponse> getAllRepostsByUserId(Integer userId, Integer page);
 
 
+  Repost deleteRepost(Integer postId, Integer userId);
 }

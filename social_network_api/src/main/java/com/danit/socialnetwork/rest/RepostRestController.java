@@ -1,13 +1,16 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.danit.socialnetwork.dto.post.RepostDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
+import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.service.RepostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +48,14 @@ public class RepostRestController {
     return repostService.getAllRepostsByUserId(userId, page);
 
   }
+
+  @DeleteMapping("/reposts")
+  public ResponseEntity<RepostDtoSave> deleteRepost(@RequestParam(name = "postId") Integer postId,
+                                                    @RequestParam(name = "userId") Integer userId) {
+    Repost repost = repostService.deleteRepost(postId, userId);
+    return new ResponseEntity<>(RepostDtoSave.from(repost), HttpStatus.OK);
+  }
+
 
 
 }
