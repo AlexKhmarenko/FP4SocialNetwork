@@ -38,7 +38,7 @@ public class RepostServiceImpl implements RepostService {
   @Override
   public Repost saveRepost(com.danit.socialnetwork.dto.post.RepostDtoSave theRepostDto) {
     Repost repost = this.modelMapper.map(theRepostDto, Repost.class);
-    repost.setRepostId(0);
+    repost.setSharedId(0);
     repost.setRepostedDateTime(LocalDateTime.now());
     return repostRepository.save(repost);
   }

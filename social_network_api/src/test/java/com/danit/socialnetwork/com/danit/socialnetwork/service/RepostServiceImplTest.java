@@ -150,7 +150,7 @@ class RepostServiceImplTest {
 
     Repost repost = new Repost();
     repost.setPostId(post);
-    repost.setRepostId(4);
+    repost.setSharedId(4);
     repost.setUserId(dbUser);
     repost.setRepostedDateTime(LocalDateTime.now());
     when(repostRepository.findRepostByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(repost));
@@ -177,7 +177,7 @@ class RepostServiceImplTest {
 
     Repost repost = new Repost();
     repost.setPostId(post);
-    repost.setRepostId(4);
+    repost.setSharedId(4);
     repost.setUserId(dbUser);
     repost.setRepostedDateTime(LocalDateTime.now());
     when(repostRepository.findRepostByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(repost));
