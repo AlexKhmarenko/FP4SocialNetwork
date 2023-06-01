@@ -30,7 +30,6 @@ public class PostLikeRestController {
 
 
   @GetMapping("/likes")
-  @ResponseBody
   public Integer getCountAllLikesByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId) {
     if (postId == 0) {
@@ -41,7 +40,6 @@ public class PostLikeRestController {
 
 
   @GetMapping("/likes/active")
-  @ResponseBody
   public Boolean isExistPostLike(@RequestParam(name = "postId") Integer postId,
                                  @RequestParam(name = "userId") Integer userId) {
     return postLikeService.isPresentPostLike(postId, userId);

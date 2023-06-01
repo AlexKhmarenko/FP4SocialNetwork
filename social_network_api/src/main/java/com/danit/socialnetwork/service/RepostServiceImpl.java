@@ -1,9 +1,7 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.post.RepostDtoResponse;
-import com.danit.socialnetwork.exception.post.PostLikeNotFoundException;
 import com.danit.socialnetwork.exception.post.RepostNotFoundException;
-import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.RepostRepository;
@@ -40,7 +38,7 @@ public class RepostServiceImpl implements RepostService {
   @Override
   public Repost saveRepost(com.danit.socialnetwork.dto.post.RepostDtoSave theRepostDto) {
     Repost repost = this.modelMapper.map(theRepostDto, Repost.class);
-    repost.setSharedId(0);
+    repost.setRepostId(0);
     repost.setRepostedDateTime(LocalDateTime.now());
     return repostRepository.save(repost);
   }
@@ -68,6 +66,7 @@ public class RepostServiceImpl implements RepostService {
     return tempRepost.get();
 
   }
+
 
   @Override
   public Boolean isActiveRepost(Integer postId, Integer userId) {

@@ -26,7 +26,7 @@ public class Repost {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "repost_id")
-  private Integer sharedId;
+  private Integer repostId;
 
   @Column(name = "reposted_datetime", updatable = false)
   @NonNull

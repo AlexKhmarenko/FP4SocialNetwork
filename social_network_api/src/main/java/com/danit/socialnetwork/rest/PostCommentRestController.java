@@ -32,7 +32,6 @@ public class PostCommentRestController {
   }
 
   @GetMapping("/comments")
-  @ResponseBody
   public List<PostCommentDtoResponse> getAllComments(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (postId == 0) {

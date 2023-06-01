@@ -32,7 +32,6 @@ public class UserFollowRestController {
   }
 
   @GetMapping("/followers/{userID}")
-  @ResponseBody
   public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowers(@PathVariable("userID") Integer userId) {
     return new ResponseEntity<>(userFollowService.getAllUsersByUserFollowingId(userId), HttpStatus.OK);
   }

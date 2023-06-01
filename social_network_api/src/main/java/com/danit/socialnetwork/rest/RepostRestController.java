@@ -1,9 +1,7 @@
 package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.danit.socialnetwork.dto.post.RepostDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
-import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.service.RepostService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -37,7 +34,6 @@ public class RepostRestController {
 
   /*Method returns all reposts done by user*/
   @GetMapping("/reposts")
-  @ResponseBody
   public List<RepostDtoResponse> getAllRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
                                                        Integer userId,
                                                        @RequestParam(name = "page", defaultValue = "0")
@@ -58,9 +54,8 @@ public class RepostRestController {
 
 
   @GetMapping("/reposts/active")
-  @ResponseBody
-  public Boolean isExistPostLike(@RequestParam(name = "postId") Integer postId,
-                                 @RequestParam(name = "userId") Integer userId) {
+  public Boolean isActiveRepost(@RequestParam(name = "postId") Integer postId,
+                                @RequestParam(name = "userId") Integer userId) {
     return repostService.isActiveRepost(postId, userId);
   }
 

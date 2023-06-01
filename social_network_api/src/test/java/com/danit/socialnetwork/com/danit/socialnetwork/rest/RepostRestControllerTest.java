@@ -70,4 +70,27 @@ class RepostRestControllerTest {
 
 
   }
+
+  @Test
+  void deleteRepost() {
+
+
+  }
+
+  @Test
+  void isActiveRepost() {
+
+    Integer postId = 2;
+    Integer userId = 3;
+
+
+    when(repostService.isActiveRepost(postId, userId)).thenReturn(true);
+    when(repostService.isActiveRepost(postId + 1, userId + 1))
+        .thenReturn(false);
+    Boolean result1 = repostService.isActiveRepost(postId, userId);
+    Boolean result2 = repostService.isActiveRepost(postId + 1, userId + 1);
+    Assertions.assertEquals(true, result1);
+    Assertions.assertNotEquals(true, result2);
+
+  }
 }
