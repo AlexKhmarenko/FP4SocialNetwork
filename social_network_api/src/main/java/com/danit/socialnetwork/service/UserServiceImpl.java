@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
+import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
@@ -196,18 +197,13 @@ public class UserServiceImpl implements UserService {
       updateUser.setName(request.getName());
       updateUser.setDateOfBirth(dateOfBirth);
       updateUser.setAddress(request.getAddress());
-      byte[] profile = request.getProfileImageUrl();
-      byte[] profileBackground = request.getProfileBackgroundImageUrl();
-      if (profile == null) {
-        updateUser.setProfileImageUrl(null);
-      } else {
-        updateUser.setProfileImageUrl(Base64.getEncoder().encodeToString(profile));
-      }
-      if (profileBackground == null) {
-        updateUser.setProfileBackgroundImageUrl(null);
-      } else {
-        updateUser.setProfileBackgroundImageUrl(Base64.getEncoder().encodeToString(profileBackground));
-      }
+
+      ImageHandlingConf imageHandling = new ImageHandlingConf();
+      byte[] profileImage = request.getProfileImageUrl();
+      updateUser.setProfileImageUrl(imageHandling.uploadImage(profileImage));
+      byte[] profileBackgroundImage = request.getProfileBackgroundImageUrl();
+      updateUser.setProfileBackgroundImageUrl(imageHandling.uploadImage(profileBackgroundImage));
+
       userRepository.save(updateUser);
       log.debug(String.format("save user id = %s", userId));
       return true;
