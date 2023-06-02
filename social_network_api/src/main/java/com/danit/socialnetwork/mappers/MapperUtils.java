@@ -4,30 +4,26 @@ import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.model.DbUser;
 
-import java.util.Base64;
-
 public class MapperUtils {
   private MapperUtils() {
   }
 
-
-
-  public static String decodeProfile(DbUser dbUser) {
+  public static byte[] decodeProfile(DbUser dbUser) {
     ImageHandlingConf imageHandling = new ImageHandlingConf();
     String profile = dbUser.getProfileImageUrl();
     if (profile == null) {
       return null;
     }
-    return imageHandling.getImageUrl(profile);
+    return imageHandling.getImage(profile);
   }
 
-  public static String decodeProfileBackground(DbUser dbUser) {
+  public static byte[] decodeProfileBackground(DbUser dbUser) {
     ImageHandlingConf imageHandling = new ImageHandlingConf();
     String profileBackground = dbUser.getProfileBackgroundImageUrl();
     if (profileBackground == null) {
       return null;
     }
-    return imageHandling.getImageUrl(profileBackground);
+    return imageHandling.getImage(profileBackground);
   }
 
   public static String encodeProfile(EditingDtoRequest editingDtoRequest) {
