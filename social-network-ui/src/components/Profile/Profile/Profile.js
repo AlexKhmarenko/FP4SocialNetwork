@@ -1,17 +1,44 @@
-import React, {useCallback} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {
     BgImgStyle, infoTextStyles,
     imgStyle, LinkQuantityStyles, LinkStyles, LinkTextStyles,
     NameStyles,
     NicknameStyles,
-    ProfileStyles, SvgStyles, infoStyle, PhotoStyle,
+    ProfileStyles, SvgStyles, infoStyle, PhotoStyle, editButtonStyles, unsubscribeButtonStyles
 } from "./ProfileStyles";
 import {Avatar, Button, SvgIcon, Typography} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {ProfileSwipeableViews} from "../ProfilePageSwipeableViews/ProfileSwipeableViews";
+import {useDispatch, useSelector} from "react-redux";
+import {userUnfollow} from "../../../store/actions";
+import {fetchUnfollow} from "../../../store/Thunks/fetchUnfollowThunk";
 
 export function Profile (props) {
+
+    const searchId = useSelector(state => state.userData.searchData.userId);
+    const userId = useSelector(state => state.userData.userData.userId);
+    const [isHovered, setIsHovered] = useState(false);
+    const isFollow = useSelector(state => state.userData.followData.userFollow)
+    const dispatch = useDispatch()
+
+
+    // const fetchUnfollow = async () => {
+    //
+    //     const response = await fetch(`http://localhost:8080/api/unfollow`, {
+    //         method: "POST",
+    //         body: JSON.stringify({
+    //             userUnfollowed: userId,
+    //             userUnfollowing: searchId,
+    //         }),
+    //         headers: { "Content-Type": "application/json" }
+    //     })
+    //     if (response.ok) {
+    //         const userIsUnfollow = await response.json();
+    //         console.log(userIsUnfollow)
+    //         dispatch(userUnfollow())
+    //     }
+    // };
 
     return (
 
@@ -28,22 +55,15 @@ export function Profile (props) {
 
                     <Avatar alt={props.name} src={props.image ? `data:image/png;base64,${props.image}` : ""} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
 
-                    <Button type="submit"
-                            variant="contained" sx={{
-                        height: "45px",
-                        padding: "0 12px",
-                        color: `${props.textColor}`,
-                        mb: "20px",
-                        mt: "12px", width: "170px", background: `${props.buttonColor}`,
-                        transition: "0.7s", "&:hover": {
-                            transition: "0.7s",
-                            backgroundColor: `${props.textColor}`,
-                            color: `${props.buttonColor}`
-                        },
-                        fontWeight: 700,
-                        borderRadius: "20px",
-                        fontFamily: "'Lato', sans-serif",
-                    }} fullWidth={true} onClick={() => props.btnClick()}>{props.buttonText}</Button>
+                    {isFollow
+                        ?
+                        <Button type="submit" variant="contained" sx={unsubscribeButtonStyles} fullWidth={true}
+                                onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
+                                onClick={() => dispatch(fetchUnfollow())}>{isHovered ? "Unsubscribe" : "Signed"}</Button>
+                        :
+                        <Button type="submit" variant="contained" sx={editButtonStyles} fullWidth={true} onClick={() => props.btnClick()}>{props.buttonText}</Button>
+                    }
+
                 </div>
                 <div>
                     <div style={{ margin: "15px 0", display: "flex", flexDirection: "column", gap: "5px" }}>

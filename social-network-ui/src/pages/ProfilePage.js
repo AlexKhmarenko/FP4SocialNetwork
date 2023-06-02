@@ -7,7 +7,7 @@ import {EditProfile} from "../components/EditProfile/EditProfile";
 export function ProfilePage () {
 
     const userData = useSelector(state => state.userData.userData)
-    const isEditpModalOpen = useSelector(state => state.modal.isEditModal)
+    const isEditModalOpen = useSelector(state => state.modal.isEditModal)
     const dispatch = useDispatch();
 
 
@@ -15,8 +15,6 @@ export function ProfilePage () {
     return (
         <>
         <Profile buttonText="Edit profile"
-                 buttonColor="#ffffff"
-                 textColor="#000000"
                  image={userData.image}
                  background={userData.background}
                  name={userData.name}
@@ -28,7 +26,7 @@ export function ProfilePage () {
                  userId={userData.userId}
                  btnClick={() => dispatch(openEditModal())}
         />
-            {isEditpModalOpen &&
+            {isEditModalOpen &&
                 (<EditProfile name={userData.name} userId={userData.userId} address={userData.address} image={userData.image} background={userData.background}/>)
             }
         </>
