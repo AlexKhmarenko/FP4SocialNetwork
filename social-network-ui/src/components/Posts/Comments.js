@@ -22,7 +22,9 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
         dispatch(setSearchId(String(userId)));
         navigate("/view");
     };
-    photoFileByteArray = true;
+
+    console.log(photoFileByteArray)
+
     return (
         <Formik
             initialValues={{ comment: "" }}
@@ -65,7 +67,7 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
                                 alignItems: "center",
                                 minHeight: "100px"
                             }}>
-                                {photoFileByteArray ? <img src={`data:image/png;base64,${photoFileByteArray}`}
+                                {comment.photoFileByteArray ? <img src={`data:image/png;base64,${comment.photoFileByteArray}`}
                                                            style={{
                                                                width: "50px",
                                                                height: "50px",

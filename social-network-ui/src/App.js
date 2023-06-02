@@ -13,6 +13,7 @@ import { Notifications } from "./pages/Notifications";
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout/>}>
+            <Route path="/" element={<HomeScreen/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
             <Route path="/home" element={<HomeScreen/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>

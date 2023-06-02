@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { StyledBlackButton } from "../../LoginModal/loginModalStyles";
 import React, { useEffect, useState } from "react";
 import { setSearchId } from "../../../store/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 
 
