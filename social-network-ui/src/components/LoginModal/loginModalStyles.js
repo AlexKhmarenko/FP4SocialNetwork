@@ -17,6 +17,11 @@ export const StyledBox = {
     borderRadius: "10px",
     overflow: "visible",
     position: "relative",
+    '@media(max-width: 576px)': {
+        width:"100% !important",
+        height:"100% !important",
+        overflow: 'hidden'
+    }
 };
 
 export const StyledTwitSvgIcon = {
