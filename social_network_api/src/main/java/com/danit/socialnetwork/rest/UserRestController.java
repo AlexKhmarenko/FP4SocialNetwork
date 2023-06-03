@@ -131,7 +131,7 @@ public class UserRestController {
   @RequestMapping(value = "/search", method = RequestMethod.POST)
   public ResponseEntity<List<SearchDto>> handleSearchPost(
       @RequestBody SearchRequest request) {
-    String userSearch = request.getUserSearch();
+    String userSearch = request.getSearch();
     List<DbUser> search = userService.filterCachedUsersByName(userSearch);
     log.debug("filterCachedUsersByName: " + userSearch + ". Find all users by name.");
     List<SearchDto> searchDto = search.stream().map(searchMapper::dbUserToSearchDto).toList();

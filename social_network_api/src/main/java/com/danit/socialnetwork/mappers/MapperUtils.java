@@ -8,22 +8,12 @@ public class MapperUtils {
   private MapperUtils() {
   }
 
-  public static byte[] decodeProfile(DbUser dbUser) {
-    ImageHandlingConf imageHandling = new ImageHandlingConf();
-    String profile = dbUser.getProfileImageUrl();
-    if (profile == null) {
-      return null;
-    }
-    return imageHandling.getImage(profile);
+  public static String getProfileImageUrl(DbUser dbUser) {
+    return dbUser.getProfileImageUrl();
   }
 
-  public static byte[] decodeProfileBackground(DbUser dbUser) {
-    ImageHandlingConf imageHandling = new ImageHandlingConf();
-    String profileBackground = dbUser.getProfileBackgroundImageUrl();
-    if (profileBackground == null) {
-      return null;
-    }
-    return imageHandling.getImage(profileBackground);
+  public static String getProfileBackgroundImageUrl(DbUser dbUser) {
+    return dbUser.getProfileBackgroundImageUrl();
   }
 
   public static String encodeProfile(EditingDtoRequest editingDtoRequest) {

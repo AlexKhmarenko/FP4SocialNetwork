@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SearchRequest {
-  private String userSearch;
+  private String search;
   private String userId;
 
 }
