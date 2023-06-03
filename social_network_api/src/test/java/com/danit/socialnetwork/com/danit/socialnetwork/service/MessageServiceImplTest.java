@@ -67,8 +67,8 @@ class MessageServiceImplTest {
     inboxes.add(testInbox1);
     inboxes.add(testInbox2);
 
-    when(userRepository.findById(eq(1))).thenReturn(Optional.of(testUser1));
-    when(userRepository.findById(eq(2))).thenReturn(Optional.of(testUser2));
+    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
+    when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
     when(inboxService.saveInbox(any(DbUser.class), any(DbUser.class), any(Message.class)))
         .thenReturn(inboxes);
     when(messageRepository.save(any(Message.class))).thenReturn(testMessage);
@@ -132,8 +132,8 @@ class MessageServiceImplTest {
     testMessageDto4.setUserId(2);
     testMessageDto4.setMessage("Test2!");
 
-    when(userRepository.findById(eq(1))).thenReturn(Optional.of(testUser1));
-    when(userRepository.findById(eq(2))).thenReturn(Optional.of(testUser2));
+    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
+    when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
     when(messageRepository
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(testUser1, testUser2, testUser1, testUser2))
         .thenReturn(testMessages);
@@ -144,7 +144,7 @@ class MessageServiceImplTest {
 
     List<MessageDtoResponse> testFindMessages = messageService
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(request);
-    Assert.assertTrue(testFindMessages.size() == 4);
+    Assert.assertEquals(4,testFindMessages.size());
     Assert.assertEquals("Hallo", testFindMessages.get(0).getMessage());
     Assert.assertEquals("world!", testFindMessages.get(1).getMessage());
     Assert.assertEquals("Test!", testFindMessages.get(2).getMessage());
@@ -222,8 +222,8 @@ class MessageServiceImplTest {
     testMessageSearchDto3.setUsername("RRR");
     testMessageSearchDto3.setMessage("Roma");
 
-    when(userRepository.findById(eq(2))).thenReturn(Optional.of(testUser2));
-    when(userRepository.findById(eq(1))).thenReturn(Optional.of(testUser1));
+    when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
+    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
     when(messageSearchMapper.messageToMessageSearchDto(testMessage1)).thenReturn(testMessageSearchDto1);
     when(messageSearchMapper.messageToMessageSearchDto(testMessage3)).thenReturn(testMessageSearchDto2);
     when(messageSearchMapper.messageToMessageSearchDto(testMessage5)).thenReturn(testMessageSearchDto3);
@@ -275,7 +275,7 @@ class MessageServiceImplTest {
 
     List<Message> resultMessages = messageService.findMessageByInboxUidOrUserId(testUser1, testUser2);
 
-    Assert.assertTrue(resultMessages.size() == 3);
+    Assert.assertEquals(3, resultMessages.size());
     Assert.assertEquals(Optional.of(testUser2), Optional.of(resultMessages.get(0).getInboxUid()));
     Assert.assertEquals(Optional.of(testUser1), Optional.of(resultMessages.get(0).getUserId()));
     Assert.assertEquals(Optional.of("Hallo"), Optional.of(resultMessages.get(0).getMessageText()));

@@ -46,11 +46,11 @@ public class InboxServiceImpl implements InboxService {
       inboxesSenderAndReceiver.add(inboxS);
       inboxesSenderAndReceiver.add(inboxR);
     } else {
-      Optional<Inbox> oInboxFromDbR = inboxRepository.findByInboxUidAndUserId(receiverId, senderId);
-      if (oInboxFromDbR.isPresent()) {
+      Optional<Inbox> inboxFromDbRo = inboxRepository.findByInboxUidAndUserId(receiverId, senderId);
+      if (inboxFromDbRo.isPresent()) {
         Inbox inboxFromDbS = inboxSender.get();
         inboxFromDbS.setLastMessage(message);
-        Inbox InboxFromDbR = oInboxFromDbR.get();
+        Inbox InboxFromDbR = inboxFromDbRo.get();
         InboxFromDbR.setLastMessage(message);
         Inbox inboxS = inboxRepository.save(inboxFromDbS);
         Inbox inboxR = inboxRepository.save(InboxFromDbR);
@@ -65,14 +65,14 @@ public class InboxServiceImpl implements InboxService {
   @Override
   public List<InboxDtoResponse> getInboxesByInboxUid(InboxDtoRequest request) {
     Integer userId = request.getInboxUid();
-    List<InboxDtoResponse> inboxesDto = new ArrayList<>();
+    List<InboxDtoResponse> inboxesDto;
     Optional<DbUser> oInboxUid = userRepository.findById(userId);
     if (oInboxUid.isEmpty()) {
       throw new UserNotFoundException(String.format("User with userId %s not found", userId));
     } else {
       List<Inbox> inboxes = inboxRepository.getInboxesByInboxUid(oInboxUid.get());
       inboxesDto = inboxes.stream()
-          .map(i -> mapper.inboxToInboxDtoResponse(i)).toList();
+          .map(mapper::inboxToInboxDtoResponse).toList();
     }
     return inboxesDto;
   }

@@ -167,7 +167,7 @@ public class UserServiceImpl implements UserService {
             || user.getUsername().toLowerCase()
             .contains(userSearch.toLowerCase())
             && !user.getUserId().equals(userId))
-        .map(mf -> searchMapper.dbUserToSearchDto(mf)).toList();
+        .map(searchMapper::dbUserToSearchDto).toList();
   }
 
   @Override

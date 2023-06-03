@@ -33,6 +33,7 @@ public class MessageServiceImpl implements MessageService {
   private final MessageSearchMapper searchMapper;
   private final InboxServiceImpl inboxService;
   private final MessageMapper messageMapper;
+  private static final String MESSAGE_CACHE = "MessageCache";
 
   /*Method save a new message and returns it*/
   @Override
@@ -90,7 +91,7 @@ public class MessageServiceImpl implements MessageService {
    and filters messages from cache by requested string. And returns them*/
   @Override
   public List<MessageSearchDto> filterCachedMessageByString(SearchRequest request) {
-    List<MessageSearchDto> search = new ArrayList<>();
+    List<MessageSearchDto> search;
     Integer userId = Integer.valueOf(request.getUserId());
     Optional<DbUser> oUserFromDb = userRepository.findById(userId);
     if (oUserFromDb.isEmpty()) {
@@ -99,19 +100,19 @@ public class MessageServiceImpl implements MessageService {
       DbUser userFromDb = oUserFromDb.get();
       String messageSearch = request.getSearch();
 
-      if (messageCache.getIfPresent("MessageCache") == null) {
+      if (messageCache.getIfPresent(MESSAGE_CACHE) == null) {
         List<Message> cacheMessage = messageRepository.findMessageByInboxUidOrUserId(userFromDb, userFromDb);
         log.debug(String.format("cacheMessage.size = %d", cacheMessage.size()));
-        messageCache.put("MessageCache", cacheMessage);
+        messageCache.put(MESSAGE_CACHE, cacheMessage);
       }
       log.debug(String.format("filterCachedMessagesByString: %s. "
           + "Should find all messages by string.", messageSearch));
-      search = messageCache.getIfPresent("MessageCache").stream()
+      search = messageCache.getIfPresent(MESSAGE_CACHE).stream()
           .filter(m -> m.getMessageText().toLowerCase().contains(messageSearch.toLowerCase()))
-          .map(mf -> searchMapper.messageToMessageSearchDto(mf)).toList();
+          .map(searchMapper::messageToMessageSearchDto).toList();
       log.debug(String.format("filterCachedMessageByString: %s. Find all Messages by string.", messageSearch));
+      return search;
     }
-    return search;
   }
 
 }

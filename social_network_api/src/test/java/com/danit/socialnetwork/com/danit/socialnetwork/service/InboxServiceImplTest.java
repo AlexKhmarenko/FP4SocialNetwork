@@ -93,7 +93,7 @@ class InboxServiceImplTest {
 
     List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
 
-    Assert.assertTrue(testSaveInboxes.size() == 2);
+    Assert.assertEquals(2, testSaveInboxes.size());
     Assert.assertEquals("Hello World!", testSaveInboxes.get(0).getLastMessage().getMessageText());
     Assert.assertEquals("Hello World!", testSaveInboxes.get(1).getLastMessage().getMessageText());
     Assert.assertEquals(Optional.of(1), Optional.of(testSaveInboxes.get(0).getInboxUid().getUserId()));
@@ -131,7 +131,7 @@ class InboxServiceImplTest {
 
     List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
 
-    Assert.assertTrue(testSaveInboxes.size() == 2);
+    Assert.assertEquals(2, testSaveInboxes.size());
     Assert.assertEquals("Hello World!", testSaveInboxes.get(0).getLastMessage().getMessageText());
     Assert.assertEquals("Hello World!", testSaveInboxes.get(1).getLastMessage().getMessageText());
     Assert.assertEquals(Optional.of(1), Optional.of(testSaveInboxes.get(0).getInboxUid().getUserId()));
@@ -195,7 +195,7 @@ class InboxServiceImplTest {
 
     List<InboxDtoResponse> testFindInbox = inboxServiceImpl.getInboxesByInboxUid(request);
 
-    Assert.assertTrue(testFindInbox.size() == 4);
+    Assert.assertEquals(4, testFindInbox.size());
     Assert.assertEquals(Integer.valueOf(2), testFindInbox.get(0).getUserId());
     Assert.assertEquals(Integer.valueOf(3), testFindInbox.get(1).getUserId());
     Assert.assertEquals(Integer.valueOf(4), testFindInbox.get(2).getUserId());
