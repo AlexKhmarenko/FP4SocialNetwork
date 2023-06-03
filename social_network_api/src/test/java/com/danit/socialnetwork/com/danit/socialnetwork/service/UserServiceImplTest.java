@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
@@ -16,18 +17,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.danit.socialnetwork.config.GuavaCache;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
 import static com.danit.socialnetwork.config.GuavaCache.userCache;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
@@ -344,6 +348,72 @@ class UserServiceImplTest {
     assertEquals(testUpdateUser.getProfileImageUrl(), testUser.getProfileImageUrl());
     assertEquals(testUpdateUser.getProfileBackgroundImageUrl(), testUser.getProfileBackgroundImageUrl());
     assertTrue(result);
+  }
+
+
+  @Test
+  void dbUserDobChange() {
+    UserDobChangeRequest userDobChangeRequest = new UserDobChangeRequest();
+    userDobChangeRequest.setUserId(55);
+    userDobChangeRequest.setDay(1);
+    userDobChangeRequest.setMonth(11);
+    userDobChangeRequest.setYear(2000);
+    DbUser user = new DbUser();
+    user.setUserId(55);
+    user.setDateOfBirth(LocalDate.of(1995, 12, 10));
+    when(userRepository.findById(55)).thenReturn(Optional.of(user));
+
+    ResponseEntity<Map<String, String>> mapResponseEntity = userServiceImp.dbUserDobChange(userDobChangeRequest);
+    assertEquals("{message=User birthday changed, userId=55}", mapResponseEntity.getBody().toString());
+  }
+
+  @Test
+  void getUsersWhoLikedPostByPostId() {
+    DbUser dbUser1 = new DbUser();
+    dbUser1.setUserId(1);
+    dbUser1.setUsername("John");
+    dbUser1.setName("Johny");
+    DbUser dbUser2 = new DbUser();
+    dbUser2.setUserId(2);
+    dbUser2.setUsername("Jim");
+    dbUser2.setName("Jimmy");
+    List<DbUser> dbUserList = Arrays.asList(dbUser1, dbUser2);
+
+    int pageSize = 10;
+    Pageable pagedByPageSizePosts = PageRequest.of(0, pageSize);
+    when(userRepository.getUsersWhoLikedPostByPostId(1, pagedByPageSizePosts)).thenReturn(dbUserList);
+
+    List<DbUser> userList = userServiceImp.getUsersWhoLikedPostByPostId(1, 0);
+
+    Assertions.assertEquals(2, userList.size());
+    Assertions.assertEquals(1, userList.get(0).getUserId());
+    Assertions.assertEquals("John", userList.get(0).getUsername());
+    Assertions.assertEquals("Johny", userList.get(0).getName());
+
+  }
+
+  @Test
+  void getUsersWhoMostPopular() {
+    DbUser dbUser1 = new DbUser();
+    dbUser1.setUserId(1);
+    dbUser1.setUsername("John");
+    dbUser1.setName("Johny");
+    DbUser dbUser2 = new DbUser();
+    dbUser2.setUserId(2);
+    dbUser2.setUsername("Jim");
+    dbUser2.setName("Jimmy");
+    List<DbUser> dbUserList = Arrays.asList(dbUser1, dbUser2);
+
+    int pageSize = 10;
+    Pageable pagedByPageSizePosts = PageRequest.of(0, pageSize);
+    when(userRepository.findAllWhoMostPopular(pagedByPageSizePosts)).thenReturn(dbUserList);
+
+    List<DbUser> userList = userServiceImp.getUsersWhoMostPopular(0);
+
+    Assertions.assertEquals(2, userList.size());
+    Assertions.assertEquals(1, userList.get(0).getUserId());
+    Assertions.assertEquals("John", userList.get(0).getUsername());
+    Assertions.assertEquals("Johny", userList.get(0).getName());
   }
 
 }
