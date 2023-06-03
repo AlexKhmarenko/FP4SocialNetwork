@@ -53,7 +53,7 @@ public class UserRestController {
 
   private final SearchMapper searchMapper;
 
-  @RequestMapping(value = "registration", method = RequestMethod.POST)
+  @PostMapping(value = "registration")
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     int day = request.getDay();
@@ -95,7 +95,7 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/sendLetter", method = RequestMethod.POST)
+  @PostMapping(value = "/sendLetter")
   public ResponseEntity<Map<String, String>> handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
 
@@ -112,7 +112,7 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/activate", method = RequestMethod.POST)
+  @PostMapping(value = "/activate")
   public ResponseEntity<Map<String, String>> handleActivatePost(
       @RequestBody ActivateCodeRequest request) {
     Integer code = request.getCode();
@@ -128,7 +128,7 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/api/search", method = RequestMethod.POST)
+  @GetMapping(value = "/api/search")
   public ResponseEntity<List<SearchDto>> handleSearchPost(@RequestBody SearchRequest request) {
     List<SearchDto> searchDto = userService.filterCachedUsersByName(request);
     log.debug(String.format("filterCachedUsersByName: %s. Find all users by name.",

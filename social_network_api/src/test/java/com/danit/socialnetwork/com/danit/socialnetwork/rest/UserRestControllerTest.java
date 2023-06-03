@@ -37,6 +37,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -263,7 +264,7 @@ class UserRestControllerTest {
 
     when(userService.filterCachedUsersByName(search)).thenReturn(testSearchDto);
 
-    mockMvc.perform(post("/api/search")
+    mockMvc.perform(get("/api/search")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(search)))
         .andExpect(status().isFound());
