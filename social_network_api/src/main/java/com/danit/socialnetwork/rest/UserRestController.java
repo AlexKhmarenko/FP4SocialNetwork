@@ -128,17 +128,15 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/search", method = RequestMethod.POST)
-  public ResponseEntity<List<SearchDto>> handleSearchPost(
-      @RequestBody SearchRequest request) {
-    String userSearch = request.getUserSearch();
-    List<DbUser> search = userService.filterCachedUsersByName(userSearch);
-    log.debug("filterCachedUsersByName: " + userSearch + ". Find all users by name.");
-    List<SearchDto> searchDto = search.stream().map(searchMapper::dbUserToSearchDto).toList();
+  @RequestMapping(value = "/api/search", method = RequestMethod.POST)
+  public ResponseEntity<List<SearchDto>> handleSearchPost(@RequestBody SearchRequest request) {
+    List<SearchDto> searchDto = userService.filterCachedUsersByName(request);
+    log.debug(String.format("filterCachedUsersByName: %s. Find all users by name.",
+        request.getSearch()));
     return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
   }
 
-  @PutMapping(value = "edition")
+  @PutMapping(value = "/edition")
   public ResponseEntity<Map<String, String>> handleEditionPost(
       @RequestBody EditingDtoRequest request) {
     Map<String, String> response = new HashMap<>();
