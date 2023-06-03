@@ -115,9 +115,9 @@ class InboxServiceImplTest {
     testInboxSender.setLastMessage(testMessage);
     testInboxSender.setUserId(testUser2);
     Inbox testInboxReceiver = new Inbox();
-    testInboxReceiver.setInboxUid(testUser2); // Corrected line
-    testInboxReceiver.setLastMessage(testMessage); // Corrected line
-    testInboxReceiver.setUserId(testUser1); // Corrected line
+    testInboxReceiver.setInboxUid(testUser2);
+    testInboxReceiver.setLastMessage(testMessage);
+    testInboxReceiver.setUserId(testUser1);
     List<Inbox> testInboxes = new ArrayList<>();
     testInboxes.add(testInboxSender);
     testInboxes.add(testInboxReceiver);
@@ -126,6 +126,8 @@ class InboxServiceImplTest {
         .thenReturn(Optional.of(testInboxSender));
     when(inboxRepository.findByInboxUidAndUserId(testUser2, testUser1))
         .thenReturn(Optional.of(testInboxReceiver));
+    when(inboxRepository.save(testInboxSender)).thenReturn(testInboxSender);
+    when(inboxRepository.save(testInboxReceiver)).thenReturn(testInboxReceiver);
 
     List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
 

@@ -174,18 +174,23 @@ class UserServiceImplTest {
     DbUser testDbUser1 = new DbUser();
     testDbUser1.setName("Nadya");
     testDbUser1.setUsername("NNN");
+    testDbUser1.setUserId(1); // Set the userId property
     DbUser testDbUser2 = new DbUser();
     testDbUser2.setName("NNN");
     testDbUser2.setUsername("Nadin");
+    testDbUser2.setUserId(2); // Set the userId property
     DbUser testDbUser3 = new DbUser();
     testDbUser3.setName("Ron");
     testDbUser3.setUsername("RRR");
+    testDbUser3.setUserId(3); // Set the userId property
     DbUser testDbUser4 = new DbUser();
     testDbUser4.setName("DDD");
     testDbUser4.setUsername("Dima");
+    testDbUser4.setUserId(4); // Set the userId property
     DbUser testDbUser5 = new DbUser();
     testDbUser5.setName("Roma");
     testDbUser5.setUsername("RRR");
+    testDbUser5.setUserId(5); // Set the userId property
 
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser1);
@@ -223,6 +228,7 @@ class UserServiceImplTest {
     Assert.assertTrue(resultSearchDto.get(0).getName().toUpperCase().contains("nad".toUpperCase())
         || resultSearchDto.get(0).getUsername().toUpperCase().contains("nad".toUpperCase()));
   }
+
 
   @Test
   void filterCachedUsersByName_WhenNotExists() {
