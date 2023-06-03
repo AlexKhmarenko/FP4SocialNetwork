@@ -34,6 +34,7 @@ public class MessageServiceImpl implements MessageService {
   private final InboxServiceImpl inboxService;
   private final MessageMapper messageMapper;
   private static final String MESSAGE_CACHE = "MessageCache";
+  private static final String USER_NOT_FOUND = "User with userId %d not found";
 
   /*Method save a new message and returns it*/
   @Override
@@ -44,7 +45,7 @@ public class MessageServiceImpl implements MessageService {
     if (userSender.isPresent()) {
       userS = userSender.get();
     } else {
-      throw new UserNotFoundException(String.format("User with userId %d not found", userSenderId));
+      throw new UserNotFoundException(String.format(USER_NOT_FOUND, userSenderId));
     }
 
     Integer userReceiverId = request.getUserId();
@@ -53,7 +54,7 @@ public class MessageServiceImpl implements MessageService {
     if (userReceiver.isPresent()) {
       userR = userReceiver.get();
     } else {
-      throw new UserNotFoundException(String.format("User with userId %d not found", userReceiverId));
+      throw new UserNotFoundException(String.format(USER_NOT_FOUND, userReceiverId));
     }
 
     String writtenMessage = request.getWrittenMessage();
@@ -78,7 +79,7 @@ public class MessageServiceImpl implements MessageService {
     DbUser userId = userRepository.findById(request.getUserId()).get();
     List<Message> messages = messageRepository
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(inboxUid, userId, inboxUid, userId);
-    return messages.stream().map(m -> messageMapper.messageToMessageDtoResponse(m)).toList();
+    return messages.stream().map(messageMapper::messageToMessageDtoResponse).toList();
   }
 
   /*The method finds all incoming and outgoing messages of the user and returns them*/
@@ -95,7 +96,7 @@ public class MessageServiceImpl implements MessageService {
     Integer userId = Integer.valueOf(request.getUserId());
     Optional<DbUser> oUserFromDb = userRepository.findById(userId);
     if (oUserFromDb.isEmpty()) {
-      throw new UserNotFoundException(String.format("User with userId %d not found", userId));
+      throw new UserNotFoundException(String.format(USER_NOT_FOUND, userId));
     } else {
       DbUser userFromDb = oUserFromDb.get();
       String messageSearch = request.getSearch();
