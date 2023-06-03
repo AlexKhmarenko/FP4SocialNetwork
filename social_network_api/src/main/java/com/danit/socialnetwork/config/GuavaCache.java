@@ -30,12 +30,12 @@ public class GuavaCache {
       .expireAfterWrite(1, TimeUnit.MINUTES)
       .build();
 
-  public static Cache<String, List<DbUser>> userCache = CacheBuilder.newBuilder()
+  public final static Cache<String, List<DbUser>> userCache = CacheBuilder.newBuilder()
       .maximumSize(1000)
       .expireAfterWrite(1, TimeUnit.MINUTES)
       .build();
 
-  public static Cache<String, List<Message>> messageCache = CacheBuilder.newBuilder()
+  public final static Cache<String, List<Message>> messageCache = CacheBuilder.newBuilder()
       .maximumSize(1000)
       .expireAfterWrite(1, TimeUnit.MINUTES)
       .build();

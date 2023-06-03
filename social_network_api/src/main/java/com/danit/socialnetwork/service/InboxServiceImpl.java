@@ -48,12 +48,12 @@ public class InboxServiceImpl implements InboxService {
     } else {
       Optional<Inbox> inboxFromDbRo = inboxRepository.findByInboxUidAndUserId(receiverId, senderId);
       if (inboxFromDbRo.isPresent()) {
-        Inbox inboxFromDbS = inboxSender.get();
-        inboxFromDbS.setLastMessage(message);
-        Inbox InboxFromDbR = inboxFromDbRo.get();
-        InboxFromDbR.setLastMessage(message);
-        Inbox inboxS = inboxRepository.save(inboxFromDbS);
-        Inbox inboxR = inboxRepository.save(InboxFromDbR);
+        Inbox inboxFromDbs = inboxSender.get();
+        inboxFromDbs.setLastMessage(message);
+        Inbox InboxFromDbr = inboxFromDbRo.get();
+        InboxFromDbr.setLastMessage(message);
+        Inbox inboxS = inboxRepository.save(inboxFromDbs);
+        Inbox inboxR = inboxRepository.save(InboxFromDbr);
         inboxesSenderAndReceiver.add(inboxS);
         inboxesSenderAndReceiver.add(inboxR);
       }
