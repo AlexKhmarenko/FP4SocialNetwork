@@ -9,8 +9,9 @@ import { useDispatch } from "react-redux";
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
 import { setCommentFromUser, setSearchId } from "../../store/actions";
+import CircularProgress from "@mui/material/CircularProgress";
 
-export function Comments({ comments, postId, userId, setPostCommentCount, postCommentCount, photoFileByteArray }) {
+export function Comments({ comments, postId, userId, setPostCommentCount, postCommentCount, photoFileByteArray, isLoadingComments }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const validationSchema = Yup.object().shape({
@@ -59,7 +60,7 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
                         height: "50xp"
                     }}>
                         <Typography variant="h6" sx={{ marginBottom: "10px", marginTop: "10px" }}>Comments:</Typography>
-                        {comments.length > 0 ? (comments.map((comment, index) => (
+                        { isLoadingComments ?  <CircularProgress sx={{ marginLeft: "45%", width: "5px", height: "5px" }}/>   :  comments.length > 0 ? (comments.map((comment, index) => (
                             <Box key={index} style={{
                                 padding: "5px 0",
                                 borderTop: "1px solid #eee",
@@ -152,6 +153,7 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
 }
 
 Comments.propTypes = {
+    isLoadingComments:PropTypes.bool,
     comments: PropTypes.array.isRequired,
     userId: PropTypes.string,
     postId: PropTypes.number,

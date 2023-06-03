@@ -1,15 +1,16 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper } from "@mui/material";
+import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
 
 import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
 import { openLoginModal, setComments, setSearchId } from "../../store/actions";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes, postComments, userIdWhoSendPost }) => {
     const userId = useSelector(state => state.userData.userData.userId);
@@ -25,16 +26,52 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const [likeCount, setLikeCount] = useState(postLikes);
     const [showLike, setShowLike] = useState(false);
     const [usersWhoLike, setUsersWhoLike] = useState([]);
-
+    const [likesIsLoading, setLikesIsLoading] = useState(false);
+    const [isLoadingComments, setIsLoadingComments] = useState(false);
+    const cardRef = useRef(null);
 
     const ShowUsersWhoLike = async () => {
         setShowLike(!showLike);
-        let dataAboutUsersWhoLike = await fetch(`http://localhost:8080/users/likes?postld=${postId}&page=0`);
-        let usersWhoLike2 = await dataAboutUsersWhoLike.json();
-        console.log(usersWhoLike2)
-        console.log(postId)
-        setUsersWhoLike(usersWhoLike2);
     };
+
+    useEffect(() => {
+        if (cardRef.current) {
+            const observer = new IntersectionObserver(entries => {
+                // entries[0] - это элемент, за которым наблюдаем.
+                // isIntersecting будет true, когда элемент полностью виден.
+                if (!entries[0].isIntersecting) {
+                    setIsCommentOpen(false);
+                }
+            }, {
+                // Если 0% элемента видно, isIntersecting будет false.
+                threshold: 0
+            });
+            // Начинаем наблюдение.
+            observer.observe(cardRef.current);
+            // Возвращаем функцию очистки, чтобы остановить наблюдение, когда компонент размонтируется.
+            return () => observer.disconnect();
+        }
+    }, []);
+
+    useEffect(() => {
+        const fetchLikes = async () => {
+            try {
+                setLikesIsLoading(true);
+                let dataAboutUsersWhoLike = await fetch(`http://localhost:8080/users/likes?postId=${postId}&page=0`);
+                let usersWhoLike2 = await dataAboutUsersWhoLike.json();
+                setUsersWhoLike(usersWhoLike2);
+                console.log("usersWhoLike", usersWhoLike2);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLikesIsLoading(false);
+            }
+        };
+
+        if (showLike) {
+            fetchLikes();
+        }
+    }, [showLike]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,8 +88,8 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         fetchData();
     }, [userId, postId]);
 
-    const toAnotherUserPage = () => {
-        dispatch(setSearchId(String(userIdWhoSendPost)));
+    const toAnotherUserPage = (userId) => {
+        dispatch(setSearchId(String(userId)));
         navigate("/view");
     };
 
@@ -76,11 +113,17 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
 
     const handleCommentToggle = async () => {
         if (userId) {
-            setIsCommentOpen(!isCommentOpen);
-            let commentsResponse = await fetch(`http://localhost:8080/comments?postId=${postId}`);
-            let dataComments = await commentsResponse.json();
-            dispatch(setComments(dataComments));
-
+            try {
+                setIsCommentOpen(!isCommentOpen);
+                setIsLoadingComments(true);
+                let commentsResponse = await fetch(`http://localhost:8080/comments?postId=${postId}`);
+                let dataComments = await commentsResponse.json();
+                dispatch(setComments(dataComments));
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setIsLoadingComments(false);
+            }
         } else {
             dispatch(openLoginModal());
         }
@@ -146,12 +189,13 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     };
 
     return (
-        <Card sx={{ ...PostCard, position: "relative" }}>
+        <Card ref={cardRef} sx={{ ...PostCard, position: "relative" }}>
             <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
-              <Avatar alt={userName} src="#"/>
+                <Avatar alt={userName} src="#"/>
                 <div style={{ marginLeft: 16, flex: 1 }}>
                     <Typography variant="subtitle1" component="div"
-                                sx={{ textDecoration: "underline", cursor: "pointer" }} onClick={toAnotherUserPage}>
+                                sx={{ textDecoration: "underline", cursor: "pointer" }}
+                                onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
                     <Typography variant="body1" component="div" mt={1}
@@ -186,34 +230,52 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
                 <IconButton onClick={sendRepost}>
                     <Repeat fontSize="small" htmlColor={isReposted ? "blue" : "inherit"}/>
                 </IconButton>
-                <IconButton onClick={addLikeHandle} >
+                <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
 
                 </IconButton>
-                <Typography onClick={ShowUsersWhoLike} variant="body2" sx={{ marginLeft: "0px", textDecoration: "underline", cursor:"pointer" }}>{likeCount}</Typography>
-                {showLike ?
-                    <Paper elevation={3} sx={{
-                        width: "200px",
-                        marginLeft: "10px",
-                        maxHeight: "70px",
-                        position: "absolute",
-                        left: "170px",
-                        overflow: "scroll"
-                    }}>
-                        тут будуть юзери які лайкнули пост)
-                        {usersWhoLike.map(user => (
-                            <div key={postId} style={{
-                                display: "flex",
-                                borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-                                padding: "5px 10px"
-                            }}>
-                                <Typography>@{user.username}</Typography>
-                                <Typography sx={{ marginLeft: "10px" }}>{user.name}</Typography>
-                            </div>
-                        ))}
-                    </Paper> : null}
+                <Typography onClick={ShowUsersWhoLike} variant="body2" sx={{
+                    marginLeft: "0px",
+                    textDecoration: "underline",
+                    cursor: "pointer"
+                }}>{likeCount}</Typography>
+                <Paper elevation={3} sx={{
+                    width: "200px",
+                    marginLeft: "10px",
+                    maxHeight: "70px",
+                    position: "absolute",
+                    left: "170px",
+                    overflow: "scroll",
+                }}>
+                    {likesIsLoading ?
+                        <CircularProgress sx={{ marginLeft: "40%", width: "5px", height: "5px" }}/>
+                        :
+                        showLike ?
+                            usersWhoLike.length > 0 ?
+                                usersWhoLike.map(user => (
+                                    <Box key={user.userId} onClick={() => toAnotherUserPage(user.userId)} sx={{
+                                        display: "flex",
+                                        cursor: "pointer",
+                                        borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+                                        padding: "5px 10px",
+                                        "&:hover": {
+                                            backgroundColor: "rgba(128, 128, 128, 0.1)",
+                                        },
+                                    }}>
+                                        <Typography>@{user.username}</Typography>
+                                        <Typography sx={{ marginLeft: "10px" }}>{user.name}</Typography>
+                                    </Box>
+                                ))
+                                :
+                                <Typography sx={{
+                                    fontSize: "0.9rem",
+                                    fontFamily: "'Lato', sans-serif",
+                                }}>Лайків ще немає!Будь першим</Typography>
+                            :
+                            null}
+                </Paper>
             </CardActions>
-            {isCommentOpen && <Comments comments={comments} postCommentCount={postCommentCount}
+            {isCommentOpen && <Comments comments={comments} isLoadingComments={isLoadingComments} postCommentCount={postCommentCount}
                                         setPostCommentCount={setPostCommentCount} postId={postId} userId={userId}/>}
         </Card>
     );
