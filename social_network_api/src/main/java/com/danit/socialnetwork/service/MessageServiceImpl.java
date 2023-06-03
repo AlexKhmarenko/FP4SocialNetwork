@@ -89,12 +89,12 @@ public class MessageServiceImpl implements MessageService {
   /*The method writes all messages to cache if there is no cache,
    and filters messages from cache by requested string. And returns them*/
   @Override
-  public List<MessageSearchDto> filterCachedMessageByString(SearchRequest request) throws UserNotFoundException {
+  public List<MessageSearchDto> filterCachedMessageByString(SearchRequest request) {
     List<MessageSearchDto> search = new ArrayList<>();
     Integer userId = Integer.valueOf(request.getUserId());
     Optional<DbUser> oUserFromDb = userRepository.findById(userId);
     if (oUserFromDb.isEmpty()) {
-      new UserNotFoundException(String.format("User with userId %d not found", userId));
+      throw new UserNotFoundException(String.format("User with userId %d not found", userId));
     } else {
       DbUser userFromDb = oUserFromDb.get();
       String messageSearch = request.getSearch();
