@@ -130,7 +130,7 @@ class MessageRestControllerTest {
 
     when(messageService.filterCachedMessageByString(request)).thenReturn(messageSearchDto);
 
-    mockMvc.perform(post("/api/messageSearch")
+    mockMvc.perform(get("/api/messageSearch")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isFound());
