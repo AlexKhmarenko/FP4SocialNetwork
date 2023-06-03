@@ -53,7 +53,7 @@ public class UserRestController {
 
   private final SearchMapper searchMapper;
 
-  @PostMapping(value = "registration")
+  @PostMapping(path = "registration")
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     int day = request.getDay();

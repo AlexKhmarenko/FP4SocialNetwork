@@ -57,8 +57,8 @@ public class MessageRestController {
 
   /*The method writes all messages to cache if there is no cache,
    and filters messages from cache by requested string*/
-  @GetMapping(value = "/api/messageSearch")
-  public ResponseEntity<?> handleMessageSearchPost(@RequestBody SearchRequest request) {
+  @GetMapping(path = "/api/messageSearch")
+  public ResponseEntity<Object> handleMessageSearchPost(@RequestBody SearchRequest request) {
     List<MessageSearchDto> messageSearchDto = messageService.filterCachedMessageByString(request);
     if (messageSearchDto.isEmpty()) {
       List<SearchDto> searchDto = userService.filterCachedUsersByName(request);
