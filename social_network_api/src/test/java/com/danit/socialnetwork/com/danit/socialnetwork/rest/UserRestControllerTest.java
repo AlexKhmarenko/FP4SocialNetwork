@@ -1,6 +1,9 @@
 package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.dto.*;
+import com.danit.socialnetwork.dto.UserEmailRequest;
+import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
+import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.user.UserDtoForPostLikeResponse;
 import com.danit.socialnetwork.dto.search.SearchRequest;
@@ -260,7 +263,7 @@ class UserRestControllerTest {
 
     when(userService.filterCachedUsersByName(search)).thenReturn(testSearchDto);
 
-    mockMvc.perform(post("/search")
+    mockMvc.perform(post("/api/search")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(search)))
         .andExpect(status().isFound());
