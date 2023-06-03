@@ -163,10 +163,10 @@ public class UserServiceImpl implements UserService {
     return userCache.getIfPresent("UserCache").stream()
         .filter(user -> (user.getName().toLowerCase()
             .contains(userSearch.toLowerCase())
-            && user.getUserId() != userId)
+            && !user.getUserId().equals(userId))
             || user.getUsername().toLowerCase()
             .contains(userSearch.toLowerCase())
-            && user.getUserId() != userId)
+            && !user.getUserId().equals(userId))
         .map(mf -> searchMapper.dbUserToSearchDto(mf)).toList();
   }
 

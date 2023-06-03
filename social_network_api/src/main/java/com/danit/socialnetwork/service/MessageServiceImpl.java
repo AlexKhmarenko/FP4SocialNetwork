@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,20 +89,27 @@ public class MessageServiceImpl implements MessageService {
    and filters messages from cache by requested string. And returns them*/
   @Override
   public List<MessageSearchDto> filterCachedMessageByString(SearchRequest request) {
+    List<MessageSearchDto> search = new ArrayList<>();
     Integer userId = Integer.valueOf(request.getUserId());
-    DbUser userFromDb = userRepository.findById(userId).get();
-    String messageSearch = request.getSearch();
-    if (messageCache.getIfPresent("MessageCache") == null) {
-      List<Message> cacheMessage = messageRepository.findMessageByInboxUidOrUserId(userFromDb, userFromDb);
-      log.debug(String.format("cacheMessage.size = %d", cacheMessage.size()));
-      messageCache.put("MessageCache", cacheMessage);
+    Optional<DbUser> oUserFromDb = userRepository.findById(userId);
+    if (oUserFromDb.isEmpty()) {
+      new UserNotFoundException(String.format("User with userId %d not found", userId));
+    } else {
+      DbUser userFromDb = oUserFromDb.get();
+      String messageSearch = request.getSearch();
+
+      if (messageCache.getIfPresent("MessageCache") == null) {
+        List<Message> cacheMessage = messageRepository.findMessageByInboxUidOrUserId(userFromDb, userFromDb);
+        log.debug(String.format("cacheMessage.size = %d", cacheMessage.size()));
+        messageCache.put("MessageCache", cacheMessage);
+      }
+      log.debug(String.format("filterCachedMessagesByString: %s. "
+          + "Should find all messages by string.", messageSearch));
+      search = messageCache.getIfPresent("MessageCache").stream()
+          .filter(m -> m.getMessageText().toLowerCase().contains(messageSearch.toLowerCase()))
+          .map(mf -> searchMapper.messageToMessageSearchDto(mf)).toList();
+      log.debug(String.format("filterCachedMessageByString: %s. Find all Messages by string.", messageSearch));
     }
-    log.debug(String.format("filterCachedMessagesByString: %s. "
-        + "Should find all messages by string.", messageSearch));
-    List<MessageSearchDto> search = messageCache.getIfPresent("MessageCache").stream()
-        .filter(m -> m.getMessageText().toLowerCase().contains(messageSearch.toLowerCase()))
-        .map(mf -> searchMapper.messageToMessageSearchDto(mf)).toList();
-    log.debug(String.format("filterCachedMessageByString: %s. Find all Messages by string.", messageSearch));
     return search;
   }
 

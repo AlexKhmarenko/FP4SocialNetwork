@@ -33,26 +33,28 @@ public class InboxServiceImpl implements InboxService {
   /*The method saves a new inbox if it does not exist and updates it if it does exist and returns it*/
   @Override
   public List<Inbox> saveInbox(DbUser senderId, DbUser receiverId, Message message) {
+    List<Inbox> inboxesSenderAndReceiver = new ArrayList<>();
+
     Optional<Inbox> inboxSender = inboxRepository.findByInboxUidAndUserId(senderId, receiverId);
     if (inboxSender.isEmpty()) {
       Inbox inboxNewSender = new Inbox(senderId, receiverId, message);
       Inbox inboxS = inboxRepository.save(inboxNewSender);
       Inbox inboxNewReceiver = new Inbox(receiverId, senderId, message);
       Inbox inboxR = inboxRepository.save(inboxNewReceiver);
-      List<Inbox> inboxesSenderAndReceiver = new ArrayList<>();
       inboxesSenderAndReceiver.add(inboxS);
       inboxesSenderAndReceiver.add(inboxR);
-      return inboxesSenderAndReceiver;
     } else {
       Inbox inboxFromDbS = inboxSender.get();
       inboxFromDbS.setLastMessage(message);
-      Inbox inboxFromDbR = inboxRepository.findByInboxUidAndUserId(receiverId, senderId).get();
-      inboxFromDbR.setLastMessage(message);
-      List<Inbox> inboxesSenderAndReceiver = new ArrayList<>();
-      inboxesSenderAndReceiver.add(inboxFromDbS);
-      inboxesSenderAndReceiver.add(inboxFromDbR);
-      return inboxesSenderAndReceiver;
+      Optional<Inbox> oInboxFromDbR = inboxRepository.findByInboxUidAndUserId(receiverId, senderId);
+      if (oInboxFromDbR.isPresent()) {
+        Inbox InboxFromDbR = oInboxFromDbR.get();
+        InboxFromDbR.setLastMessage(message);
+        inboxesSenderAndReceiver.add(inboxFromDbS);
+        inboxesSenderAndReceiver.add(InboxFromDbR);
+      }
     }
+      return inboxesSenderAndReceiver;
   }
 
   /*The method finds the inbox by sender and returns it*/
