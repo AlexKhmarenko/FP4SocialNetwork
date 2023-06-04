@@ -12,7 +12,6 @@ import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoForSidebar;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
-import com.danit.socialnetwork.repository.UserRepository;
 import com.danit.socialnetwork.service.UserService;
 import com.danit.socialnetwork.model.DbUser;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,8 +42,6 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class UserRestController {
-  private final UserRepository userRepository;
-
   private static final String FALSE = "false";
   private static final String TRUE = "true";
 
@@ -53,7 +49,7 @@ public class UserRestController {
 
   private final SearchMapper searchMapper;
 
-  @RequestMapping(value = "registration", method = RequestMethod.POST)
+  @PostMapping(path = "registration")
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     int day = request.getDay();
@@ -95,7 +91,7 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/sendLetter", method = RequestMethod.POST)
+  @PostMapping(value = "/sendLetter")
   public ResponseEntity<Map<String, String>> handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
 
@@ -112,7 +108,7 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/activate", method = RequestMethod.POST)
+  @PostMapping(value = "/activate")
   public ResponseEntity<Map<String, String>> handleActivatePost(
       @RequestBody ActivateCodeRequest request) {
     Integer code = request.getCode();
@@ -128,17 +124,15 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/search", method = RequestMethod.POST)
-  public ResponseEntity<List<SearchDto>> handleSearchPost(
-      @RequestBody SearchRequest request) {
-    String userSearch = request.getSearch();
-    List<DbUser> search = userService.filterCachedUsersByName(userSearch);
-    log.debug("filterCachedUsersByName: " + userSearch + ". Find all users by name.");
-    List<SearchDto> searchDto = search.stream().map(searchMapper::dbUserToSearchDto).toList();
+  @GetMapping(value = "/api/search")
+  public ResponseEntity<List<SearchDto>> handleSearchPost(@RequestBody SearchRequest request) {
+    List<SearchDto> searchDto = userService.filterCachedUsersByName(request);
+    log.debug(String.format("filterCachedUsersByName: %s. Find all users by name.",
+        request.getSearch()));
     return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
   }
 
-  @PutMapping(value = "edition")
+  @PutMapping(value = "/edition")
   public ResponseEntity<Map<String, String>> handleEditionPost(
       @RequestBody EditingDtoRequest request) {
     Map<String, String> response = new HashMap<>();
@@ -157,13 +151,11 @@ public class UserRestController {
   }
 
   @GetMapping(value = "/{username}/photo", produces = MediaType.IMAGE_PNG_VALUE)
-  @ResponseBody
   public byte[] getProfileImage(@PathVariable("username") String username) throws IOException {
     return userService.getProfileImage(username);
   }
 
   @GetMapping(value = "/{username}/header_photo", produces = MediaType.IMAGE_PNG_VALUE)
-  @ResponseBody
   public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
     return userService.getBackgroundImage(username);
   }
@@ -181,7 +173,6 @@ public class UserRestController {
   }
 
   @GetMapping("/users/likes")
-  @ResponseBody
   public List<UserDtoForPostLikeResponse> getUsersWhoLikedPostByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (postId == 0) {
@@ -195,18 +186,12 @@ public class UserRestController {
 
 
   @GetMapping("/users/popular")
-  @ResponseBody
   public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
     return userService.getUsersWhoMostPopular(page)
         .stream()
         .map(UserDtoForSidebar::from)
         .toList();
   }
-
-
-
-
-
 
 
 }
