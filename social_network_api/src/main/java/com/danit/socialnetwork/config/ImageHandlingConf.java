@@ -38,14 +38,4 @@ public class ImageHandlingConf {
     }
   }
 
-  public byte[] getImage(String publicId) {
-    Map<String, Object> options = ObjectUtils.asMap("public_id", publicId);
-    try {
-      Map<String, Object> result = cloudinary.api().resource(publicId, options);
-      return Base64.getDecoder().decode(result.get("url").toString());
-    } catch (Exception e) {
-      return null;
-    }
-  }
-
 }
