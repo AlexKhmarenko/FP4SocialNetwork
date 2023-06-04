@@ -1,4 +1,4 @@
-import {userFollow} from "../actions";
+import {buttonDisabled, buttonEnabled, userFollow} from "../actions";
 
 
 export function fetchFollow () {
@@ -7,7 +7,7 @@ export function fetchFollow () {
         const state = getState()
         const searchId = state.userData.searchData.userId
         const userId = state.userData.userData.userId
-
+        dispatch(buttonDisabled())
 
         fetch(`http://localhost:8080/api/follow`, {
                 method: "POST",
@@ -18,10 +18,10 @@ export function fetchFollow () {
                 headers: {"Content-Type": "application/json"}
             })
                 .then(r => {
-                    if (r.ok) dispatch(userFollow())
+                    if (r.ok) {
+                        dispatch(userFollow())
+                        dispatch(buttonEnabled())
+                    }
                 })
-
-
-            // dispatch(userFollow())
         }
 }

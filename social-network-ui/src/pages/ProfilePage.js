@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Profile} from "../components/Profile/Profile/Profile";
-import {openEditModal} from "../store/actions";
+import {openEditModal, userUnfollow} from "../store/actions";
 import {EditProfile} from "../components/EditProfile/EditProfile";
 
 export function ProfilePage () {
@@ -10,7 +10,9 @@ export function ProfilePage () {
     const isEditModalOpen = useSelector(state => state.modal.isEditModal)
     const dispatch = useDispatch();
 
-
+    useEffect(() => {
+        dispatch(userUnfollow())
+    },[])
 
     return (
         <>

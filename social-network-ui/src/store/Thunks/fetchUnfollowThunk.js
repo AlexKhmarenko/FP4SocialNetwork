@@ -1,5 +1,5 @@
 
-import {userUnfollow} from "../actions";
+import {buttonDisabled, buttonEnabled, userUnfollow} from "../actions";
 
 
 export function fetchUnfollow () {
@@ -8,6 +8,7 @@ export function fetchUnfollow () {
         const state = getState()
         const searchId = state.userData.searchData.userId
         const userId = state.userData.userData.userId
+        dispatch(buttonDisabled())
 
         fetch(`http://localhost:8080/api/unfollow`, {
             method: "POST",
@@ -18,10 +19,11 @@ export function fetchUnfollow () {
             headers: { "Content-Type": "application/json" }
         })
             .then(r => {
-                if (r.ok) dispatch(userUnfollow())
+                if (r.ok) {
+                    dispatch(userUnfollow())
+                    dispatch(buttonEnabled())
+                }
             })
-        // if (response.ok) {
-        //     dispatch(userUnfollow())
-        // }
+
     }
 }

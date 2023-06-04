@@ -3,13 +3,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {Profile} from "../components/Profile/Profile/Profile";
 import {setSearchData, userFollow} from "../store/actions";
 import {fetchFollow} from "../store/Thunks/fetchFollowThunk";
+import {useNavigate} from "react-router-dom";
 
 export function BrowsePage () {
 
+    const isFollow = useSelector(state => state.userData.followData.userFollow)
     const searchData = useSelector(state => state.userData.searchData)
     const searchId = useSelector(state => state.userData.searchData.userId);
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,26 +24,15 @@ export function BrowsePage () {
         if (searchId) {
             fetchData();
         }
-    }, [searchId]);
+    }, [searchId, isFollow]);
 
-    // const fetchFollow = async () => {
-    //
-    //         const response = await fetch(`http://localhost:8080/api/follow`, {
-    //             method: "POST",
-    //             body: JSON.stringify({
-    //                 userFollower: userId,
-    //                 userFollowing: searchId,
-    //             }),
-    //             headers: { "Content-Type": "application/json" }
-    //         })
-    //         const userIsFollow = await response.json();
-    //         console.log(userIsFollow)
-    //         dispatch(userFollow())
-    //
-    // };
 
     return (
-        <Profile buttonText="Subscribe"
+        <>
+        {userId === searchId ?
+            navigate("/profile")
+            :
+            <Profile buttonText="Subscribe"
                  image={searchData.image}
                  name={searchData.name}
                  userName={searchData.userName}
@@ -50,6 +42,8 @@ export function BrowsePage () {
                  followers={searchData.followers}
                  userId={searchData.userId}
                  btnClick={() => dispatch(fetchFollow())}
-        />
+            />
+        }
+        </>
     )
 }

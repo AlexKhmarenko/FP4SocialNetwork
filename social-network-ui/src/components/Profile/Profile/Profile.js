@@ -1,44 +1,53 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {
     BgImgStyle, infoTextStyles,
     imgStyle, LinkQuantityStyles, LinkStyles, LinkTextStyles,
     NameStyles,
     NicknameStyles,
-    ProfileStyles, SvgStyles, infoStyle, PhotoStyle, editButtonStyles, unsubscribeButtonStyles
+    ProfileStyles, SvgStyles, infoStyle, PhotoStyle, editButtonStyles
 } from "./ProfileStyles";
 import {Avatar, Button, SvgIcon, Typography} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import {ProfileSwipeableViews} from "../ProfilePageSwipeableViews/ProfileSwipeableViews";
 import {useDispatch, useSelector} from "react-redux";
-import {userUnfollow} from "../../../store/actions";
+import {setSearchData, userFollow, userUnfollow} from "../../../store/actions";
 import {fetchUnfollow} from "../../../store/Thunks/fetchUnfollowThunk";
+import {UnSubscriptionButton} from "../../Buttons/UnSubscriptionButton/UnSubscriptionButton";
 
 export function Profile (props) {
 
     const searchId = useSelector(state => state.userData.searchData.userId);
     const userId = useSelector(state => state.userData.userData.userId);
-    const [isHovered, setIsHovered] = useState(false);
+    const disabled = useSelector(state => state.userData.disabled.disabled);
     const isFollow = useSelector(state => state.userData.followData.userFollow)
     const dispatch = useDispatch()
 
 
-    // const fetchUnfollow = async () => {
-    //
-    //     const response = await fetch(`http://localhost:8080/api/unfollow`, {
-    //         method: "POST",
-    //         body: JSON.stringify({
-    //             userUnfollowed: userId,
-    //             userUnfollowing: searchId,
-    //         }),
-    //         headers: { "Content-Type": "application/json" }
-    //     })
-    //     if (response.ok) {
-    //         const userIsUnfollow = await response.json();
-    //         console.log(userIsUnfollow)
-    //         dispatch(userUnfollow())
-    //     }
-    // };
+    useEffect(() => {
+        const fetchIsFollow = async () => {
+
+            const response = await fetch(`http://localhost:8080/api/isfollowing`, {
+                method: "POST",
+                        body: JSON.stringify({
+                            userFollower: userId,
+                            userFollowing: searchId,
+                        }),
+                        headers: { "Content-Type": "application/json" }
+            });
+            const userIsFollow = await response.json();
+            if (userIsFollow.following === "true") {
+                dispatch(userFollow())
+            } else if (userIsFollow.following === "false") {
+                dispatch(userUnfollow())
+            }
+
+        };
+        if (searchId) {
+            fetchIsFollow();
+        }
+
+    }, [searchId])
 
     return (
 
@@ -57,11 +66,9 @@ export function Profile (props) {
 
                     {isFollow
                         ?
-                        <Button type="submit" variant="contained" sx={unsubscribeButtonStyles} fullWidth={true}
-                                onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
-                                onClick={() => dispatch(fetchUnfollow())}>{isHovered ? "Unsubscribe" : "Signed"}</Button>
+                        <UnSubscriptionButton/>
                         :
-                        <Button type="submit" variant="contained" sx={editButtonStyles} fullWidth={true} onClick={() => props.btnClick()}>{props.buttonText}</Button>
+                        <Button type="submit" variant="contained" sx={editButtonStyles} fullWidth={true} onClick={() => props.btnClick()} disabled={disabled}>{props.buttonText}</Button>
                     }
 
                 </div>
@@ -111,8 +118,8 @@ export function Profile (props) {
 }
 
 Profile.propTypes = {
-    image: PropTypes.string.isRequired,
-    background: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    background: PropTypes.string,
     buttonText: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     userName: PropTypes.string.isRequired,
@@ -121,7 +128,5 @@ Profile.propTypes = {
     followings: PropTypes.number.isRequired,
     followers: PropTypes.number.isRequired,
     userId: PropTypes.string.isRequired,
-    buttonColor: PropTypes.string.isRequired,
-    textColor: PropTypes.string.isRequired,
-    btnClick: PropTypes.func.isRequired
+    btnClick: PropTypes.func.isRequired,
 };
