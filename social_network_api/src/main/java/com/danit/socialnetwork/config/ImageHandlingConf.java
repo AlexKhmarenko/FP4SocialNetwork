@@ -31,8 +31,7 @@ public class ImageHandlingConf {
         Map<String, Object> uploadResult = cloudinary.uploader().upload(imageBytes, uploadParams);
         return uploadResult.get("url").toString();
       } catch (IOException e) {
-        new PhotoNotFoundException("Photo not found");
-        return null;
+        throw new PhotoNotFoundException("Photo not found");
       }
     } else {
       return null;
