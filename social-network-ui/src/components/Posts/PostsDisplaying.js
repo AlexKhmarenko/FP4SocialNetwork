@@ -4,6 +4,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 
 export const PostsDisplaying = ({userPosts, isLoading}) => {
+    console.log(userPosts)
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>
     } else if (userPosts.length === 0) {
@@ -16,7 +17,8 @@ export const PostsDisplaying = ({userPosts, isLoading}) => {
         return (
             <div style={{ height: "100vh" }}>
                 {userPosts.map((post) => (
-                    <Post key={post.postId} userName={post.username}
+                    <Post key={post.postId} profileImage={post.profileImageByteArray}
+                          userName={post.username}
                           name={post.name} text={post.writtenText}
                           photo={post.photoFileByteArray}
                           postComments={post.postCommentsCount}
@@ -24,6 +26,7 @@ export const PostsDisplaying = ({userPosts, isLoading}) => {
                           postId={post.postId}
                           postLikes={post.likesCount}
                           userIdWhoSendPost={post.userId}
+                          reposted={post.isReposted}
                     />
                 ))}
             </div>

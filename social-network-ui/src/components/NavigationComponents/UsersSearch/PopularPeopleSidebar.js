@@ -45,9 +45,11 @@ export function PopularPeopleSidebar() {
             minHeight:"370px",
             width: "250px",
             marginTop: "20%",
+            justifyContent: "space-between",
             marginLeft: "9%",
             padding: "10px 20px",
-            overflow: "scroll"
+            overflowY: "scroll",
+            overflowX:"hidden",
         }}>
             {mostPopularPeople.length > 0 ?
                 <ul style={{ listStyle: "none", margin: "0", padding: "0" }}>
@@ -65,7 +67,8 @@ export function PopularPeopleSidebar() {
                                 listStyle: "none",
                                 display: "flex",
                                 alignItems:"center",
-                                justifyContent: "space-around",
+                                justifyContent: "space-between",
+                                textAlign:"start",
                                 margin: "0",
                                 padding: "0",
                             }}>
@@ -74,16 +77,14 @@ export function PopularPeopleSidebar() {
                                                                  width: "50px",
                                                                  height: "50px",
                                                                  borderRadius: "50px",
-                                                                 margin: "0,auto"
                                                              }}
                                                              alt=""/> : <Avatar alt={user.username} style={{ width: "50px", height: "50px" }} src={user.avatar}/>}
-                                <div style={{ display: "flex", flexDirection: "column", marginLeft: "20px" }}>
+                                <div style={{ display: "flex", flexDirection: "column", textAlign:"center", justifyContent:"space-between", }}>
                                     <Typography style={{
                                         color: "rgb(113, 118, 123)",
                                         fontFamily: "'Lato', sans-serif",
                                         fontSize: "15px",
                                         fontWeight: "400",
-                                        marginRight: "10px",
                                         textDecoration: "underline",
                                         cursor: "pointer"
                                     }} onClick={()=>{toAnotherUserPage(user.userId)}}>{user.name}
@@ -91,7 +92,7 @@ export function PopularPeopleSidebar() {
                                     <Typography style={{
                                         color: "rgb(113, 118, 123)", fontFamily: "'Lato', sans-serif",
                                         fontSize: "13px",
-                                        fontWeight: "400", marginRight: "10px",
+                                        fontWeight: "400",
                                     }} onClick={()=>{toAnotherUserPage(user.userId)}}>
                                         <Link style={{
                                             color: "rgb(113, 118, 123)", fontFamily: "'Lato', sans-serif",

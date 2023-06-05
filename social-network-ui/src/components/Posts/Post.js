@@ -12,7 +12,19 @@ import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
 import { openLoginModal, setComments, setSearchId } from "../../store/actions";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes, postComments, userIdWhoSendPost }) => {
+export const Post = ({
+                         userName,
+                         name,
+                         photo,
+                         text,
+                         dataTime,
+                         postId,
+                         postLikes,
+                         postComments,
+                         userIdWhoSendPost,
+                         profileImage,
+                         reposted
+                     }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -22,7 +34,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const comments = useSelector(state => state.comments.comments);
     const [like, setLike] = useState(false);
     const [likeArr, setLikeArr] = useState([]);
-    const [isReposted, setIsReposted] = useState(false);
+    const [isReposted, setIsReposted] = useState(reposted);
     const [likeCount, setLikeCount] = useState(postLikes);
     const [showLike, setShowLike] = useState(false);
     const [usersWhoLike, setUsersWhoLike] = useState([]);
@@ -31,7 +43,12 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const cardRef = useRef(null);
 
     const ShowUsersWhoLike = async () => {
-        setShowLike(!showLike);
+        if (userId) {
+            setShowLike(!showLike);
+        } else {
+            dispatch(openLoginModal());
+        }
+
     };
 
     useEffect(() => {
@@ -88,9 +105,15 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         fetchData();
     }, [userId, postId]);
 
-    const toAnotherUserPage = (userId) => {
-        dispatch(setSearchId(String(userId)));
-        navigate("/view");
+    const toAnotherUserPage = (userIdWhoSendPost) => {
+        if (userId) {
+            console.log();
+            dispatch(setSearchId(String(userIdWhoSendPost)));
+            navigate("/view");
+        } else {
+            console.log(userId);
+            dispatch(openLoginModal());
+        }
     };
 
     const sendRepost = async () => {
@@ -191,7 +214,9 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     return (
         <Card ref={cardRef} sx={{ ...PostCard, position: "relative" }}>
             <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
-                <Avatar alt={userName} src="#"/>
+                {profileImage ? <img src={profileImage ? `data:image/png;base64,${profileImage}` : ""}
+                                     style={{ width: "50px", height: "50px", borderRadius: "50px" }} alt=""/> :
+                    <Avatar alt={userName} src="#"/>}
                 <div style={{ marginLeft: 16, flex: 1 }}>
                     <Typography variant="subtitle1" component="div"
                                 sx={{ textDecoration: "underline", cursor: "pointer" }}
@@ -275,13 +300,16 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
                             null}
                 </Paper>
             </CardActions>
-            {isCommentOpen && <Comments comments={comments} isLoadingComments={isLoadingComments} postCommentCount={postCommentCount}
-                                        setPostCommentCount={setPostCommentCount} postId={postId} userId={userId}/>}
+            {isCommentOpen &&
+                <Comments comments={comments} isLoadingComments={isLoadingComments} postCommentCount={postCommentCount}
+                          setPostCommentCount={setPostCommentCount} postId={postId} userId={userId}/>}
         </Card>
     );
 };
 
 Post.propTypes = {
+    reposted: PropTypes.bool,
+    profileImage: PropTypes.string,
     postId: PropTypes.number,
     dataTime: PropTypes.string,
     userName: PropTypes.string,

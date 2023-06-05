@@ -138,19 +138,17 @@ export const setPosts = (posts) => ({
 export const checkEmail = (email) => ({
     type: CHECK_EMAIL,
     payload: email
-})
+});
 export const setUserPostsClear = (posts) => ({
     type: SET_CLEAR_POSTS, payload: posts
 });
 
 export const fetchPostsByUserId = (userId, page) => {
-    console.log("userId_ACTIONS", userId)
-    console.log("page_ACTIONS", page)
     return async (dispatch) => {
         const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
         const data = await response.json();
-        console.log("posts/fetchPostsByUserId_ACTIONS", data)
         dispatch(setPosts(data));
+        return data;
     };
 };
 
@@ -174,6 +172,7 @@ export const fetchExplorePosts = (page) => {
         const response = await fetch(`http://localhost:8080/posts?page=${page}`);
         let posts = await response.json();
         dispatch(addExplorePosts(posts));
+        return posts;
     };
 };
 
@@ -231,7 +230,7 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
 export const setProfilePosts = (posts) => ({
     type: SET_PROFILE_POSTS,
     payload: posts
-})
+});
 export const setProfileLikePosts = (posts) => ({
     type: SET_PROFILE_LIKE_POSTS,
     payload: posts
@@ -243,8 +242,8 @@ export const setProfileReposts = (posts) => ({
 
 export const setPageZero = () => {
     return {
-        type: 'SET_PAGE_ZERO'
-    }
-}
+        type: "SET_PAGE_ZERO"
+    };
+};
 
 

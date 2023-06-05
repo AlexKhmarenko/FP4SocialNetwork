@@ -1,12 +1,18 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useDispatch, useSelector} from "react-redux";
+import React, { useState, useCallback, useEffect, useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useLocation } from "react-router-dom";
 
-import { fetchPostsByUserId, sendPost, setPageZero, setUserId, setUserPostsClear } from "../store/actions";
+import {
+    fetchPostsByUserId,
+    sendPost,
+    setPageZero,
+    setUserId,
+    setUserPostsClear
+} from "../store/actions";
 import { setUserData } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
@@ -22,18 +28,22 @@ import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 import { decodeToken } from "../components/Posts/decodeToken";
-
+import { ScrollContext } from "../components/Layout.js";
 
 export function HomeScreen() {
     let location = useLocation();
     const userData = useSelector(state => state.userData.userData);
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
+    const { handleParentScroll } = useContext(ScrollContext);
     const userId = useSelector(state => state.userData.userData.userId);
     const [isLoading, setIsLoading] = useState(false);
     const userPosts = useSelector(state => state.Posts.posts);
     const dispatch = useDispatch();
+    const [posts, setPosts] = useState([]);
     const page = useSelector(state => state.pageCount.page);
+    const [isFetchingPosts, setIsFetchingPosts] = useState(false);
+    const [allPostsLoaded, setAllPostsLoaded] = useState(false);
 
     const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];
@@ -51,22 +61,9 @@ export function HomeScreen() {
             console.error(error);
         }
     };
-    // const fetchFollow = async (userId) => {
-    //
-    //         const response = await fetch(`http://localhost:8080/api/follow`, {
-    //             method: "POST",
-    //             body: JSON.stringify({
-    //                 userFollower: userId,
-    //                 userFollowing: userId,
-    //             }),
-    //             headers: { "Content-Type": "application/json" }
-    //         })
-    //         const userFollow = await response.json();
-    //         console.log(userFollow)
-    // };
 
     useEffect(() => {
-        setUserPostsClear([])
+        setUserPostsClear([]);
         setPageZero();
         fetchData(userId);
         fetchPosts(page);
@@ -77,7 +74,7 @@ export function HomeScreen() {
             setIsLoading(true);
             const decodedToken = decodeToken();
             if (decodedToken) {
-                console.log("decodedToken_fetchPosts/HOME_SCREEN",decodedToken)
+                console.log("decodedToken_fetchPosts/HOME_SCREEN", decodedToken);
                 const userId = decodedToken.sub;
                 dispatch(setUserId(userId));
                 await Promise.all([
@@ -126,8 +123,29 @@ export function HomeScreen() {
         }
     };
 
+    const handleScroll = async (event) => {
+        if (isFetchingPosts || allPostsLoaded) {
+            return;
+        }
+        setIsFetchingPosts(true);
+        try {
+            const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
+            if (scrollHeight - scrollTop <= clientHeight + 20) {
+                let newPosts = [...userPosts];
+                if (newPosts.length > 0) {
+                    setPosts([...posts, ...newPosts]);
+                } else {
+                    setAllPostsLoaded(true);
+                }
+            }
+            handleParentScroll(event);
+        } finally {
+            setIsFetchingPosts(false);
+        }
+    };
+
     return (
-        <>
+        <div onScroll={handleScroll}>
             <Formik
                 initialValues={{ postText: "" }}
                 validationSchema={
@@ -226,7 +244,7 @@ export function HomeScreen() {
             <div style={PostsWrapper}>
                 <PostsDisplaying userPosts={userPosts} isLoading={isLoading}/>
             </div>
-        </>
+        </div>
     );
 }
 
