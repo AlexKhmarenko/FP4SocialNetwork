@@ -15,7 +15,7 @@ export const PostsDisplaying = ({userPosts, isLoading}) => {
     } else {
         console.log(userPosts)
         return (
-            <div style={{ height: "100vh" }}>
+            <div>
                 {userPosts.map((post) => (
                     <Post key={post.postId} profileImage={post.profileImageByteArray}
                           userName={post.username}
