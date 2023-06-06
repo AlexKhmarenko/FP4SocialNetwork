@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
   private final MailSenderImpl mailSender;
   private final GuavaCache guavaCache;
   private final UserFollowRepository userFollowRepository;
+  private final ImageHandlingConf imageHandlingConf;
 
   private <T extends Object> Boolean isEmpty(T temp) {
     return Optional.ofNullable(temp).isEmpty();
@@ -209,11 +210,10 @@ public class UserServiceImpl implements UserService {
       updateUser.setDateOfBirth(dateOfBirth);
       updateUser.setAddress(request.getAddress());
 
-      ImageHandlingConf imageHandling = new ImageHandlingConf();
       byte[] profileImage = request.getProfileImageUrl();
-      updateUser.setProfileImageUrl(imageHandling.uploadImage(profileImage, "production"));
+      updateUser.setProfileImageUrl(imageHandlingConf.uploadImage(profileImage, "production"));
       byte[] profileBackgroundImage = request.getProfileBackgroundImageUrl();
-      updateUser.setProfileBackgroundImageUrl(imageHandling
+      updateUser.setProfileBackgroundImageUrl(imageHandlingConf
           .uploadImage(profileBackgroundImage, "production"));
 
       userRepository.save(updateUser);
