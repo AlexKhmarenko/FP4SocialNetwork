@@ -135,7 +135,10 @@ export const Post = ({
 
     const addLikeHandle = useCallback(async () => {
         if (userId) {
+            setLike(!like);
             if (!like) {
+                setLikeCount(likeCount + 1);
+                setLikeArr([...likeArr, { postId: postId, userId: userId }]);
                 await fetch("http://localhost:8080/likes", {
                     method: "POST",
                     body: JSON.stringify({
@@ -146,20 +149,16 @@ export const Post = ({
                         "Content-Type": "application/json"
                     }
                 });
-                setLikeCount(likeCount + 1);
-                setLikeArr([...likeArr, { postId: postId, userId: userId }]);
             } else {
+                setLikeCount(likeCount - 1);
+                setLikeArr(likeArr.filter(item => item.userId !== userId));
                 await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json"
                     }
                 });
-                setLikeCount(likeCount - 1);
-                setLikeArr(likeArr.filter(item => item.userId !== userId));
             }
-
-            setLike(!like);
         } else {
             dispatch(openLoginModal());
         }

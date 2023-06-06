@@ -39,6 +39,7 @@ export function Layout() {
     let location = useLocation();
     const [allPostsLoaded, setAllPostsLoaded] = useState(false);
     const userId = useSelector(state => state.userData.userData.userId);
+    const [loadingPosts, setLoadingPosts] = useState(false);
 
     useEffect(() => {
         if (userToken && userBirthdateGoogle === "true" || userToken && userBirthdateGoogle === "false") {
@@ -64,7 +65,8 @@ export function Layout() {
 
     const handleParentScroll = useCallback(async (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
-        if (scrollHeight - scrollTop <= clientHeight + 20 && !allPostsLoaded) {
+        if (scrollHeight - scrollTop <= clientHeight + 20 && !allPostsLoaded && !loadingPosts) {
+            setLoadingPosts(true);
             let newPosts;
             const page2 = page + 1;
             if (location.pathname === "/explore") {
@@ -86,6 +88,7 @@ export function Layout() {
             } else {
                 dispatch(setPage(page2));
             }
+            setLoadingPosts(false);
         }
     }, [dispatch, location.pathname, page, fetchPosts, allPostsLoaded]);
 
