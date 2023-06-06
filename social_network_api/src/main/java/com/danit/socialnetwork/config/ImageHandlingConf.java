@@ -21,6 +21,8 @@ public class ImageHandlingConf {
     ));
   }
 
+  /*The method writes the picture to the cloud storage to the specified folder
+ ("local" or "production") and returns the url.*/
   public String uploadImage(byte[] imageBytes, String folderName) {
     if (imageBytes != null) {
       try {
