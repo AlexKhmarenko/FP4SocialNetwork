@@ -5,7 +5,6 @@ export const ContainerStyled = {
     alignItems: "center",
     justifyContent: "flex-start",
     overflowX:"hidden",
-
 };
 
 export const OutletWrapper = {

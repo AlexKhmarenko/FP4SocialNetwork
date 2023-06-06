@@ -68,7 +68,7 @@ export function Layout() {
             let newPosts;
             const page2 = page + 1;
             if (location.pathname === "/explore") {
-                newPosts = await dispatch(fetchExplorePosts(page2));
+                newPosts = await dispatch(fetchExplorePosts(userId, page2));
             } else if (location.pathname === "/home") {
                 console.log(page);
                 if (page === 0) {

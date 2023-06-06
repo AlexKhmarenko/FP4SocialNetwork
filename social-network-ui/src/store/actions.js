@@ -178,9 +178,9 @@ export const setUserBirthday = (flag) => {
     };
 };
 
-export const fetchExplorePosts = (page) => {
+export const fetchExplorePosts = (userId ,page) => {
     return async (dispatch) => {
-        const response = await fetch(`http://localhost:8080/posts?page=${page}`);
+        const response = await fetch(`http://localhost:8080/posts/explorer?userld=${userId}&page=${page}`);
         let posts = await response.json();
         dispatch(addExplorePosts(posts));
         return posts;

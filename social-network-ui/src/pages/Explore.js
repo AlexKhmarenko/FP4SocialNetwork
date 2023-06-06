@@ -14,6 +14,7 @@ export function Explore() {
     const [posts, setPosts] = useState([]);
     const [isFetchingPosts, setIsFetchingPosts] = useState(false);
     const [allPostsLoaded, setAllPostsLoaded] = useState(false);
+    const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -22,7 +23,7 @@ export function Explore() {
         async function getPosts() {
             try {
                 setIsLoading(true);
-                const newPosts = await dispatch(fetchExplorePosts(page));
+                const newPosts = await dispatch(fetchExplorePosts(userId ,page));
                 console.log("newPosts", newPosts);// Сохраните новые посты
                 setPosts(newPosts);
                 if (newPosts.length === 0) {
@@ -67,7 +68,7 @@ export function Explore() {
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} onScroll={handleScroll}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center",  }} onScroll={handleScroll}>
             <PostsDisplaying userPosts={explorePosts} isLoading={isLoading}/>
         </div>
     );

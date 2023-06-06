@@ -30,6 +30,7 @@ export function PostReducer(state = initialState, action) {
                 posts: [action.payload, ...state.posts],
             };
         case ADD_EXPLORE_POSTS:
+            console.log(action.payload, "explore posts")
             return {
                 ...state,
                 explorePosts: [...state.explorePosts, ...action.payload],

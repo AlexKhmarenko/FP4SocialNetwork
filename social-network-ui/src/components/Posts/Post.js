@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,7 +40,6 @@ export const Post = ({
     const [usersWhoLike, setUsersWhoLike] = useState([]);
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
-    const cardRef = useRef(null);
 
     const ShowUsersWhoLike = async () => {
         if (userId) {
@@ -50,25 +49,6 @@ export const Post = ({
         }
 
     };
-
-    useEffect(() => {
-        if (cardRef.current) {
-            const observer = new IntersectionObserver(entries => {
-                // entries[0] - это элемент, за которым наблюдаем.
-                // isIntersecting будет true, когда элемент полностью виден.
-                if (!entries[0].isIntersecting) {
-                    setIsCommentOpen(false);
-                }
-            }, {
-                // Если 0% элемента видно, isIntersecting будет false.
-                threshold: 0
-            });
-            // Начинаем наблюдение.
-            observer.observe(cardRef.current);
-            // Возвращаем функцию очистки, чтобы остановить наблюдение, когда компонент размонтируется.
-            return () => observer.disconnect();
-        }
-    }, []);
 
     useEffect(() => {
         const fetchLikes = async () => {
@@ -133,6 +113,7 @@ export const Post = ({
             dispatch(openLoginModal());
         }
     };
+
 
     const handleCommentToggle = async () => {
         if (userId) {
@@ -211,8 +192,10 @@ export const Post = ({
         }
     };
 
+
+
     return (
-        <Card ref={cardRef} sx={{ ...PostCard, position: "relative" }}>
+        <Card  sx={{ ...PostCard, position: "relative", overflowAnchor: "none"  }}>
             <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
                 {profileImage ? <img src={profileImage ? `data:image/png;base64,${profileImage}` : ""}
                                      style={{ width: "50px", height: "50px", borderRadius: "50px" }} alt=""/> :
@@ -319,6 +302,7 @@ Post.propTypes = {
     postLikes: PropTypes.number,
     text: PropTypes.string,
     userIdWhoSendPost: PropTypes.number,
+    scrollPosition:PropTypes.string,
 };
 
 
