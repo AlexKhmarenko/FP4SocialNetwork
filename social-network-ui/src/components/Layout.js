@@ -22,7 +22,7 @@ import {
     fetchPostsByUserId,
     fetchExplorePosts,
     setPage,
-    setUserData,
+    setUserData, setUserPostsClear, setPageZero,
 } from "../store/actions";
 import { decodeToken } from "./Posts/decodeToken";
 import { BirthdateForm } from "./LoginModal/BirthdateForm";
@@ -57,6 +57,13 @@ export function Layout() {
         }
     };
 
+    useEffect(() => {
+        setUserPostsClear([]);
+        fetchData(userId);
+        setPageZero();
+        fetchPosts(page);
+    }, [location.pathname]);
+
     const fetchData = async (userId) => {
         const response = await fetch(`http://localhost:8080/profile/${userId}`);
         const userData = await response.json();
@@ -69,31 +76,30 @@ export function Layout() {
             setLoadingPosts(true);
             let newPosts;
             const page2 = page + 1;
+            console.log(page)
             if (location.pathname === "/explore") {
                 newPosts = await dispatch(fetchExplorePosts(userId, page2));
+                console.log("newPostsExplore",newPosts )
             } else if (location.pathname === "/home") {
                 console.log(page);
-                if (page === 0) {
-                    const page2 = page + 1;
-                    newPosts = await dispatch(fetchPostsByUserId(userId, page2));
-                    console.log("page2", page2);
-                    console.log(page2, newPosts);
-                } else {
-                    newPosts = await dispatch(fetchPostsByUserId(userId, page));
-                    console.log("newPosts", newPosts);
-                }
+                newPosts = await dispatch(fetchPostsByUserId(userId, page2));
+                console.log("newPostsHome",newPosts )
             }
             if (newPosts && newPosts.length === 0) {
+                console.log('All posts loaded, stopping further fetches');
                 setAllPostsLoaded(true);
+                setLoadingPosts(false);
             } else {
                 dispatch(setPage(page2));
+                setLoadingPosts(false);
             }
-            setLoadingPosts(false);
         }
     }, [dispatch, location.pathname, page, fetchPosts, allPostsLoaded]);
 
+
+
     return (
-        <ScrollContext.Provider value={{ handleScroll: handleParentScroll }}>
+        <ScrollContext.Provider value={{ handleScroll: handleParentScroll, loadingPosts: loadingPosts }}>
             {userToken ? (
                 <Container maxWidth="false" sx={ContainerStyled}>
                     <div style={ContentContainer} onScroll={handleParentScroll}>

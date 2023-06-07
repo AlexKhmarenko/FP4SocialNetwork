@@ -35,6 +35,7 @@ export const Post = ({
     const [like, setLike] = useState(false);
     const [likeArr, setLikeArr] = useState([]);
     const [isReposted, setIsReposted] = useState(reposted);
+    // console.log("reposted",reposted)
     const [likeCount, setLikeCount] = useState(postLikes);
     const [showLike, setShowLike] = useState(false);
     const [usersWhoLike, setUsersWhoLike] = useState([]);
@@ -57,7 +58,6 @@ export const Post = ({
                 let dataAboutUsersWhoLike = await fetch(`http://localhost:8080/users/likes?postId=${postId}&page=0`);
                 let usersWhoLike2 = await dataAboutUsersWhoLike.json();
                 setUsersWhoLike(usersWhoLike2);
-                console.log("usersWhoLike", usersWhoLike2);
             } catch (err) {
                 console.log(err);
             } finally {
@@ -87,11 +87,9 @@ export const Post = ({
 
     const toAnotherUserPage = (userIdWhoSendPost) => {
         if (userId) {
-            console.log();
             dispatch(setSearchId(String(userIdWhoSendPost)));
             navigate("/view");
         } else {
-            console.log(userId);
             dispatch(openLoginModal());
         }
     };

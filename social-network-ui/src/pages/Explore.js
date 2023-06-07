@@ -5,11 +5,13 @@ import {
 } from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollContext } from "../components/Layout.js";
+import CircularProgress from "@mui/material/CircularProgress";
+import { PostsWrapper } from "../components/Posts/PostStyles";
 
 export function Explore() {
     const explorePosts = useSelector(state => state.Posts.explorePosts);
     const page = useSelector(state => state.pageCount.page);
-    const { handleParentScroll } = useContext(ScrollContext);
+    const { handleParentScroll, loadingPosts } = useContext(ScrollContext);
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const [isFetchingPosts, setIsFetchingPosts] = useState(false);
@@ -23,11 +25,10 @@ export function Explore() {
         async function getPosts() {
             try {
                 setIsLoading(true);
-                const newPosts = await dispatch(fetchExplorePosts(userId ,page));
-                console.log("newPosts", newPosts);// Сохраните новые посты
+                const newPosts = await dispatch(fetchExplorePosts(userId, page));
                 setPosts(newPosts);
                 if (newPosts.length === 0) {
-                    setAllPostsLoaded(true); // Если массив пуст, значит, все посты загружены
+                    setAllPostsLoaded(true);
                 }
             } catch (error) {
                 console.error(error);
@@ -41,10 +42,6 @@ export function Explore() {
             getPosts();
         }
     }, [location.pathname]);
-
-    useEffect(() => {
-        console.log(page);
-    });
 
     const handleScroll = async (event) => {
         if (isFetchingPosts || allPostsLoaded) {
@@ -68,7 +65,7 @@ export function Explore() {
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center",  }} onScroll={handleScroll}>
+        <div style={PostsWrapper} onScroll={handleScroll}>
             <PostsDisplaying userPosts={explorePosts} isLoading={isLoading}/>
         </div>
     );

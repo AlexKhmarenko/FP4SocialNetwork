@@ -29,13 +29,14 @@ import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 import { decodeToken } from "../components/Posts/decodeToken";
 import { ScrollContext } from "../components/Layout.js";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export function HomeScreen() {
     let location = useLocation();
     const userData = useSelector(state => state.userData.userData);
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
-    const { handleParentScroll } = useContext(ScrollContext);
+    const { handleParentScroll, loadingPosts } = useContext(ScrollContext);
     const userId = useSelector(state => state.userData.userData.userId);
     const [isLoading, setIsLoading] = useState(false);
     const userPosts = useSelector(state => state.Posts.posts);
@@ -68,6 +69,8 @@ export function HomeScreen() {
         fetchData(userId);
         fetchPosts(page);
     }, [location.pathname]);
+
+
 
     const fetchPosts = async (page) => {
         try {
@@ -138,7 +141,7 @@ export function HomeScreen() {
                     setAllPostsLoaded(true);
                 }
             }
-            handleParentScroll(event);
+            handleParentScroll(scrollTop, clientHeight, scrollHeight);
         } finally {
             setIsFetchingPosts(false);
         }
