@@ -26,7 +26,7 @@ export function RightSideMenu ()  {
                 <Typography sx={{fontWeight: "400", lineHeight: "16px", fontSize: "14px", color: "rgb(83, 100, 113)", padding: "0 16px", fontFamily: "'Lato', sans-serif"}}>
                     Sign up now to personalize your feed!
                 </Typography>
-                <a href="http://localhost:8080/oauth2/authorization/google"  style={{ ...StyledBlackButton, color:"white", textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", height: "45px",
+                <a href={`${apiUrl}/oauth2/authorization/google`}  style={{ ...StyledBlackButton, color:"white", textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", height: "45px",
                     width: "300px",
                     background: "#000000",
                     marginTop: "10px",
