@@ -157,7 +157,6 @@ export const setUserPostsClear = (posts) => ({
 
 export const checkEmailFetch = (values, setErrors) => {
     return async (dispatch) => {
-        console.log("hi");
         try {
             console.log(values);
             const response = await fetch(`${apiUrl}/checkEmail`, {
@@ -177,6 +176,141 @@ export const checkEmailFetch = (values, setErrors) => {
         }
     };
 };
+
+export const sendComments = (values, userId, postId) => {
+    return async (dispatch) => {
+        console.log("hi");
+        try {
+            let userCommentResponse = await fetch(`${apiUrl}/api/comments`, {
+                method: "POST",
+                body: JSON.stringify({
+                    userId: userId,
+                    postId: postId,
+                    commentText: values.comment,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            let userCommentData = await userCommentResponse.json();
+            console.log(userCommentData);
+            dispatch(setCommentFromUser(userCommentData));
+        } catch (error) {
+            console.error("Ошибка:", error);
+        }
+    };
+};
+
+export const getComments = (setIsLoadingComments, isCommentOpen, setIsCommentOpen, postId) => {
+    return async (dispatch) => {
+        try {
+            setIsCommentOpen(!isCommentOpen);
+            setIsLoadingComments(true);
+            let commentsResponse = await fetch(`${apiUrl}/api/comments?postId=${postId}`);
+            let dataComments = await commentsResponse.json();
+            dispatch(setComments(dataComments));
+        } catch (error) {
+            console.log(err);
+        } finally {
+            setIsLoadingComments(false);
+        }
+    };
+};
+
+
+export const fetchLikes = (setLikesIsLoading, setUsersWhoLike, postId) => {
+    return async (dispatch) => {
+        try {
+            setLikesIsLoading(true);
+            let dataAboutUsersWhoLike = await fetch(`${apiUrl}/api/users/likes?postId=${postId}&page=0`);
+            let usersWhoLike2 = await dataAboutUsersWhoLike.json();
+            setUsersWhoLike(usersWhoLike2);
+        } catch (error) {
+            console.log(err);
+        } finally {
+            setLikesIsLoading(false);
+        }
+    };
+};
+
+export const activeLikesFetch = (postId, userId) => {
+    return async (dispatch) => {
+        try {
+            const activeLikesResponse = await fetch(`${apiUrl}/api/likes/active?postId=${postId}&userId=${userId}`);
+            const activeLikes = await activeLikesResponse.json();
+            setLike(activeLikes);
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+export const sendRepostFetch = (postId, userId) => {
+    return async (dispatch) => {
+        try {
+            await fetch(`${apiUrl}/reposts`, {
+                method: "POST",
+                body: JSON.stringify({
+                    postId: postId,
+                    userId: userId,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+export const addLikeFetch = (postId, userId) => {
+    return async (dispatch) => {
+        try {
+            await fetch(`${apiUrl}/api/likes`, {
+                method: "POST",
+                body: JSON.stringify({
+                    postId: postId,
+                    userId: userId,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+export const deleteLikeFetch = (postId, userId) => {
+    return async (dispatch) => {
+        try {
+            await fetch(`${apiUrl}/api/likes?postId=${postId}&userId=${userId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+export const fetchData = (userId) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${apiUrl}/api/profile/${userId}`);
+            const userData = await response.json();
+            dispatch(setUserData(userData));
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+
 
 export const checkPasswordFetch = (values, userDataState, setErrors) => {
     return async (dispatch) => {
@@ -225,7 +359,6 @@ export const PopularPeopleFetch = (setIsLoading, setMostPopularPeople) => {
             const response = await fetch(`${apiUrl}/api/users/popular?page=0`);
             const popularPeople = await response.json();
             setMostPopularPeople(popularPeople);
-            console.log(popularPeople);
         } catch (error) {
             console.error(error);
         } finally {
@@ -255,8 +388,9 @@ export const changeDob = (userId, values) => {
 
 export const fetchPostsByUserId = (userId, page) => {
     return async (dispatch) => {
-        const response = await fetch(`${apiUrl}/posts?userId=${userId}&page=${page}`);
+        const response = await fetch(`${apiUrl}/api/posts?userId=${userId}&page=${page}`);
         const data = await response.json();
+        console.log(data, "fetchPostsByUserId")
         dispatch(setPosts(data));
         return data;
     };
@@ -264,7 +398,7 @@ export const fetchPostsByUserId = (userId, page) => {
 
 export const fetchPostsByPage = (page) => {
     return async (dispatch) => {
-        const response = await fetch(`${apiUrl}/posts?page=${page}`);
+        const response = await fetch(`${apiUrl}/api/posts?page=${page}`);
         let posts = await response.json();
         dispatch(addRegistrationPosts(posts));
     };
@@ -279,7 +413,7 @@ export const setUserBirthday = (flag) => {
 
 export const fetchExplorePosts = (userId, page) => {
     return async (dispatch) => {
-        const response = await fetch(`${apiUrl}/posts/explorer?userld=${userId}&page=${page}`);
+        const response = await fetch(`${apiUrl}/api/posts/explorer?userld=${userId}&page=${page}`);
         let posts = await response.json();
         dispatch(addExplorePosts(posts));
         return posts;
@@ -317,7 +451,7 @@ export const sendEmailCheckRequest = (values) => {
 
 export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
     try {
-        const response = await fetch(`${apiUrl}/posts`, {
+        const response = await fetch(`${apiUrl}/api/posts`, {
             method: "POST",
             body: JSON.stringify(postObject),
             headers: {

@@ -14,7 +14,7 @@ import {
     setUserId,
     setUserPostsClear
 } from "../store/actions";
-import { setUserData } from "../store/actions";
+import { setUserData, fetchData } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
@@ -29,7 +29,6 @@ import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 import { decodeToken } from "../components/Posts/decodeToken";
-import {apiUrl} from "../apiConfig";
 
 import { ScrollContext } from "../components/Layout.js";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -39,7 +38,7 @@ export function HomeScreen() {
     const userData = useSelector(state => state.userData.userData);
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
-    const { handleParentScroll, loadingPosts } = useContext(ScrollContext);
+    const { handleParentScroll } = useContext(ScrollContext);
     const userId = useSelector(state => state.userData.userData.userId);
     const [isLoading, setIsLoading] = useState(false);
     const userPosts = useSelector(state => state.Posts.posts);
@@ -54,24 +53,12 @@ export function HomeScreen() {
         setPostImage(file);
     }, []);
 
-    const fetchData = async (userId) => {
-        try {
-            if (userId) {
-                const response = await fetch(`${apiUrl}/profile/${userId}`);
-                const userData = await response.json();
-                dispatch(setUserData(userData));
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     useEffect(() => {
-        setUserPostsClear([]);
-        setPageZero();
-        fetchData(userId);
+        // setUserPostsClear([]);
+        // setPageZero();
         fetchPosts(page);
-    }, [location.pathname]);
+    }, []);
 
 
 
@@ -80,12 +67,11 @@ export function HomeScreen() {
             setIsLoading(true);
             const decodedToken = decodeToken();
             if (decodedToken) {
-                console.log("decodedToken_fetchPosts/HOME_SCREEN", decodedToken);
                 const userId = decodedToken.sub;
                 dispatch(setUserId(userId));
                 await Promise.all([
                     dispatch(fetchPostsByUserId(userId, page)),
-                    fetchData(userId),
+                    dispatch(fetchData(userId)),
                 ]);
             }
         } catch (error) {

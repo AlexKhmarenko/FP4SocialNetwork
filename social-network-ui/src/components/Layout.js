@@ -22,7 +22,7 @@ import {
     fetchPostsByUserId,
     fetchExplorePosts,
     setPage,
-    setUserData, setUserPostsClear, setPageZero,
+    setUserData, setUserPostsClear, setPageZero,fetchData
 } from "../store/actions";
 import { decodeToken } from "./Posts/decodeToken";
 import { BirthdateForm } from "./LoginModal/BirthdateForm";
@@ -53,23 +53,19 @@ export function Layout() {
         if (decodedToken) {
             const userId = decodedToken.sub;
             dispatch(setUserId(userId));
-            dispatch(fetchPostsByUserId(userId, page));
-            await fetchData(userId);
+             // dispatch(fetchPostsByUserId(userId, page));
+            await dispatch(fetchData(userId));
         }
     };
 
     useEffect(() => {
-        setUserPostsClear([]);
-        fetchData(userId);
-        setPageZero();
-        fetchPosts(page);
-    }, [location.pathname]);
+        // setPageZero();
+        // setUserPostsClear([]);
+        dispatch(fetchData(userId));
+        // fetchPosts(page);
+    }, []);
 
-    const fetchData = async (userId) => {
-        const response = await fetch(`${apiUrl}/profile/${userId}`);
-        const userData = await response.json();
-        dispatch(setUserData(userData));
-    };
+
 
     const handleParentScroll = useCallback(async (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;

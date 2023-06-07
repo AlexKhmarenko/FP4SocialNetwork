@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {useSpring, animated} from 'react-spring'
 
-import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box } from "@mui/material";
+import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box, Button } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
 
@@ -24,7 +25,14 @@ import {
     CardContentPost,
     EmptyLikesUserArrParagraph
 } from "./PostStyles";
-import { openLoginModal, setComments, setSearchId } from "../../store/actions";
+import {
+    activeLikesFetch, addLikeFetch, deleteLikeFetch,
+    fetchLikes,
+    getComments,
+    openLoginModal,
+    sendRepost, sendRepostFetch,
+    setSearchId,
+} from "../../store/actions";
 import CircularProgress from "@mui/material/CircularProgress";
 import { apiUrl } from "../../apiConfig";
 import { UsersLikes } from "./UsersLikes";
@@ -58,47 +66,31 @@ export const Post = ({
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
 
+    const expand = useSpring({
+        overflow: 'hidden',
+        maxHeight: showMore ? '1000px' : '55px',
+        from: { maxHeight: '55px' },
+        config: { tension: 550, friction: 60 },
+    });
+
     const ShowUsersWhoLike = async () => {
         if (userId) {
             setShowLike(!showLike);
         } else {
             dispatch(openLoginModal());
         }
-
     };
 
     useEffect(() => {
-        const fetchLikes = async () => {
-            try {
-                setLikesIsLoading(true);
-                let dataAboutUsersWhoLike = await fetch(`${apiUrl}/users/likes?postId=${postId}&page=0`);
-                let usersWhoLike2 = await dataAboutUsersWhoLike.json();
-                setUsersWhoLike(usersWhoLike2);
-            } catch (err) {
-                console.log(err);
-            } finally {
-                setLikesIsLoading(false);
-            }
-        };
-
         if (showLike) {
-            fetchLikes();
+            dispatch(fetchLikes(setLikesIsLoading, setUsersWhoLike, postId));
         }
-    }, [showLike]);
+    }, [showLike, dispatch, postId]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (userId) {
-                try {
-                    const activeLikesResponse = await fetch(`${apiUrl}/likes/active?postId=${postId}&userId=${userId}`);
-                    const activeLikes = await activeLikesResponse.json();
-                    setLike(activeLikes);
-                } catch (error) {
-                    console.error("Ошибка при получении данных:", error);
-                }
-            }
-        };
-        fetchData();
+        if (userId) {
+            dispatch(activeLikesFetch(postId, userId));
+        }
     }, [userId, postId]);
 
     const toAnotherUserPage = (userIdWhoSendPost) => {
@@ -113,16 +105,7 @@ export const Post = ({
     const sendRepost = async () => {
         if (userId) {
             setIsReposted(true);
-            await fetch(`${apiUrl}/reposts`, {
-                method: "POST",
-                body: JSON.stringify({
-                    postId: postId,
-                    userId: userId,
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            });
+            dispatch(sendRepostFetch(postId, userId));
         } else {
             dispatch(openLoginModal());
         }
@@ -130,17 +113,7 @@ export const Post = ({
 
     const handleCommentToggle = async () => {
         if (userId) {
-            try {
-                setIsCommentOpen(!isCommentOpen);
-                setIsLoadingComments(true);
-                let commentsResponse = await fetch(`${apiUrl}/comments?postId=${postId}`);
-                let dataComments = await commentsResponse.json();
-                dispatch(setComments(dataComments));
-            } catch (err) {
-                console.log(err);
-            } finally {
-                setIsLoadingComments(false);
-            }
+            dispatch(getComments(setIsLoadingComments, isCommentOpen, setIsCommentOpen, postId));
         } else {
             dispatch(openLoginModal());
         }
@@ -152,32 +125,19 @@ export const Post = ({
             if (!like) {
                 setLikeCount(likeCount + 1);
                 setLikeArr([...likeArr, { postId: postId, userId: userId }]);
-                await fetch(`${apiUrl}/likes`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        postId: postId,
-                        userId: userId,
-                    }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
+                await dispatch(addLikeFetch(postId, userId));
             } else {
                 setLikeCount(likeCount - 1);
                 setLikeArr(likeArr.filter(item => item.userId !== userId));
-                await fetch(`${apiUrl}/likes?postId=${postId}&userId=${userId}`, {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
+                dispatch(deleteLikeFetch(postId, userId));
             }
         } else {
             dispatch(openLoginModal());
         }
     }, [like, userId, postId, likeArr, dispatch]);
 
-    const handleShowMore = async () => {
+    const handleShowMore = async (e) => {
+        e.preventDefault();
         setShowMore(!showMore);
     };
 
@@ -194,16 +154,6 @@ export const Post = ({
         }
     }, [dataTime]);
 
-    const renderText = () => {
-        const words = text.split(" ");
-        if (showMore || words.length <= 10) {
-            return text;
-        } else {
-            const truncatedWords = words.slice(0, 10);
-            return truncatedWords.join(" ") + "...";
-        }
-    };
-
     return (
         <Card sx={PostCard}>
             <CardContent sx={CardContentPost}>
@@ -216,13 +166,14 @@ export const Post = ({
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
-                    <Typography variant="body1" component="div" mt={1}
-                                sx={{ ...PostText, maxHeight: showMore ? "none" : "90px", }}>{renderText()}
-                    </Typography>
-                    {text.split(" ").length > 10 && (
-                        <a href="#" style={ShowMoreLinkStyles} onClick={handleShowMore}>
+                    <animated.div style={expand}>
+                        <Typography variant="body1" component="div" mt={1}
+                                    sx={{ ...PostText }}>{text}</Typography>
+                    </animated.div>
+                    {text.split(" ").length > 15 && (
+                        <Button href="#" style={ShowMoreLinkStyles} onClick={handleShowMore}>
                             {showMore ? "hight text" : "see more"}
-                        </a>
+                        </Button>
                     )}
                 </div>
             </CardContent>
@@ -244,7 +195,8 @@ export const Post = ({
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
                 </IconButton>
                 <Typography onClick={ShowUsersWhoLike} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
-                <UsersLikes  showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike} toAnotherUserPage={toAnotherUserPage}/>
+                <UsersLikes showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike}
+                            toAnotherUserPage={toAnotherUserPage}/>
             </CardActions>
             {isCommentOpen &&
                 <Comments comments={comments} isLoadingComments={isLoadingComments} postCommentCount={postCommentCount}

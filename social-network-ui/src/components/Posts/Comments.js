@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
-import { setCommentFromUser, setSearchId } from "../../store/actions";
+import { setCommentFromUser, setSearchId, sendComments } from "../../store/actions";
 import CircularProgress from "@mui/material/CircularProgress";
 import { apiUrl } from "../../apiConfig";
 import {
@@ -48,20 +48,7 @@ export function Comments({
             initialValues={{ comment: "" }}
             onSubmit={async (values, actions) => {
                 console.log(userId, postId, values.comment,);
-                let userCommentResponse = await fetch(`${apiUrl}/comments`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        userId: userId,
-                        postId: postId,
-                        commentText: values.comment,
-                    }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
-                let userCommentData = await userCommentResponse.json();
-                console.log(userCommentData);
-                dispatch(setCommentFromUser(userCommentData));
+                await dispatch(sendComments(values, userId, postId))
                 actions.resetForm();
                 setPostCommentCount(postCommentCount + 1);
             }
