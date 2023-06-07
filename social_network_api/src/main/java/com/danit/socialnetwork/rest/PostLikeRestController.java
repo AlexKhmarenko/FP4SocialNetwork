@@ -21,7 +21,7 @@ public class PostLikeRestController {
 
   private final PostLikeService postLikeService;
 
-  @PostMapping(path = "/api/likes", consumes = "application/json", produces = "application/json")
+  @PostMapping(path = "/api/likes")
   public ResponseEntity<PostLikeDto> addPostLike(@RequestBody PostLikeDto thePostLikeDto) {
     PostLike postLike = postLikeService.savePostLike(thePostLikeDto);
     return new ResponseEntity<>(PostLikeDto.from(postLike), HttpStatus.CREATED);

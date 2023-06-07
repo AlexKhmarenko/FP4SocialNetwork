@@ -26,7 +26,7 @@ public class RepostRestController {
   private final RepostService repostService;
 
   /*Method save a repost*/
-  @PostMapping(path = "/api/reposts", consumes = "application/json", produces = "application/json")
+  @PostMapping(path = "/api/reposts")
   public ResponseEntity<RepostDtoSave> addRepost(@RequestBody RepostDtoSave theRepostDto) {
     Repost repost = repostService.saveRepost(theRepostDto);
     return new ResponseEntity<>(RepostDtoSave.from(repost), HttpStatus.CREATED);

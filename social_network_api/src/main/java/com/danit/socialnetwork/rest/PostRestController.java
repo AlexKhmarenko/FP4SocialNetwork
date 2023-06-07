@@ -28,7 +28,7 @@ public class PostRestController {
 
   /*Method returns  all posts from users that a user follows by his id
    * if userId is empty returns all posts descending by order based on created datetime*/
-  @GetMapping(path = "/api/posts", produces = "application/json")
+  @GetMapping(path = "/api/posts")
   public List<PostDtoResponse> getAllPostsFromFollowing(@RequestParam(name = "userId",
       defaultValue = "0") Integer userFollowingId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (userFollowingId == 0) {
@@ -38,7 +38,7 @@ public class PostRestController {
   }
 
   /*Method returns  all posts from users*/
-  @GetMapping(path = "/api/posts/explorer", produces = "application/json")
+  @GetMapping(path = "/api/posts/explorer")
   public List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(@RequestParam(name = "userId",
       defaultValue = "0") Integer userId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (userId == 0) {
@@ -50,14 +50,14 @@ public class PostRestController {
 
 
   /*Method save a new post*/
-  @PostMapping(path = "/api/posts", consumes = "application/json", produces = "application/json")
+  @PostMapping(path = "/api/posts")
   public ResponseEntity<PostDtoResponse> addPost(@RequestBody PostDtoSave thePostDtoSave) {
     Post dbPost = postService.savePost(thePostDtoSave);
     return new ResponseEntity<>(PostDtoResponse.from(dbPost), HttpStatus.CREATED);
   }
 
   /*Method returns all posts done by user*/
-  @GetMapping(path = "/api/posts/{userId}", produces = "application/json")
+  @GetMapping(path = "/api/posts/{userId}")
   public List<PostDtoResponse> getAllOwnPosts(@PathVariable("userId") Integer userId,
                                               @RequestParam(name = "page", defaultValue = "0")
                                               Integer page) {
@@ -67,7 +67,7 @@ public class PostRestController {
 
 
   /*Method returns all posts liked by user*/
-  @GetMapping(path = "/api/posts/liked/{userId}", produces = "application/json")
+  @GetMapping(path = "/api/posts/liked/{userId}")
   @ResponseBody
   public List<PostDtoResponse> getAllLikedPosts(@PathVariable("userId") Integer userId,
                                                 @RequestParam(name = "page", defaultValue = "0")
