@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {SubscriptionButton} from "../SubscriptionButton/SubscriptionButton";
 import {UnSubscriptionButton} from "../UnSubscriptionButton/UnSubscriptionButton";
 import {useSelector} from "react-redux";
-import {setSearchData, userFollow, userUnfollow} from "../../../store/actions";
 import PropTypes from "prop-types";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -46,12 +45,16 @@ export function ToggleButton ({width, height, searchId}) {
 
     return (
         <>
+            {userId === searchId ? false :
+        <>
             {isLoading ? <CircularProgress sx={{ marginRight: "50px", alignSelf:"center" }}/> :
         <>
             {isFollow ?
                 <UnSubscriptionButton width={width} height={height} searchId={searchId} btnClick={() => setIsFollow(true)}/>
                 :
                 <SubscriptionButton width={width} height={height} searchId={searchId} btnClick={() => setIsFollow(false)}/>
+            }
+        </>
             }
         </>
             }

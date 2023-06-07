@@ -105,7 +105,7 @@ export function SubscriptionSwipeableViews () {
                                 <Avatar alt="" src={el.profileImageByteArray ? `data:image/png;base64,${el.profileImageByteArray}` : ""} onClick={() => toUserPage(el.userId)}/>
                             </ListItemAvatar>
                             <ListItemText primary={el.name} secondary={`@${el.username}`} onClick={() => toUserPage(el.userId)}/>
-                            <ToggleButton width="140px" height="40px" searchId={el.userId}/>
+                            <ToggleButton width="140px" height="40px" searchId={String(el.userId)}/>
                         </ListItem>
                     ))}
                 </List>
@@ -122,7 +122,7 @@ export function SubscriptionSwipeableViews () {
                             <Avatar alt="" src={el.profileImageByteArray ? `data:image/png;base64,${el.profileImageByteArray}` : ""} onClick={() => toUserPage(el.userId)}/>
                         </ListItemAvatar>
                         <ListItemText primary={el.name} secondary={`@${el.username}`} onClick={() => toUserPage(el.userId)}/>
-                        <ToggleButton width="140px" height="40px" searchId={el.userId}/>
+                        <ToggleButton width="140px" height="40px" searchId={String(el.userId)}/>
                     </ListItem>
                 ))}
                 </List>
