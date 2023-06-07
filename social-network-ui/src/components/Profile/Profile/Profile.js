@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {
     BgImgStyle, infoTextStyles,
@@ -8,11 +8,10 @@ import {
     ProfileStyles, SvgStyles, infoStyle, PhotoStyle, editButtonStyles
 } from "./ProfileStyles";
 import {Avatar, Button, SvgIcon, Typography} from "@mui/material";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {ProfileSwipeableViews} from "../ProfilePageSwipeableViews/ProfileSwipeableViews";
 import {useDispatch, useSelector} from "react-redux";
-import {setSearchData, userFollow, userSearchFollow, userSearchUnfollow, userUnfollow} from "../../../store/actions";
-import {fetchUnfollow} from "../../../store/Thunks/fetchUnfollowThunk";
+import {userFollow, userSearchFollow, userSearchUnfollow, userUnfollow} from "../../../store/actions";
 import {UnSubscriptionButton} from "../../Buttons/UnSubscriptionButton/UnSubscriptionButton";
 
 export function Profile (props) {
@@ -20,7 +19,6 @@ export function Profile (props) {
     const searchId = useSelector(state => state.userData.searchData.userId);
     const userId = useSelector(state => state.userData.userData.userId);
     const isFollow = useSelector(state => state.userData.followData.userFollow)
-    // const [followers, setFollowers] = useState(props.followers)
     const dispatch = useDispatch()
 
 

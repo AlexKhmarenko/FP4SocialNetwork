@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {fetchUnfollow} from "../../../store/Thunks/fetchUnfollowThunk";
 import {Button} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import PropTypes from 'prop-types';
 import {userUnfollow} from "../../../store/actions";
 
@@ -37,7 +37,6 @@ export function UnSubscriptionButton (props) {
                     ev.preventDefault()
                     setIsHovered(false)
                 }}
-                // onClick={() => dispatch(fetchUnfollow(props.searchId))}>{isHovered ? "Unsubscribe" : "Signed"}</Button>
                 onClick={() => {
                     props.btnClick()
                     dispatch(userUnfollow())
