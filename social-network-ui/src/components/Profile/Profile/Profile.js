@@ -11,7 +11,7 @@ import {Avatar, Button, SvgIcon, Typography} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import {ProfileSwipeableViews} from "../ProfilePageSwipeableViews/ProfileSwipeableViews";
 import {useDispatch, useSelector} from "react-redux";
-import {setSearchData, userFollow, userUnfollow} from "../../../store/actions";
+import {setSearchData, userFollow, userSearchFollow, userSearchUnfollow, userUnfollow} from "../../../store/actions";
 import {fetchUnfollow} from "../../../store/Thunks/fetchUnfollowThunk";
 import {UnSubscriptionButton} from "../../Buttons/UnSubscriptionButton/UnSubscriptionButton";
 
@@ -19,8 +19,8 @@ export function Profile (props) {
 
     const searchId = useSelector(state => state.userData.searchData.userId);
     const userId = useSelector(state => state.userData.userData.userId);
-    const disabled = useSelector(state => state.userData.disabled.disabled);
     const isFollow = useSelector(state => state.userData.followData.userFollow)
+    // const [followers, setFollowers] = useState(props.followers)
     const dispatch = useDispatch()
 
 
@@ -66,9 +66,13 @@ export function Profile (props) {
 
                     {isFollow
                         ?
-                        <UnSubscriptionButton/>
+                        <UnSubscriptionButton width="170px" height="45px" searchId={props.userId} btnClick={() => dispatch(userSearchUnfollow())}/>
                         :
-                        <Button type="submit" variant="contained" sx={editButtonStyles} fullWidth={true} onClick={() => props.btnClick()} disabled={disabled}>{props.buttonText}</Button>
+                        <Button type="submit" variant="contained" sx={editButtonStyles} fullWidth={true} onClick={() => {
+                            dispatch(userSearchFollow())
+                            dispatch(userFollow())
+                            props.btnClick()
+                        }}>{props.buttonText}</Button>
                     }
 
                 </div>
@@ -99,12 +103,12 @@ export function Profile (props) {
                         </div>
                     </div>
                     <div style={{ display: "flex", gap: "20px" }}>
-                        <Link to="/subscribe" variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(1))}>
+                        <Link to="/subscribe" state={{ userId: props.userId }} variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(1))}>
                             <Typography sx={LinkTextStyles}>
                                 <span style={LinkQuantityStyles}>{props.followings}</span> following
                             </Typography>
                         </Link>
-                        <Link to="/subscribe" variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(0))}>
+                        <Link to="/subscribe" state={{ userId: props.userId }} variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(0))}>
                             <Typography sx={LinkTextStyles}>
                                 <span style={LinkQuantityStyles}>{props.followers}</span> followers
                             </Typography>

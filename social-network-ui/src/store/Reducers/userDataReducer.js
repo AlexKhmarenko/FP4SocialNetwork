@@ -1,4 +1,4 @@
-import {SET_USER_ID, SET_USER_DATA, SET_SEARCH_ID, SET_SEARCH_DATA, SET_USER_FOLLOW, SET_USER_UNFOLLOW, BUTTON_DISABLED, BUTTON_ENABLED } from "../types";
+import {SET_USER_ID, SET_USER_DATA, SET_SEARCH_ID, SET_SEARCH_DATA, SET_USER_FOLLOW, SET_USER_UNFOLLOW, SET_SEARCH_USER_FOLLOW, SET_SEARCH_USER_UNFOLLOW } from "../types";
 
 const initialState = {
     userData: {
@@ -11,9 +11,6 @@ const initialState = {
     },
     followData: {
         userFollow: false,
-    },
-    disabled: {
-        disabled: false,
     }
 };
 
@@ -64,6 +61,22 @@ export function userDataReducer(state = initialState, action) {
                     address: action.payload.address,
                 },
             };
+        case SET_SEARCH_USER_FOLLOW:
+            return {
+                ...state,
+                searchData: {
+                    ...state.searchData,
+                    followers: state.searchData.followers +1,
+                },
+            };
+        case SET_SEARCH_USER_UNFOLLOW:
+            return {
+                ...state,
+                searchData: {
+                    ...state.searchData,
+                    followers: state.searchData.followers -1,
+                },
+            };
         case SET_USER_FOLLOW:
             return {
                 ...state,
@@ -76,20 +89,6 @@ export function userDataReducer(state = initialState, action) {
                 ...state,
                 followData: {
                     userFollow: false,
-                },
-            };
-        case BUTTON_DISABLED:
-            return {
-                ...state,
-                disabled: {
-                    disabled: true,
-                },
-            };
-        case BUTTON_ENABLED:
-            return {
-                ...state,
-                disabled: {
-                    disabled: false,
                 },
             };
         default:

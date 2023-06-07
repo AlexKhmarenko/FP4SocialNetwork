@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 export function BrowsePage () {
 
     const isFollow = useSelector(state => state.userData.followData.userFollow)
+    const isGogi = useSelector(state => state.userData.searchData.followers)
     const searchData = useSelector(state => state.userData.searchData)
     const searchId = useSelector(state => state.userData.searchData.userId);
     const userId = useSelector(state => state.userData.userData.userId);
@@ -24,7 +25,7 @@ export function BrowsePage () {
         if (searchId) {
             fetchData();
         }
-    }, [searchId, isFollow]);
+    }, [searchId]);
 
 
     return (
@@ -41,7 +42,7 @@ export function BrowsePage () {
                  followings={searchData.followings}
                  followers={searchData.followers}
                  userId={searchData.userId}
-                 btnClick={() => dispatch(fetchFollow())}
+                 btnClick={() => dispatch(fetchFollow(searchId))}
             />
         }
         </>

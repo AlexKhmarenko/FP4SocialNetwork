@@ -8,11 +8,12 @@ export function ProfilePage () {
 
     const userData = useSelector(state => state.userData.userData)
     const isEditModalOpen = useSelector(state => state.modal.isEditModal)
+    const isFollow = useSelector(state => state.userData.followData.userFollow)
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(userUnfollow())
-    },[])
+    },[isFollow])
 
     return (
         <>

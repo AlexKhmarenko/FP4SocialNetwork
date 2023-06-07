@@ -1,29 +1,30 @@
 
-import {buttonDisabled, buttonEnabled, userUnfollow} from "../actions";
+import {userFollow} from "../actions";
 
 
-export function fetchUnfollow () {
+export function fetchUnfollow (searchId) {
     return (dispatch, getState) => {
 
         const state = getState()
-        const searchId = state.userData.searchData.userId
         const userId = state.userData.userData.userId
-        dispatch(buttonDisabled())
 
-        fetch(`http://localhost:8080/api/unfollow`, {
-            method: "POST",
-            body: JSON.stringify({
-                userUnfollowed: userId,
-                userUnfollowing: searchId,
-            }),
-            headers: { "Content-Type": "application/json" }
-        })
+        try {
+            fetch(`http://localhost:8080/api/unfollow`, {
+                method: "POST",
+                body: JSON.stringify({
+                    userUnfollowed: userId,
+                    userUnfollowing: searchId,
+                }),
+                headers: {"Content-Type": "application/json"}
+            })
             .then(r => {
-                if (r.ok) {
-                    dispatch(userUnfollow())
-                    dispatch(buttonEnabled())
+                if (!r.ok) {
+                    dispatch(userFollow())
                 }
             })
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
 
     }
 }
