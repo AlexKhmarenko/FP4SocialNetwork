@@ -74,36 +74,6 @@ public class UserServiceImpl implements UserService {
     return maybeUser;
   }
 
-  @Override
-  public byte[] getProfileImage(String username) throws IOException {
-    String profileImagePath = userRepository.findByUsername(username).get().getProfileImageUrl();
-    if (isEmpty(profileImagePath)) {
-      throw new PhotoNotFoundException(String.format("Photo for user with username %s is absent", username));
-    } else {
-      InputStream in = getClass().getResourceAsStream(profileImagePath);
-      if (isEmpty(in)) {
-        throw new PhotoNotFoundException(String.format("Wrong path to photo for user with username %s.", username));
-      }
-      return FileCopyUtils.copyToByteArray(in);
-    }
-  }
-
-  @Override
-  public byte[] getBackgroundImage(String username) throws IOException {
-    String profileBackgroundImagePath = userRepository.findByUsername(username).get().getProfileBackgroundImageUrl();
-    if (isEmpty(profileBackgroundImagePath)) {
-      throw new HeaderPhotoNotFoundException(String.format("Header photo for user with username %S is absent.", username));
-    } else {
-      InputStream in = getClass().getResourceAsStream(profileBackgroundImagePath);
-      if (isEmpty(in)) {
-
-        throw new HeaderPhotoNotFoundException(String.format(
-            "Wrong path to header photo for user with username %s.", username));
-      }
-      return FileCopyUtils.copyToByteArray(in);
-    }
-  }
-
   public boolean save(DbUser dbUser) {
     Optional<DbUser> userFromDbByUsername = userRepository.findByUsername(dbUser.getUsername());
 
