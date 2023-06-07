@@ -132,10 +132,6 @@ public class PostServiceImpl implements PostService {
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAllPostsWithShowingRepostsByUserId(
         userId, offset, pageSize);
-    for (Object [] o:
-         results) {
-      System.out.println(Arrays.toString(o));
-    }
     return results.stream()
         .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
