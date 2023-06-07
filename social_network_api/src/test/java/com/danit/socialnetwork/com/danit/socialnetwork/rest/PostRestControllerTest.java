@@ -130,7 +130,7 @@ class PostRestControllerTest {
     List<PostDtoResponse> repostDtoMixes = Arrays.asList(post1, post2, post3, post4);
     when (postService.getAllPostsAndRepostsByUserId(1,0)).thenReturn(repostDtoMixes);
     List<PostDtoResponse> result = postRestController.getAllPostsAndRepostsByUserId(1,0);
-    Assertions.assertEquals(5, result.toArray().length);
+    Assertions.assertEquals(4, result.toArray().length);
   }
 
   @Test

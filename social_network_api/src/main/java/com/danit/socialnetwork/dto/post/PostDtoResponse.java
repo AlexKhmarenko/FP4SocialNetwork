@@ -3,6 +3,7 @@ package com.danit.socialnetwork.dto.post;
 import com.danit.socialnetwork.model.Post;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
+@Log4j2
 public class PostDtoResponse {
 
   private Integer postId;
@@ -53,7 +55,7 @@ public class PostDtoResponse {
 
   public static PostDtoResponse from(Post post, Integer userId) {
     PostDtoResponse postRepostDto = from(post);
-    postRepostDto.setPostCommentsCount (post.getPostComments().size());
+    postRepostDto.setPostCommentsCount(post.getPostComments().size());
     postRepostDto.setIsReposted(!post.getUserPost().getUserId().equals(userId));
     return postRepostDto;
 
@@ -74,7 +76,8 @@ public class PostDtoResponse {
         }
         postDtoResponse.setPhotoFileLink(clobData.toString());
       } catch (IOException | SQLException e) {
-
+        log.warn(String.format("Cannot get photo for post with postId = %s",
+            postDtoResponse.getPostId()));
       }
     }
     Timestamp timestamp = (Timestamp) result[2];
@@ -95,7 +98,8 @@ public class PostDtoResponse {
         }
         postDtoResponse.setProfileImageLink(clobData.toString());
       } catch (IOException | SQLException e) {
-
+        log.warn(String.format("Cannot get photoProfileImage for user who posted with postId = %s ",
+            postDtoResponse.getPostId()));
       }
     }
     postDtoResponse.setLikesCount(((BigInteger) result[8]).intValue()); // Convert BigInteger to Integer
