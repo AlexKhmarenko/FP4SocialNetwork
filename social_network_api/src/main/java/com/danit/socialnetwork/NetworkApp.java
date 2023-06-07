@@ -27,8 +27,7 @@ public class NetworkApp {
   }
 
   @Bean
-  public ImageHandlingConf imageHandling() {
+  public ImageHandlingConf getImageHandling() {
     return new ImageHandlingConf();
   }
-
 }
