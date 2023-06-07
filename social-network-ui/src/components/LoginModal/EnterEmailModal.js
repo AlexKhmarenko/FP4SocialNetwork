@@ -4,7 +4,7 @@ import { Button, FormControl, Typography, SvgIcon } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { closeLoginModal } from "../../store/actions";
+import { checkEmailFetch, closeLoginModal } from "../../store/actions";
 
 import { setUserEmail } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
@@ -19,7 +19,7 @@ import {
 import PropTypes from "prop-types";
 import { useModal } from "../../context/ModalContext";
 import { GoogleSvgIcon } from "./GoogleSvgIcon";
-import {apiUrl} from "../../apiConfig";
+import { apiUrl } from "../../apiConfig";
 
 export function EnterEmailModal() {
     const dispatch = useDispatch();
@@ -36,7 +36,7 @@ export function EnterEmailModal() {
             <Typography sx={StyledHeaderModalText}>Sign in to Capitweet</Typography>
             <a href="http://localhost:8080/oauth2/authorization/google" style={{
                 ...StyledBlackButton,
-               ...EnterEmailModalLink,
+                ...EnterEmailModalLink,
             }}><GoogleSvgIcon/> Sign in with Google</a>
             <Typography component="span" sx={StyledSpanElement}
             >or</Typography>
@@ -49,24 +49,9 @@ export function EnterEmailModal() {
                     }
                 )} onSubmit={async (values, { setErrors, setSubmitting }) => {
                 setIsSubmitting(true);
-                try {
-                    const response = await fetch(`${apiUrl}/checkEmail`, {
-                        method: "POST",
-                        body: JSON.stringify(values),
-                        headers: { "Content-Type": "application/json" }
-                    });
-                    if (response.status !== 302) {
-                        setErrors({ email: "User doesn't exist, please check your email" });
-                    } else {
-                        dispatch(setUserEmail(values));
-                    }
-                } catch (error) {
-                    console.error("An error occurred:", error);
-                    setErrors({ email: "An error occurred, please try again" });
-                } finally {
-                    setIsSubmitting(false);
-                    setSubmitting(false);
-                }
+                await dispatch(checkEmailFetch(values));
+                setIsSubmitting(false);
+                setSubmitting(false);
             }}>
 
                 <Form>

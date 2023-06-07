@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Typography, Modal } from "@mui/material";
 import { Field, Form, Formik, ErrorMessage } from "formik";
-import { setUserBirthday } from "../../store/actions";
+import { changeDob, setUserBirthday } from "../../store/actions";
 import {
     StyledBlackButton,
     StyledBox,
@@ -15,9 +15,6 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { SvgIconCapybara } from "./SvgIconCapybara";
 import { CloseSvgIcon } from "./CloseSvgIcon";
-import PropTypes from "prop-types";
-import { Post } from "../Posts/Post";
-import {apiUrl} from "../../apiConfig";
 
 export function BirthdateForm() {
     const userId = useSelector(state => state.userData.userData.userId);
@@ -69,17 +66,7 @@ export function BirthdateForm() {
                             }
                         )}
                     onSubmit={async (values) => {
-                        fetch(`${apiUrl}/api/change_dob`, {
-                            method: "POST",
-                            body: JSON.stringify({
-                                userId: userId,
-                                day: values.day,
-                                month: values.month,
-                                year: values.year,
-                            }),
-                            headers: { "Content-Type": "application/json" }
-                        });
-                        closeBirthdateForm();
+                        changeDob(userId, values);
                         navigate("/home");
                     }}
                 >

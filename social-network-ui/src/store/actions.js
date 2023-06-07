@@ -28,7 +28,7 @@ import {
     SET_USER_FOLLOW,
     SET_USER_UNFOLLOW, BUTTON_ENABLED, BUTTON_DISABLED,
 } from "./types";
-import {apiUrl} from "../apiConfig";
+import { apiUrl } from "../apiConfig";
 
 export const setPage = (pageNumber) => ({
     type: SET_PAGE,
@@ -155,6 +155,48 @@ export const setUserPostsClear = (posts) => ({
     type: SET_CLEAR_POSTS, payload: posts
 });
 
+export const checkEmailFetch = (values) => {
+    return async (dispatch) => {
+        console.log("hi")
+        try {
+            console.log(values)
+            const response = await fetch(`${apiUrl}/checkEmail`, {
+                method: "POST",
+                body: JSON.stringify(values),
+                headers: { "Content-Type": "application/json" }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            } else {
+                dispatch(setUserEmail(values));
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Ошибка:", error);
+        }
+    };
+};
+
+export const changeDob = (userId, values) => {
+    return async (dispatch) => {
+        const response = await fetch(`${apiUrl}/api/change_dob`, {
+            method: "POST",
+            body: JSON.stringify({
+                userId: userId,
+                day: values.day,
+                month: values.month,
+                year: values.year,
+            }),
+            headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await response.json();
+        dispatch(setUserBirthday(true));
+        return data;
+    };
+};
+
 export const fetchPostsByUserId = (userId, page) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/posts?userId=${userId}&page=${page}`);
@@ -179,7 +221,7 @@ export const setUserBirthday = (flag) => {
     };
 };
 
-export const fetchExplorePosts = (userId ,page) => {
+export const fetchExplorePosts = (userId, page) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/posts/explorer?userld=${userId}&page=${page}`);
         let posts = await response.json();

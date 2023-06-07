@@ -6,6 +6,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useLocation } from "react-router-dom";
 
+
 import {
     fetchPostsByUserId,
     sendPost,
@@ -243,6 +244,7 @@ export function HomeScreen() {
             </Formik>
             <div style={PostsWrapper}>
                 <PostsDisplaying userPosts={userPosts} isLoading={isLoading}/>
+
             </div>
         </div>
     );

@@ -8,10 +8,26 @@ import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, 
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
 
-import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
+import {
+    PostCard,
+    PostText,
+    PostTextWrapper,
+    ProfileImgStyles,
+    ShowMoreLinkStyles,
+    userLikeCount,
+    userNameParagraph,
+    UserPhoto,
+    UserPhotoWrapper,
+    PostPaper,
+    LikesCircular,
+    LikeBox,
+    CardContentPost,
+    EmptyLikesUserArrParagraph
+} from "./PostStyles";
 import { openLoginModal, setComments, setSearchId } from "../../store/actions";
 import CircularProgress from "@mui/material/CircularProgress";
-import {apiUrl} from "../../apiConfig";
+import { apiUrl } from "../../apiConfig";
+import { UsersLikes } from "./UsersLikes";
 
 export const Post = ({
                          userName,
@@ -36,7 +52,6 @@ export const Post = ({
     const [like, setLike] = useState(false);
     const [likeArr, setLikeArr] = useState([]);
     const [isReposted, setIsReposted] = useState(reposted);
-    // console.log("reposted",reposted)
     const [likeCount, setLikeCount] = useState(postLikes);
     const [showLike, setShowLike] = useState(false);
     const [usersWhoLike, setUsersWhoLike] = useState([]);
@@ -56,7 +71,7 @@ export const Post = ({
         const fetchLikes = async () => {
             try {
                 setLikesIsLoading(true);
-                let dataAboutUsersWhoLike = await fetch(`http://localhost:8080/users/likes?postId=${postId}&page=0`);
+                let dataAboutUsersWhoLike = await fetch(`${apiUrl}/users/likes?postId=${postId}&page=0`);
                 let usersWhoLike2 = await dataAboutUsersWhoLike.json();
                 setUsersWhoLike(usersWhoLike2);
             } catch (err) {
@@ -112,7 +127,6 @@ export const Post = ({
             dispatch(openLoginModal());
         }
     };
-
 
     const handleCommentToggle = async () => {
         if (userId) {
@@ -190,17 +204,15 @@ export const Post = ({
         }
     };
 
-
-
     return (
-        <Card  sx={{ ...PostCard, position: "relative", overflowAnchor: "none"  }}>
-            <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
+        <Card sx={PostCard}>
+            <CardContent sx={CardContentPost}>
                 {profileImage ? <img src={profileImage ? `data:image/png;base64,${profileImage}` : ""}
-                                     style={{ width: "50px", height: "50px", borderRadius: "50px" }} alt=""/> :
+                                     style={ProfileImgStyles} alt=""/> :
                     <Avatar alt={userName} src="#"/>}
-                <div style={{ marginLeft: 16, flex: 1 }}>
+                <div style={PostTextWrapper}>
                     <Typography variant="subtitle1" component="div"
-                                sx={{ textDecoration: "underline", cursor: "pointer" }}
+                                sx={userNameParagraph}
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
@@ -215,17 +227,9 @@ export const Post = ({
                 </div>
             </CardContent>
             {
-                photo ? (<div style={{
-                    maxWidth: "600px",
-                    width: "600px",
-                    margin: "10px auto",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center"
-                }}>
+                photo ? (<div style={UserPhotoWrapper}>
                     <img src={photo ? `data:image/png;base64,${photo}` : ""}
-                         style={{ width: "450px", margin: "0 auto" }} alt=""/>
-
+                         style={UserPhoto} alt=""/>
                 </div>) : null
             }
             <CardActions sx={{ padding: "20px 20px" }}>
@@ -238,48 +242,9 @@ export const Post = ({
                 </IconButton>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
-
                 </IconButton>
-                <Typography onClick={ShowUsersWhoLike} variant="body2" sx={{
-                    marginLeft: "0px",
-                    textDecoration: "underline",
-                    cursor: "pointer"
-                }}>{likeCount}</Typography>
-                <Paper elevation={3} sx={{
-                    width: "200px",
-                    marginLeft: "10px",
-                    maxHeight: "70px",
-                    position: "absolute",
-                    left: "170px",
-                    overflow: "scroll",
-                }}>
-                    {likesIsLoading ?
-                        <CircularProgress sx={{ marginLeft: "40%", width: "5px", height: "5px" }}/>
-                        :
-                        showLike ?
-                            usersWhoLike.length > 0 ?
-                                usersWhoLike.map(user => (
-                                    <Box key={user.userId} onClick={() => toAnotherUserPage(user.userId)} sx={{
-                                        display: "flex",
-                                        cursor: "pointer",
-                                        borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-                                        padding: "5px 10px",
-                                        "&:hover": {
-                                            backgroundColor: "rgba(128, 128, 128, 0.1)",
-                                        },
-                                    }}>
-                                        <Typography>@{user.username}</Typography>
-                                        <Typography sx={{ marginLeft: "10px" }}>{user.name}</Typography>
-                                    </Box>
-                                ))
-                                :
-                                <Typography sx={{
-                                    fontSize: "0.9rem",
-                                    fontFamily: "'Lato', sans-serif",
-                                }}>Лайків ще немає!Будь першим</Typography>
-                            :
-                            null}
-                </Paper>
+                <Typography onClick={ShowUsersWhoLike} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
+                <UsersLikes  showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike} toAnotherUserPage={toAnotherUserPage}/>
             </CardActions>
             {isCommentOpen &&
                 <Comments comments={comments} isLoadingComments={isLoadingComments} postCommentCount={postCommentCount}
@@ -300,7 +265,7 @@ Post.propTypes = {
     postLikes: PropTypes.number,
     text: PropTypes.string,
     userIdWhoSendPost: PropTypes.number,
-    scrollPosition:PropTypes.string,
+    scrollPosition: PropTypes.string,
 };
 
 

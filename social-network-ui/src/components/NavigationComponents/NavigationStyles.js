@@ -152,3 +152,5 @@ export const UserSearchContentWrapper = {
 export const HeaderInformationParagraph ={
     fontFamily: "'Lato', sans-serif", color: "#000000"
 }
+
+export const SvgIconStyles={ width: "25px", height: "25px", marginLeft: "10px" }

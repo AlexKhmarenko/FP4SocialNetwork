@@ -84,7 +84,7 @@ export function Layout() {
             } else if (location.pathname === "/home") {
                 console.log(page);
                 newPosts = await dispatch(fetchPostsByUserId(userId, page2));
-                console.log("newPostsHome",newPosts )
+                console.log("newPostsHome", newPosts )
             }
             if (newPosts && newPosts.length === 0) {
                 console.log('All posts loaded, stopping further fetches');
