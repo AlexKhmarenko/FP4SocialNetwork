@@ -21,7 +21,7 @@ import {
     StyledFormControl,
     StyledBlackButton,
     StyledWhiteButton,
-    StyledCheckbox
+    StyledCheckbox, EnterPasswordLabel
 } from "./loginModalStyles";
 import { setUserToken } from "../../store/actions";
 
@@ -90,16 +90,8 @@ export function EnterPasswordModal() {
                 <Form>
                     <FormControl sx={StyledFormControl}>
                         <FormControl sx={{ width: "400px" }} variant="outlined">
-                            <InputLabel htmlFor="email" sx={{
-                                fontFamily: "'Lato', sans-serif",
-                                fontSize: "19px",
-                                lineHeight: "23px"
-                            }}>email</InputLabel>
-                            <OutlinedInput sx={{
-                                fontFamily: "'Lato', sans-serif",
-                                fontSize: "19px",
-                                lineHeight: "23px"
-                            }}
+                            <InputLabel htmlFor="email" sx={EnterPasswordLabel}>email</InputLabel>
+                            <OutlinedInput sx={EnterPasswordLabel}
                                            id="userEmail"
                                            name="userEmail"
                                            type="text"

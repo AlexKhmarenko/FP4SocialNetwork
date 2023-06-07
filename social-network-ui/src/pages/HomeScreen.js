@@ -22,7 +22,7 @@ import {
     WrittenPostWrapper,
     HomeScreenWrapper,
     PostWrapper,
-    SendingPostButtonsContainer
+    SendingPostButtonsContainer, imgStyles, textWrapper
 } from "./pagesStyles/HomeScreenStyles";
 import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import { SendPostInput } from "../components/Posts/SendPostInput";
@@ -167,17 +167,12 @@ export function HomeScreen() {
                             <div style={PostWrapper}>
                                 <div style={SvgWrapper}>
                                     {userData.image ? <img src={`data:image/png;base64,${userData.image}`}
-                                                           style={{
-                                                               width: "70px",
-                                                               height: "65px",
-                                                               borderRadius: "50px",
-                                                               margin: "0,auto"
-                                                           }}
+                                                           style={imgStyles}
                                                            alt=""/> : <CapybaraSvgPhoto/>}
                                 </div>
                                 <div style={WrittenPostWrapper}>
                                     <div
-                                        style={{ display: "flex", minWidth: "120px", justifyContent: "space-between" }}>
+                                        style={textWrapper}>
                                         <h2 style={NameOfUser}>{userData.name}</h2>
                                         <h2 style={{
                                             ...NameOfUser,

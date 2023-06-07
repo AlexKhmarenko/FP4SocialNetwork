@@ -5,13 +5,23 @@ import React, { useEffect, useState } from "react";
 import { setSearchId } from "../../../store/actions";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import {
+    PaperStyles,
+    ElementLi,
+    ElementUl,
+    Wrapper,
+    imgStyles,
+    TextWrapper,
+    userNameParagraph,
+    userNickParagraph,
+    userNickLink, customButton, emptyArrParagraph,
+} from "./popularPeopleSidebarStyles";
 
 export function PopularPeopleSidebar() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [mostPopularPeople, setMostPopularPeople] = useState([]);
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,107 +41,47 @@ export function PopularPeopleSidebar() {
         fetchData();
     }, []);
 
-
     const toAnotherUserPage = (userIdWhoSendPost) => {
         dispatch(setSearchId(String(userIdWhoSendPost)));
         navigate("/view");
     };
 
     return (
-         isLoading ? <CircularProgress sx={{ marginTop: "20%", alignSelf:"center" }}/> :
-        <Paper elevation={3} sx={{
-            minWidth: "200px",
-            maxHeight: "620px",
-            minHeight:"370px",
-            width: "250px",
-            marginTop: "20%",
-            justifyContent: "space-between",
-            marginLeft: "9%",
-            padding: "10px 20px",
-            overflowY: "scroll",
-            overflowX:"hidden",
-        }}>
-            {mostPopularPeople.length > 0 ?
-                <ul style={{ listStyle: "none", margin: "0", padding: "0" }}>
-                    {mostPopularPeople.map((user, index) => (
-                        <li key={user.userId} style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            borderBottom: index !== mostPopularPeople.length - 1 ? "1px solid rgba(0, 0, 0, 0.1)" : "none",
-                            padding: "20px 0",
-                        }}>
-                            <div style={{
-                                width:"100%",
-                                listStyle: "none",
-                                display: "flex",
-                                alignItems:"center",
-                                justifyContent: "space-between",
-                                textAlign:"start",
-                                margin: "0",
-                                padding: "0",
+        isLoading ? <CircularProgress sx={{ marginTop: "20%", alignSelf: "center" }}/> :
+            <Paper elevation={3} sx={PaperStyles}>
+                {mostPopularPeople.length > 0 ?
+                    <ul style={ElementUl}>
+                        {mostPopularPeople.map((user, index) => (
+                            <li key={user.userId} style={{
+                                ...ElementLi,
+                                borderBottom: index !== mostPopularPeople.length - 1 ? "1px solid rgba(0, 0, 0, 0.1)" : "none"
                             }}>
-                                {user.profileImageByteArray ? <img src={`data:image/png;base64,${user.profileImageByteArray}`}
-                                                             style={{
-                                                                 width: "50px",
-                                                                 height: "50px",
-                                                                 borderRadius: "50px",
-                                                             }}
-                                                             alt=""/> : <Avatar alt={user.username} style={{ width: "50px", height: "50px" }} src={user.avatar}/>}
-                                <div style={{ display: "flex", flexDirection: "column", textAlign:"center", justifyContent:"space-between", }}>
-                                    <Typography style={{
-                                        color: "rgb(113, 118, 123)",
-                                        fontFamily: "'Lato', sans-serif",
-                                        fontSize: "15px",
-                                        fontWeight: "400",
-                                        textDecoration: "underline",
-                                        cursor: "pointer"
-                                    }} onClick={()=>{toAnotherUserPage(user.userId)}}>{user.name}
-                                    </Typography>
-                                    <Typography style={{
-                                        color: "rgb(113, 118, 123)", fontFamily: "'Lato', sans-serif",
-                                        fontSize: "13px",
-                                        fontWeight: "400",
-                                    }} onClick={()=>{toAnotherUserPage(user.userId)}}>
-                                        <Link style={{
-                                            color: "rgb(113, 118, 123)", fontFamily: "'Lato', sans-serif",
-                                            fontSize: "15px",
-                                            fontWeight: "400",
-                                        }}>@{user.username}</Link>
-                                    </Typography>
-
+                                <div style={Wrapper}>
+                                    {user.profileImageByteArray ?
+                                        <img src={`data:image/png;base64,${user.profileImageByteArray}`}
+                                             style={imgStyles}
+                                             alt=""/> :
+                                        <Avatar alt={user.username} style={{ width: "50px", height: "50px" }}
+                                                src={user.avatar}/>}
+                                    <div style={TextWrapper}>
+                                        <Typography style={userNameParagraph} onClick={() => {
+                                            toAnotherUserPage(user.userId);
+                                        }}>{user.name}
+                                        </Typography>
+                                        <Typography style={userNickParagraph} onClick={() => {
+                                            toAnotherUserPage(user.userId);
+                                        }}>
+                                            <Link style={userNickLink}>@{user.username}</Link>
+                                        </Typography>
+                                    </div>
+                                    <Button href="#" sx={{ ...StyledBlackButton, ...customButton }}>follow</Button>
                                 </div>
-                                <Button href="#" sx={{
-                                    ...StyledBlackButton,
-                                    color: "white",
-                                    maxWidth: "90px",
-                                    maxHeight: "30px",
-                                    marginTop: "10px",
-                                    transition: "0.7s",
-                                    '&:hover': {
-                                        boxShadow: "0 0 10px rgba(0,0,0,0.5)",
-                                        color: "black",
-                                    }
-                                }}>follow</Button>
-                            </div>
-                        </li>
-
-                    ))}
-                </ul> :
-                <Typography sx={{
-                    color: "rgb(113, 118, 123)",
-                    fontFamily: "'Lato', sans-serif",
-                    fontSize: "25px",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    marginRight: "10px",
-                    cursor: "pointer",
-                }}>we have no ideas to show
-                </Typography>
-            }
-        </Paper>
-);
+                            </li>
+                        ))}
+                    </ul> : <Typography sx={emptyArrParagraph}>we have no ideas to show</Typography>
+                }
+            </Paper>
+    );
 }
 
 

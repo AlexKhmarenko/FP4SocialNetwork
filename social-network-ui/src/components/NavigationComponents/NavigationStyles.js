@@ -148,3 +148,7 @@ export const UserSearchContentWrapper = {
     width: "300px",
     borderLeft: "1px solid rgba(0, 0, 0, 0.1)",
 };
+
+export const HeaderInformationParagraph ={
+    fontFamily: "'Lato', sans-serif", color: "#000000"
+}
