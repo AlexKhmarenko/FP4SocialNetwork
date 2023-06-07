@@ -46,6 +46,8 @@ public class PostServiceImplTest {
   UserRepository userRepository;
 
   @Mock
+  PostLikeRepository postLikeRepository;
+  @Mock
   RepostRepository repostRepository;
 
   @Test
@@ -170,6 +172,8 @@ public class PostServiceImplTest {
     int offset = 0 * pageSize;
 
     List<Post> postList = new ArrayList<>(Arrays.asList(post1, post2));
+    Page<Post> pagePost = new PageImpl<>(postList);
+
     List<Object[]> testList = Arrays.asList(objects1, objects2);
 
     when(postRepository.findAll(offset, pageSize)).thenReturn(testList);
