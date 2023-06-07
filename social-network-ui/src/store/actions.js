@@ -155,25 +155,81 @@ export const setUserPostsClear = (posts) => ({
     type: SET_CLEAR_POSTS, payload: posts
 });
 
-export const checkEmailFetch = (values) => {
+export const checkEmailFetch = (values, setErrors) => {
     return async (dispatch) => {
-        console.log("hi")
+        console.log("hi");
         try {
-            console.log(values)
+            console.log(values);
             const response = await fetch(`${apiUrl}/checkEmail`, {
                 method: "POST",
                 body: JSON.stringify(values),
                 headers: { "Content-Type": "application/json" }
             });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            } else {
+            if (response.status === 302) {
                 dispatch(setUserEmail(values));
+            } else {
+                setErrors({ email: "User doesn't exist, please check your email" });
             }
             const data = await response.json();
             return data;
         } catch (error) {
             console.error("Ошибка:", error);
+        }
+    };
+};
+
+export const checkPasswordFetch = (values, userDataState, setErrors) => {
+    return async (dispatch) => {
+        console.log("hi");
+        try {
+            const userPassword = await fetch(`${apiUrl}/login`, {
+                method: "POST",
+                body: JSON.stringify({
+                    email: values.email,
+                    password: values.password,
+                    rememberMe: userDataState.rememberMe
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (userPassword.ok) {
+                const userToken = await userPassword.json();
+                if (userDataState.rememberMe) {
+                    dispatch(setUserToken(userToken));
+                    localStorage.setItem("userToken", JSON.stringify(userToken));
+                    dispatch(closeLoginModal());
+                    dispatch(setUserEmail({ userEmail: "" }));
+                } else {
+                    dispatch(setUserToken(userToken));
+                    sessionStorage.setItem("userToken", JSON.stringify(userToken));
+                    dispatch(closeLoginModal());
+                    dispatch(setUserEmail({ userEmail: "" }));
+                }
+            } else {
+                setErrors({ password: "Wrong password" });
+            }
+        } catch (err) {
+            setErrors({ password: "An error occurred, please try again" });
+            console.error("Ошибка:", err);
+        }
+
+    };
+};
+
+export const PopularPeopleFetch = (setIsLoading, setMostPopularPeople) => {
+    return async (dispatch) => {
+        console.log("hi");
+        try {
+            setIsLoading(true);
+            const response = await fetch(`${apiUrl}/api/users/popular?page=0`);
+            const popularPeople = await response.json();
+            setMostPopularPeople(popularPeople);
+            console.log(popularPeople);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 };

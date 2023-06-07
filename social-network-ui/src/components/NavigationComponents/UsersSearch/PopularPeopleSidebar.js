@@ -2,7 +2,7 @@ import { Avatar, Button, Paper, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { StyledBlackButton } from "../../LoginModal/loginModalStyles";
 import React, { useEffect, useState } from "react";
-import { setSearchId } from "../../../store/actions";
+import { PopularPeopleFetch, setSearchId } from "../../../store/actions";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
@@ -27,17 +27,7 @@ export function PopularPeopleSidebar() {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                setIsLoading(true);
-                const response = await fetch(`${apiUrl}/users/popular?page=0`);
-                const popularPeople = await response.json();
-                setMostPopularPeople(popularPeople);
-                console.log(popularPeople);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
-            }
+            dispatch(PopularPeopleFetch(setIsLoading, setMostPopularPeople))
         };
 
         fetchData();

@@ -19,7 +19,7 @@ import {
 import PropTypes from "prop-types";
 import { useModal } from "../../context/ModalContext";
 import { GoogleSvgIcon } from "./GoogleSvgIcon";
-import { apiUrl } from "../../apiConfig";
+import {apiUrl} from "../../apiConfig";
 
 export function EnterEmailModal() {
     const dispatch = useDispatch();
@@ -36,7 +36,7 @@ export function EnterEmailModal() {
             <Typography sx={StyledHeaderModalText}>Sign in to Capitweet</Typography>
             <a href="http://localhost:8080/oauth2/authorization/google" style={{
                 ...StyledBlackButton,
-                ...EnterEmailModalLink,
+               ...EnterEmailModalLink,
             }}><GoogleSvgIcon/> Sign in with Google</a>
             <Typography component="span" sx={StyledSpanElement}
             >or</Typography>
@@ -49,7 +49,7 @@ export function EnterEmailModal() {
                     }
                 )} onSubmit={async (values, { setErrors, setSubmitting }) => {
                 setIsSubmitting(true);
-                await dispatch(checkEmailFetch(values));
+                await dispatch(checkEmailFetch(values, setErrors))
                 setIsSubmitting(false);
                 setSubmitting(false);
             }}>
