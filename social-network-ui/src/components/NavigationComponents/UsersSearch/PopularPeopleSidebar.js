@@ -16,6 +16,8 @@ import {
     userNickParagraph,
     userNickLink, customButton, emptyArrParagraph,
 } from "./popularPeopleSidebarStyles";
+import {apiUrl} from "../../../apiConfig";
+
 
 export function PopularPeopleSidebar() {
     const navigate = useNavigate();
@@ -27,7 +29,7 @@ export function PopularPeopleSidebar() {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch("http://localhost:8080/users/popular?page=0");
+                const response = await fetch(`${apiUrl}/users/popular?page=0`);
                 const popularPeople = await response.json();
                 setMostPopularPeople(popularPeople);
                 console.log(popularPeople);

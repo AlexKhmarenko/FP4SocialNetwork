@@ -17,6 +17,7 @@ import { SvgIconCapybara } from "./SvgIconCapybara";
 import { CloseSvgIcon } from "./CloseSvgIcon";
 import PropTypes from "prop-types";
 import { Post } from "../Posts/Post";
+import {apiUrl} from "../../apiConfig";
 
 export function BirthdateForm() {
     const userId = useSelector(state => state.userData.userData.userId);
@@ -68,7 +69,7 @@ export function BirthdateForm() {
                             }
                         )}
                     onSubmit={async (values) => {
-                        fetch("http://localhost:8080/api/change_dob", {
+                        fetch(`${apiUrl}/api/change_dob`, {
                             method: "POST",
                             body: JSON.stringify({
                                 userId: userId,

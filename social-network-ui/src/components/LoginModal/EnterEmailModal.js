@@ -19,6 +19,7 @@ import {
 import PropTypes from "prop-types";
 import { useModal } from "../../context/ModalContext";
 import { GoogleSvgIcon } from "./GoogleSvgIcon";
+import {apiUrl} from "../../apiConfig";
 
 export function EnterEmailModal() {
     const dispatch = useDispatch();
@@ -49,7 +50,7 @@ export function EnterEmailModal() {
                 )} onSubmit={async (values, { setErrors, setSubmitting }) => {
                 setIsSubmitting(true);
                 try {
-                    const response = await fetch("http://localhost:8080/checkEmail", {
+                    const response = await fetch(`${apiUrl}/checkEmail`, {
                         method: "POST",
                         body: JSON.stringify(values),
                         headers: { "Content-Type": "application/json" }

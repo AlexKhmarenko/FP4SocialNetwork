@@ -10,6 +10,7 @@ import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
 import { setCommentFromUser, setSearchId } from "../../store/actions";
 import CircularProgress from "@mui/material/CircularProgress";
+import {apiUrl} from "../../apiConfig";
 
 export function Comments({ comments, postId, userId, setPostCommentCount, postCommentCount, photoFileByteArray, isLoadingComments }) {
     const dispatch = useDispatch();
@@ -31,7 +32,7 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
             initialValues={{ comment: "" }}
             onSubmit={async (values, actions) => {
                 console.log(userId, postId, values.comment,);
-                let userCommentResponse = await fetch("http://localhost:8080/comments", {
+                let userCommentResponse = await fetch(`${apiUrl}/comments`, {
                     method: "POST",
                     body: JSON.stringify({
                         userId: userId,
