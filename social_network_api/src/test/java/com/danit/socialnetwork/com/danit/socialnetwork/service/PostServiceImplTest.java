@@ -7,9 +7,11 @@ import com.danit.socialnetwork.dto.post.PostRepostDtoMix;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
+import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
+import com.danit.socialnetwork.repository.RepostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -45,6 +47,9 @@ public class PostServiceImplTest {
 
   @Mock
   PostLikeRepository postLikeRepository;
+
+  @Mock
+  RepostRepository repostRepository;
 
   @Test
   public void testGetAllPostsFromToFollow() {
@@ -243,7 +248,11 @@ public class PostServiceImplTest {
     Pageable pagedByTenPosts =
         PageRequest.of(0, 10);
 
+    Repost repost = new Repost();
+
     when(postRepository.findAllByUserId(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
+    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(),userId))
+        .thenReturn(Optional.of(repost));
     List<PostDtoResponse> result = postService.getAllOwnPosts(userId, 0);
 
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
@@ -287,8 +296,11 @@ public class PostServiceImplTest {
     Pageable pagedByTenPosts =
         PageRequest.of(0, 10);
 
+    Repost repost = new Repost();
+
     when(postRepository.findAllByUserIdLiked(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
-    List<PostDtoResponse> result = postService.getAllLikedPosts(userId, 0);
+    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(),userId))
+        .thenReturn(Optional.of(repost));List<PostDtoResponse> result = postService.getAllLikedPosts(userId, 0);
 
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
     Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
