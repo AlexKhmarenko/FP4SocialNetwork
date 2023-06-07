@@ -46,9 +46,6 @@ public class PostServiceImplTest {
   UserRepository userRepository;
 
   @Mock
-  PostLikeRepository postLikeRepository;
-
-  @Mock
   RepostRepository repostRepository;
 
   @Test
@@ -168,15 +165,11 @@ public class PostServiceImplTest {
         3, "John2", "Johny2", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(1))};
 
-//    Pageable sortedByDateTimeDesc =
-//        PageRequest.of(0, 12, Sort.by("sentDateTime").descending());
 
     int pageSize = 12;
     int offset = 0 * pageSize;
 
     List<Post> postList = new ArrayList<>(Arrays.asList(post1, post2));
-    Page<Post> pagePost = new PageImpl<>(postList);
-
     List<Object[]> testList = Arrays.asList(objects1, objects2);
 
     when(postRepository.findAll(offset, pageSize)).thenReturn(testList);
@@ -300,7 +293,8 @@ public class PostServiceImplTest {
 
     when(postRepository.findAllByUserIdLiked(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
     when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(),userId))
-        .thenReturn(Optional.of(repost));List<PostDtoResponse> result = postService.getAllLikedPosts(userId, 0);
+        .thenReturn(Optional.of(repost));
+    List<PostDtoResponse> result = postService.getAllLikedPosts(userId, 0);
 
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
     Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
