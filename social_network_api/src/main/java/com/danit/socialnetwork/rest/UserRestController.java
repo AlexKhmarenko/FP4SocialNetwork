@@ -178,6 +178,4 @@ public class UserRestController {
         .map(UserDtoForSidebar::from)
         .toList();
   }
-
-
 }
