@@ -15,6 +15,7 @@ export function InputPhoto ({onImageUpload, ...props }) {
     const handleDeleteClick = () => {
         setSelectedFile(null);
         setBackground(null)
+        onImageUpload([])
 
     };
     const handleFileChange = (event) => {
@@ -46,7 +47,7 @@ export function InputPhoto ({onImageUpload, ...props }) {
             }
             {background ?
                 // <img src={`data:image/png;base64,${background}`} alt="" style={PhotoStyle} />
-                <img src={background} alt="" style={PhotoStyle} />
+                <img src={background} alt="Selected" style={PhotoStyle} />
                 :
                 false
             }

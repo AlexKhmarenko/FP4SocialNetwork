@@ -32,6 +32,9 @@ export function EditProfile (props) {
         return new Date(year, month, 0).getDate();
     }
 
+    console.log(bgPhoto)
+
+
 
     return (
         <Modal
@@ -44,8 +47,8 @@ export function EditProfile (props) {
                 <Formik initialValues={{
                     name: props.name,
                     address: props.address || "",
-                    day: props.birthday.slice(8,10),
-                    month: props.birthday.slice(5,7),
+                    day: props.birthday.slice(8,10).replace(/^0+/, ''),
+                    month: props.birthday.slice(5,7).replace(/^0+/, ''),
                     year: props.birthday.slice(0,4),
                     // himself: "",
                     // bgPhoto: props.image || "",
@@ -146,15 +149,15 @@ export function EditProfile (props) {
                                         label={"month"}
                                     >
                                         <MenuItem value="12">December</MenuItem>
-                                        <MenuItem value="01">January</MenuItem>
-                                        <MenuItem value="02">February</MenuItem>
-                                        <MenuItem value="03">March</MenuItem>
-                                        <MenuItem value="04">April</MenuItem>
-                                        <MenuItem value="05">May</MenuItem>
-                                        <MenuItem value="06">June</MenuItem>
-                                        <MenuItem value="07">July</MenuItem>
-                                        <MenuItem value="08">August</MenuItem>
-                                        <MenuItem value="09">September</MenuItem>
+                                        <MenuItem value="1">January</MenuItem>
+                                        <MenuItem value="2">February</MenuItem>
+                                        <MenuItem value="3">March</MenuItem>
+                                        <MenuItem value="4">April</MenuItem>
+                                        <MenuItem value="5">May</MenuItem>
+                                        <MenuItem value="6">June</MenuItem>
+                                        <MenuItem value="7">July</MenuItem>
+                                        <MenuItem value="8">August</MenuItem>
+                                        <MenuItem value="9">September</MenuItem>
                                         <MenuItem value="10">October</MenuItem>
                                         <MenuItem value="11">November</MenuItem>
                                     </Field>
