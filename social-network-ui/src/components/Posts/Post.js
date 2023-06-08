@@ -65,12 +65,14 @@ export const Post = ({
     const [usersWhoLike, setUsersWhoLike] = useState([]);
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
+    const lines = Math.ceil(text.length / 20);
+    const height = `${11 * lines}px`;
 
     const expand = useSpring({
         overflow: 'hidden',
-        maxHeight: showMore ? '1000px' : '55px',
-        from: { maxHeight: '55px' },
-        config: { tension: 550, friction: 60 },
+        height: showMore ? height : '55px',
+        from: { height: '55px' },
+        config: { tension: 700, friction: 80 },
     });
 
     const ShowUsersWhoLike = async () => {
@@ -136,8 +138,7 @@ export const Post = ({
         }
     }, [like, userId, postId, likeArr, dispatch]);
 
-    const handleShowMore = async (e) => {
-        e.preventDefault();
+    const handleShowMore = async () => {
         setShowMore(!showMore);
     };
 
@@ -170,7 +171,7 @@ export const Post = ({
                         <Typography variant="body1" component="div" mt={1}
                                     sx={{ ...PostText }}>{text}</Typography>
                     </animated.div>
-                    {text.split(" ").length > 15 && (
+                    {text.split("").length > 100 && (
                         <Button href="#" style={ShowMoreLinkStyles} onClick={handleShowMore}>
                             {showMore ? "hight text" : "see more"}
                         </Button>

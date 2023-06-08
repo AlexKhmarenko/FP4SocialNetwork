@@ -46,9 +46,8 @@ export const PostText = {
 
 export const ShowMoreLinkStyles = {
     fontFamily: "'Lato', sans-serif",
-    fontSize: "15px",
+    fontSize: "12px",
     fontWeight: "700",
-    textDecoration: "none",
     color: "blue"
 };
 
