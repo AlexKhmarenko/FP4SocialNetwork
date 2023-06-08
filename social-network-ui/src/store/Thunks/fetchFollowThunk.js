@@ -1,5 +1,5 @@
 import {userUnfollow} from "../actions";
-
+import {apiUrl} from "../../apiConfig";
 
 export function fetchFollow (searchId) {
     return (dispatch, getState) => {
@@ -7,7 +7,7 @@ export function fetchFollow (searchId) {
         const state = getState()
         const userId = state.userData.userData.userId
         try {
-            fetch(`http://localhost:8080/api/follow`, {
+            fetch(`${apiUrl}/api/follow`, {
                 method: "POST",
                 body: JSON.stringify({
                     userFollower: userId,

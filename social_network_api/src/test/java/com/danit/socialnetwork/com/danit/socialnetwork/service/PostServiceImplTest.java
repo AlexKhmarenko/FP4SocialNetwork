@@ -1,15 +1,17 @@
 package com.danit.socialnetwork.service;
 
 
+import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
-import com.danit.socialnetwork.dto.post.PostRepostDtoMix;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
+import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
+import com.danit.socialnetwork.repository.RepostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -45,6 +47,11 @@ public class PostServiceImplTest {
 
   @Mock
   PostLikeRepository postLikeRepository;
+  @Mock
+  RepostRepository repostRepository;
+
+  @Mock
+  ImageHandlingConf imageHandlingConf;
 
   @Test
   public void testGetAllPostsFromToFollow() {
@@ -163,8 +170,6 @@ public class PostServiceImplTest {
         3, "John2", "Johny2", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(1))};
 
-//    Pageable sortedByDateTimeDesc =
-//        PageRequest.of(0, 12, Sort.by("sentDateTime").descending());
 
     int pageSize = 12;
     int offset = 0 * pageSize;
@@ -185,20 +190,23 @@ public class PostServiceImplTest {
   @Test
   public void testSavePost() {
 
+    byte [] photoFileByteArray = new byte[]{49, 48, 58, 50, 52, 58, 50, 54};
+
     PostDtoSave postDtoSave = new PostDtoSave();
     postDtoSave.setUserId(2);
     postDtoSave.setWrittenText("Hello world1");
-    postDtoSave.setPhotoFileByteArray(new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+    postDtoSave.setPhotoFileByteArray(photoFileByteArray);
 
     DbUser user = new DbUser();
     user.setUserId(2);
     user.setUsername("John1");
     user.setName("Johny1");
 
-    Post tempPost = Post.from(postDtoSave, user);
+    Post tempPost = Post.from(postDtoSave, user, "photoLink");
 
     when(userRepository.findById(postDtoSave.getUserId())).thenReturn(Optional.of(user));
     when(postRepository.save(any(Post.class))).thenReturn(tempPost);
+    when(imageHandlingConf.uploadImage(photoFileByteArray, "production")).thenReturn("photoLink");
 
     Post post = postService.savePost(postDtoSave);
 
@@ -243,7 +251,11 @@ public class PostServiceImplTest {
     Pageable pagedByTenPosts =
         PageRequest.of(0, 10);
 
+    Repost repost = new Repost();
+
     when(postRepository.findAllByUserId(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
+    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(),userId))
+        .thenReturn(Optional.of(repost));
     List<PostDtoResponse> result = postService.getAllOwnPosts(userId, 0);
 
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
@@ -287,7 +299,11 @@ public class PostServiceImplTest {
     Pageable pagedByTenPosts =
         PageRequest.of(0, 10);
 
+    Repost repost = new Repost();
+
     when(postRepository.findAllByUserIdLiked(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
+    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(),userId))
+        .thenReturn(Optional.of(repost));
     List<PostDtoResponse> result = postService.getAllLikedPosts(userId, 0);
 
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
@@ -334,7 +350,7 @@ public class PostServiceImplTest {
 
     when(postRepository.findAllPostsAndRepostsByUserIdAsPost(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
 
-    List<PostRepostDtoMix> result = postService.getAllPostsAndRepostsByUserId(userId, 0);
+    List<PostDtoResponse> result = postService.getAllPostsAndRepostsByUserId(userId, 0);
 
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
     Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());

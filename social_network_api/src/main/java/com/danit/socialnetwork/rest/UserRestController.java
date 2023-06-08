@@ -49,7 +49,7 @@ public class UserRestController {
 
   private final SearchMapper searchMapper;
 
-  @PostMapping(path = "registration")
+  @PostMapping(path = "/api/registration")
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     int day = request.getDay();
@@ -74,7 +74,7 @@ public class UserRestController {
     }
   }
 
-  @PostMapping(value = "/checkEmail")
+  @PostMapping(value = "/api/checkEmail")
   public ResponseEntity<Map<String, String>> handleCheckEmailPost(
       @RequestBody UserEmailForLoginRequest request) throws IOException {
 
@@ -91,7 +91,7 @@ public class UserRestController {
     }
   }
 
-  @PostMapping(value = "/sendLetter")
+  @PostMapping(value = "/api/sendLetter")
   public ResponseEntity<Map<String, String>> handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
 
@@ -108,7 +108,7 @@ public class UserRestController {
     }
   }
 
-  @PostMapping(value = "/activate")
+  @PostMapping(value = "/api/activate")
   public ResponseEntity<Map<String, String>> handleActivatePost(
       @RequestBody ActivateCodeRequest request) {
     Integer code = request.getCode();
@@ -132,7 +132,7 @@ public class UserRestController {
     return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
   }
 
-  @PutMapping(value = "/edition")
+  @PutMapping(value = "/api/edition")
   public ResponseEntity<Map<String, String>> handleEditionPost(
       @RequestBody EditingDtoRequest request) {
     Map<String, String> response = new HashMap<>();
@@ -145,22 +145,7 @@ public class UserRestController {
     }
   }
 
-  @GetMapping("/{username}")
-  public Optional<DbUser> getUser(@PathVariable("username") String username) throws IOException {
-    return userService.findByUsername(username);
-  }
-
-  @GetMapping(value = "/{username}/photo", produces = MediaType.IMAGE_PNG_VALUE)
-  public byte[] getProfileImage(@PathVariable("username") String username) throws IOException {
-    return userService.getProfileImage(username);
-  }
-
-  @GetMapping(value = "/{username}/header_photo", produces = MediaType.IMAGE_PNG_VALUE)
-  public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
-    return userService.getBackgroundImage(username);
-  }
-
-  @GetMapping("/profile/{userId}")
+  @GetMapping("/api/profile/{userId}")
   public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
     UserDtoResponse tempUser = userService.findByUserId(userId);
     return new ResponseEntity<>(tempUser, HttpStatus.OK);
@@ -172,7 +157,7 @@ public class UserRestController {
     return userService.dbUserDobChange(userDobChangeRequest);
   }
 
-  @GetMapping("/users/likes")
+  @GetMapping("/api/users/likes")
   public List<UserDtoForPostLikeResponse> getUsersWhoLikedPostByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (postId == 0) {
@@ -184,14 +169,12 @@ public class UserRestController {
         .toList();
   }
 
-
-  @GetMapping("/users/popular")
+  @GetMapping("/api/users/popular")
   public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
     return userService.getUsersWhoMostPopular(page)
         .stream()
         .map(UserDtoForSidebar::from)
         .toList();
   }
-
 
 }

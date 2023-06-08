@@ -1,13 +1,14 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
-import com.danit.socialnetwork.dto.post.PostRepostDtoMix;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
+import com.danit.socialnetwork.repository.RepostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,20 +29,24 @@ public class PostServiceImpl implements PostService {
   private final UserRepository userRepository;
   private final PostLikeRepository postLikeRepository;
 
+  private final RepostRepository repostRepository;
+
+  private final ImageHandlingConf imageHandlingConf;
+
   private PostDtoResponse from(Post post) {
     PostDtoResponse postDtoResponse = PostDtoResponse.from(post);
     postDtoResponse.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(post.getPostId()));
     postDtoResponse.setPostCommentsCount(post.getPostComments().size());
+    postDtoResponse.setIsReposted((repostRepository.findRepostByPostIdAndUserId(
+        post.getPostId(), post.getUserPost().getUserId())).isPresent());
     return postDtoResponse;
   }
 
-  private PostRepostDtoMix from(Post post, Integer userId) {
-    PostRepostDtoMix postRepostDtoMix = PostRepostDtoMix.from(post, userId);
+  private PostDtoResponse from(Post post, Integer userId) {
+    PostDtoResponse postRepostDtoMix = PostDtoResponse.from(post, userId);
     postRepostDtoMix.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(post.getPostId()));
-    postRepostDtoMix.setPostCommentsCount(post.getPostComments().size());
-    postRepostDtoMix.setIsRepost(!post.getUserPost().getUserId().equals(userId));
     return postRepostDtoMix;
 
   }
@@ -51,7 +57,7 @@ public class PostServiceImpl implements PostService {
     int pageSize = 12;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAll(
-         offset, pageSize);
+        offset, pageSize);
     return results.stream()
         .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
@@ -74,16 +80,16 @@ public class PostServiceImpl implements PostService {
   @Override
   public Post savePost(PostDtoSave thePostDtoSave) {
     Optional<DbUser> userPost = userRepository.findById(thePostDtoSave.getUserId());
-    DbUser user = null;
-    if (userPost.isPresent()) {
-      user = userPost.get();
-    } else {
+    if (userPost.isEmpty()) {
       throw new UserNotFoundException(String.format("User with userId %s not found",
           thePostDtoSave.getUserId()));
+    } else {
+      DbUser user = userPost.get();
+      String photoFileLink = imageHandlingConf.uploadImage(thePostDtoSave.getPhotoFileByteArray(),
+          "production");
+      Post thePostSave = Post.from(thePostDtoSave, user, photoFileLink);
+      return postRepository.save(thePostSave);
     }
-    Post thePostSave = Post.from(thePostDtoSave, user);
-    return postRepository.save(thePostSave);
-
   }
 
   /*Method returns all posts done by user*/
@@ -111,7 +117,7 @@ public class PostServiceImpl implements PostService {
   /*Method returns all posts and reposts in descending order by time when
    they were posted (for own posts) and reposted (for reposts) by user*/
   @Override
-  public List<PostRepostDtoMix> getAllPostsAndRepostsByUserId(Integer userId, Integer page) {
+  public List<PostDtoResponse> getAllPostsAndRepostsByUserId(Integer userId, Integer page) {
     int pageSize = 10;
     Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> postList = postRepository.findAllPostsAndRepostsByUserIdAsPost(userId, pagedByTenPosts);

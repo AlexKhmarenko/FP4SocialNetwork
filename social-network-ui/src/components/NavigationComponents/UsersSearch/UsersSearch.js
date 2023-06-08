@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { Link } from "react-router-dom";
 import { StyledBlackButton } from "../../LoginModal/loginModalStyles";
 import { PopularPeopleSidebar } from "./PopularPeopleSidebar";
+import {apiUrl} from "../../../apiConfig";
 
 export function UsersSearch() {
 
@@ -29,7 +30,7 @@ export function UsersSearch() {
                             userName: Yup.string().required("Username is required")
                         }
                     )} validate={async (values) => {
-                    const response = await fetch("http://localhost:8080/search", {
+                    const response = await fetch(`${apiUrl}/search`, {
                         method: "POST",
                         body: JSON.stringify({
                             userId: userId,
