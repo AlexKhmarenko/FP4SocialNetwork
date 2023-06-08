@@ -91,9 +91,9 @@ export const Post = ({
 
     useEffect(() => {
         if (userId) {
-            dispatch(activeLikesFetch(postId, userId));
+            dispatch(activeLikesFetch(postId, userId, setLike));
         }
-    }, [userId, postId]);
+    }, []);
 
     const toAnotherUserPage = (userIdWhoSendPost) => {
         if (userId) {
@@ -154,7 +154,9 @@ export const Post = ({
             return format(date, "MMM d, yyyy");
         }
     }, [dataTime]);
+
     console.log(photo)
+
     return (
         <Card sx={PostCard}>
             <CardContent sx={CardContentPost}>

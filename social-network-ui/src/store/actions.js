@@ -235,7 +235,7 @@ export const fetchLikes = (setLikesIsLoading, setUsersWhoLike, postId) => {
     };
 };
 
-export const activeLikesFetch = (postId, userId) => {
+export const activeLikesFetch = (postId, userId, setLike) => {
     return async (dispatch) => {
         try {
             const activeLikesResponse = await fetch(`${apiUrl}/api/likes/active?postId=${postId}&userId=${userId}`);
