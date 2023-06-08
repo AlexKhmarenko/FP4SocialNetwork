@@ -30,7 +30,7 @@ export function UsersSearch() {
                             userName: Yup.string().required("Username is required")
                         }
                     )} validate={async (values) => {
-                    const response = await fetch(`${apiUrl}/search`, {
+                    const response = await fetch(`${apiUrl}/api/search`, {
                         method: "POST",
                         body: JSON.stringify({
                             userId: userId,

@@ -75,7 +75,7 @@ export function EditProfile (props) {
                     )} onSubmit={async (values, { setErrors, setSubmitting }) => {
                     setIsSubmitting(true)
                     try {
-                        const response = await fetch(`${apiUrl}/edition`, {
+                        const response = await fetch(`${apiUrl}/api/edition`, {
                             method: "PUT",
                             body: JSON.stringify({
                                 userId: props.userId,
@@ -95,7 +95,7 @@ export function EditProfile (props) {
                         } else {
                             // const userExistData = await response.json();
 
-                            const response = await fetch(`${apiUrl}/profile/${userId}`);
+                            const response = await fetch(`${apiUrl}/api/profile/${userId}`);
                             const userData = await response.json();
                             dispatch(setUserData(userData));
 

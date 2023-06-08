@@ -22,6 +22,13 @@ export function Profile (props) {
     const isFollow = useSelector(state => state.userData.followData.userFollow)
     const dispatch = useDispatch()
 
+    const gogi = async () => {
+        const response = await fetch(`${apiUrl}/api/profile/${userId}`);
+        const userData = await response.json();
+        console.log(userData)
+    }
+
+
 
     useEffect(() => {
         const fetchIsFollow = async () => {
@@ -44,6 +51,7 @@ export function Profile (props) {
         };
         if (searchId) {
             fetchIsFollow();
+            gogi()
         }
 
     }, [searchId])
