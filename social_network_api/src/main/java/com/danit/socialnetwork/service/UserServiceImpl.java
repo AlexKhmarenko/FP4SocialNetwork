@@ -222,14 +222,14 @@ public class UserServiceImpl implements UserService {
       byte[] profileBackgroundImage = request.getProfileBackgroundImageUrl();
       String profileImageString = request.getProfileImageUrlString();
       String profileBackgroundImageString = request.getProfileBackgroundImageUrlString();
-      if (profileImage != null && profileImage.length != 0 && profileImageString.equals(null)) {
+      if (profileImage != null && profileImage.length != 0 && profileImageString == null) {
         updateUser.setProfileImageUrl(imageHandlingConf
             .uploadImage(profileImage, "production"));
       } else if (profileImage == null) {
         updateUser.setProfileImageUrl(null);
       }
       if (profileBackgroundImage != null && profileBackgroundImage
-          .length != 0 && profileBackgroundImageString.equals(null)) {
+          .length != 0 && profileBackgroundImageString == null) {
         updateUser.setProfileBackgroundImageUrl(imageHandlingConf
             .uploadImage(profileBackgroundImage, "production"));
       } else if (profileBackgroundImage == null) {
