@@ -12,10 +12,10 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
     } else {
         return (
             userPosts.map((post) => (
-                <Post key={post.postId} profileImage={post.profileImageByteArray}
+                <Post key={post.postId} profileImage={post.profileImageLink}
                       userName={post.username}
                       name={post.name} text={post.writtenText}
-                      photo={post.photoFileByteArray}
+                      photo={post.photoFileLink}
                       postComments={post.postCommentsCount}
                       dataTime={post.sentDateTime}
                       postId={post.postId}

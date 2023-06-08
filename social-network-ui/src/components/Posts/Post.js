@@ -158,7 +158,7 @@ export const Post = ({
     return (
         <Card sx={PostCard}>
             <CardContent sx={CardContentPost}>
-                {profileImage ? <img src={profileImage ? `data:image/png;base64,${profileImage}` : ""}
+                {profileImage ? <img src={profileImage ? profileImage : ""}
                                      style={ProfileImgStyles} alt=""/> :
                     <Avatar alt={userName} src="#"/>}
                 <div style={PostTextWrapper}>
@@ -180,7 +180,7 @@ export const Post = ({
             </CardContent>
             {
                 photo ? (<div style={UserPhotoWrapper}>
-                    <img src={photo ? `data:image/png;base64,${photo}` : ""}
+                    <img src={photo ? photo : ""}
                          style={UserPhoto} alt=""/>
                 </div>) : null
             }

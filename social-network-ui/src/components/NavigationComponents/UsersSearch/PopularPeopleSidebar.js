@@ -28,15 +28,22 @@ export function PopularPeopleSidebar() {
     useEffect(() => {
         const fetchData = async () => {
             dispatch(PopularPeopleFetch(setIsLoading, setMostPopularPeople))
-        };
 
+        };
         fetchData();
+        console.log(mostPopularPeople)
     }, []);
+
+    useEffect(() => {
+        console.log(mostPopularPeople)
+    }, [mostPopularPeople]);
 
     const toAnotherUserPage = (userIdWhoSendPost) => {
         dispatch(setSearchId(String(userIdWhoSendPost)));
         navigate("/view");
     };
+
+
 
     return (
         isLoading ? <CircularProgress sx={{ marginTop: "20%", alignSelf: "center" }}/> :
@@ -50,7 +57,7 @@ export function PopularPeopleSidebar() {
                             }}>
                                 <div style={Wrapper}>
                                     {user.profileImageByteArray ?
-                                        <img src={`data:image/png;base64,${user.profileImageByteArray}`}
+                                        <img src={user.profileImageLink}
                                              style={imgStyles}
                                              alt=""/> :
                                         <Avatar alt={user.username} style={{ width: "50px", height: "50px" }}

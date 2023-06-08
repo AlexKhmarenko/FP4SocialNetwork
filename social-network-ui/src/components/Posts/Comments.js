@@ -41,6 +41,8 @@ export function Comments({
         navigate("/view");
     };
 
+    console.log(comments)
+
     console.log(photoFileByteArray);
 
     return (
@@ -63,7 +65,7 @@ export function Comments({
                             sx={CommentCircular}/> : comments.length > 0 ? (comments.map((comment, index) => (
                             <Box key={index} style={CommentsContentBox}>
                                 {comment.photoFileByteArray ?
-                                    <img src={`data:image/png;base64,${comment.photoFileByteArray}`} style={CommentImg}
+                                    <img src={comment.profileImageLink} style={CommentImg}
                                          alt=""/> :
                                     <Avatar alt={comment.username} src="#"/>}
                                 <div style={CommentListWrapper}>

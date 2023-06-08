@@ -53,6 +53,7 @@ export function HomeScreen() {
         setPostImage(file);
     }, []);
 
+    console.log(userData)
 
     useEffect(() => {
         // setUserPostsClear([]);

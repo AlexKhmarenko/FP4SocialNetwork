@@ -159,7 +159,7 @@ export const checkEmailFetch = (values, setErrors) => {
     return async (dispatch) => {
         try {
             console.log(values);
-            const response = await fetch(`${apiUrl}/checkEmail`, {
+            const response = await fetch(`${apiUrl}/api/checkEmail`, {
                 method: "POST",
                 body: JSON.stringify(values),
                 headers: { "Content-Type": "application/json" }
@@ -248,7 +248,7 @@ export const activeLikesFetch = (postId, userId) => {
 export const sendRepostFetch = (postId, userId) => {
     return async (dispatch) => {
         try {
-            await fetch(`${apiUrl}/reposts`, {
+            await fetch(`${apiUrl}/api/reposts`, {
                 method: "POST",
                 body: JSON.stringify({
                     postId: postId,
@@ -431,7 +431,7 @@ export const addRegistrationPosts = (posts) => ({
 export const sendEmailCheckRequest = (values) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${apiUrl}/checkEmail`, {
+            const response = await fetch(`${apiUrl}/api/checkEmail`, {
                 method: "POST",
                 body: JSON.stringify(values),
                 headers: { "Content-Type": "application/json" }
