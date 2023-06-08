@@ -53,7 +53,8 @@ export function Profile (props) {
         <div>
             <div style={BgImgStyle}>
                 {props.background ?
-                    <img src={`data:image/png;base64,${props.background}`} alt={props.name} style={PhotoStyle} />
+                    // <img src={`data:image/png;base64,${props.background}`} alt={props.name} style={PhotoStyle} />
+                    <img src={props.background} alt={props.name} style={PhotoStyle} />
                     :
                     false
                 }
@@ -61,7 +62,8 @@ export function Profile (props) {
             <div style={ProfileStyles}>
                 <div style={imgStyle}>
 
-                    <Avatar alt={props.name} src={props.image ? `data:image/png;base64,${props.image}` : ""} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
+                    {/*<Avatar alt={props.name} src={props.image ? `data:image/png;base64,${props.image}` : ""} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>*/}
+                    <Avatar alt={props.name} src={props.image ? props.image : ""} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
 
                     {isFollow
                         ?
