@@ -415,6 +415,7 @@ export const fetchExplorePosts = (userId, page) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/posts/explorer?userld=${userId}&page=${page}`);
         let posts = await response.json();
+        console.log("postsExploreAction", posts )
         dispatch(addExplorePosts(posts));
         return posts;
     };
