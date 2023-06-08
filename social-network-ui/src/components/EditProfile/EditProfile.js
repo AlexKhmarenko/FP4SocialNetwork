@@ -32,7 +32,6 @@ export function EditProfile (props) {
         return new Date(year, month, 0).getDate();
     }
 
-    console.log(bgPhoto)
 
 
 
@@ -87,8 +86,10 @@ export function EditProfile (props) {
                                 month: values.month,
                                 year: values.year,
                                 address: values.address,
-                                profileImageUrl: photo || props.image,
-                                profileBackgroundImageUrl: bgPhoto || props.background
+                                profileImageUrl: photo,
+                                profileBackgroundImageUrl: bgPhoto,
+                                profileImageUrlString: props.image,
+                                profileBackgroundImageUrlString: props.background,
                             }),
                             headers: { "Content-Type": "application/json" }
                         });
