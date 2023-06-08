@@ -49,7 +49,7 @@ public class UserRestController {
 
   private final SearchMapper searchMapper;
 
-  @PostMapping(path = "registration")
+  @PostMapping(path = "/api/registration")
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     int day = request.getDay();
@@ -169,6 +169,7 @@ public class UserRestController {
         .toList();
   }
 
+
   @GetMapping("/api/users/popular")
   public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
     return userService.getUsersWhoMostPopular(page)
@@ -176,5 +177,6 @@ public class UserRestController {
         .map(UserDtoForSidebar::from)
         .toList();
   }
+
 
 }
