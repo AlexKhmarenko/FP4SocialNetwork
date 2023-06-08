@@ -194,6 +194,7 @@ export const Post = ({
                 </IconButton>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
+
                 </IconButton>
                 <Typography onClick={ShowUsersWhoLike} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
                 <UsersLikes showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike}
