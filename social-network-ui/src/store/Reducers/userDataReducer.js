@@ -37,6 +37,7 @@ export function userDataReducer(state = initialState, action) {
                     followers: action.payload.followers,
                     followings: action.payload.followings,
                     address: action.payload.address,
+                    birthday: action.payload.birthday,
                 },
             };
         case SET_SEARCH_ID:
@@ -59,6 +60,7 @@ export function userDataReducer(state = initialState, action) {
                     followers: action.payload.followers,
                     followings: action.payload.followings,
                     address: action.payload.address,
+                    birthday: action.payload.birthday,
                 },
             };
         case SET_SEARCH_USER_FOLLOW:

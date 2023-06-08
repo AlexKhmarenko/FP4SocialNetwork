@@ -30,7 +30,7 @@ export function ProfilePage () {
                  btnClick={() => dispatch(openEditModal())}
         />
             {isEditModalOpen &&
-                (<EditProfile name={userData.name} userId={userData.userId} address={userData.address} image={userData.image} background={userData.background}/>)
+                (<EditProfile name={userData.name} userId={userData.userId} address={userData.address} image={userData.image} background={userData.background} birthday={userData.birthday}/>)
             }
         </>
     )

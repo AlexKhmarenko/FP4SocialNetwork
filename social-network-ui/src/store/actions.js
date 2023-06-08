@@ -94,6 +94,7 @@ export const setUserData = (data) => ({
         followers: data.followers,
         followings: data.followings,
         address: data.address,
+        birthday: data.dateOfBirth,
     }
 });
 export const setSearchData = (data) => ({
@@ -107,6 +108,7 @@ export const setSearchData = (data) => ({
         followers: data.followers,
         followings: data.followings,
         address: data.address,
+        birthday: data.dateOfBirth,
     }
 });
 export const openSignUpModal = () => ({

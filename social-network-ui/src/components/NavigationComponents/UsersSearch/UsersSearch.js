@@ -8,13 +8,14 @@ import { Field, Form, Formik } from "formik";
 
 import { InputSearch } from "./InputSearch";
 import { GetUsersSuccess } from "../../../store/actions";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Link } from "react-router-dom";
 import { StyledBlackButton } from "../../LoginModal/loginModalStyles";
 import { PopularPeopleSidebar } from "./PopularPeopleSidebar";
 
 export function UsersSearch() {
 
+    const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
 
     return (
@@ -30,7 +31,10 @@ export function UsersSearch() {
                     )} validate={async (values) => {
                     const response = await fetch("http://localhost:8080/search", {
                         method: "POST",
-                        body: JSON.stringify({ userSearch: values.userName }),
+                        body: JSON.stringify({
+                            userId: userId,
+                            search: values.userName
+                        }),
                         headers: { "Content-Type": "application/json" }
                     });
                     const userSearch = await response.json();
