@@ -146,6 +146,8 @@ export const Post = ({
         }
     }, [dataTime]);
 
+    console.log(photo)
+
     return (
         <Card sx={PostCard}>
             <CardContent sx={CardContentPost}>
