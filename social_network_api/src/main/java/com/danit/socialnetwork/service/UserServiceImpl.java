@@ -225,7 +225,7 @@ public class UserServiceImpl implements UserService {
       if (profileImage != null && profileImage.length != 0 && profileImageString == null) {
         updateUser.setProfileImageUrl(imageHandlingConf
             .uploadImage(profileImage, "production"));
-      } else if (profileImage == null) {
+      } else if (profileImage == null && profileImageString == null) {
         updateUser.setProfileImageUrl(null);
       } else if (profileImageString != null) {
         updateUser.setProfileImageUrl(userFromDb.get().getProfileImageUrl());
@@ -234,9 +234,9 @@ public class UserServiceImpl implements UserService {
           .length != 0 && profileBackgroundImageString == null) {
         updateUser.setProfileBackgroundImageUrl(imageHandlingConf
             .uploadImage(profileBackgroundImage, "production"));
-      } else if (profileBackgroundImage == null) {
+      } else if (profileBackgroundImage == null && profileBackgroundImageString == null) {
         updateUser.setProfileBackgroundImageUrl(null);
-      } else if (profileImageString != null) {
+      } else if (profileBackgroundImageString != null) {
         updateUser.setProfileBackgroundImageUrl(userFromDb.get().getProfileBackgroundImageUrl());
       }
       userRepository.save(updateUser);
