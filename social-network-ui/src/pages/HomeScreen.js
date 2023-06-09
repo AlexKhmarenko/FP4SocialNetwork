@@ -103,6 +103,7 @@ export function HomeScreen() {
                     await dispatch(sendPost(postObject, setSubmitting));
                 };
             } else {
+                console.log(values.postText)
                 const postObject = {
                     writtenText: values.postText,
                     photoFileByteArray: [],

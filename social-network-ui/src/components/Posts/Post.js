@@ -65,15 +65,6 @@ export const Post = ({
     const [usersWhoLike, setUsersWhoLike] = useState([]);
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
-    const lines = Math.ceil(text.length / 20);
-    const height = `${11 * lines}px`;
-
-    const expand = useSpring({
-        overflow: 'hidden',
-        height: showMore ? height : '55px',
-        from: { height: '55px' },
-        config: { tension: 700, friction: 80 },
-    });
 
     const ShowUsersWhoLike = async () => {
         if (userId) {
@@ -155,8 +146,6 @@ export const Post = ({
         }
     }, [dataTime]);
 
-    console.log(photo)
-
     return (
         <Card sx={PostCard}>
             <CardContent sx={CardContentPost}>
@@ -169,15 +158,7 @@ export const Post = ({
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
-                    <animated.div style={expand}>
-                        <Typography variant="body1" component="div" mt={1}
-                                    sx={{ ...PostText }}>{text}</Typography>
-                    </animated.div>
-                    {text.split("").length > 100 && (
-                        <Button href="#" style={ShowMoreLinkStyles} onClick={handleShowMore}>
-                            {showMore ? "hight text" : "see more"}
-                        </Button>
-                    )}
+                        <Typography variant="body1" component="div" mt={1} sx={{ ...PostText }}>{text}</Typography>
                 </div>
             </CardContent>
             {
