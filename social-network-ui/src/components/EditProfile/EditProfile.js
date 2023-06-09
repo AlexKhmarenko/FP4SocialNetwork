@@ -86,10 +86,10 @@ export function EditProfile (props) {
                                 month: values.month,
                                 year: values.year,
                                 address: values.address,
-                                profileImageUrl: photo,
-                                profileBackgroundImageUrl: bgPhoto,
-                                profileImageUrlString: props.image,
-                                profileBackgroundImageUrlString: props.background,
+                                profileImageUrl: photo || props.image,
+                                profileBackgroundImageUrl: bgPhoto || props.background,
+                                // profileImageUrlString: props.image,
+                                // profileBackgroundImageUrlString: props.background,
                             }),
                             headers: { "Content-Type": "application/json" }
                         });
@@ -225,8 +225,8 @@ EditProfile.propTypes = {
     name: PropTypes.string.isRequired,
     userId: PropTypes.string.isRequired,
     address: PropTypes.string.isRequired,
-    background: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
+    background: PropTypes.string,
+    image: PropTypes.string,
     isSubmitting: PropTypes.bool,
     birthday: PropTypes.string.isRequired,
 }
