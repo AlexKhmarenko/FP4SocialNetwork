@@ -222,7 +222,7 @@ public class UserServiceImpl implements UserService {
       byte[] profileBackgroundImage = request.getProfileBackgroundImageUrl();
       String profileImageString = request.getProfileImageUrlString();
       String profileBackgroundImageString = request.getProfileBackgroundImageUrlString();
-      if (profileImage != null && profileImage.length != 0 && profileImageString == null) {
+      if (profileImage != null && profileImage.length != 0) {
         updateUser.setProfileImageUrl(imageHandlingConf
             .uploadImage(profileImage, "production"));
       } else if (profileImage == null && profileImageString == null) {
@@ -230,8 +230,7 @@ public class UserServiceImpl implements UserService {
       } else if (profileImageString != null) {
         updateUser.setProfileImageUrl(userFromDb.get().getProfileImageUrl());
       }
-      if (profileBackgroundImage != null && profileBackgroundImage
-          .length != 0 && profileBackgroundImageString == null) {
+      if (profileBackgroundImage != null && profileBackgroundImage.length != 0) {
         updateUser.setProfileBackgroundImageUrl(imageHandlingConf
             .uploadImage(profileBackgroundImage, "production"));
       } else if (profileBackgroundImage == null && profileBackgroundImageString == null) {
