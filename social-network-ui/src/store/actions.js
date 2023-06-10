@@ -26,7 +26,7 @@ import {
     SET_PROFILE_LIKE_POSTS,
     SET_PROFILE_REPOSTS,
     SET_USER_FOLLOW,
-    SET_USER_UNFOLLOW, SET_SEARCH_USER_FOLLOW, SET_SEARCH_USER_UNFOLLOW,
+    SET_USER_UNFOLLOW, SET_SEARCH_USER_FOLLOW, SET_SEARCH_USER_UNFOLLOW, SET_USER_FOLLOWING,
 } from "./types";
 import { apiUrl } from "../apiConfig";
 
@@ -235,7 +235,7 @@ export const fetchLikes = (setLikesIsLoading, setUsersWhoLike, postId) => {
     };
 };
 
-export const activeLikesFetch = (postId, userId) => {
+export const activeLikesFetch = (postId, userId, setLike) => {
     return async (dispatch) => {
         try {
             const activeLikesResponse = await fetch(`${apiUrl}/api/likes/active?postId=${postId}&userId=${userId}`);
@@ -417,6 +417,7 @@ export const fetchExplorePosts = (userId, page) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/posts/explorer?userld=${userId}&page=${page}`);
         let posts = await response.json();
+        console.log("postsExploreAction", posts )
         dispatch(addExplorePosts(posts));
         return posts;
     };
@@ -504,3 +505,7 @@ export const userSearchFollow = () => ({
 export const userSearchUnfollow = () => ({
     type: SET_SEARCH_USER_UNFOLLOW
 });
+export const userFollowing = (data) => ({
+    type: SET_USER_FOLLOWING,
+    payload: { following: data }
+})

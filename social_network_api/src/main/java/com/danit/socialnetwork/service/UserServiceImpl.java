@@ -218,13 +218,26 @@ public class UserServiceImpl implements UserService {
       updateUser.setName(request.getName());
       updateUser.setDateOfBirth(dateOfBirth);
       updateUser.setAddress(request.getAddress());
-
       byte[] profileImage = request.getProfileImageUrl();
-      updateUser.setProfileImageUrl(imageHandlingConf.uploadImage(profileImage, "production"));
       byte[] profileBackgroundImage = request.getProfileBackgroundImageUrl();
-      updateUser.setProfileBackgroundImageUrl(imageHandlingConf
-          .uploadImage(profileBackgroundImage, "production"));
-
+      String profileImageString = request.getProfileImageUrlString();
+      String profileBackgroundImageString = request.getProfileBackgroundImageUrlString();
+      if (profileImage != null && profileImage.length != 0) {
+        updateUser.setProfileImageUrl(imageHandlingConf
+            .uploadImage(profileImage, "production"));
+      } else if (profileImage == null && profileImageString == null) {
+        updateUser.setProfileImageUrl(null);
+      } else if (profileImageString != null) {
+        updateUser.setProfileImageUrl(userFromDb.get().getProfileImageUrl());
+      }
+      if (profileBackgroundImage != null && profileBackgroundImage.length != 0) {
+        updateUser.setProfileBackgroundImageUrl(imageHandlingConf
+            .uploadImage(profileBackgroundImage, "production"));
+      } else if (profileBackgroundImage == null && profileBackgroundImageString == null) {
+        updateUser.setProfileBackgroundImageUrl(null);
+      } else if (profileBackgroundImageString != null) {
+        updateUser.setProfileBackgroundImageUrl(userFromDb.get().getProfileBackgroundImageUrl());
+      }
       userRepository.save(updateUser);
       log.debug(String.format("save user id = %s", userId));
       response.put("edition", TRUE);
