@@ -63,12 +63,11 @@ public class InboxServiceImpl implements InboxService {
 
   /*The method finds the inbox by sender and returns it*/
   @Override
-  public List<InboxDtoResponse> getInboxesByInboxUid(InboxDtoRequest request) {
-    Integer userId = request.getInboxUid();
+  public List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid) {
     List<InboxDtoResponse> inboxesDto;
-    Optional<DbUser> oInboxUid = userRepository.findById(userId);
+    Optional<DbUser> oInboxUid = userRepository.findById(inboxUid);
     if (oInboxUid.isEmpty()) {
-      throw new UserNotFoundException(String.format("User with userId %s not found", userId));
+      throw new UserNotFoundException(String.format("User with userId %s not found", inboxUid));
     } else {
       List<Inbox> inboxes = inboxRepository.getInboxesByInboxUid(oInboxUid.get());
       inboxesDto = inboxes.stream()

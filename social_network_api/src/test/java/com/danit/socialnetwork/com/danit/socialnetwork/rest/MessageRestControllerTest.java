@@ -73,7 +73,7 @@ class MessageRestControllerTest {
 
     when(messageService.saveMessage(any(MessageDtoRequest.class))).thenReturn(testMessageDto);
 
-    mockMvc.perform(post("/api/message")
+    mockMvc.perform(post("/api/addMessage")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isCreated());
@@ -83,18 +83,17 @@ class MessageRestControllerTest {
 
   @Test
   void getInbox() throws Exception {
-    InboxDtoRequest request = new InboxDtoRequest();
-    request.setInboxUid(1);
+    Integer inboxUidTest = 1;
     List<InboxDtoResponse> testInboxDto = new ArrayList<>();
 
-    when(inboxService.getInboxesByInboxUid(request)).thenReturn(testInboxDto);
+    when(inboxService.getInboxesByInboxUid(inboxUidTest)).thenReturn(testInboxDto);
 
-    mockMvc.perform(post("/api/inbox")
+    mockMvc.perform(get("/api/inbox/1")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(new ObjectMapper().writeValueAsString(request)))
+            .content(new ObjectMapper().writeValueAsString(inboxUidTest)))
         .andExpect(status().isFound());
 
-    verify(inboxService).getInboxesByInboxUid(request);
+    verify(inboxService).getInboxesByInboxUid(inboxUidTest);
   }
 
   @Test
@@ -106,7 +105,7 @@ class MessageRestControllerTest {
 
     when(messageService.findByInboxUidAndUserIdOrUserIdAndInboxUid(request)).thenReturn(testMessageDto);
 
-    mockMvc.perform(get("/api/message")
+    mockMvc.perform(post("/api/getMessages")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isFound());
