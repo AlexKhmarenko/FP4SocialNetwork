@@ -6,7 +6,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollContext } from "../components/Layout.js";
 import SearchIcon from '@mui/icons-material/Search';
-
+import { apiUrl } from "../apiConfig";
 
 
 export function Message() {
@@ -223,7 +223,75 @@ export function Message() {
         );
       }
       
+      function LoadAllMessages() {
+        const userId = useSelector(state => state.userData.userData.userId);
+        const fetchMessages = async () => {
+          
+          // const url = `${apiUrl}/api/inbox/64`;
+          const url = `http://localhost:8080/api/inbox/userId`;
+
+          const response2 = await fetch(`${apiUrl}/api/inbox`, {
+            method: "POST",
+            body: JSON.stringify({
+                inboxUid: userId,
+                userId: 64,
+                writtenMessage: "pls, work"
+            }),
+            headers: { "Content-Type": "application/json" }
+          });
+
+          if (response2.ok) {
+            console.log("Response2 ok")
+          } else {
+            // Handle response error
+            console.log('Error with response2:');
+          }
+
+          const response1 = await fetch(`${apiUrl}/api/inbox?inboxUid=${userId}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+          });
+          if (response1.ok) {
+            console.log("Response1 ok")
+          } else {
+            // Handle response error
+            console.error('Error with response1:');
+          }
+          const userData = await response1.json();
+          console.log(userData);
+        }
+        
+        //   try {
+        //     const responses = fetch(url)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //       // Обработка полученных данных
+        //       console.log(data);
+        //     })
+        //     .catch(error => {
+        //       // Обработка ошибок
+        //       console.error(error);
+        //     });
       
+        //     if (responses.ok) {
+        //       console.log("OK");
+        //     } else {
+        //       console.log("NOT OK");
+        //     }
+        //   } catch (error) {
+        //     console.error("Error:", error);
+        //   }
+        // };
+      
+        useEffect(() => {
+          fetchMessages();
+        }, [userId]);
+      
+        return (
+          <div>Placeholder content</div>
+        );
+      }
+
     return (
         <div style={{display: "flex", paddingBottom: "20px",}}>
             <div style={{
@@ -242,6 +310,7 @@ export function Message() {
                     {/* <InboxMessage key={index} sender={msg.sender} message={msg.message} /> */}
                     {InboxMessage("John Doe", "Hello!", "June 9, 2023")}
                     {InboxMessage("Jane Smith", "Just wanted to say hello!", "June 10, 2023")}
+                    <LoadAllMessages />
                   {/* ))} */}
                 </div>
                 </div>
