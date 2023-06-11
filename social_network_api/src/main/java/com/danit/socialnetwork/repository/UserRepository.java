@@ -22,13 +22,6 @@ public interface UserRepository extends JpaRepository<DbUser, Integer> {
       + " ORDER BY USERS.NAME")
   List<DbUser> getUsersWhoLikedPostByPostId(Integer postId, Pageable pageable);
 
-  @Query(nativeQuery = true, value = "SELECT USERS.*, COUNT(USER_FOLLOWER_ID) AS num_followers"
-      + " FROM USERS"
-      + " JOIN USER_FOLLOWS f ON USERS.user_id = f.USER_FOLLOWING_ID"
-      + " GROUP BY USERS.user_id"
-      + " ORDER BY num_followers DESC")
-  List<DbUser> findAllWhoMostPopular(Pageable pagedByPageSizePosts);
-
   @Query(nativeQuery = true, value = "SELECT "
       + " USERS.USER_ID, USERS.NAME,"
       + " USERS.USERNAME, USERS.PROFILE_IMAGE_URL,"
