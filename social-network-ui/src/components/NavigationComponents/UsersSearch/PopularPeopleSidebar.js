@@ -2,8 +2,8 @@ import { Avatar, Button, Paper, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { StyledBlackButton } from "../../LoginModal/loginModalStyles";
 import React, { useEffect, useState } from "react";
-import { PopularPeopleFetch, setSearchId } from "../../../store/actions";
-import { useDispatch } from "react-redux";
+import { PopularPeopleFetch, setSearchId, userFollowing } from "../../../store/actions";
+import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
     PaperStyles,
@@ -17,10 +17,12 @@ import {
     userNickLink, customButton, emptyArrParagraph,
 } from "./popularPeopleSidebarStyles";
 import { apiUrl } from "../../../apiConfig";
+import { ToggleButton } from "../../Buttons/ToggleButton/ToggleButton";
 
 export function PopularPeopleSidebar() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const idUser = useSelector(state => state.userData.userData.userId);
     const [mostPopularPeople, setMostPopularPeople] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -64,7 +66,11 @@ export function PopularPeopleSidebar() {
                                             <Link style={userNickLink}>@{user.username}</Link>
                                         </Typography>
                                     </div>
-                                    <Button href="#" sx={{ ...StyledBlackButton, ...customButton }}>follow</Button>
+                                    { idUser == user.userId ? <Button disabled={true} sx={{...StyledBlackButton ,width:"100px", height:"30px", marginTop:0, color:"white",  '&.Mui-disabled': {
+                                            color: "white",  // Задайте цвет текста для отключенной кнопки
+                                            opacity: 1,  // Задайте прозрачность для отключенной кнопки
+                                            // Добавьте здесь другие стили, если нужно
+                                        },}}>Its you</Button> : <ToggleButton href="#"  width="100px" height="30px" searchId={`${user.userId}`}/>}
                                 </div>
                             </li>
                         ))}
