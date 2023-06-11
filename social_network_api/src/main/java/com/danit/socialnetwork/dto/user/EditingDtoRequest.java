@@ -18,7 +18,7 @@ public class EditingDtoRequest {
   @Positive(message = "positive number required")
   private Integer userId;
   @NotBlank(message = "name is required")
-  @Size(max = 20, message = "name cannot exceed 20 characters")
+  @Size(max = 50, message = "name cannot exceed 20 characters")
   private String name;
   @Min(1)
   @Max(31)

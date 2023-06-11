@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class RegistrationRequest {
   @NotBlank(message = "username is required")
-  @Size(max = 20, message = "username cannot exceed 20 characters")
+  @Size(max = 50, message = "username cannot exceed 20 characters")
   private String username;
   @NotBlank(message = "password is required")
   @Size(min = 7, message = "password must have at least 7 characters")
@@ -21,7 +21,7 @@ public class RegistrationRequest {
   @Email(message = "invalid email format")
   private String email;
   @NotBlank(message = "name is required")
-  @Size(max = 20, message = "name cannot exceed 20 characters")
+  @Size(max = 50, message = "name cannot exceed 20 characters")
   private String name;
   @Min(1)
   @Max(31)
