@@ -128,14 +128,14 @@ class PostRestControllerTest {
 
   @Test
   void getAllPostsAndRepostsByUserId() {
-    PostDtoResponse post1 =  new PostDtoResponse();
-    PostDtoResponse post2 =  new PostDtoResponse();
-    PostDtoResponse post3 =  new PostDtoResponse();
-    PostDtoResponse post4 =  new PostDtoResponse();
+    PostDtoResponse post1 = new PostDtoResponse();
+    PostDtoResponse post2 = new PostDtoResponse();
+    PostDtoResponse post3 = new PostDtoResponse();
+    PostDtoResponse post4 = new PostDtoResponse();
 
     List<PostDtoResponse> repostDtoMixes = Arrays.asList(post1, post2, post3, post4);
-    when (postService.getAllPostsAndRepostsByUserId(1,0)).thenReturn(repostDtoMixes);
-    List<PostDtoResponse> result = postRestController.getAllPostsAndRepostsByUserId(1,0);
+    when(postService.getAllPostsAndRepostsByUserId(1, 0)).thenReturn(repostDtoMixes);
+    List<PostDtoResponse> result = postRestController.getAllPostsAndRepostsByUserId(1, 0);
     assertEquals(4, result.toArray().length);
   }
 
@@ -158,17 +158,13 @@ class PostRestControllerTest {
 
   @Test
   public void testAddPost_InvalidInput_ReturnsBadRequest() {
-    // Arrange
     PostDtoSave postDtoSave = new PostDtoSave();
-    // Set up the postDtoSave object with invalid values
 
-    // Validate the postDtoSave object using a Validator
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
     Set<ConstraintViolation<PostDtoSave>> violations = validator.validate(postDtoSave);
 
-    // Assert
-    assertEquals(2, violations.size()); // Example: Assuming there's one validation error
-    // Add additional assertions as necessary
+    assertEquals(2, violations.size());
+
   }
 }
