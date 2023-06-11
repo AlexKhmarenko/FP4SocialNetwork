@@ -115,12 +115,9 @@ export function Layout() {
       }, [dispatch, location.pathname, page, userId]);
 
   return (
-    <ScrollContext.Provider
-      value={{ handleScroll: handleParentScroll, loadingPosts: loadingPosts }}
-    >
+    <ScrollContext.Provider value={handleParentScroll}>
       {userToken ? (
         <Container maxWidth="false" sx={ContainerStyled}>
-          
           <div style={ContentContainer} onScroll={handleParentScroll}>
             <SideBar />
             {!location.pathname.includes("/messages") &&
