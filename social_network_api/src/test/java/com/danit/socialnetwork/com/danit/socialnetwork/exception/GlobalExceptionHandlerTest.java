@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
   @Test
   void testCatchNotFoundException_ReturnsNotFoundResponse() {
@@ -32,7 +32,7 @@ public class GlobalExceptionHandlerTest {
 
 
   @Test
-  public void testHandleValidationExceptions_ReturnsBadRequestResponse() {
+  void testHandleValidationExceptions_ReturnsBadRequestResponse() {
 
     GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
     MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
