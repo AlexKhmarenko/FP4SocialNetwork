@@ -9,7 +9,7 @@ import javax.validation.constraints.Email;
 @Data
 public class RegistrationRequest extends UserDtoRequest {
   @NotBlank(message = "username is required")
-  @Size(max = 50, message = "username cannot exceed 20 characters")
+  @Size(max = 50, message = "username cannot exceed 50 characters")
   private String username;
   @NotBlank(message = "password is required")
   @Size(min = 7, message = "password must have at least 7 characters")

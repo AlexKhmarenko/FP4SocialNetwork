@@ -13,8 +13,8 @@ public class EditingDtoRequest extends UserDtoRequest {
   @NotNull(message = "number required")
   @Positive(message = "positive number required")
   private Integer userId;
-  @NotBlank(message = "address is required")
-  @Size(max = 100, message = "address cannot exceed 20 characters")
+
+  @Size(max = 100, message = "address cannot exceed 100 characters")
   private String address;
   private byte [] profileBackgroundImageUrl;
   private byte [] profileImageUrl;

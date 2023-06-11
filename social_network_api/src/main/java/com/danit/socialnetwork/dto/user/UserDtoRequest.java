@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UserDtoRequest {
   @NotBlank(message = "name is required")
-  @Size(max = 50, message = "name cannot exceed 20 characters")
+  @Size(max = 50, message = "name cannot exceed 50 characters")
   private String name;
   @Min(1)
   @Max(31)

@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 @Data
 public class UserEmailRequest {
   @NotBlank(message = "name is required")
-  @Size(max = 50, message = "name cannot exceed 20 characters")
+  @Size(max = 50, message = "name cannot exceed 50 characters")
   private String name;
   @NotBlank(message = "email is required")
   @Email(message = "invalid email format")
