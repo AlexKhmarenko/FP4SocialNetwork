@@ -1,4 +1,4 @@
-package com.danit.socialnetwork.dto;
+package com.danit.socialnetwork.dto.user;
 
 import lombok.Data;
 
@@ -6,20 +6,10 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class RegistrationRequest {
-  @NotBlank(message = "username is required")
-  @Size(max = 50, message = "username cannot exceed 20 characters")
-  private String username;
-  @NotBlank(message = "password is required")
-  @Size(min = 7, message = "password must have at least 7 characters")
-  private String password;
-  @NotBlank(message = "email is required")
-  @Email(message = "invalid email format")
-  private String email;
+public class UserDtoRequest {
   @NotBlank(message = "name is required")
   @Size(max = 50, message = "name cannot exceed 20 characters")
   private String name;
@@ -35,5 +25,4 @@ public class RegistrationRequest {
   @Max(2100)
   @NotNull(message = "year is required")
   private Integer year;
-
 }
