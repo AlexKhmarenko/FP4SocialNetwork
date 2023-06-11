@@ -13,7 +13,7 @@ import { GenerateBlueMessage } from "../components/Messages/FullTexting/BlueMess
 import { GenerateWhiteMessage } from "../components/Messages/FullTexting/WhiteMessage";
 import PropTypes from "prop-types";
 
-function TextingMessage({ sender, receiver }) {
+function TextingMessage({ sender, receiver, selectedMessage }) {
   const [inboxMessagesClick, setInboxMessagesClick] = useState(null);
 
   const fetchTexting = async () => {
@@ -41,17 +41,20 @@ function TextingMessage({ sender, receiver }) {
               text={item.message}
               timestampText={formattedDate}
               profileImagePath='#'
-              username={item.inboxUid}
+              username={'also hz'}
+              name={'hz'}
             />
           );
         } else {
+          console.log("this " + selectedMessage);
           return (
             <GenerateWhiteMessage
               key={item.userUid}
               text={item.message}
               timestampText={formattedDate}
               profileImagePath='#'
-              username={item.userId}
+              username={selectedMessage.username}
+              name={selectedMessage.name}
             />
           );
         }
@@ -80,6 +83,7 @@ function TextingMessage({ sender, receiver }) {
 TextingMessage.propTypes = {
   sender: PropTypes.number.isRequired,
   receiver: PropTypes.number.isRequired,
+  selectedMessage: PropTypes.object.isRequired,
 };
 
 export function Message() {
@@ -225,6 +229,7 @@ const [selectedMessage, setSelectedMessage] = useState(null);
         <TextingMessage
           sender={selectedMessage.inboxUid}
           receiver={selectedMessage.userId}
+          selectedMessage={selectedMessage}
         />
       )}
       </div>

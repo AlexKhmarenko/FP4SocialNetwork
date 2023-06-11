@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-export const GenerateBlueMessage = ({text, timestampText, profileImagePath, username}) => {
+export const GenerateBlueMessage = ({text, timestampText, profileImagePath, username, name}) => {
     return (
       <div style={{
         display: "flex",
@@ -30,7 +30,7 @@ export const GenerateBlueMessage = ({text, timestampText, profileImagePath, user
           <div style={{
             fontWeight: "bold",
             marginRight: "5px",
-          }}>{username}</div>
+          }}>{name}</div>
           <img src={profileImagePath} alt="Profile Picture" style={{
             width: "30px",
             height: "30px",
@@ -62,7 +62,8 @@ GenerateBlueMessage.propTypes = {
   text: PropTypes.string.isRequired,
   timestampText: PropTypes.string.isRequired,
   profileImagePath: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
+  username: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 }
   
 

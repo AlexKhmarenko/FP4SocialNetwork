@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-export const GenerateWhiteMessage = ({text, timestampText, profileImagePath, username}) => {
+export const GenerateWhiteMessage = ({text, timestampText, profileImagePath, username, name}) => {
     return (
       <div
         style={{
@@ -30,7 +30,7 @@ export const GenerateWhiteMessage = ({text, timestampText, profileImagePath, use
             }}
           />
           <div style={{ fontWeight: "bold", marginRight: "5px" }}>
-            {username}
+            {name}
           </div>
           <div style={{ color: "gray", marginRight: "5px" }}>@{username}</div>
           <div style={{ color: "gray", marginRight: "5px" }}>·</div>
@@ -62,5 +62,6 @@ GenerateWhiteMessage.propTypes = {
     text: PropTypes.string.isRequired,
     timestampText: PropTypes.string.isRequired,
     profileImagePath: PropTypes.string.isRequired,
-    username: PropTypes.number.isRequired,
+    username: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 }
