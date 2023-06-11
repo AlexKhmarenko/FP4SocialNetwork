@@ -226,31 +226,19 @@ export function Message() {
       function LoadAllMessages() {
         const userId = useSelector(state => state.userData.userData.userId);
         const fetchMessages = async () => {
-          
-          // const url = `${apiUrl}/api/inbox/64`;
-          const url = `http://localhost:8080/api/inbox/userId`;
+          // const response2 = await fetch(`${apiUrl}/api/inbox`, {
+          //   method: "POST",
+          //   body: JSON.stringify({
+          //       inboxUid: userId,
+          //       userId: 64,
+          //       writtenMessage: "work"
+          //   }),
+          //   headers: { "Content-Type": "application/json" }
+          // });
+          // const userData2 = await response2.json();
+          // console.log(userData2);
 
-          const response2 = await fetch(`${apiUrl}/api/inbox`, {
-            method: "POST",
-            body: JSON.stringify({
-                inboxUid: userId,
-                userId: 64,
-                writtenMessage: "pls, work"
-            }),
-            headers: { "Content-Type": "application/json" }
-          });
-
-          if (response2.ok) {
-            console.log("Response2 ok")
-          } else {
-            // Handle response error
-            console.log('Error with response2:');
-          }
-
-          const response1 = await fetch(`${apiUrl}/api/inbox?inboxUid=${userId}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" }
-          });
+          const response1 = await fetch(`${apiUrl}/api/inbox?inboxUid=${userId}`);
           if (response1.ok) {
             console.log("Response1 ok")
           } else {
