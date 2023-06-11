@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostRestController {
   private final PostService postService;
+
 
   /*Method returns  all posts from users that a user follows by his id
    * if userId is empty returns all posts descending by order based on created datetime*/
@@ -47,10 +48,9 @@ public class PostRestController {
   }
 
 
-
   /*Method save a new post*/
   @PostMapping(path = "/api/posts")
-  public ResponseEntity<PostDtoResponse> addPost(@RequestBody PostDtoSave thePostDtoSave) {
+  public ResponseEntity<PostDtoResponse> addPost(@Valid @RequestBody PostDtoSave thePostDtoSave) {
     Post dbPost = postService.savePost(thePostDtoSave);
     return new ResponseEntity<>(PostDtoResponse.from(dbPost), HttpStatus.CREATED);
   }
@@ -67,7 +67,6 @@ public class PostRestController {
 
   /*Method returns all posts liked by user*/
   @GetMapping(path = "/api/posts/liked/{userId}")
-  @ResponseBody
   public List<PostDtoResponse> getAllLikedPosts(@PathVariable("userId") Integer userId,
                                                 @RequestParam(name = "page", defaultValue = "0")
                                                 Integer page) {
@@ -77,11 +76,10 @@ public class PostRestController {
   /*Method returns all posts and reposts in descending order by time when
    they were posted (for own posts) and reposted (for reposts) by user*/
   @GetMapping("/api/posts/reposts")
-  @ResponseBody
   public List<PostDtoResponse> getAllPostsAndRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
-                                                              Integer userId,
-                                                              @RequestParam(name = "page", defaultValue = "0")
-                                                              Integer page) {
+                                                             Integer userId,
+                                                             @RequestParam(name = "page", defaultValue = "0")
+                                                             Integer page) {
     if (userId == 0) {
       return new ArrayList<>();
     }
