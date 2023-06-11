@@ -132,7 +132,7 @@ class RepostRestControllerTest {
   }
 
   @Test
-  public void testAddRepost_InvalidInput_ReturnsBadRequest() {
+  void testAddRepost_InvalidInput_ReturnsBadRequest() {
     RepostDtoSave repostDtoSave = new RepostDtoSave();
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();

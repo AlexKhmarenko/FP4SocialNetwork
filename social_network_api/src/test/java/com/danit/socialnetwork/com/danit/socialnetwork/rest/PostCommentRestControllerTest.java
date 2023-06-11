@@ -124,7 +124,7 @@ class PostCommentRestControllerTest {
   }
 
   @Test
-  public void testAddPostComment_InvalidInput_ReturnsBadRequest() {
+  void testAddPostComment_InvalidInput_ReturnsBadRequest() {
     PostCommentDtoSave postCommentDtoSave = new PostCommentDtoSave();
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();

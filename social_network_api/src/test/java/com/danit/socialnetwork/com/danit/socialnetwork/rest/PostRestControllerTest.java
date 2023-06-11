@@ -157,7 +157,7 @@ class PostRestControllerTest {
   }
 
   @Test
-  public void testAddPost_InvalidInput_ReturnsBadRequest() {
+  void testAddPost_InvalidInput_ReturnsBadRequest() {
     PostDtoSave postDtoSave = new PostDtoSave();
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
