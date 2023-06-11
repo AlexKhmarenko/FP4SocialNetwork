@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {useSpring, animated} from 'react-spring'
+import { useSpring, animated } from "react-spring";
 
 import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box, Button } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
@@ -97,8 +97,9 @@ export const Post = ({
 
     const sendRepost = async () => {
         if (userId) {
-            setIsReposted(true);
-            dispatch(sendRepostFetch(postId, userId));
+            const newIsReposted = !isReposted;
+            setIsReposted(newIsReposted);
+            dispatch(sendRepostFetch(postId, userId, newIsReposted));
         } else {
             dispatch(openLoginModal());
         }
@@ -129,10 +130,6 @@ export const Post = ({
         }
     }, [like, userId, postId, likeArr, dispatch]);
 
-    const handleShowMore = async () => {
-        setShowMore(!showMore);
-    };
-
     const postDate = useMemo(() => {
         const date = new Date(dataTime);
         const diffDays = differenceInDays(new Date(), date);
@@ -146,8 +143,6 @@ export const Post = ({
         }
     }, [dataTime]);
 
-    console.log(photo)
-
     return (
         <Card sx={PostCard}>
             <CardContent sx={CardContentPost}>
@@ -160,7 +155,7 @@ export const Post = ({
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
-                        <Typography variant="body1" component="div" mt={1} sx={{ ...PostText }}>{text}</Typography>
+                    <Typography variant="body1" component="div" mt={1} sx={{ ...PostText }}>{text}</Typography>
                 </div>
             </CardContent>
             {
@@ -175,7 +170,7 @@ export const Post = ({
                     <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
                 </IconButton>
                 <IconButton onClick={sendRepost}>
-                    <Repeat fontSize="small" htmlColor={isReposted ? "blue" : "inherit"}/>
+                    <Repeat fontSize="small" htmlColor={isReposted ? "rgb(0, 186, 124)" : "inherit"}/>
                 </IconButton>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}

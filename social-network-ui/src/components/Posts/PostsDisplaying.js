@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { Post } from "./Post";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
@@ -14,10 +14,6 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
         config: { duration: 600, delay: 200 },
     });
 
-    useEffect(()=>{
-        console.log(userPosts, "userPosts")
-    }, [])
-
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>;
     } else if (userPosts.length === 0) {
@@ -26,9 +22,8 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
         return (
             <>
                 {transitions((style, item) => (
-                    <animated.div style={style}>
+                    <animated.div style={style} key={item.postId}>
                         <Post
-                            key={item.postId}
                             profileImage={item.profileImageLink}
                             userName={item.username}
                             name={item.name}
