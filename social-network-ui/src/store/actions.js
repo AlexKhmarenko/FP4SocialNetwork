@@ -247,22 +247,38 @@ export const activeLikesFetch = (postId, userId, setLike) => {
     };
 };
 
-export const sendRepostFetch = (postId, userId) => {
+export const sendRepostFetch = (postId, userId, isReposted) => {
     return async (dispatch) => {
-        try {
-            await fetch(`${apiUrl}/api/reposts`, {
-                method: "POST",
-                body: JSON.stringify({
-                    postId: postId,
-                    userId: userId,
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            });
-        } catch (error) {
-            console.error("Ошибка при получении данных:", error);
+        if(isReposted){
+            try {
+                await fetch(`${apiUrl}/api/reposts`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        postId: postId,
+                        userId: userId,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                });
+                console.log("добавился пост")
+            } catch (error) {
+                console.error("Ошибка при получении данных:", error);
+            }
+        }else if(!isReposted){
+            try {
+                await fetch(`${apiUrl}/api/reposts?postId=${postId}&userId=${userId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                });
+                console.log("удалился пост")
+            } catch (error) {
+                console.error("Ошибка при получении данных:", error);
+            }
         }
+
     };
 };
 
@@ -303,6 +319,7 @@ export const deleteLikeFetch = (postId, userId) => {
 export const fetchData = (userId) => {
     return async (dispatch) => {
         try {
+            console.log(userId)
             const response = await fetch(`${apiUrl}/api/profile/${userId}`);
             const userData = await response.json();
             dispatch(setUserData(userData));
@@ -355,7 +372,6 @@ export const checkPasswordFetch = (values, userDataState, setErrors) => {
 
 export const PopularPeopleFetch = (setIsLoading, setMostPopularPeople) => {
     return async (dispatch) => {
-        console.log("hi");
         try {
             setIsLoading(true);
             const response = await fetch(`${apiUrl}/api/users/popular?page=0`);
@@ -389,10 +405,10 @@ export const changeDob = (userId, values) => {
 };
 
 export const fetchPostsByUserId = (userId, page) => {
+    console.log(userId, "userIdFromActionFEtchByPosts")
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/posts?userId=${userId}&page=${page}`);
         const data = await response.json();
-        console.log(data, "fetchPostsByUserId")
         dispatch(setPosts(data));
         return data;
     };
@@ -415,7 +431,7 @@ export const setUserBirthday = (flag) => {
 
 export const fetchExplorePosts = (userId, page) => {
     return async (dispatch) => {
-        const response = await fetch(`${apiUrl}/api/posts/explorer?userld=${userId}&page=${page}`);
+        const response = await fetch(`${apiUrl}/api/posts/explorer?userId=${userId}&page=${page}`);
         let posts = await response.json();
         console.log("postsExploreAction", posts )
         dispatch(addExplorePosts(posts));
