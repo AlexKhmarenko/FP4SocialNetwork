@@ -1,7 +1,7 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.UserEmailRequest;
-import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.user.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
@@ -354,12 +354,13 @@ class UserRestControllerTest {
   @Test
   void getUsersWhoMostPopular() {
 
-    DbUser dbUser1 = new DbUser();
-    DbUser dbUser2 = new DbUser();
-    List<DbUser> dbUserList = Arrays.asList(dbUser1, dbUser2);
+    UserDtoForSidebar userDtoForSidebar1 = new UserDtoForSidebar();
+    UserDtoForSidebar userDtoForSidebar2 = new UserDtoForSidebar();
 
-    when(userService.getUsersWhoMostPopular(1)).thenReturn(dbUserList);
-    List<UserDtoForSidebar> list = controller.getUsersWhoMostPopular(1);
+    List<UserDtoForSidebar> dbUserList = Arrays.asList(userDtoForSidebar1, userDtoForSidebar2);
+
+    when(userService.getUsersWhoMostPopularWithFollowers(1, 0)).thenReturn(dbUserList);
+    List<UserDtoForSidebar> list = controller.getUsersWhoMostPopular(1, 0);
 
     Assertions.assertEquals(2, list.size());
   }
