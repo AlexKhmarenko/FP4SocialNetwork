@@ -34,9 +34,6 @@ public class Inbox {
   @JoinColumn(name = "user_id")
   private DbUser userId;     // userId = receiver_id
 
-  @NotEmpty
-  @Size(max = 280, message = "280 symbols required")
-  @Pattern(regexp = "^[\\p{L}\\p{N}\\p{P}\\p{Zs}\\r\\n]{0,280}$", message = "text required")
   @ManyToOne(targetEntity = Message.class, fetch = FetchType.EAGER)
   @JoinColumn(name = "last_message")
   private Message lastMessage;
