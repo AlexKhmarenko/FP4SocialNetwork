@@ -53,24 +53,29 @@ export function HomeScreen() {
         setPostImage(file);
     }, []);
 
-    // useEffect(() => {
-    //     // Создаем подключение при загрузке компонента
-    //     socketRef.current = new WebSocket(`ws://localhost:8080/websocket`);
-    //
-    //     // Закрываем подключение при размонтировании компонента
-    //     return () => {
-    //         if (socketRef.current) {
-    //             socketRef.current.close();
-    //         }
-    //     };
-    // }, []);
     const socket = new SockJS("http://localhost:8080/websocket"); // Создание экземпляра SockJS и передача адреса сервера
-    console.log("connected")
-    useEffect(() => {
-        // Создаем подключение при загрузке компонента
-        // const socket = new SockJS("http://localhost:8080/websocket"); // Создание экземпляра SockJS и передача адреса сервера
 
-        // Закрываем подключение при размонтировании компонента
+    // Обработка события закрытия соединения
+    socket.onopen = () => {
+      console.log("WebSocket connected");
+    };
+
+   // Обработка события получения сообщения
+    socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    // Обработка события получения сообщения
+    socket.onmessage = (event) => {
+      console.log("Received message:", event.data);
+    };
+
+    // Обработка события ошибки
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    useEffect(() => {
 
         return () => {
             socket.send("/app/post", {}, JSON.stringify({userId: userId}));
@@ -85,15 +90,10 @@ export function HomeScreen() {
         if (socket) {
             console.log("sending")
             // Отправляем данные на сервер
-            socket.send("/app/post", {}, JSON.stringify({userId: userId}));
+            socket.send(JSON.stringify({ userId: userId }));
+//            socket.send("/app/post", {}, JSON.stringify({userId: userId}));
         }
     };
-    // const handleClick = () => {
-    //     if (socketRef.current) {
-    //         // Отправляем данные на сервер
-    //         socketRef.current.send(JSON.stringify({userId: userId}));
-    //     }
-    // };
 
 
     useEffect(() => {
