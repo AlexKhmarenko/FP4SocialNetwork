@@ -8,8 +8,10 @@ import com.danit.socialnetwork.service.UserFollowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -34,9 +36,21 @@ public class WebSocketController {
 //        return message;
 //    }
 
-    @MessageMapping("api/post") // app/post
+
+//    @MessageMapping("/message")
+//    @SendTo("/chatroom/public")
+//    public Message receiveMessage(@Payload Message message){
+//        return message;
+//    }
+
+//@PostMapping(path="")
+
+
+
+    @MessageMapping("/post") // app/post
     public void receivePrivateMessage(
             @Payload NotificationRequest notificationRequest) {
+        System.out.println("==================WEBSOCKET !!!==========================");
 
         List<UserFollowDtoResponse> followers = userFollowService.
                 getAllUsersByUserFollowingId(notificationRequest.getUserId());
@@ -53,7 +67,7 @@ public class WebSocketController {
 
             notificationRequest.setNotificationText(notificationText);
             simpMessagingTemplate.convertAndSendToUser(followerId.toString()
-                    , "api/notifications", notificationRequest); // /user/67/notifications
+                    , "/api/notifications", notificationRequest); // /user/67/notifications
         }
     }
 }
