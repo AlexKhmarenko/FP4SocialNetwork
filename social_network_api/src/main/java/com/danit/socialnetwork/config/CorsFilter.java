@@ -18,6 +18,7 @@ import java.io.IOException;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @PropertySource("classpath:deploy.properties")
+
 public class CorsFilter implements Filter {
 
   @Value("${uiUrl}")
