@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useRef } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 import { Container } from "@mui/material";
 
@@ -32,9 +33,21 @@ import {
 } from "../store/actions";
 import { decodeToken } from "./Posts/decodeToken";
 import { BirthdateForm } from "./LoginModal/BirthdateForm";
-import { apiUrl } from "../apiConfig";
 
 export const ScrollContext = React.createContext(() => {});
+
+const theme = createTheme({
+    breakpoints: {
+        values: {
+            xxs: 0, // small phone
+            xs: 300, // phone
+            sm: 600, // tablets
+            md: 900, // small laptop
+            lg: 1200, // desktop
+            xl: 1536 // large screens
+        }
+    }
+});
 
 export function Layout() {
     const navigate = useNavigate();
@@ -116,6 +129,7 @@ export function Layout() {
 
   return (
     <ScrollContext.Provider value={handleParentScroll}>
+      <ThemeProvider theme={theme}>
       {userToken ? (
         <Container maxWidth="false" sx={ContainerStyled}>
           <div style={ContentContainer} onScroll={handleParentScroll}>
@@ -145,13 +159,13 @@ export function Layout() {
                         </div>
                         </div>
                     </div>
+
                     </div>
                 </>}
           </div>
-        </Container>
-      ) : (
-        <RegistrationPage />
-      )}
+        </Container>) : (<RegistrationPage />)
+        }
+      </ThemeProvider>
     </ScrollContext.Provider>
   );
 }

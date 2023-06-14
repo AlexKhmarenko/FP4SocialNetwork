@@ -2,18 +2,18 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
-import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.user.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
+import com.danit.socialnetwork.dto.user.UserDtoForSidebar;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
-import com.google.common.cache.Cache;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,6 +29,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.danit.socialnetwork.config.GuavaCache;
 
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -39,7 +41,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
@@ -143,7 +144,7 @@ class UserServiceImplTest {
     Mockito.verify(userRepository).save(testUser);
     Mockito.verify(passwordEncoder).encode(testUser.getPassword());
 
-    assertEquals(ResponseEntity.ok(responseTest) , result);
+    assertEquals(ResponseEntity.ok(responseTest), result);
   }
 
   @Test
@@ -192,7 +193,7 @@ class UserServiceImplTest {
 
     ResponseEntity<Map<String, String>> result = userServiceImp.sendLetter(emailRequest);
 
-    assertEquals(ResponseEntity.ok(response) , result);
+    assertEquals(ResponseEntity.ok(response), result);
   }
 
   @Test
@@ -206,7 +207,6 @@ class UserServiceImplTest {
 
     assertEquals(ResponseEntity.ok(response), result);
   }
-
 
 
   @Test
@@ -397,7 +397,7 @@ class UserServiceImplTest {
     assertEquals(testUpdateUser.getAddress(), testUser.getAddress());
     assertEquals(testUpdateUser.getProfileImageUrl(), testUser.getProfileImageUrl());
     assertEquals(testUpdateUser.getProfileBackgroundImageUrl(), testUser.getProfileBackgroundImageUrl());
-    assertEquals(ResponseEntity.ok(responseTest) , result);
+    assertEquals(ResponseEntity.ok(responseTest), result);
   }
 
   @Test
@@ -443,26 +443,21 @@ class UserServiceImplTest {
 
   @Test
   void getUsersWhoMostPopular() {
-    DbUser dbUser1 = new DbUser();
-    dbUser1.setUserId(1);
-    dbUser1.setUsername("John");
-    dbUser1.setName("Johny");
-    DbUser dbUser2 = new DbUser();
-    dbUser2.setUserId(2);
-    dbUser2.setUsername("Jim");
-    dbUser2.setName("Jimmy");
-    List<DbUser> dbUserList = Arrays.asList(dbUser1, dbUser2);
 
+    Object[] objects1 = new Object[]{1, "John1", "Johny1", "photoLink1", true, new BigInteger(String.valueOf(2)),
+        false};
+
+    Object[] objects2 = new Object[]{2, "John2", "Johny2", "photoLink1", false, new BigInteger(String.valueOf(2)),
+        false};
     int pageSize = 10;
-    Pageable pagedByPageSizePosts = PageRequest.of(0, pageSize);
-    when(userRepository.findAllWhoMostPopular(pagedByPageSizePosts)).thenReturn(dbUserList);
 
-    List<DbUser> userList = userServiceImp.getUsersWhoMostPopular(0);
-
+    List<Object []> dbUserList = Arrays.asList(objects1, objects2);
+    when(userRepository.findAllWhoMostPopularWithFollowers(1, 0, pageSize)).thenReturn(dbUserList);
+    List<UserDtoForSidebar> userList = userServiceImp.getUsersWhoMostPopularWithFollowers(1, 0);
     Assertions.assertEquals(2, userList.size());
     Assertions.assertEquals(1, userList.get(0).getUserId());
-    Assertions.assertEquals("John", userList.get(0).getUsername());
-    Assertions.assertEquals("Johny", userList.get(0).getName());
+    Assertions.assertEquals("Johny1", userList.get(0).getUsername());
+    Assertions.assertEquals("John1", userList.get(0).getName());
   }
 
 }
