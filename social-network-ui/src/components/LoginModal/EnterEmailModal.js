@@ -34,7 +34,7 @@ export function EnterEmailModal() {
     return (
         <>
             <Typography sx={StyledHeaderModalText}>Sign in to Capitweet</Typography>
-            <a href="http://localhost:8080/oauth2/authorization/google" style={{
+            <a href={`${apiUrl}/oauth2/authorization/google`} style={{
                 ...StyledBlackButton,
                ...EnterEmailModalLink,
             }}><GoogleSvgIcon/> Sign in with Google</a>
@@ -56,7 +56,9 @@ export function EnterEmailModal() {
 
                 <Form>
                     <FormControl sx={StyledFormControl}>
-                        <Field as={InputFieldWithError} sx={{ width: "400px" }} name={"email"}
+                        <Field as={InputFieldWithError} sx={{ width: "400px" ,   "@media(max-width: 576px)": {
+                                width: "100%",
+                            }}} name={"email"}
                                id="email"
                                label="Email" disabled={isSubmitting} type="text"/>
                         <Button type="submit"

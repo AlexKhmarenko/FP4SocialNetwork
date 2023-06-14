@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {useSpring, animated} from 'react-spring'
+import { useSpring, animated } from "react-spring";
 
-import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box, Button } from "@mui/material";
+import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box, Button , Tooltip} from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
 
@@ -65,15 +65,6 @@ export const Post = ({
     const [usersWhoLike, setUsersWhoLike] = useState([]);
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
-    const lines = Math.ceil(text.length / 20);
-    const height = `${11 * lines}px`;
-
-    const expand = useSpring({
-        overflow: 'hidden',
-        height: showMore ? height : '55px',
-        from: { height: '55px' },
-        config: { tension: 700, friction: 80 },
-    });
 
     const ShowUsersWhoLike = async () => {
         if (userId) {
@@ -106,8 +97,9 @@ export const Post = ({
 
     const sendRepost = async () => {
         if (userId) {
-            setIsReposted(true);
-            dispatch(sendRepostFetch(postId, userId));
+            const newIsReposted = !isReposted;
+            setIsReposted(newIsReposted);
+            dispatch(sendRepostFetch(postId, userId, newIsReposted));
         } else {
             dispatch(openLoginModal());
         }
@@ -129,7 +121,11 @@ export const Post = ({
                 setLikeArr([...likeArr, { postId: postId, userId: userId }]);
                 await dispatch(addLikeFetch(postId, userId));
             } else {
-                setLikeCount(likeCount - 1);
+                if(likeCount===0){
+                    setLikeCount(likeCount);
+                }else{
+                    setLikeCount(likeCount - 1);
+                }
                 setLikeArr(likeArr.filter(item => item.userId !== userId));
                 dispatch(deleteLikeFetch(postId, userId));
             }
@@ -137,10 +133,6 @@ export const Post = ({
             dispatch(openLoginModal());
         }
     }, [like, userId, postId, likeArr, dispatch]);
-
-    const handleShowMore = async () => {
-        setShowMore(!showMore);
-    };
 
     const postDate = useMemo(() => {
         const date = new Date(dataTime);
@@ -155,8 +147,6 @@ export const Post = ({
         }
     }, [dataTime]);
 
-    console.log(photo)
-
     return (
         <Card sx={PostCard}>
             <CardContent sx={CardContentPost}>
@@ -169,15 +159,7 @@ export const Post = ({
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
-                    <animated.div style={expand}>
-                        <Typography variant="body1" component="div" mt={1}
-                                    sx={{ ...PostText }}>{text}</Typography>
-                    </animated.div>
-                    {text.split("").length > 100 && (
-                        <Button href="#" style={ShowMoreLinkStyles} onClick={handleShowMore}>
-                            {showMore ? "hight text" : "see more"}
-                        </Button>
-                    )}
+                    <Typography variant="body1" component="div" mt={1} sx={{ ...PostText }}>{text}</Typography>
                 </div>
             </CardContent>
             {
@@ -187,17 +169,23 @@ export const Post = ({
                 </div>) : null
             }
             <CardActions sx={{ padding: "20px 20px" }}>
+                <Tooltip title={"See comments"}>
                 <IconButton onClick={handleCommentToggle}>
                     <ChatBubbleOutline fontSize="small"/>
                     <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
                 </IconButton>
+                </Tooltip>
+                <Tooltip title={isReposted ? "Undo repost" : "Repost"}>
                 <IconButton onClick={sendRepost}>
-                    <Repeat fontSize="small" htmlColor={isReposted ? "blue" : "inherit"}/>
+                    <Repeat fontSize="small" htmlColor={isReposted ? "rgb(0, 186, 124)" : "inherit"}/>
                 </IconButton>
+                </Tooltip>
+                <Tooltip title={like ? "Undo like" : "Like"}>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
 
                 </IconButton>
+                </Tooltip>
                 <Typography onClick={ShowUsersWhoLike} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
                 <UsersLikes showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike}
                             toAnotherUserPage={toAnotherUserPage}/>

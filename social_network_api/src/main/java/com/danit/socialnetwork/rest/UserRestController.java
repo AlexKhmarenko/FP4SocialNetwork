@@ -1,7 +1,7 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
-import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.user.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
@@ -116,12 +116,11 @@ public class UserRestController {
   }
 
 
+
   @GetMapping("/users/popular")
-  public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
-    return userService.getUsersWhoMostPopular(page)
-        .stream()
-        .map(UserDtoForSidebar::from)
-        .toList();
+  public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "userId",
+      defaultValue = "0") Integer userId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+    return userService.getUsersWhoMostPopularWithFollowers(userId, page);
   }
 
 
