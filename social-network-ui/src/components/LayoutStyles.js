@@ -7,9 +7,6 @@ export const ContainerStyled = {
     overflowX:"hidden",
 };
 
-export const OutletWrapper = {
-    width: "600px",
-};
 
 export const ContentContainer = {
     display: "flex",
@@ -46,8 +43,5 @@ export const ItemWrapper = {
     alignItems: "center",
 };
 export const ItemWrapperContainer = {
-    position: "relative",
-    display: "flex",
-    flexDirection: "column",
-    width: "600px",
+
 };

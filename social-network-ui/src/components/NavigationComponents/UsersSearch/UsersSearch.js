@@ -37,7 +37,7 @@ export function UsersSearch() {
 
 
     const xxsStyles = {
-        AdaptiveUserSearchAppBar:{...UserSearchAppBar, display:"none", flexBasis: "100px"},
+        AdaptiveUserSearchAppBar:{...UserSearchAppBar, display:"none", flexBasis: "100px",},
         AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"10px"},
         AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"10px"}
     };

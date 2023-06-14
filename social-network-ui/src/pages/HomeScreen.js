@@ -59,32 +59,121 @@ export function HomeScreen() {
     console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
 
     const xxsStyles = {
+        AdaptivePostWrapper:{
+            width: "300px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+        },
         AdaptiveHomeScreenWrapper:{
+            width:"350px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            marginTop: "20px",
+            paddingBottom: "30px",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         }
     };
 
     const xsStyles = {
+        AdaptivePostWrapper:{
+            width: "300px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+        },
         AdaptiveHomeScreenWrapper:{
+            width:"350px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            marginTop: "20px",
+            paddingBottom: "30px",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         }
     };
 
     const smStyles = {
+        AdaptivePostWrapper:{
+            width: "470px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+        },
         AdaptiveHomeScreenWrapper:{
+            width:"470px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            marginTop: "20px",
+            paddingBottom: "30px",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         }
 
     };
 
     const mdStyles = {
+        AdaptivePostWrapper:{
+            width: "500px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+        },
         AdaptiveHomeScreenWrapper:{
+            width:"600px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "start",
+            marginTop: "20px",
+            paddingBottom: "40px",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         }
     };
 
     const lgStyles = {
-        AdaptiveHomeScreenWrapper:{}
+
+        AdaptivePostWrapper:{
+            width: "500px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+        },
+        AdaptiveHomeScreenWrapper:{
+            width:"100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            padding: "0 30px",
+            marginTop: "20px",
+            paddingBottom: "30px",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        }
     };
 
     const xlStyles = {
-        AdaptiveHomeScreenWrapper:{}
+        AdaptivePostWrapper:{
+            width: "500px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+        },
+        AdaptiveHomeScreenWrapper:{
+            width:"100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            padding: "0 30px",
+            marginTop: "20px",
+            paddingBottom: "30px",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        }
     };
 
     let styles;
@@ -226,8 +315,8 @@ export function HomeScreen() {
             >
                 {({ values, errors, touched, isSubmitting }) => (
                     <Form>
-                        <div style={HomeScreenWrapper}>
-                            <div style={PostWrapper}>
+                        <div style={styles.AdaptiveHomeScreenWrapper}>
+                            <div style={styles.AdaptivePostWrapper}>
                                 <div style={SvgWrapper}>
                                     {userData.image ? <img src={userData.image}
                                                            style={imgStyles}

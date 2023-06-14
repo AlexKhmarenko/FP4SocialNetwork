@@ -46,14 +46,7 @@ export const WrittenPostWrapper = {
 };
 
 export const HomeScreenWrapper = {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "start",
-    alignItems: "start",
-    padding: "0 30px",
-    marginTop: "20px",
-    paddingBottom: "30px",
-    borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+
 };
 
 export const SendingPostButtonsContainer = {
