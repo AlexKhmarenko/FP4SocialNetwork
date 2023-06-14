@@ -1,18 +1,34 @@
 import React, {useEffect, useState } from 'react';
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
 import { apiUrl } from "../apiConfig";
+import SockJS from "sockjs-client";
+import {over} from 'stompjs';
 
-
+var stompClient = null;
 
 export function Notifications() {
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
-        const socket = new WebSocket(`ws://${apiUrl}/api/notifications`);
 
-        socket.addEventListener('open', () => {
-            console.log('Соединение с веб-сокетом установлено');
-        });
+    const socket = new SockJS(`${apiUrl}/websocket`);
+    stompClient = over(socket);
+
+    socket.onopen = () => {
+      console.log("WebSocket connected");
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    socket.onmessage = (event) => {
+      console.log("Received message:", event.data);
+    };
+
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
 
         socket.addEventListener('message', (event) => {
             const responseData = event.data;

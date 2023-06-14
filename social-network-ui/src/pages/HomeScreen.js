@@ -4,6 +4,9 @@ import {Button, Box} from "@mui/material";
 import {CloudUploadOutlined} from "@mui/icons-material";
 import {Formik, Form, Field} from "formik";
 import * as Yup from "yup";
+import SockJS from "sockjs-client";
+import {over} from 'stompjs';
+
 
 import {
     fetchData,
@@ -32,7 +35,8 @@ import {apiUrl} from "../apiConfig";
 import {ScrollContext} from "../components/Layout.js";
 
 
-import SockJS from "sockjs-client";
+
+var stompClient = null;
 
 export function HomeScreen() {
     const userData = useSelector(state => state.userData.userData);
@@ -53,45 +57,29 @@ export function HomeScreen() {
         setPostImage(file);
     }, []);
 
-    const socket = new SockJS("http://localhost:8080/websocket"); // Создание экземпляра SockJS и передача адреса сервера
+    const socket = new SockJS(`${apiUrl}/websocket`);
+    stompClient = over(socket);
 
-    // Обработка события закрытия соединения
     socket.onopen = () => {
       console.log("WebSocket connected");
     };
 
-   // Обработка события получения сообщения
     socket.onclose = () => {
       console.log("WebSocket connection closed");
     };
 
-    // Обработка события получения сообщения
     socket.onmessage = (event) => {
       console.log("Received message:", event.data);
     };
 
-    // Обработка события ошибки
     socket.onerror = (error) => {
       console.error("WebSocket error:", error);
     };
 
-    useEffect(() => {
-
-        return () => {
-            socket.send("/app/post", {}, JSON.stringify({userId: userId}));
-
-            if (socket) {
-                socket.close();
-            }
-        };
-    }, []);
-
     const handleClick = () => {
         if (socket) {
-            console.log("sending")
-            // Отправляем данные на сервер
-            socket.send(JSON.stringify({ userId: userId }));
-//            socket.send("/app/post", {}, JSON.stringify({userId: userId}));
+            console.log("sending notification about post")
+            stompClient.send("/app/post", {}, JSON.stringify({userId: userId}));
         }
     };
 

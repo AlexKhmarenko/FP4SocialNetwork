@@ -6,6 +6,5 @@ import java.sql.Timestamp;
 @Data
 public class NotificationRequest {
   Integer userId;
-//  Integer followingUserId;
   String notificationText;
 }

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface NotificationService {
 
-    Optional<Notification> findAllByUserId(Integer userId);
+  Optional<Notification> findAllByUserId(Integer userId);
 
-    void saveNotification(Notification notification);
+  void saveNotification(Notification notification);
 }
