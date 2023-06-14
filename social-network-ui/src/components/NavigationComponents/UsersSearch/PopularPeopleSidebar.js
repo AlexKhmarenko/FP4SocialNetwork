@@ -18,17 +18,99 @@ import {
 } from "./popularPeopleSidebarStyles";
 import { apiUrl } from "../../../apiConfig";
 import { ToggleButton } from "../../Buttons/ToggleButton/ToggleButton";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from "@mui/material/styles";
+import { SidebarLogOutButton } from "../NavigationStyles";
 
 export function PopularPeopleSidebar() {
+    const theme = useTheme();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const idUser = useSelector(state => state.userData.userData.userId);
     const [mostPopularPeople, setMostPopularPeople] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        PaperAdaptiveStyles: {...PaperStyles , width:"220px"},
+        ElementLiAdaptiveStyles: {
+            ...ElementLi,
+            ...Wrapper
+        },
+       FollowButtonWidth:"70px",
+    };
+
+    const xsStyles = {
+        PaperAdaptiveStyles: {...PaperStyles , width:"220px"},
+        ElementLiAdaptiveStyles: {
+            ...ElementLi,
+            ...Wrapper
+        },
+        FollowButtonWidth:"70px",
+    };
+
+    const smStyles = {
+        PaperAdaptiveStyles: {...PaperStyles , width:"220px"},
+        ElementLiAdaptiveStyles: {
+            ...ElementLi,
+            ...Wrapper
+        },
+        FollowButtonWidth:"70px",
+    };
+
+    const mdStyles = {
+        PaperAdaptiveStyles: {...PaperStyles, width:"220px" },
+        ElementLiAdaptiveStyles: {
+            ...ElementLi,
+            ...Wrapper,
+        },
+        FollowButtonWidth:"70px",
+    };
+
+    const lgStyles = {
+        PaperAdaptiveStyles: {...PaperStyles },
+        ElementLiAdaptiveStyles: {
+            ...ElementLi,
+            ...Wrapper
+        },
+        FollowButtonWidth:"100px",
+    };
+
+    const xlStyles = {
+        PaperAdaptiveStyles: {...PaperStyles },
+        ElementLiAdaptiveStyles: {
+            ...ElementLi,
+            ...Wrapper
+        },
+        FollowButtonWidth:"100px",
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             dispatch(PopularPeopleFetch(setIsLoading, setMostPopularPeople));
+            userFollowingData()
         };
         fetchData();
     }, []);
@@ -38,17 +120,27 @@ export function PopularPeopleSidebar() {
         navigate("/view");
     };
 
+    const userFollowingData = async () => {
+        try {
+            // setIsLoading(true);
+            const response = await fetch(`${apiUrl}/api/following/${idUser}`)
+            const followData = await response.json()
+            const followArr = followData.map(el => String(el.userId))
+            dispatch(userFollowing(followArr))
+        } catch (error) {
+            console.error(error);
+        } finally {
+            // setIsLoading(false);
+        }
+    }
+
     return (
         isLoading ? <CircularProgress sx={{ marginTop: "20%", alignSelf: "center" }}/> :
-            <Paper elevation={3} sx={PaperStyles}>
+            <Paper elevation={3} sx={styles.PaperAdaptiveStyles}>
                 {mostPopularPeople.length > 0 ?
                     <ul style={ElementUl}>
                         {mostPopularPeople.map((user, index) => (
-                            <li key={user.userId} style={{
-                                ...ElementLi,
-                                borderBottom: index !== mostPopularPeople.length - 1 ? "1px solid rgba(0, 0, 0, 0.1)" : "none"
-                            }}>
-                                <div style={Wrapper}>
+                            <li key={user.userId} style={{...styles.ElementLiAdaptiveStyles,   borderBottom: index !== mostPopularPeople.length - 1 ? "1px solid rgba(0, 0, 0, 0.1)" : "none",}}>
                                     {user.profileImageLink ?
                                         <img src={user.profileImageLink}
                                              style={imgStyles}
@@ -66,12 +158,10 @@ export function PopularPeopleSidebar() {
                                             <Link style={userNickLink}>@{user.username}</Link>
                                         </Typography>
                                     </div>
-                                    { idUser == user.userId ? <Button disabled={true} sx={{...StyledBlackButton ,width:"100px", height:"30px", marginTop:0, color:"white",  '&.Mui-disabled': {
-                                            color: "white",  // Задайте цвет текста для отключенной кнопки
-                                            opacity: 1,  // Задайте прозрачность для отключенной кнопки
-                                            // Добавьте здесь другие стили, если нужно
-                                        },}}>Its you</Button> : <ToggleButton href="#"  width="100px" height="30px" searchId={`${user.userId}`}/>}
-                                </div>
+                                    { idUser == user.userId ? <Button disabled={true} sx={{...StyledBlackButton , width:`${styles.FollowButtonWidth}`, height:"30px", marginTop:0, color:"white",  '&.Mui-disabled': {
+                                            color: "white",
+                                            opacity: 1,
+                                        },}}>You</Button> : <ToggleButton href="#"  width={styles.FollowButtonWidth} height="30px" searchId={`${user.userId}`}/>}
                             </li>
                         ))}
                     </ul> : <Typography sx={emptyArrParagraph}>we have no ideas to show</Typography>
