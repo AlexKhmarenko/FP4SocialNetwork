@@ -1,17 +1,14 @@
 import React, { useEffect, useContext, useState } from "react";
-import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
-import {
-    fetchExplorePosts, setPage, setPageZero,
-} from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { ScrollContext } from "../components/Layout.js";
 import SearchIcon from '@mui/icons-material/Search';
+import SendIcon from '@mui/icons-material/Send';
 import { apiUrl } from "../apiConfig";
 import { InboxMessage } from "../components/Messages/Inbox/InboxMessage";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { GenerateBlueMessage } from "../components/Messages/FullTexting/BlueMessage";
 import { GenerateWhiteMessage } from "../components/Messages/FullTexting/WhiteMessage";
 import PropTypes from "prop-types";
+import { height } from "@mui/system";
 
 function TextingMessage({ sender, receiver, selectedMessage }) {
   const [inboxMessagesClick, setInboxMessagesClick] = useState(null);
@@ -40,9 +37,6 @@ function TextingMessage({ sender, receiver, selectedMessage }) {
               key={item.userUid}
               text={item.message}
               timestampText={formattedDate}
-              profileImagePath='#'
-              username={'also hz'}
-              name={'hz'}
             />
           );
         } else {
@@ -52,9 +46,6 @@ function TextingMessage({ sender, receiver, selectedMessage }) {
               key={item.userUid}
               text={item.message}
               timestampText={formattedDate}
-              profileImagePath='#'
-              username={selectedMessage.username}
-              name={selectedMessage.name}
             />
           );
         }
@@ -140,7 +131,6 @@ const [selectedMessage, setSelectedMessage] = useState(null);
     const userId = useSelector(state => state.userData.userData.userId);
     const [inboxMessages, setInboxMessages] = useState([]);
     
-
     const fetchMessages = async () => {
       const response1 = await fetch(`${apiUrl}/api/inbox/66`);
       const userData = await response1.json();
@@ -201,6 +191,7 @@ const [selectedMessage, setSelectedMessage] = useState(null);
           flexDirection: "column",
           overflowY: "scroll",
           maxHeight: "calc(100vh - 120px)",
+          height: "calc(100vh - 120px)",
           padding: "20px 20px",
           boxSizing: "border-box",
           width: "600px",
@@ -215,24 +206,62 @@ const [selectedMessage, setSelectedMessage] = useState(null);
         style={{
           display: "flex",
           flexDirection: "column",
-          overflowY: "scroll",
-          maxHeight: "calc(100vh - 120px)",
-          padding: "20px 20px",
           boxSizing: "border-box",
           borderTop: "1px solid rgba(0, 0, 0, 0.1)",
+          maxHeight: "calc(100vh - 120px)",
+          height: "calc(100vh - 120px)",
           width: "600px",
+          position: "relative",
         }}
-        id="messages"
       >
-        {selectedMessage === null ?
-        (<div>No texting</div>) :(
-        <TextingMessage
-          sender={selectedMessage.inboxUid}
-          receiver={selectedMessage.userId}
-          selectedMessage={selectedMessage}
-        />
-      )}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "scroll",
+            maxHeight: "calc(100vh - 160px)",
+            height: "calc(100vh - 160px)",
+            flexGrow: "1",
+            padding: "20px 20px 0 20px",
+            boxSizing: "border-box",
+          }}
+        >
+          {selectedMessage === null ? (
+            <div>No texting</div>
+          ) : (
+            <>
+              <TextingMessage
+                sender={selectedMessage.inboxUid}
+                receiver={selectedMessage.userId}
+                selectedMessage={selectedMessage}
+              />
+            </>
+          )}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "white",
+            padding: "0 20px",
+            boxSizing: "border-box",
+            height: "40px",
+          }}
+        >
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            placeholder="Input message"
+            size="small"
+            InputProps={{ endAdornment: <SendIcon />,}}
+            style={{
+              
+              flex: "1",
+            }}
+          />
+        </div>
       </div>
+
     </div>
   );
 }

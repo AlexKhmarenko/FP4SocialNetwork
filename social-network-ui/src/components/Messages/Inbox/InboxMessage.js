@@ -1,7 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from "react-redux";
 import { apiUrl } from "../../../apiConfig";
-// import { inboxHandleClick } from "../../../pages/Message";
 
 const messageContainerStyle = {
     boxSizing: "border-box",
