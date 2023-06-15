@@ -2,8 +2,8 @@ export const BlueMessageContainer = {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-end",
-    marginBottom: "20px",
 };
+
 export const BlueMessageTextWrap = {
     background: "#222529",
     color: "#dde9eb",

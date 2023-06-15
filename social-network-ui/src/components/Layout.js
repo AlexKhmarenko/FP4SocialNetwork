@@ -135,22 +135,24 @@ export function Layout() {
           <div style={ContentContainer} onScroll={handleParentScroll}>
             <SideBar />
             {!location.pathname.includes("/messages") &&
-            <>
-            <div style={ItemWrapper}>
-              <div style={ItemWrapperContainer}>
-                <HeaderInformation />
-                <div style={OutletContainer}>
-                  <div style={OutletWrapper}>
-                    <Outlet />
+              <>
+              <div style={ItemWrapper}>
+                <div style={ItemWrapperContainer}>
+                  <HeaderInformation />
+                  <div style={OutletContainer}>
+                    <div style={OutletWrapper}>
+                      <Outlet />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {/* {userBirthdateGoogle ? null : <BirthdateForm />} */}
-            <UsersSearch /></>}
+              {userBirthdateGoogle ? null : <BirthdateForm />}
+              <UsersSearch />
+              </>
+            }
             {location.pathname.includes("/messages") &&
                 <>
-                    <div style={ItemWrapperMessage}>
+                  <div style={ItemWrapperMessage}>
                     <div style={ItemWrapperContainerMessage}>
                         <HeaderInformation />
                         <div style={OutletContainer}>
@@ -159,8 +161,7 @@ export function Layout() {
                         </div>
                         </div>
                     </div>
-
-                    </div>
+                  </div>
                 </>}
           </div>
         </Container>) : (<RegistrationPage />)
