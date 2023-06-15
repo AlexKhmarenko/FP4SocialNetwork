@@ -1,40 +1,50 @@
 import React, {useEffect, useState } from 'react';
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
 import { apiUrl } from "../apiConfig";
+import SockJS from "sockjs-client";
+import {over} from 'stompjs';
 
+import {useDispatch, useSelector} from "react-redux";
+import {
+    fetchData,
+    fetchPostsByUserId,
+    sendPost,
+    setPageZero,
+    setUserId,
+    setUserPostsClear
+} from "../store/actions";
 
+var stompClient = null;
 
 export function Notifications() {
     const [notifications, setNotifications] = useState([]);
 
-    useEffect(() => {
-        const socket = new WebSocket(`ws://${apiUrl}/api/notifications`);
+    const [privateChats, setPrivateChats] = useState(new Map());
+    const userData = useSelector(state => state.userData.userData);
+    const userId = useSelector(state => state.userData.userData.userId);
 
-        socket.addEventListener('open', () => {
-            console.log('Соединение с веб-сокетом установлено');
-        });
+    const connect =()=>{
+            let Sock = new SockJS(`${apiUrl}/websocket`);
+            stompClient = over(Sock);
+            stompClient.connect({},onConnected, onError);
+        }
 
-        socket.addEventListener('message', (event) => {
-            const responseData = JSON.parse(event.data);
-            console.log('Получен ответ от веб-сокета:', responseData);
+    const onConnected = () => {
+            stompClient.subscribe('/user/'+userId+'/notifications', onPrivateMessage);
+        }
+    const onError = (err) => {
+            console.log(err);
+        }
 
-            // Обработка полученного ответа, например, добавление уведомления в список
-            const newNotification = {
-                id: responseData.userId,
-                text: responseData.notificationText,
-            };
-
-            setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
-        });
-
-        socket.addEventListener('close', () => {
-            console.log('Соединение с веб-сокетом закрыто');
-        });
-
-        return () => {
-            socket.close(); // Закрываем соединение при размонтировании компонента
-        };
-    }, []);
+    const onPrivateMessage = (payload)=>{
+                  console.log(payload);
+                  var payloadData = JSON.parse(payload.body);
+                      let list =[];
+                      list.push(payloadData);
+                      privateChats.set(payloadData.notificationText,list);
+                      setPrivateChats(new Map(privateChats));
+              }
+     connect();
 
     return (
         <List>
