@@ -4,6 +4,9 @@ import { Button, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import SockJS from "sockjs-client";
+import {over} from 'stompjs';
+
 
 import {
     fetchData,
@@ -13,8 +16,8 @@ import {
     setUserId,
     setUserPostsClear
 } from "../store/actions";
-import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
-import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
+import {SidebarLogOutButton} from "../components/NavigationComponents/NavigationStyles";
+import {CapybaraSvgPhoto} from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
     NameOfUser,
     SvgWrapper,
@@ -32,6 +35,10 @@ import { apiUrl } from "../apiConfig";
 import { ScrollContext } from "../components/Layout.js";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+
+
+
+var stompClient = null;
 
 export function HomeScreen() {
     const userData = useSelector(state => state.userData.userData);
@@ -196,24 +203,20 @@ export function HomeScreen() {
         setPostImage(file);
     }, []);
 
-    useEffect(() => {
-        // Создаем подключение при загрузке компонента
-        socketRef.current = new WebSocket(`ws://${apiUrl}/api/post`);
-
-        // Закрываем подключение при размонтировании компонента
-        return () => {
-            if (socketRef.current) {
-                socketRef.current.close();
+    const connect =()=>{
+                let Sock = new SockJS(`${apiUrl}/websocket`);
+                stompClient = over(Sock);
+                stompClient.connect({});
             }
-        };
-    }, []);
 
     const handleClick = () => {
-        if (socketRef.current) {
-            // Отправляем данные на сервер
-            socketRef.current.send(JSON.stringify({ userId: userId }));
+        if (stompClient) {
+            console.log("sending notification about post")
+            stompClient.send("/app/post", {}, JSON.stringify({userId: userId}));
         }
     };
+
+    connect();
 
 
     useEffect(() => {
@@ -284,7 +287,7 @@ export function HomeScreen() {
         }
         setIsFetchingPosts(true);
         try {
-            const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
+            const {scrollTop, clientHeight, scrollHeight} = event.currentTarget;
             if (scrollHeight - scrollTop <= clientHeight + 20) {
                 let newPosts = [...userPosts];
                 if (newPosts.length > 0) {
@@ -299,21 +302,22 @@ export function HomeScreen() {
         }
     };
 
+
     return (
         <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper}>
             <Formik
-                initialValues={{ postText: "" }}
+                initialValues={{postText: ""}}
                 validationSchema={
                     Yup.object({
                         postText: Yup.string().max(280, "Must be 280 characters or less"),
                     })}
-                onSubmit={(values, { resetForm, setSubmitting }) => {
+                onSubmit={(values, {resetForm, setSubmitting}) => {
                     setSubmitting(true);
                     handlePostSubmit(values, setSubmitting);
                     resetForm();
                 }}
             >
-                {({ values, errors, touched, isSubmitting }) => (
+                {({values, errors, touched, isSubmitting}) => (
                     <Form>
                         <div style={styles.AdaptiveHomeScreenWrapper}>
                             <div style={styles.AdaptivePostWrapper}>
@@ -353,7 +357,7 @@ export function HomeScreen() {
                                             <img
                                                 src={URL.createObjectURL(postImage)}
                                                 alt="Post Image"
-                                                style={{ maxWidth: "100%", height: "auto" }}
+                                                style={{maxWidth: "100%", height: "auto"}}
                                             />
                                         )}
                                         <input
@@ -361,24 +365,26 @@ export function HomeScreen() {
                                             accept="image/*"
                                             id="post-image-input"
                                             onChange={handlePostImageChange}
-                                            style={{ display: "none" }}
+                                            style={{display: "none"}}
                                         />
                                         <div style={SendingPostButtonsContainer}>
-                                            <label htmlFor="post-image-input" style={{height:"30px",  borderRadius: "20px",}}>
+                                            <label htmlFor="post-image-input"
+                                                   style={{height: "30px", borderRadius: "20px",}}>
                                                 <Button
                                                     component="span"
                                                     variant="contained"
                                                     color="primary"
-                                                    sx={{...SidebarLogOutButton, marginTop:0}}
+                                                    sx={{...SidebarLogOutButton, marginTop: 0}}
                                                     startIcon={<CloudUploadOutlined/>}
                                                     disabled={!!postImage}
                                                 >image</Button>
                                             </label>
-                                            <label htmlFor="post-image-input" style={{height:"30px",  borderRadius: "20px",}}>
+                                            <label htmlFor="post-image-input"
+                                                   style={{height: "30px", borderRadius: "20px",}}>
                                                 <Button
                                                     type="submit"
                                                     variant="contained"
-                                                    sx={{...SidebarLogOutButton, marginTop:0, width:"100px"}}
+                                                    sx={{...SidebarLogOutButton, marginTop: 0, width: "100px"}}
                                                     fullWidth={true}
                                                     disabled={isSubmitting}
                                                     onClick={handleClick}
