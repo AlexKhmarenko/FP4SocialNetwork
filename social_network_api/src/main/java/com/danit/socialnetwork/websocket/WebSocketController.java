@@ -40,20 +40,23 @@ public class WebSocketController {
     LocalDateTime dateTime = LocalDateTime.now();
     String notificationText = userName + " published a new post";
 
+    notificationRequest.setNotificationText(notificationText);
+    notificationRequest.setUserName(userName);
+    notificationRequest.setUserPhoto(userPhoto);
+    notificationRequest.setDateTime(dateTime);
+    notificationRequest.setNotificationRead(false);
+
+
     List<UserFollowDtoResponse> followers = userFollowService
         .getAllUsersByUserFollowerId(userId);
 
     for (UserFollowDtoResponse follower : followers) {
       Integer followerId = follower.getUserId();
       Notification newNotification = new Notification(
-          followerId, notificationRequest.getUserId(),
+          followerId, notificationRequest.getEventId(), notificationRequest.getUserId(),
           userPhoto, notificationText);
       notificationService.saveNotification(newNotification);
 
-      notificationRequest.setNotificationText(notificationText);
-      notificationRequest.setUserName(userName);
-      notificationRequest.setUserPhoto(userPhoto);
-      notificationRequest.setDateTime(dateTime);
       String followerIdString = followerId.toString();
       messagingTemplate.convertAndSendToUser(followerIdString, "/notifications", notificationRequest);
     }

@@ -1,8 +1,8 @@
-import React, {useState, useCallback, useEffect, useContext, useRef} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Button, Box} from "@mui/material";
-import {CloudUploadOutlined} from "@mui/icons-material";
-import {Formik, Form, Field} from "formik";
+import React, { useState, useCallback, useEffect, useContext, useRef  } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Box } from "@mui/material";
+import { CloudUploadOutlined } from "@mui/icons-material";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import SockJS from "sockjs-client";
 import {over} from 'stompjs';
@@ -26,17 +26,19 @@ import {
     PostWrapper,
     SendingPostButtonsContainer, imgStyles, textWrapper
 } from "./pagesStyles/HomeScreenStyles";
-import {PostsDisplaying} from "../components/Posts/PostsDisplaying";
-import {SendPostInput} from "../components/Posts/SendPostInput";
-import {CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField} from "../components/Posts/PostStyles";
-import {decodeToken} from "../components/Posts/decodeToken";
-import {apiUrl} from "../apiConfig";
+import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
+import { SendPostInput } from "../components/Posts/SendPostInput";
+import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
+import { decodeToken } from "../components/Posts/decodeToken";
+import { apiUrl } from "../apiConfig";
 
-import {ScrollContext} from "../components/Layout.js";
+import { ScrollContext } from "../components/Layout.js";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 
 
-var stompClient = null;
+let stompClient = null;
 
 export function HomeScreen() {
     const userData = useSelector(state => state.userData.userData);
@@ -52,16 +54,270 @@ export function HomeScreen() {
     const [allPostsLoaded, setAllPostsLoaded] = useState(false);
     const socketRef = useRef(null);
 
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+    console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
+
+    const xxsStyles = {
+        AdaptivePostWrapper:{
+            width: "300px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+        AdaptiveHomeScreenWrapper:{
+            width:"350px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            marginTop: "20px",
+        },
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        }
+    };
+
+    const xsStyles = {
+        AdaptivePostWrapper:{
+            width: "300px",
+            paddingBottom:"40px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveHomeScreenWrapper:{
+            width:"350px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            marginTop: "20px",
+        },
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+    };
+
+    const smStyles = {
+        AdaptivePostWrapper:{
+            width: "470px",
+            paddingBottom:"40px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveHomeScreenWrapper:{
+            width:"470px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            marginTop: "20px",
+        },
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "350px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "350px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+
+    };
+
+    const mdStyles = {
+        AdaptivePostWrapper:{
+            width: "600px",
+            paddingBottom:"40px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveHomeScreenWrapper:{
+            width:"600px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "start",
+            marginTop: "20px",
+        },
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "450px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+    };
+
+    const lgStyles = {
+        AdaptivePostWrapper:{
+            width: "600px",
+            paddingBottom:"40px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveHomeScreenWrapper:{
+            width:"100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "start",
+            padding: "0 30px",
+            marginTop: "20px",
+        }
+        ,
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+    };
+
+    const xlStyles = {
+        AdaptivePostWrapper:{
+            width: "600px",
+            paddingBottom:"40px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveHomeScreenWrapper:{
+            width:"100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+            padding: "0 30px",
+            marginTop: "20px",
+            paddingBottom: "30px",
+        }
+        ,
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
     const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];
         setPostImage(file);
     }, []);
 
-    const connect =()=>{
-                let Sock = new SockJS(`${apiUrl}/websocket`);
-                stompClient = over(Sock);
-                stompClient.connect({});
-            }
+    useEffect(() => {
+        connect();
+        return () => {
+            disconnect();
+        };
+    }, []);
+
+    const connect = () => {
+        const socket = new SockJS(`${apiUrl}/websocket`);
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, () => {
+            console.log("Connected to WebSocket server");
+        }, error => {
+            console.error(`Failed to connect to WebSocket server: ${error}`);
+        });
+    };
+
+    const disconnect = () => {
+        if (stompClient !== null) {
+            stompClient.disconnect();
+        }
+
+        console.log("Disconnected");
+    };
 
     const handleClick = () => {
         if (stompClient) {
@@ -70,7 +326,7 @@ export function HomeScreen() {
         }
     };
 
-    connect();
+
 
 
     useEffect(() => {
@@ -158,7 +414,7 @@ export function HomeScreen() {
 
 
     return (
-        <div onScroll={handleScroll}>
+        <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper}>
             <Formik
                 initialValues={{postText: ""}}
                 validationSchema={
@@ -173,8 +429,8 @@ export function HomeScreen() {
             >
                 {({values, errors, touched, isSubmitting}) => (
                     <Form>
-                        <div style={HomeScreenWrapper}>
-                            <div style={PostWrapper}>
+                        <div style={styles.AdaptiveHomeScreenWrapper}>
+                            <div style={styles.AdaptivePostWrapper}>
                                 <div style={SvgWrapper}>
                                     {userData.image ? <img src={userData.image}
                                                            style={imgStyles}
@@ -196,7 +452,7 @@ export function HomeScreen() {
                                         component={SendPostInput}
                                         name="postText"
                                         className={errors.postText && touched.postText ? "error" : ""}
-                                        style={SendPostField}
+                                        style={styles.AdaptiveSendPostField}
                                         id="postText"
                                         placeholder="What's happening?"
                                     />
@@ -221,7 +477,7 @@ export function HomeScreen() {
                                             onChange={handlePostImageChange}
                                             style={{display: "none"}}
                                         />
-                                        <div style={SendingPostButtonsContainer}>
+                                        <div style={styles.AdaptiveSendingPostButtonsContainer}>
                                             <label htmlFor="post-image-input"
                                                    style={{height: "30px", borderRadius: "20px",}}>
                                                 <Button
@@ -262,3 +518,6 @@ export function HomeScreen() {
         </div>
     );
 }
+
+
+

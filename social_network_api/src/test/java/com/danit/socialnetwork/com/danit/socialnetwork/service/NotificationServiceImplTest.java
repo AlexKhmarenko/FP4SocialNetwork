@@ -28,7 +28,7 @@ class NotificationServiceImplTest {
   @Test
   void findAllByUserId() {
 
-    Notification notification = new Notification(1,2, "test");
+    Notification notification = new Notification(1,2,"photoLink", "test");
 
     when(notificationRepository.findAllByUserId(1)).thenReturn(Optional.of(notification));
     Optional<Notification> maybeNotification = notificationService.findAllByUserId(1);
