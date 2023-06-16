@@ -36,6 +36,8 @@ import {
 import CircularProgress from "@mui/material/CircularProgress";
 import { apiUrl } from "../../apiConfig";
 import { UsersLikes } from "./UsersLikes";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export const Post = ({
                          userName,
@@ -65,6 +67,181 @@ export const Post = ({
     const [usersWhoLike, setUsersWhoLike] = useState([]);
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
+
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+    console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
+
+    const xxsStyles = {
+        AdaptiveUserPhoto:{
+            width: "430px",
+            marginRight:"130px",
+        },
+        AdaptivePostCard:{    width: "100%",
+            maxWidth: "100%",
+            borderRadius: 0,
+            mb: 1,
+            margin: "0",
+            padding: "0",
+            boxShadow: "none",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
+            overflowAnchor: "none"
+        },
+        AdaptiveUserPhotoWrapper:{
+            width: "100%",
+            margin: "10px auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }
+    };
+
+    const xsStyles = {
+        AdaptiveUserPhoto:{
+            width: "60%",
+            marginRight:"4.5rem",
+        },
+        AdaptivePostCard:{    width: "100vw",
+            maxWidth: "100vw",
+            borderRadius: 0,
+            mb: 1,
+            margin: "0",
+            padding: "0",
+            boxShadow: "none",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
+            overflowAnchor: "none"
+        },
+        AdaptiveUserPhotoWrapper:{
+            width: "70%",
+            maxWidth: "600px",
+            margin: "10px auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }
+    };
+
+    const smStyles = {
+        AdaptiveUserPhoto:{
+            width: "430px",
+            marginRight:"130px",
+        },
+        AdaptivePostCard:{    width: "470px",
+            maxWidth: "100%",
+            borderRadius: 0,
+            mb: 1,
+            margin: "0",
+            padding: "0",
+            boxShadow: "none",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
+            overflowAnchor: "none"
+        },
+        AdaptiveUserPhotoWrapper:{
+            maxWidth: "600px",
+            width: "600px",
+            margin: "10px auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }
+    };
+
+    const mdStyles = {
+        AdaptiveUserPhoto:{
+            width: "450px",
+            margin: "0 auto"
+        },
+        AdaptivePostCard:{    width: "600px",
+            maxWidth: "100%",
+            borderRadius: 0,
+            mb: 1,
+            margin: "0",
+            padding: "0",
+            boxShadow: "none",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
+            overflowAnchor: "none"
+        },
+        AdaptiveUserPhotoWrapper:{
+            maxWidth: "600px",
+            width: "600px",
+            margin: "10px auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }
+    };
+
+    const lgStyles = {
+        AdaptiveUserPhoto:{
+            width: "450px",
+            margin: "0 auto"
+        },
+        AdaptivePostCard:{    width: "600px",
+            maxWidth: "100%",
+            borderRadius: 0,
+            mb: 1,
+            margin: "0",
+            padding: "0",
+            boxShadow: "none",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
+            overflowAnchor: "none"
+        },
+        AdaptiveUserPhotoWrapper:{
+            maxWidth: "600px",
+            width: "600px",
+            margin: "10px auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }
+    };
+
+    const xlStyles = {
+        AdaptiveUserPhoto:{
+            width: "450px",
+            margin: "0 auto"
+        },
+        AdaptivePostCard:{    width: "600px",
+            maxWidth: "100%",
+            borderRadius: 0,
+            mb: 1,
+            margin: "0",
+            padding: "0",
+            boxShadow: "none",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
+            overflowAnchor: "none"
+        },
+        AdaptiveUserPhotoWrapper:{
+            maxWidth: "600px",
+            width: "600px",
+            margin: "10px auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        }
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
 
     const ShowUsersWhoLike = async () => {
         if (userId) {
@@ -134,7 +311,7 @@ export const Post = ({
         }
     }, [like, userId, postId, likeArr, dispatch]);
 
-    const postDate = useMemo(() => {
+    const postDate = () => {
         const date = new Date(dataTime);
         const diffDays = differenceInDays(new Date(), date);
 
@@ -145,10 +322,10 @@ export const Post = ({
         } else {
             return format(date, "MMM d, yyyy");
         }
-    }, [dataTime]);
+    };
 
     return (
-        <Card sx={PostCard}>
+        <Card sx={styles.AdaptivePostCard}>
             <CardContent sx={CardContentPost}>
                 {profileImage ? <img src={profileImage ? profileImage : ""}
                                      style={ProfileImgStyles} alt=""/> :
@@ -157,7 +334,7 @@ export const Post = ({
                     <Typography variant="subtitle1" component="div"
                                 sx={userNameParagraph}
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
-                        {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
+                        {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
                     <Typography variant="body1" component="div" mt={1} sx={{ ...PostText }}>{text}</Typography>
                 </div>
@@ -165,7 +342,7 @@ export const Post = ({
             {
                 photo ? (<div style={UserPhotoWrapper}>
                     <img src={photo ? photo : ""}
-                         style={UserPhoto} alt=""/>
+                         style={styles.AdaptiveUserPhoto} alt=""/>
                 </div>) : null
             }
             <CardActions sx={{ padding: "20px 20px" }}>

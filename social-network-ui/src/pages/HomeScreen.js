@@ -38,7 +38,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 
 
-var stompClient = null;
+let stompClient = null;
 
 export function HomeScreen() {
     const userData = useSelector(state => state.userData.userData);
@@ -67,120 +67,207 @@ export function HomeScreen() {
 
     const xxsStyles = {
         AdaptivePostWrapper:{
-            width: "300px",
+            width: "100vw",
+            minWidth:"600px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
         },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
         AdaptiveHomeScreenWrapper:{
-            width:"350px",
+            width:"100vw",
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
-            alignItems: "start",
             marginTop: "20px",
-            paddingBottom: "30px",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
         }
     };
 
     const xsStyles = {
         AdaptivePostWrapper:{
-            width: "300px",
+            width: "100vw",
+            paddingBottom:"40px",
+            minWidth:"600px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveHomeScreenWrapper:{
-            width:"350px",
+            width:"100vw",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "start",
-            alignItems: "start",
             marginTop: "20px",
-            paddingBottom: "30px",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-        }
+        },
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
     };
 
     const smStyles = {
         AdaptivePostWrapper:{
             width: "470px",
+            paddingBottom:"40px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveHomeScreenWrapper:{
             width:"470px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
-            alignItems: "start",
             marginTop: "20px",
-            paddingBottom: "30px",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-        }
+        },
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "350px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "350px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
 
     };
 
     const mdStyles = {
         AdaptivePostWrapper:{
-            width: "500px",
+            width: "600px",
+            paddingBottom:"40px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveHomeScreenWrapper:{
             width:"600px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            alignItems: "start",
             marginTop: "20px",
-            paddingBottom: "40px",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-        }
+        },
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "450px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
     };
 
     const lgStyles = {
-
         AdaptivePostWrapper:{
-            width: "500px",
+            width: "600px",
+            paddingBottom:"40px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveHomeScreenWrapper:{
-            width:"100%",
+            width:"92%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "start",
-            alignItems: "start",
+            justifyContent: "center",
+            alignItems:"center",
             padding: "0 30px",
             marginTop: "20px",
-            paddingBottom: "30px",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         }
+        ,
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
     };
 
     const xlStyles = {
         AdaptivePostWrapper:{
-            width: "500px",
+            width: "600px",
+            paddingBottom:"40px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveHomeScreenWrapper:{
             width:"100%",
             display: "flex",
+            alignItems:"flex-start",
             flexDirection: "column",
             justifyContent: "start",
-            alignItems: "start",
             padding: "0 30px",
             marginTop: "20px",
             paddingBottom: "30px",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         }
+        ,
+        AdaptiveSendingPostButtonsContainer:{
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop:"40px",
+            marginBottom:"20px",
+        },
+        AdaptiveSendPostField:{
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
     };
 
     let styles;
@@ -203,11 +290,31 @@ export function HomeScreen() {
         setPostImage(file);
     }, []);
 
-    const connect =()=>{
-                let Sock = new SockJS(`${apiUrl}/websocket`);
-                stompClient = over(Sock);
-                stompClient.connect({});
-            }
+    useEffect(() => {
+        connect();
+        return () => {
+            disconnect();
+        };
+    }, []);
+
+    const connect = () => {
+        const socket = new SockJS(`${apiUrl}/websocket`);
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, () => {
+            console.log("Connected to WebSocket server");
+        }, error => {
+            console.error(`Failed to connect to WebSocket server: ${error}`);
+        });
+    };
+
+    const disconnect = () => {
+        if (stompClient !== null) {
+            stompClient.disconnect();
+        }
+
+        console.log("Disconnected");
+    };
 
     const handleClick = () => {
         if (stompClient) {
@@ -216,7 +323,7 @@ export function HomeScreen() {
         }
     };
 
-    connect();
+
 
 
     useEffect(() => {
@@ -342,7 +449,7 @@ export function HomeScreen() {
                                         component={SendPostInput}
                                         name="postText"
                                         className={errors.postText && touched.postText ? "error" : ""}
-                                        style={SendPostField}
+                                        style={styles.AdaptiveSendPostField}
                                         id="postText"
                                         placeholder="What's happening?"
                                     />
@@ -367,7 +474,7 @@ export function HomeScreen() {
                                             onChange={handlePostImageChange}
                                             style={{display: "none"}}
                                         />
-                                        <div style={SendingPostButtonsContainer}>
+                                        <div style={styles.AdaptiveSendingPostButtonsContainer}>
                                             <label htmlFor="post-image-input"
                                                    style={{height: "30px", borderRadius: "20px",}}>
                                                 <Button

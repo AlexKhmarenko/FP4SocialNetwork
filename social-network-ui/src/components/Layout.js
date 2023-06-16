@@ -56,7 +56,6 @@ export function Layout() {
     const loadingPostsRef = useRef(false);
     const allPostsLoadedRef = useRef(false);
 
-
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
     const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -67,76 +66,307 @@ export function Layout() {
     console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
 
     const xxsStyles = {
-        AdaptiveOutletWrapper:{
-        },
-        AdaptiveItemWrapperContainer:{
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
             position: "relative",
             display: "flex",
             flexDirection: "column",
             width: "100%",
         },
-        MaxWidthAdaptive:true
+        MaxWidthAdaptive: true,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+            width: "100vw",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100%",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            width: "100vw",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            paddingBottom: "70px",
+        }
     };
 
     const xsStyles = {
-        AdaptiveOutletWrapper:{
-
-        },
-        AdaptiveItemWrapperContainer:{
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
             position: "relative",
             display: "flex",
             flexDirection: "column",
             width: "100%",
         },
-        MaxWidthAdaptive:false
+        MaxWidthAdaptive: false,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+            width: "100vw",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100vw",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            width: "100vw",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            paddingBottom: "70px",
+        }
     };
 
     const smStyles = {
-        AdaptiveOutletWrapper:{
-        },
-        AdaptiveItemWrapperContainer:{
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
             position: "relative",
             display: "flex",
             flexDirection: "column",
             width: "470px",
         },
-        MaxWidthAdaptive:false
+        MaxWidthAdaptive: false,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100vw",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            marginRight: "-40px",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "700px",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "70px",
+        }
     };
 
     const mdStyles = {
-        AdaptiveOutletWrapper:{
-        },
-        AdaptiveItemWrapperContainer:{
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
             position: "relative",
             display: "flex",
             flexDirection: "column",
             width: "600px",
         },
-        MaxWidthAdaptive:true
+        MaxWidthAdaptive: true,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100%",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            marginRight: "-40px",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "700px",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "70px",
+        }
     };
 
     const lgStyles = {
-        AdaptiveOutletWrapper:{
-        },
-        AdaptiveItemWrapperContainer:{
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
             position: "relative",
             display: "flex",
             flexDirection: "column",
             width: "600px",
         },
-        MaxWidthAdaptive:false,
+        MaxWidthAdaptive: false,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100%",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            marginRight: "-40px",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "700px",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "70px",
+        }
     };
 
     const xlStyles = {
-        AdaptiveOutletWrapper:{
-        },
-        AdaptiveItemWrapperContainer:{
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
             position: "relative",
             display: "flex",
             flexDirection: "column",
             width: "600px",
         },
-        MaxWidthAdaptive:false,
+        MaxWidthAdaptive: false,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100%",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            marginRight: "-40px",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "700px",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "70px",
+        }
     };
 
     let styles;
@@ -160,14 +390,14 @@ export function Layout() {
         }
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         allPostsLoadedRef.current = false;
         loadingPostsRef.current = false;
-    }, [location.pathname])
+    }, [location.pathname]);
 
-    useEffect(()=>{
-        console.log(userId, "userIdFromLayout")
-    },[userId])
+    useEffect(() => {
+        console.log(userId, "userIdFromLayout");
+    }, [userId]);
 
     // useEffect(() => {
     //     dispatch(fetchData(userId));
@@ -179,18 +409,18 @@ export function Layout() {
             loadingPostsRef.current = true;
             let newPosts;
             const page2 = page + 1;
-            console.log(page)
+            console.log(page);
             if (location.pathname === "/explore") {
                 newPosts = await dispatch(fetchExplorePosts(userId, page2));
-                console.log("newPostsExplore",newPosts )
+                console.log("newPostsExplore", newPosts);
             } else if (location.pathname === "/home") {
-                console.log('fetching posts by user id in layout scroll callback', page);
-                console.log(userId)
+                console.log("fetching posts by user id in layout scroll callback", page);
+                console.log(userId);
                 newPosts = await dispatch(fetchPostsByUserId(userId, page2));
-                console.log("newPostsHome", newPosts )
+                console.log("newPostsHome", newPosts);
             }
             if (newPosts && newPosts.length === 0) {
-                console.log('All posts loaded, stopping further fetches');
+                console.log("All posts loaded, stopping further fetches");
                 allPostsLoadedRef.current = true;
                 loadingPostsRef.current = false;
             } else {
@@ -203,25 +433,25 @@ export function Layout() {
     return (
         <ScrollContext.Provider value={handleParentScroll}>
             <ThemeProvider theme={theme}>
-            {userToken ? (
-                <Container maxWidth={styles.MaxWidthAdaptive} sx={ContainerStyled}>
-                    <div style={ContentContainer} onScroll={handleParentScroll}>
-                        <SideBar/>
-                        <div style={ItemWrapper}>
-                            <div style={styles.AdaptiveItemWrapperContainer}>
-                                <HeaderInformation/>
-                                <div style={OutletContainer}>
-                                    <div style={styles.AdaptiveOutletWrapper}>
-                                        <Outlet/>
+                {userToken ? (
+                    <Container maxWidth={styles.MaxWidthAdaptive} sx={styles.AdaptiveContainerStyled}>
+                        <div style={styles.AdaptiveContentContainer} onScroll={handleParentScroll}>
+                            <SideBar/>
+                            <div style={styles.AdaptiveItemWrapper}>
+                                <div style={styles.AdaptiveItemWrapperContainer}>
+                                    <HeaderInformation/>
+                                    <div style={styles.AdaptiveOutletContainer}>
+                                        <div style={styles.AdaptiveOutletWrapper}>
+                                            <Outlet/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            {userBirthdateGoogle ? null : <BirthdateForm/>}
+                            <UsersSearch/>
                         </div>
-                        {userBirthdateGoogle ? null : <BirthdateForm/>}
-                        <UsersSearch/>
-                    </div>
-                </Container>) : (<RegistrationPage/>)
-            }
+                    </Container>) : (<RegistrationPage/>)
+                }
             </ThemeProvider>
         </ScrollContext.Provider>
     );
