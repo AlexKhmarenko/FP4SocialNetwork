@@ -88,7 +88,7 @@ export function Layout() {
             flexDirection: "row",
             alignItems: "flex-start",
             justifyContent: "center",
-            width: "100%",
+            width: "100vw",
             height: "100vh",
             position: "sticky",
             top: 0,

@@ -81,32 +81,7 @@ export const Post = ({
 
     const xxsStyles = {
         AdaptiveUserPhoto:{
-            width: "430px",
-            marginRight:"130px",
-        },
-        AdaptivePostCard:{    width: "100%",
-            maxWidth: "100%",
-            borderRadius: 0,
-            mb: 1,
-            margin: "0",
-            padding: "0",
-            boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
-        },
-        AdaptiveUserPhotoWrapper:{
             width: "100%",
-            margin: "10px auto",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-        }
-    };
-
-    const xsStyles = {
-        AdaptiveUserPhoto:{
-            width: "60%",
-            marginRight:"4.5rem",
         },
         AdaptivePostCard:{    width: "100vw",
             maxWidth: "100vw",
@@ -119,12 +94,46 @@ export const Post = ({
             overflowAnchor: "none"
         },
         AdaptiveUserPhotoWrapper:{
-            width: "70%",
-            maxWidth: "600px",
+            maxWidth: "90vw",
             margin: "10px auto",
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
+        },
+        AdaptiveText:{
+            display:"none",
+        },
+        AdaptiveSmallText:{
+            ...PostText, padding:"0 20px", marginTop:"10px"
+        }
+    };
+
+    const xsStyles = {
+        AdaptiveUserPhoto:{
+            width: "100%",
+        },
+        AdaptivePostCard:{    width: "100vw",
+            maxWidth: "100vw",
+            borderRadius: 0,
+            mb: 1,
+            margin: "0",
+            padding: "0",
+            boxShadow: "none",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
+            overflowAnchor: "none"
+        },
+        AdaptiveUserPhotoWrapper:{
+            maxWidth: "90vw",
+            margin: "10px auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+        },
+        AdaptiveText:{
+            display:"none",
+        },
+        AdaptiveSmallText:{
+            ...PostText, padding:"0 20px",  marginTop:"10px"
         }
     };
 
@@ -150,6 +159,12 @@ export const Post = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
+        },
+        AdaptiveText:{
+            ...PostText
+        },
+        AdaptiveSmallText:{
+            display:"none"
         }
     };
 
@@ -175,6 +190,12 @@ export const Post = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
+        },
+        AdaptiveText:{
+            ...PostText
+        },
+        AdaptiveSmallText:{
+            display:"none"
         }
     };
 
@@ -200,6 +221,12 @@ export const Post = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
+        },
+        AdaptiveText:{
+            ...PostText
+        },
+        AdaptiveSmallText:{
+            display:"none"
         }
     };
 
@@ -225,6 +252,12 @@ export const Post = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
+        },
+        AdaptiveText:{
+              ...PostText
+        },
+        AdaptiveSmallText:{
+            display:"none",
         }
     };
 
@@ -336,11 +369,12 @@ export const Post = ({
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
-                    <Typography variant="body1" component="div" mt={1} sx={{ ...PostText }}>{text}</Typography>
+                    <Typography variant="body1" component="div" mt={1} sx={ styles.AdaptiveText}>{text}</Typography>
                 </div>
             </CardContent>
+            <Typography variant="body1" component="div" mt={1} sx={styles.AdaptiveSmallText}>{text}</Typography>
             {
-                photo ? (<div style={UserPhotoWrapper}>
+                photo ? (<div style={styles.AdaptiveUserPhotoWrapper}>
                     <img src={photo ? photo : ""}
                          style={styles.AdaptiveUserPhoto} alt=""/>
                 </div>) : null

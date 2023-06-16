@@ -1,12 +1,11 @@
-import React, { useState, useCallback, useEffect, useContext, useRef  } from "react";
+import React, { useState, useCallback, useEffect, useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Dialog, Fab} from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import SockJS from "sockjs-client";
-import {over} from 'stompjs';
-
 
 import {
     fetchData,
@@ -16,8 +15,8 @@ import {
     setUserId,
     setUserPostsClear
 } from "../store/actions";
-import {SidebarLogOutButton} from "../components/NavigationComponents/NavigationStyles";
-import {CapybaraSvgPhoto} from "../components/SvgIcons/CapybaraSvgPhoto";
+import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
+import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
     NameOfUser,
     SvgWrapper,
@@ -36,8 +35,6 @@ import { ScrollContext } from "../components/Layout.js";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-
-
 let stompClient = null;
 
 export function HomeScreen() {
@@ -53,10 +50,11 @@ export function HomeScreen() {
     const [isFetchingPosts, setIsFetchingPosts] = useState(false);
     const [allPostsLoaded, setAllPostsLoaded] = useState(false);
     const socketRef = useRef(null);
+    const [open, setOpen] = useState(false);
 
     const theme = useTheme();
 
-    const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
     const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
     const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
@@ -66,186 +64,224 @@ export function HomeScreen() {
     console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
 
     const xxsStyles = {
-        AdaptivePostWrapper:{
-            width: "100vw",
-            minWidth:"600px",
+        AdaptivePostWrapper: {
+            width: "50vw",
+            minWidth: "200px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
         },
-        AdaptiveSendPostField:{
+        AdaptiveSendPostField: {
             fontSize: "1.3rem",
             fontFamily: "'Lato', sans-serif",
-            width: "400px",
-            maxWidth: "600px",
+            width:"65vw",
+            maxWidth: "300px",
             marginTop: "20px",
         },
-        AdaptiveHomeScreenWrapper:{
-            width:"100vw",
+        AdaptiveHomeScreenWrapper: {
+            overflow:"hidden",
             display: "flex",
+            // width:"80vw",
             flexDirection: "column",
             justifyContent: "start",
             marginTop: "20px",
         },
-        AdaptiveSendingPostButtonsContainer:{
+        AdaptiveSendingPostButtonsContainer: {
             display: "flex",
             justifyContent: "space-between",
-            maxWidth: "400px",
-            width: "400px",
-            marginTop:"40px",
-            marginBottom:"20px",
+            maxWidth: "250px",
+            width: "250px",
+            marginTop: "40px",
+            marginBottom: "20px",
+        },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
+        AdaptiveSvgWrapper:{
+            display:"none",
+        },
+        AdaptivePostImgWrapper:{
+            ...PostImgWrapper, marginTop:"10px"
         }
     };
 
     const xsStyles = {
-        AdaptivePostWrapper:{
-            width: "100vw",
-            paddingBottom:"40px",
-            minWidth:"600px",
+        AdaptivePostWrapper: {
+            width: "50vw",
+            paddingBottom: "40px",
+            minWidth: "200px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
-        AdaptiveHomeScreenWrapper:{
-            width:"100vw",
+        AdaptiveHomeScreenWrapper: {
+            overflow:"hidden",
             display: "flex",
+            // width:"80vw",
             flexDirection: "column",
             marginTop: "20px",
         },
-        AdaptiveSendingPostButtonsContainer:{
+        AdaptiveSendingPostButtonsContainer: {
             display: "flex",
             justifyContent: "space-between",
-            maxWidth: "400px",
-            width: "400px",
-            marginTop:"40px",
-            marginBottom:"20px",
+            maxWidth: "350px",
+            width: "60vw",
+            marginTop: "40px",
+            marginBottom: "20px",
         },
-        AdaptiveSendPostField:{
+        AdaptiveSendPostField: {
             fontSize: "1.3rem",
             fontFamily: "'Lato', sans-serif",
-            width: "400px",
-            maxWidth: "600px",
+            width:"70vw",
             marginTop: "20px",
         },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
+        AdaptiveSvgWrapper:{
+            display:"none",
+        },
+        AdaptivePostImgWrapper:{
+            ...PostImgWrapper, marginTop:"10px"
+        }
     };
 
     const smStyles = {
-        AdaptivePostWrapper:{
+        AdaptivePostWrapper: {
             width: "470px",
-            paddingBottom:"40px",
+            paddingBottom: "40px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
-        AdaptiveHomeScreenWrapper:{
-            width:"470px",
+        AdaptiveHomeScreenWrapper: {
+            width: "470px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
             marginTop: "20px",
         },
-        AdaptiveSendingPostButtonsContainer:{
+        AdaptiveSendingPostButtonsContainer: {
             display: "flex",
             justifyContent: "space-between",
             maxWidth: "400px",
             width: "350px",
-            marginTop:"40px",
-            marginBottom:"20px",
+            marginTop: "40px",
+            marginBottom: "20px",
         },
-        AdaptiveSendPostField:{
+        AdaptiveSendPostField: {
             fontSize: "1.3rem",
             fontFamily: "'Lato', sans-serif",
             width: "350px",
             maxWidth: "600px",
             marginTop: "20px",
+        },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
         },
 
     };
 
     const mdStyles = {
-        AdaptivePostWrapper:{
+        AdaptivePostWrapper: {
             width: "600px",
-            paddingBottom:"40px",
+            paddingBottom: "40px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
-        AdaptiveHomeScreenWrapper:{
-            width:"600px",
+        AdaptiveHomeScreenWrapper: {
+            width: "600px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             marginTop: "20px",
         },
-        AdaptiveSendingPostButtonsContainer:{
+        AdaptiveSendingPostButtonsContainer: {
             display: "flex",
             justifyContent: "space-between",
             maxWidth: "400px",
             width: "400px",
-            marginTop:"40px",
-            marginBottom:"20px",
+            marginTop: "40px",
+            marginBottom: "20px",
         },
-        AdaptiveSendPostField:{
+        AdaptiveSendPostField: {
             fontSize: "1.3rem",
             fontFamily: "'Lato', sans-serif",
             width: "450px",
             maxWidth: "600px",
             marginTop: "20px",
         },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
     };
 
     const lgStyles = {
-        AdaptivePostWrapper:{
+        AdaptivePostWrapper: {
             width: "600px",
-            paddingBottom:"40px",
+            paddingBottom: "40px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
-        AdaptiveHomeScreenWrapper:{
-            width:"92%",
+        AdaptiveHomeScreenWrapper: {
+            width: "92%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            alignItems:"center",
+            alignItems: "center",
             padding: "0 30px",
             marginTop: "20px",
         }
         ,
-        AdaptiveSendingPostButtonsContainer:{
+        AdaptiveSendingPostButtonsContainer: {
             display: "flex",
             justifyContent: "space-between",
             maxWidth: "400px",
             width: "400px",
-            marginTop:"40px",
-            marginBottom:"20px",
+            marginTop: "40px",
+            marginBottom: "20px",
         },
-        AdaptiveSendPostField:{
+        AdaptiveSendPostField: {
             fontSize: "1.3rem",
             fontFamily: "'Lato', sans-serif",
             width: "400px",
             maxWidth: "600px",
             marginTop: "20px",
         },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
     };
 
     const xlStyles = {
-        AdaptivePostWrapper:{
+        AdaptivePostWrapper: {
             width: "600px",
-            paddingBottom:"40px",
+            paddingBottom: "40px",
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
-        AdaptiveHomeScreenWrapper:{
-            width:"100%",
+        AdaptiveHomeScreenWrapper: {
+            width: "100%",
             display: "flex",
-            alignItems:"flex-start",
+            alignItems: "flex-start",
             flexDirection: "column",
             justifyContent: "start",
             padding: "0 30px",
@@ -253,20 +289,25 @@ export function HomeScreen() {
             paddingBottom: "30px",
         }
         ,
-        AdaptiveSendingPostButtonsContainer:{
+        AdaptiveSendingPostButtonsContainer: {
             display: "flex",
             justifyContent: "space-between",
             maxWidth: "400px",
             width: "400px",
-            marginTop:"40px",
-            marginBottom:"20px",
+            marginTop: "40px",
+            marginBottom: "20px",
         },
-        AdaptiveSendPostField:{
+        AdaptiveSendPostField: {
             fontSize: "1.3rem",
             fontFamily: "'Lato', sans-serif",
             width: "400px",
             maxWidth: "600px",
             marginTop: "20px",
+        },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
         },
     };
 
@@ -318,13 +359,10 @@ export function HomeScreen() {
 
     const handleClick = () => {
         if (stompClient) {
-            console.log("sending notification about post")
-            stompClient.send("/app/post", {}, JSON.stringify({userId: userId}));
+            console.log("sending notification about post");
+            stompClient.send("/app/post", {}, JSON.stringify({ userId: userId }));
         }
     };
-
-
-
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -335,7 +373,7 @@ export function HomeScreen() {
                     const userId = decodedToken.sub;
                     dispatch(setUserId(userId));
                     dispatch(fetchData(userId));
-                    console.log(userId, "userIdHomeScreen")
+                    console.log(userId, "userIdHomeScreen");
                     // it's initial loading, we're always starting from the first (0) page
                     await dispatch(fetchPostsByUserId(userId, 0));
                 }
@@ -394,7 +432,7 @@ export function HomeScreen() {
         }
         setIsFetchingPosts(true);
         try {
-            const {scrollTop, clientHeight, scrollHeight} = event.currentTarget;
+            const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
             if (scrollHeight - scrollTop <= clientHeight + 20) {
                 let newPosts = [...userPosts];
                 if (newPosts.length > 0) {
@@ -409,105 +447,214 @@ export function HomeScreen() {
         }
     };
 
-
     return (
         <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper}>
-            <Formik
-                initialValues={{postText: ""}}
-                validationSchema={
-                    Yup.object({
-                        postText: Yup.string().max(280, "Must be 280 characters or less"),
-                    })}
-                onSubmit={(values, {resetForm, setSubmitting}) => {
-                    setSubmitting(true);
-                    handlePostSubmit(values, setSubmitting);
-                    resetForm();
-                }}
-            >
-                {({values, errors, touched, isSubmitting}) => (
-                    <Form>
-                        <div style={styles.AdaptiveHomeScreenWrapper}>
-                            <div style={styles.AdaptivePostWrapper}>
-                                <div style={SvgWrapper}>
-                                    {userData.image ? <img src={userData.image}
-                                                           style={imgStyles}
-                                                           alt=""/> : <CapybaraSvgPhoto/>}
-                                </div>
-                                <div style={WrittenPostWrapper}>
-                                    <div
-                                        style={textWrapper}>
-                                        <h2 style={NameOfUser}>{userData.name}</h2>
-                                        <h2 style={{
-                                            ...NameOfUser,
-                                            color: "grey",
-                                            marginLeft: "10px"
-                                        }}>@ {userData.userName}</h2>
+            {isXs || isXxs ? <>
+                    <Dialog open={open} onClose={() => setOpen(false)}>
+                        <Formik
+                            initialValues={{ postText: "" }}
+                            validationSchema={
+                                Yup.object({
+                                    postText: Yup.string().max(280, "Must be 280 characters or less"),
+                                })}
+                            onSubmit={(values, { resetForm, setSubmitting }) => {
+                                setSubmitting(true);
+                                handlePostSubmit(values, setSubmitting);
+                                resetForm();
+                            }}
+                        >
+                            {({ values, errors, touched, isSubmitting }) => (
+                                <Form>
+                                    <div style={styles.AdaptiveHomeScreenWrapper}>
+                                        <div style={styles.AdaptivePostWrapper}>
+                                            <div style={styles.AdaptiveSvgWrapper}>
+                                                {userData.image ? <img src={userData.image}
+                                                                       style={imgStyles}
+                                                                       alt=""/> : <CapybaraSvgPhoto/>}
+                                            </div>
+                                            <div style={WrittenPostWrapper}>
+                                                <div
+                                                    style={textWrapper}>
+                                                    <h2 style={NameOfUser}>{userData.name}</h2>
+                                                    <h2 style={{
+                                                        ...NameOfUser,
+                                                        color: "grey",
+                                                        marginLeft: "10px"
+                                                    }}>@ {userData.userName}</h2>
 
+                                                </div>
+                                                <Field
+                                                    values={postText}
+                                                    component={SendPostInput}
+                                                    name="postText"
+                                                    className={errors.postText && touched.postText ? "error" : ""}
+                                                    style={styles.AdaptiveSendPostField}
+                                                    id="postText"
+                                                    placeholder="What's happening?"
+                                                />
+                                                <div style={CharactersTextWrapper}>
+                                                    {
+                                                        280 - values.postText.length >= 0 ?
+                                                            (280 - values.postText.length + " characters") : ("maximum number of characters 280")
+                                                    }
+                                                </div>
+                                                <Box sx={styles.AdaptivePostImgWrapper}>
+                                                    {postImage && (
+                                                        <img
+                                                            src={URL.createObjectURL(postImage)}
+                                                            alt="Post Image"
+                                                            style={{ maxWidth: "100%", height: "auto" }}
+                                                        />
+                                                    )}
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        id="post-image-input"
+                                                        onChange={handlePostImageChange}
+                                                        style={{ display: "none" }}
+                                                    />
+                                                    <div style={styles.AdaptiveSendingPostButtonsContainer}>
+                                                        <label htmlFor="post-image-input"
+                                                               style={{ height: "30px", borderRadius: "20px", }}>
+                                                            <Button
+                                                                component="span"
+                                                                variant="contained"
+                                                                color="primary"
+                                                                sx={{ ...SidebarLogOutButton, marginTop: 0 }}
+                                                                startIcon={<CloudUploadOutlined/>}
+                                                                disabled={!!postImage}
+                                                            >image</Button>
+                                                        </label>
+                                                        <label htmlFor="post-image-input"
+                                                               style={{ height: "30px", borderRadius: "20px", }}>
+                                                            <Button
+                                                                type="submit"
+                                                                variant="contained"
+                                                                sx={{
+                                                                    ...SidebarLogOutButton,
+                                                                    marginTop: 0,
+                                                                    width: "100px"
+                                                                }}
+                                                                fullWidth={true}
+                                                                disabled={isSubmitting}
+                                                                onClick={handleClick}
+                                                            >
+                                                                {isSubmitting ? "Posting..." : "Post"}
+                                                            </Button>
+                                                        </label>
+
+                                                    </div>
+                                                </Box>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <Field
-                                        values={postText}
-                                        component={SendPostInput}
-                                        name="postText"
-                                        className={errors.postText && touched.postText ? "error" : ""}
-                                        style={styles.AdaptiveSendPostField}
-                                        id="postText"
-                                        placeholder="What's happening?"
-                                    />
-                                    <div style={CharactersTextWrapper}>
-                                        {
-                                            280 - values.postText.length >= 0 ?
-                                                (280 - values.postText.length + " characters") : ("maximum number of characters 280")
-                                        }
+                                </Form>
+                            )}
+                        </Formik>
+                    </Dialog>
+                    <Fab color="primary" aria-label="add" style={styles.fab} onClick={() => {
+                        setOpen(!open);
+                    }}>
+                        <AddIcon/>
+                    </Fab>
+                </>
+                : <Formik
+                    initialValues={{ postText: "" }}
+                    validationSchema={
+                        Yup.object({
+                            postText: Yup.string().max(280, "Must be 280 characters or less"),
+                        })}
+                    onSubmit={(values, { resetForm, setSubmitting }) => {
+                        setSubmitting(true);
+                        handlePostSubmit(values, setSubmitting);
+                        resetForm();
+                    }}
+                >
+                    {({ values, errors, touched, isSubmitting }) => (
+                        <Form>
+                            <div style={styles.AdaptiveHomeScreenWrapper}>
+                                <div style={styles.AdaptivePostWrapper}>
+                                    <div style={SvgWrapper}>
+                                        {userData.image ? <img src={userData.image}
+                                                               style={imgStyles}
+                                                               alt=""/> : <CapybaraSvgPhoto/>}
                                     </div>
-                                    <Box sx={PostImgWrapper}>
-                                        {postImage && (
-                                            <img
-                                                src={URL.createObjectURL(postImage)}
-                                                alt="Post Image"
-                                                style={{maxWidth: "100%", height: "auto"}}
-                                            />
-                                        )}
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            id="post-image-input"
-                                            onChange={handlePostImageChange}
-                                            style={{display: "none"}}
-                                        />
-                                        <div style={styles.AdaptiveSendingPostButtonsContainer}>
-                                            <label htmlFor="post-image-input"
-                                                   style={{height: "30px", borderRadius: "20px",}}>
-                                                <Button
-                                                    component="span"
-                                                    variant="contained"
-                                                    color="primary"
-                                                    sx={{...SidebarLogOutButton, marginTop: 0}}
-                                                    startIcon={<CloudUploadOutlined/>}
-                                                    disabled={!!postImage}
-                                                >image</Button>
-                                            </label>
-                                            <label htmlFor="post-image-input"
-                                                   style={{height: "30px", borderRadius: "20px",}}>
-                                                <Button
-                                                    type="submit"
-                                                    variant="contained"
-                                                    sx={{...SidebarLogOutButton, marginTop: 0, width: "100px"}}
-                                                    fullWidth={true}
-                                                    disabled={isSubmitting}
-                                                    onClick={handleClick}
-                                                >
-                                                    {isSubmitting ? "Posting..." : "Post"}
-                                                </Button>
-                                            </label>
+                                    <div style={WrittenPostWrapper}>
+                                        <div
+                                            style={textWrapper}>
+                                            <h2 style={NameOfUser}>{userData.name}</h2>
+                                            <h2 style={{
+                                                ...NameOfUser,
+                                                color: "grey",
+                                                marginLeft: "10px"
+                                            }}>@ {userData.userName}</h2>
 
                                         </div>
-                                    </Box>
+                                        <Field
+                                            values={postText}
+                                            component={SendPostInput}
+                                            name="postText"
+                                            className={errors.postText && touched.postText ? "error" : ""}
+                                            style={styles.AdaptiveSendPostField}
+                                            id="postText"
+                                            placeholder="What's happening?"
+                                        />
+                                        <div style={CharactersTextWrapper}>
+                                            {
+                                                280 - values.postText.length >= 0 ?
+                                                    (280 - values.postText.length + " characters") : ("maximum number of characters 280")
+                                            }
+                                        </div>
+                                        <Box sx={PostImgWrapper}>
+                                            {postImage && (
+                                                <img
+                                                    src={URL.createObjectURL(postImage)}
+                                                    alt="Post Image"
+                                                    style={{ maxWidth: "100%", height: "auto" }}
+                                                />
+                                            )}
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                id="post-image-input"
+                                                onChange={handlePostImageChange}
+                                                style={{ display: "none" }}
+                                            />
+                                            <div style={styles.AdaptiveSendingPostButtonsContainer}>
+                                                <label htmlFor="post-image-input"
+                                                       style={{ height: "30px", borderRadius: "20px", }}>
+                                                    <Button
+                                                        component="span"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        sx={{ ...SidebarLogOutButton, marginTop: 0 }}
+                                                        startIcon={<CloudUploadOutlined/>}
+                                                        disabled={!!postImage}
+                                                    >image</Button>
+                                                </label>
+                                                <label htmlFor="post-image-input"
+                                                       style={{ height: "30px", borderRadius: "20px", }}>
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained"
+                                                        sx={{ ...SidebarLogOutButton, marginTop: 0, width: "100px" }}
+                                                        fullWidth={true}
+                                                        disabled={isSubmitting}
+                                                        onClick={handleClick}
+                                                    >
+                                                        {isSubmitting ? "Posting..." : "Post"}
+                                                    </Button>
+                                                </label>
+
+                                            </div>
+                                        </Box>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </Form>
-                )}
-            </Formik>
+                        </Form>
+                    )}
+                </Formik>}
+
             <div style={PostsWrapper}>
                 <PostsDisplaying userPosts={userPosts} isLoading={isLoading}/>
 
