@@ -4,13 +4,13 @@ public enum NotificationType {
   POST("post"),
   MESSAGE("message");
 
-  private final String notificationType;
+  private final String type;
 
-  NotificationType(String post) {
-    this.notificationType = post;
+  NotificationType(String type) {
+    this.type = type;
   }
 
   public String get() {
-    return notificationType;
+    return type;
   }
 }

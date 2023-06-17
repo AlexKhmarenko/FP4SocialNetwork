@@ -24,7 +24,7 @@ public class NotificationRestController {
 
 
   @PostMapping(path = "/notifications")
-  public ResponseEntity<?> getAllNotificationsByUserId(@RequestBody NotificationRequest notificationReq) {
+  public ResponseEntity<Object> getAllNotificationsByUserId(@RequestBody NotificationRequest notificationReq) {
     Integer followerUserId = notificationReq.getUserId();
     List<Notification> allByUserId = notificationService.findAllByFollowerUserId(followerUserId);
 
