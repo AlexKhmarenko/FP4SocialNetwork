@@ -44,7 +44,7 @@ export function HeaderInformation() {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
     const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
     const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
@@ -82,7 +82,7 @@ export function HeaderInformation() {
             ...SidebarLogOutButton,
             padding: "0",
             minWidth: "20px",
-            width: "40px",
+            width: "100px",
             borderRadius: "100px",
             marginLeft: "40px",
             height: "40px",
@@ -122,10 +122,9 @@ export function HeaderInformation() {
         },
         LogoutButton: {
             ...SidebarLogOutButton,
-            padding: "0",
+            padding: "0 20px",
             minWidth: "20px",
-            width: "40px",
-            borderRadius: "100px",
+            width: "135px",
             marginLeft: "40px",
             height: "40px",
             marginTop: 0
@@ -339,7 +338,7 @@ export function HeaderInformation() {
         }
     };
 
-    function createComponents(pathname) {
+    function createComponents(pathname,  closeDrawer) {
         const components = [
             {
                 to: "/home",
@@ -406,7 +405,7 @@ export function HeaderInformation() {
 
         return components.map((component, index) => (
             <Link to={component.to} key={index} variant="contained" style={{ textDecoration: "none", }}>
-                <Fab variant="extended" sx={{...pathname === component.to ? SidebarFabActive : SidebarFab, marginBottom: '20px'}}>
+                <Fab onClick={closeDrawer} variant="extended" sx={{...pathname === component.to ? SidebarFabActive : SidebarFab, marginBottom: '20px'}}>
                     {component.svgIcon}
                     <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                         {component.text}
@@ -419,7 +418,8 @@ export function HeaderInformation() {
     return (
         <AppBar position="fixed" color="primary" sx={Header}>
             <Toolbar sx={{ height: "70px" }}>
-                {["left"].map((anchor) => (
+                {isXs || isXxs ?
+                (["left"].map((anchor) => (
                     <React.Fragment key={anchor}>
                         <Button sx={{ padding: 0 }} onClick={toggleDrawer(anchor, true)}><MenuIcon/></Button>
                         <SwipeableDrawer
@@ -435,7 +435,7 @@ export function HeaderInformation() {
                                 </Fab>
                             </Link>
                             <div style={{ width: "200px", padding: "20px 30px" }}>
-                                {createComponents(pathname)}
+                                {createComponents(pathname, toggleDrawer(anchor, false))}
                             </div>
                             <Button onClick={clearLocaleStorage}
                                     variant="contained" sx={styles.LogoutButton} fullWidth={true}>
@@ -469,7 +469,7 @@ export function HeaderInformation() {
                                     ...styles.SidebarTypography,
                                     fontSize: "15px",
                                     padding: "0",
-                                    marginLeft: "5px",
+                                    marginLeft: "8px",
                                     textTransform: "uppercase"
                                 }}>
                                     Log out
@@ -477,7 +477,7 @@ export function HeaderInformation() {
                             </Button>
                         </SwipeableDrawer>
                     </React.Fragment>
-                ))}
+                )))  : (null) }
                 <Typography variant="h5" component="div" sx={HeaderInformationParagraph}>
                     {getRouteName(pathname)}
                 </Typography>

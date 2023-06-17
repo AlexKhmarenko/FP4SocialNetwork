@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Box, Dialog, Fab} from "@mui/material";
+import { Button, Box, Dialog, Fab, Modal } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import { Formik, Form, Field } from "formik";
@@ -30,6 +30,8 @@ import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 import { decodeToken } from "../components/Posts/decodeToken";
 import { apiUrl } from "../apiConfig";
+import CropOriginalIcon from '@mui/icons-material/CropOriginal';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 
 import { ScrollContext } from "../components/Layout.js";
 import { useTheme } from "@mui/material/styles";
@@ -81,7 +83,6 @@ export function HomeScreen() {
         AdaptiveHomeScreenWrapper: {
             overflow:"hidden",
             display: "flex",
-            // width:"80vw",
             flexDirection: "column",
             justifyContent: "start",
             marginTop: "20px",
@@ -89,8 +90,7 @@ export function HomeScreen() {
         AdaptiveSendingPostButtonsContainer: {
             display: "flex",
             justifyContent: "space-between",
-            maxWidth: "250px",
-            width: "250px",
+            width: "50vw",
             marginTop: "40px",
             marginBottom: "20px",
         },
@@ -115,20 +115,17 @@ export function HomeScreen() {
             display: "flex",
             justifyContent: "space-around",
             alignItems: "space-around",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveHomeScreenWrapper: {
             overflow:"hidden",
             display: "flex",
-            // width:"80vw",
             flexDirection: "column",
             marginTop: "20px",
         },
         AdaptiveSendingPostButtonsContainer: {
             display: "flex",
             justifyContent: "space-between",
-            maxWidth: "350px",
-            width: "60vw",
+            width: "70vw",
             marginTop: "40px",
             marginBottom: "20px",
         },
@@ -423,6 +420,9 @@ export function HomeScreen() {
 
             setPostImage(null);
             setPostText("");
+            if(isXs || isXxs){
+                setOpen(false)
+            }
         }
     };
 
@@ -450,7 +450,8 @@ export function HomeScreen() {
     return (
         <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper}>
             {isXs || isXxs ? <>
-                    <Dialog open={open} onClose={() => setOpen(false)}>
+                    <Modal  open={open} onClose={() => setOpen(false)} sx={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+                        <div style={{backgroundColor:"white", width:"80vw", padding:"15px 15px"}}>
                         <Formik
                             initialValues={{ postText: "" }}
                             validationSchema={
@@ -521,9 +522,9 @@ export function HomeScreen() {
                                                                 variant="contained"
                                                                 color="primary"
                                                                 sx={{ ...SidebarLogOutButton, marginTop: 0 }}
-                                                                startIcon={<CloudUploadOutlined/>}
+                                                                startIcon={isXxs ? null : <CloudUploadOutlined/>}
                                                                 disabled={!!postImage}
-                                                            >image</Button>
+                                                            > {isXxs ? <CropOriginalIcon/>  : "image"}</Button>
                                                         </label>
                                                         <label htmlFor="post-image-input"
                                                                style={{ height: "30px", borderRadius: "20px", }}>
@@ -533,16 +534,15 @@ export function HomeScreen() {
                                                                 sx={{
                                                                     ...SidebarLogOutButton,
                                                                     marginTop: 0,
-                                                                    width: "100px"
+                                                                    width: "50%"
                                                                 }}
                                                                 fullWidth={true}
                                                                 disabled={isSubmitting}
                                                                 onClick={handleClick}
                                                             >
-                                                                {isSubmitting ? "Posting..." : "Post"}
+                                                                {isXxs ? < PostAddIcon/> : (isSubmitting ? "Posting..." : "Post")}
                                                             </Button>
                                                         </label>
-
                                                     </div>
                                                 </Box>
                                             </div>
@@ -551,7 +551,8 @@ export function HomeScreen() {
                                 </Form>
                             )}
                         </Formik>
-                    </Dialog>
+                        </div>
+                    </Modal>
                     <Fab color="primary" aria-label="add" style={styles.fab} onClick={() => {
                         setOpen(!open);
                     }}>
@@ -657,7 +658,6 @@ export function HomeScreen() {
 
             <div style={PostsWrapper}>
                 <PostsDisplaying userPosts={userPosts} isLoading={isLoading}/>
-
             </div>
         </div>
     );
