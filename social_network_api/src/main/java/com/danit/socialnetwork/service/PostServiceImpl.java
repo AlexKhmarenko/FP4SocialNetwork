@@ -143,6 +143,10 @@ public class PostServiceImpl implements PostService {
         .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
   }
+  @Override
+  public Integer findLatestPostIdByUserId(Integer userId){
+    return postRepository.findLatestPostByUserId(userId).getPostId();
+  }
 
 }
 
