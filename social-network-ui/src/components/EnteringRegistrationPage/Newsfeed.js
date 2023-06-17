@@ -36,7 +36,6 @@ export function Newsfeed() {
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
-    console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
 
     const xxsStyles = {
         GridItem: { item: "7", width: "300px" },
