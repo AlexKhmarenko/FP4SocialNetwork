@@ -436,43 +436,46 @@ export function Layout() {
         }
     }, [dispatch, location.pathname, page, userId]);
 
-  return (
-    <ScrollContext.Provider value={handleParentScroll}>
-      <ThemeProvider theme={theme}>
-      {userToken ? (
-          <Container maxWidth={styles.MaxWidthAdaptive} sx={styles.AdaptiveContainerStyled}>
-              <div style={styles.AdaptiveContentContainer} onScroll={handleParentScroll}>
-                  <SideBar/>
-                  <div style={styles.AdaptiveItemWrapper}>
-                      <div style={styles.AdaptiveItemWrapperContainer}>
-                          <HeaderInformation/>
-                          <div style={styles.AdaptiveOutletContainer}>
-                              <div style={styles.AdaptiveOutletWrapper}>
-                                  <Outlet/>
-                              </div>
-                          </div>
-                      </div>
-              {userBirthdateGoogle ? null : <BirthdateForm />}
-              <UsersSearch />
-              </>
-            }
-            {location.pathname.includes("/messages") &&
-                <>
-                  <div style={ItemWrapperMessage}>
-                    <div style={ItemWrapperContainerMessage}>
-                        <HeaderInformation />
-                        <div style={OutletContainer}>
-                        <div style={OutletWrapperMessage}>
-                            <Outlet />
+    return (
+        <ScrollContext.Provider value={handleParentScroll}>
+            <ThemeProvider theme={theme}>
+                {userToken ? (
+                    <Container maxWidth={styles.MaxWidthAdaptive}  sx={styles.AdaptiveContainerStyled}>
+                        <div style={styles.AdaptiveContentContainer} onScroll={handleParentScroll}>
+                            <SideBar />
+                            {!location.pathname.includes("/messages") &&
+                                <>
+                                    <div style={styles.AdaptiveItemWrapper}>
+                                        <div style={styles.AdaptiveItemWrapperContainer}>
+                                            <HeaderInformation />
+                                            <div style={styles.AdaptiveOutletContainer}>
+                                                <div style={styles.AdaptiveOutletWrapper}>
+                                                    <Outlet />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {userBirthdateGoogle ? null : <BirthdateForm />}
+                                    <UsersSearch />
+                                </>
+                            }
+                            {location.pathname.includes("/messages") &&
+                                <>
+                                    <div style={ItemWrapperMessage}>
+                                        <div style={ItemWrapperContainerMessage}>
+                                            <HeaderInformation />
+                                            <div style={OutletContainer}>
+                                                <div style={OutletWrapperMessage}>
+                                                    <Outlet />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>}
                         </div>
-                        </div>
-                    </div>
-                  </div>
-                </>}
-          </div>
-        </Container>) : (<RegistrationPage />)
-        }
-      </ThemeProvider>
-    </ScrollContext.Provider>
-  );
+                    </Container>) : (<RegistrationPage />)
+                }
+            </ThemeProvider>
+        </ScrollContext.Provider>
+    );
 }
