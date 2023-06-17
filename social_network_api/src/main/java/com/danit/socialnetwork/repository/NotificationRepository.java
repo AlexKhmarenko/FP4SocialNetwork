@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
 
-  List<Notification> findAllByUserId(Integer userId);
+  List<Notification> findAllByFollowerUserId(Integer userId);
+
   List<Notification> findAllByFollowingUserId(Integer userId);
 
-//  Optional<Notification> findAllByUserId(Integer userId);
 }

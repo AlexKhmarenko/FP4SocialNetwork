@@ -9,11 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,11 +27,15 @@ class NotificationServiceImplTest {
   @Test
   void findAllByUserId() {
 
-    Notification notification = new Notification(1,2,"photoLink", "test");
+    Notification notification = new Notification(1,"post",
+        2,3,"Alex",
+        "photoLink", "test");
+    List<Notification> notificationList = new ArrayList<>();
+    notificationList.add(notification);
 
-    when(notificationRepository.findAllByUserId(1)).thenReturn(Optional.of(notification));
-    Optional<Notification> maybeNotification = notificationService.findAllByUserId(1);
-    String notificationText = maybeNotification.get().getNotificationText();
+    when(notificationRepository.findAllByFollowerUserId(1)).thenReturn(notificationList);
+    Notification maybeNotification = notificationService.findAllByFollowerUserId(1).get(0);
+    String notificationText = maybeNotification.getNotificationText();
     Assertions.assertEquals("test",notificationText);
 
 
