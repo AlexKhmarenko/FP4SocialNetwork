@@ -8,6 +8,10 @@ export const ContainerStyled = {
 };
 
 
+export const OutletWrapperMessage = {
+    width: "1200px",
+};
+
 export const ContentContainer = {
     display: "flex",
     flexDirection: "row",
@@ -42,6 +46,22 @@ export const ItemWrapper = {
     position: "relative",
     alignItems: "center",
 };
+
+export const ItemWrapperMessage = {
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "1200px",
+    position: "relative",
+    alignItems: "center",
+};
+
 export const ItemWrapperContainer = {
 
+};
+
+export const ItemWrapperContainerMessage = {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    width: "1200px",
 };

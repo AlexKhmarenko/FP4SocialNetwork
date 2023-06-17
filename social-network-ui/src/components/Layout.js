@@ -3,34 +3,40 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createTheme, ThemeProvider } from "@mui/material";
 
-import { Container, } from "@mui/material";
+import { Container } from "@mui/material";
 
 import { HeaderInformation } from "./NavigationComponents/HeaderInformation";
 import { UsersSearch } from "./NavigationComponents/UsersSearch/UsersSearch";
 import { SideBar } from "./NavigationComponents/SideBar";
 import {
-    ContainerStyled,
-    ContentContainer,
-    ItemWrapper,
-    ItemWrapperContainer,
-    OutletContainer,
-    OutletWrapper
+  ContainerStyled,
+  ContentContainer,
+  ItemWrapper,
+  ItemWrapperMessage,
+  ItemWrapperContainer,
+  ItemWrapperContainerMessage,
+  OutletContainer,
+  OutletWrapper,
+  OutletWrapperMessage,
 } from "./LayoutStyles";
 
 import { RegistrationPage } from "../pages/RegistrationPage";
 import {
-    fetchPostsByUserId,
-    fetchExplorePosts,
-    setPage,
-    fetchData,
+  setUserId,
+  fetchPostsByUserId,
+  fetchExplorePosts,
+  setPage,
+  setUserData,
+  setUserPostsClear,
+  setPageZero,
+  fetchData,
 } from "../store/actions";
-import { BirthdateForm } from "./LoginModal/BirthdateForm";
 import { decodeToken } from "./Posts/decodeToken";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { BirthdateForm } from "./LoginModal/BirthdateForm";
 
-export const ScrollContext = React.createContext(() => {
-});
+export const ScrollContext = React.createContext(() => {});
 
 const theme = createTheme({
     breakpoints: {
@@ -390,14 +396,14 @@ export function Layout() {
         }
     }, []);
 
-    useEffect(() => {
+    useEffect(()=>{
         allPostsLoadedRef.current = false;
         loadingPostsRef.current = false;
-    }, [location.pathname]);
+    }, [location.pathname])
 
-    useEffect(() => {
-        console.log(userId, "userIdFromLayout");
-    }, [userId]);
+    useEffect(()=>{
+        console.log(userId, "userIdFromLayout")
+    },[userId])
 
     // useEffect(() => {
     //     dispatch(fetchData(userId));
@@ -409,18 +415,18 @@ export function Layout() {
             loadingPostsRef.current = true;
             let newPosts;
             const page2 = page + 1;
-            console.log(page);
+            console.log(page)
             if (location.pathname === "/explore") {
                 newPosts = await dispatch(fetchExplorePosts(userId, page2));
-                console.log("newPostsExplore", newPosts);
+                console.log("newPostsExplore",newPosts )
             } else if (location.pathname === "/home") {
-                console.log("fetching posts by user id in layout scroll callback", page);
-                console.log(userId);
+                console.log('fetching posts by user id in layout scroll callback', page);
+                console.log(userId)
                 newPosts = await dispatch(fetchPostsByUserId(userId, page2));
-                console.log("newPostsHome", newPosts);
+                console.log("newPostsHome", newPosts )
             }
             if (newPosts && newPosts.length === 0) {
-                console.log("All posts loaded, stopping further fetches");
+                console.log('All posts loaded, stopping further fetches');
                 allPostsLoadedRef.current = true;
                 loadingPostsRef.current = false;
             } else {
@@ -430,29 +436,43 @@ export function Layout() {
         }
     }, [dispatch, location.pathname, page, userId]);
 
-    return (
-        <ScrollContext.Provider value={handleParentScroll}>
-            <ThemeProvider theme={theme}>
-                {userToken ? (
-                    <Container maxWidth={styles.MaxWidthAdaptive} sx={styles.AdaptiveContainerStyled}>
-                        <div style={styles.AdaptiveContentContainer} onScroll={handleParentScroll}>
-                            <SideBar/>
-                            <div style={styles.AdaptiveItemWrapper}>
-                                <div style={styles.AdaptiveItemWrapperContainer}>
-                                    <HeaderInformation/>
-                                    <div style={styles.AdaptiveOutletContainer}>
-                                        <div style={styles.AdaptiveOutletWrapper}>
-                                            <Outlet/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {userBirthdateGoogle ? null : <BirthdateForm/>}
-                            <UsersSearch/>
+  return (
+    <ScrollContext.Provider value={handleParentScroll}>
+      <ThemeProvider theme={theme}>
+      {userToken ? (
+          <Container maxWidth={styles.MaxWidthAdaptive} sx={styles.AdaptiveContainerStyled}>
+              <div style={styles.AdaptiveContentContainer} onScroll={handleParentScroll}>
+                  <SideBar/>
+                  <div style={styles.AdaptiveItemWrapper}>
+                      <div style={styles.AdaptiveItemWrapperContainer}>
+                          <HeaderInformation/>
+                          <div style={styles.AdaptiveOutletContainer}>
+                              <div style={styles.AdaptiveOutletWrapper}>
+                                  <Outlet/>
+                              </div>
+                          </div>
+                      </div>
+              {userBirthdateGoogle ? null : <BirthdateForm />}
+              <UsersSearch />
+              </>
+            }
+            {location.pathname.includes("/messages") &&
+                <>
+                  <div style={ItemWrapperMessage}>
+                    <div style={ItemWrapperContainerMessage}>
+                        <HeaderInformation />
+                        <div style={OutletContainer}>
+                        <div style={OutletWrapperMessage}>
+                            <Outlet />
                         </div>
-                    </Container>) : (<RegistrationPage/>)
-                }
-            </ThemeProvider>
-        </ScrollContext.Provider>
-    );
-};
+                        </div>
+                    </div>
+                  </div>
+                </>}
+          </div>
+        </Container>) : (<RegistrationPage />)
+        }
+      </ThemeProvider>
+    </ScrollContext.Provider>
+  );
+}

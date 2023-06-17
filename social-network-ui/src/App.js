@@ -10,6 +10,8 @@ import { Explore } from "./pages/Explore";
 import {BrowsePage} from "./pages/BrowsePage";
 import { Notifications } from "./pages/Notifications";
 import {PostPage} from "./pages/PostPage"
+import { Message } from "./pages/Message";
+import {SearchPage} from "./pages/SearchPage";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -20,9 +22,11 @@ const router = createBrowserRouter(
             <Route path="/profile" element={<ProfilePage/>}/>
             <Route path="/subscribe" element={<SubscriptionPage/>}/>
             <Route path="/view" element={<BrowsePage/>}/>
+            <Route path="/messages" element={<Message/>}/>
             <Route path="/explore" element={<Explore/>}/>
             <Route path="/notifications" element={<Notifications/>}/>
             <Route path="/post" element={<PostPage/>}/>
+            <Route path="/search" element={<SearchPage/>}/>
         </Route>
     )
 );
