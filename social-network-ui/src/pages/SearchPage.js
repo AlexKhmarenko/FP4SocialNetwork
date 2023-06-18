@@ -1,10 +1,11 @@
 import React from 'react';
 import {UsersSearch} from "../components/NavigationComponents/UsersSearch/UsersSearch";
-import { InputSearch } from "../components/NavigationComponents/UsersSearch/InputSearch";
+import {Search} from "../components/NavigationComponents/UsersSearch/Search/Search";
 
 export function SearchPage () {
     return (
-        <InputSearch/>
+        <div style={{width: "580px", paddingRight: "40px"}}>
+            <Search/>
+        </div>
     )
 }
-
