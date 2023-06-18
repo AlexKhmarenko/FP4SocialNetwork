@@ -3,8 +3,6 @@ package com.danit.socialnetwork.service;
 import com.danit.socialnetwork.dto.CodeCheckRequest;
 import com.danit.socialnetwork.model.PasswordChangeRequests;
 import com.danit.socialnetwork.repository.PasswordChangeRequestsRepo;
-import com.danit.socialnetwork.repository.PostLikeRepository;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -51,6 +49,7 @@ class PasswordChangerServiceImplTest {
 
     ResponseEntity<Map<String, String>> mapResponseEntity = changerService.codeCheck(codeCheckRequest);
 
+    assertEquals("{message=code accessed, email=test@test.com}", mapResponseEntity.getBody().toString());
   }
 
   @Test

@@ -37,8 +37,6 @@ class NotificationServiceImplTest {
     Notification maybeNotification = notificationService.findAllByFollowerUserId(1).get(0);
     String notificationText = maybeNotification.getNotificationText();
     Assertions.assertEquals("test", notificationText);
-
-
   }
 
   @Test
