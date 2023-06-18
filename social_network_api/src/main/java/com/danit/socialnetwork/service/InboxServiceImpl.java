@@ -28,7 +28,7 @@ public class InboxServiceImpl implements InboxService {
 
   private void sendNewMessageToRecipientInbox(InboxDtoResponse newMessage) {
     messagingTemplate.convertAndSend("/inbox/" + newMessage.getUserId(), newMessage);
-    System.out.println(String.format("Send new message to the recipient inbox: %s, %s, %s",
+    log.info(String.format("Send new message to the recipient inbox: %s, %s, %s",
         newMessage.getMessage(), newMessage.getUsername(), newMessage.getCreatedAt()));
   }
 

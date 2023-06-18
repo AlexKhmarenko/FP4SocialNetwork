@@ -41,7 +41,7 @@ public class MessageServiceImpl implements MessageService {
 
   private void sendNewMessageToRecipientGetMessages(MessageDtoResponse newMessage) {
     messagingTemplate.convertAndSend("/user/getMessages/" + newMessage.getUserId(), newMessage);
-    System.out.println(String.format("Send new message to the recipient inbox participants: %s, %s",
+    log.info(String.format("Send new message to the recipient inbox participants: %s, %s",
         newMessage.getMessage(), newMessage.getCreatedAt()));
   }
 
