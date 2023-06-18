@@ -8,7 +8,8 @@ import { TextingMessage } from "../components/Messages/FullTexting/TextingMessag
 import {MessageSearch} from "../components/Messages/Inbox/MessageSearch";
 import { leftBlockInboxAndSearch, inboxContainerStyle,
   textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
-  textingContainerWithScroll, textingConatinerScroll } from "./pagesStyles/MessageStyles";
+  textingContainerWithScroll, textingConatinerScrollFromBottom,
+  textingConatinerScrollFromTop } from "./pagesStyles/MessageStyles";
 import { setMessages } from "../store/actions";
 
 export function Message() {
@@ -94,20 +95,22 @@ export function Message() {
         </div>
       </div>
       <div style={textingContainerWithInputStyle}>
-        <div style={textingConatinerScroll} ref={textingContainerRef}>
+        
           {selectedMessage === null ? (
-            <div>No texting</div>
+            <div style={textingConatinerScrollFromTop} ref={textingContainerRef}>
+              <div>No texting</div>
+            </div>
           ) : (
-            <>
+            <div style={textingConatinerScrollFromBottom} ref={textingContainerRef}>
               <TextingMessage
                 sender={selectedMessage.inboxUid}
                 receiver={selectedMessage.userId}
                 selectedMessage={selectedMessage}
                 key={selectedMessage.inboxUid}
               />
-            </>
+            </div>
           )}
-        </div>
+        
         <div style={textingContainerWithScroll}>
           {selectedMessage && (
             <TextField
