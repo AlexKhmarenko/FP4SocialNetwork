@@ -50,6 +50,8 @@ class MessageServiceImplTest {
   MessageSearchMapper messageSearchMapper;
   @Mock
   SimpMessagingTemplate messagingTemplate;
+  @Mock
+  Pageable pageable;
 
   @Test
   void saveMessage() {
@@ -141,7 +143,7 @@ class MessageServiceImplTest {
     testMessageDto4.setMessage("Test2!");
 
     Integer page = 0;
-    int pageSize = 6;
+    int pageSize = 16;
     Pageable pageable = PageRequest.of(page, pageSize);
     Page<Message> testMessagePage = new PageImpl<>(testMessages);
 
