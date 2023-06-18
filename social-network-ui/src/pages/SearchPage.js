@@ -1,5 +1,4 @@
 import React from 'react';
-import {UsersSearch} from "../components/NavigationComponents/UsersSearch/UsersSearch";
 import {Search} from "../components/NavigationComponents/UsersSearch/Search/Search";
 
 export function SearchPage () {
