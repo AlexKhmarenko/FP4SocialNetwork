@@ -64,5 +64,4 @@ class PasswordChangerServiceImplTest {
     assertEquals("test@test.com", request.getEmail());
 
   }
-
 }
