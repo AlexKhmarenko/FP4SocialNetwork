@@ -9,6 +9,7 @@ import com.danit.socialnetwork.service.NotificationService;
 import com.danit.socialnetwork.service.PostService;
 import com.danit.socialnetwork.service.UserFollowService;
 import com.danit.socialnetwork.service.UserService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import java.util.Map;
 @Log4j2
 @Controller
 @RequiredArgsConstructor
+@Data
 public class WebSocketController {
   private final NotificationService notificationService;
   private final UserFollowService userFollowService;

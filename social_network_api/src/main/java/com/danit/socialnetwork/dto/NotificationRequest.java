@@ -1,9 +1,10 @@
 package com.danit.socialnetwork.dto;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
-
+@RequiredArgsConstructor
 @Data
 public class NotificationRequest {
   LocalDateTime dateTime;
