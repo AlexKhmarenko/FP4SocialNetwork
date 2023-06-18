@@ -66,15 +66,15 @@ export function UsersSearch() {
     };
 
     const lgStyles = {
-        AdaptiveUserSearchAppBar:{...UserSearchAppBar},
-        AdaptiveUserSearchWrapper:{...UserSearchWrapper},
-        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper}
+        AdaptiveUserSearchAppBar:{...UserSearchAppBar, width:"260px"},
+        AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"260px"},
+        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"260px"}
     };
 
     const xlStyles = {
-        AdaptiveUserSearchAppBar:{...UserSearchAppBar},
-        AdaptiveUserSearchWrapper:{...UserSearchWrapper},
-        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper}
+        AdaptiveUserSearchAppBar:{...UserSearchAppBar, width:"260px"},
+        AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"260px"},
+        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"260px"}
     };
 
     let styles;

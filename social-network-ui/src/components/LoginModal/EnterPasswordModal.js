@@ -116,6 +116,12 @@ export function EnterPasswordModal() {
             width:"100%",
             maxWidth:"400px"
         },
+        AdaptiveStyledBlackButton:{
+            ...StyledBlackButton,
+        },
+        AdaptiveStyledWhiteButton:{
+            ...StyledWhiteButton,
+        }
     };
 
     const xlStyles = {
