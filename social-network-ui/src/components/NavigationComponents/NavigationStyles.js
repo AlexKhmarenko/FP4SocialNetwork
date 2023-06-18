@@ -135,7 +135,7 @@ export const UserSearchAppBar = {
 };
 
 export const UserSearchTextField = {
-    width: "300px",
+    width: "100%",
     height: "30px",
     marginTop: "10px",
     borderRadius: "10px",

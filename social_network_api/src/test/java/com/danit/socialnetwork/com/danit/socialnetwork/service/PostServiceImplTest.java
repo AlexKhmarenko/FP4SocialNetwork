@@ -59,11 +59,11 @@ public class PostServiceImplTest {
 
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
         2, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
-        false, new BigInteger(String.valueOf(1))};
+        new BigInteger(String.valueOf(1)), false};
 
     Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
         3, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
-        false, new BigInteger(String.valueOf(4))};
+        new BigInteger(String.valueOf(4)), false};
 
     int pageSize = 12;
     int offset = 0 * pageSize;
@@ -88,11 +88,11 @@ public class PostServiceImplTest {
 
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
         2, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
-        false, new BigInteger(String.valueOf(1))};
+        new BigInteger(String.valueOf(1)), false};
 
     Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
         3, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
-        false, new BigInteger(String.valueOf(4))};
+        new BigInteger(String.valueOf(4)), false};
 
     int pageSize = 12;
     int offset = 0 * pageSize;
@@ -284,11 +284,11 @@ public class PostServiceImplTest {
 
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
         2, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
-        false, new BigInteger(String.valueOf(1))};
+        new BigInteger(String.valueOf(1)), false};
 
     Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
         3, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
-        false, new BigInteger(String.valueOf(4))};
+        new BigInteger(String.valueOf(4)), false};
 
 
     List<Object[]> testList = Arrays.asList(objects1, objects2);
@@ -304,5 +304,17 @@ public class PostServiceImplTest {
     Assertions.assertEquals(result.get(0).getUsername(), objects1[5]);
     Assertions.assertEquals(result.get(1).getUsername(), objects2[5]);
     Assertions.assertEquals(2, result.toArray().length);
+  }
+
+  @Test
+  void getPostByPostId() {
+    Integer postId = 2;
+    Post post = new Post();
+    post.setPostId(2);
+
+    when (postRepository.findById(postId)).thenReturn(Optional.of(post));
+    Post result = postRepository.findById(postId).get();
+    Assertions.assertEquals(postId, result.getPostId());
+
   }
 }

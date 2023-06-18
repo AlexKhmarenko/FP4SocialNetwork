@@ -37,7 +37,7 @@ export function SideBar() {
         SidebarBox: {
             "& > :not(style)": { m: 1 },
             width: "60px",
-            display: "flex",
+            display:"none",
             textAlign: "start",
             alignContent: "start",
             flexDirection: "column",
@@ -55,13 +55,15 @@ export function SideBar() {
             width: "20px",
             marginRight: "0px",
         }
+        ,
+        AdaptiveDivWrapper: {display:"none"}
     };
 
     const xsStyles = {
         SidebarBox: {
             "& > :not(style)": { m: 1 },
             width: "60px",
-            display: "flex",
+            display:"none",
             textAlign: "start",
             alignContent: "start",
             flexDirection: "column",
@@ -79,6 +81,8 @@ export function SideBar() {
             width: "20px",
             marginRight: "0px",
         }
+        ,
+        AdaptiveDivWrapper: {display:"none"}
     };
 
     const smStyles = {
@@ -103,6 +107,12 @@ export function SideBar() {
             width: "20px",
             marginRight: "0px",
         }
+        ,
+        AdaptiveDivWrapper: {height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignContent: "start"}
 
     };
 
@@ -128,6 +138,12 @@ export function SideBar() {
             width: "15px",
             marginRight: "0"
         }
+        ,
+        AdaptiveDivWrapper: {height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignContent: "start"}
     };
 
     const lgStyles = {
@@ -161,6 +177,12 @@ export function SideBar() {
             width: "20px",
             marginRight: "10px",
         }
+        ,
+        AdaptiveDivWrapper: {height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignContent: "start"}
     };
 
     const xlStyles = {
@@ -193,7 +215,12 @@ export function SideBar() {
             height: "20px",
             width: "20px",
             marginRight: "10px",
-        }
+        },
+        AdaptiveDivWrapper: {height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "start",
+        alignContent: "start"}
     };
 
     let styles;
@@ -220,13 +247,7 @@ export function SideBar() {
 
     return (
         <Box position="fixed" sx={styles.SidebarBox}>
-            <div style={{
-                height: "100vh",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "start",
-                alignContent: "start"
-            }}>
+            <div style={styles.AdaptiveDivWrapper}>
                 <div
                     style={{ height: "60%", display: "flex", justifyContent: "space-around", flexDirection: "column" }}>
                     <Link to="/home" variant="contained">
@@ -265,6 +286,20 @@ export function SideBar() {
                             </Typography>
                         </Fab>
                     </Link>
+                    {!isLg && !isXl  ? <Link to="/search" variant="contained" style={{ textDecoration: "none" }}>
+                        <Fab variant="extended" sx={pathname === "/search" ? SidebarFabActive : SidebarFab}>
+                            <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
+                                     aria-hidden="true"
+                                     className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
+                                <g>
+                                    <path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"/>
+                                </g>
+                            </SvgIcon>
+                            <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
+                                Search
+                            </Typography>
+                        </Fab>
+                    </Link> : null}
                     <Link to="/notifications" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/notifications" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"

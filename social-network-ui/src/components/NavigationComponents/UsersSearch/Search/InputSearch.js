@@ -1,12 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/material";
-import {UserSearchTextField} from "../NavigationStyles";
+import {UserSearchTextField} from "../../NavigationStyles";
 import {useDispatch, useSelector} from "react-redux";
-import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../store/actions";
+import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../../store/actions";
 import {useNavigate} from "react-router-dom";
-import {apiUrl} from "../../../apiConfig";
+import {apiUrl} from "../../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { ElementLi, PaperStyles, Wrapper } from "./popularPeopleSidebarStyles";
 import { useTheme } from "@mui/material/styles";
 
 export const InputSearch = ({ ...props }) => {
@@ -25,27 +24,27 @@ export const InputSearch = ({ ...props }) => {
 
 
     const xxsStyles = {
-          AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+          AdaptiveUserSearchTextField:{...UserSearchTextField, width:"92vw"}
     };
 
     const xsStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"92vw"}
     };
 
     const smStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"45%",marginLeft:"80px"}
     };
 
     const mdStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"58%"}
     };
 
     const lgStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
     };
 
     const xlStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
     };
 
     let styles;
@@ -62,6 +61,8 @@ export const InputSearch = ({ ...props }) => {
     } else {
         styles = xxsStyles;
     }
+
+    const [inputValue, setInputValue] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -83,12 +84,28 @@ export const InputSearch = ({ ...props }) => {
                 autoComplete
                 includeInputInList
                 filterSelectedOptions
-                noOptionsText="User not found"
+                inputValue={inputValue}
+                onInputChange={(event, value) => {
+                    setInputValue(value);
+                }}
+                noOptionsText={
+                    inputValue === ''
+                        ? "Try searching for people"
+                        : "User not found"
+                }
                 renderInput={(params) => (
                     <TextField{...props} sx={styles.AdaptiveUserSearchTextField} {...params} label="Search in Capitweet"
                               onBlur={(ev) => {
                                   ev.preventDefault()
-                                  dispatch(DeleteUsersSuccess())
+                                  inputValue === ''
+                                      ? dispatch(DeleteUsersSuccess())
+                                      : false
+                              }}
+                              onFocus={(ev) => {
+                                  ev.preventDefault()
+                                  inputValue === ''
+                                      ? dispatch(DeleteUsersSuccess())
+                                      : false
                               }}
                     />
                 )}
