@@ -126,9 +126,6 @@ class UserFollowServiceImplTest {
         DbUser user2 = new DbUser();
         user2.setUserId(2);
 
-        userRepository.save(user1);
-        userRepository.save(user2);
-
         UserFollow userFollow = new UserFollow();
         userFollow.setUserFollowerId(user1);
         userFollow.setUserFollowingId(user2);
