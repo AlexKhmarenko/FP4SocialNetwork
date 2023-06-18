@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Box, Button, Fab, SvgIcon, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Badge from '@mui/material/Badge';
 
 import {
     SidebarBox,
@@ -17,12 +18,15 @@ import {
 } from "./NavigationStyles";
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
 import { setUserToken } from "../../store/actions";
+import { apiUrl } from "../../apiConfig";
 
 export function SideBar() {
     const dispatch = useDispatch();
     const location = useLocation();
     const { pathname } = location;
     const theme = useTheme();
+    const userId = useSelector(state => state.userData.userData.userId);
+    const[notificationCount, setNotificationCount]=useState(0)
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -32,6 +36,21 @@ export function SideBar() {
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
     console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
+
+    useEffect(()=>{
+        async function getNotification (){
+            let notificationInformation = await fetch(`${apiUrl}/api/unread_notifications`,{
+                method: "POST",
+                body: JSON.stringify({
+                    userId: userId,
+                }),
+                headers: { "Content-Type": "application/json" }
+            })
+            let notificationData = await notificationInformation.json()
+            console.log(notificationData)
+        }
+        getNotification()
+    }, [])
 
     const xxsStyles = {
         SidebarBox: {
@@ -302,19 +321,20 @@ export function SideBar() {
                     </Link> : null}
                     <Link to="/notifications" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/notifications" ? SidebarFabActive : SidebarFab}>
-                            <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
-                                     aria-hidden="true"
-                                     className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
-                                <g>
-                                    <path
-                                        d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.864 16H5.134z"/>
-                                </g>
-                            </SvgIcon>
+                            <Badge badgeContent={notificationCount} color="error">
+                                <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
+                                         aria-hidden="true"
+                                         className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
+                                    <g>
+                                        <path
+                                            d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.864 16H5.134z"/>
+                                    </g>
+                                </SvgIcon>
+                            </Badge>
                             <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                                 Notifications
                             </Typography>
                         </Fab>
-
                     </Link>
                     <Link to="/messages" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/messages" ? SidebarFabActive : SidebarFab}>

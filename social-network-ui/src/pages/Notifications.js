@@ -21,6 +21,25 @@ export function Notifications() {
     const [notifications, setNotifications] = useState([]);
     const userId = useSelector(state => state.userData.userData.userId);
 
+    useEffect(()=>{
+        console.log(notifications)
+    },[notifications])
+
+    useEffect(()=>{
+       async function getNotification (){
+            let notificationInformation = await fetch(`${apiUrl}/api/notifications`,{
+                method: "POST",
+                body: JSON.stringify({
+                    userId: userId,
+                }),
+                headers: { "Content-Type": "application/json" }
+            })
+            let notificationData= await notificationInformation.json()
+            setNotifications(notificationData)
+        }
+        getNotification()
+    }, [])
+
     useEffect(() => {
         const onConnected = () => {
             stompClient.subscribe("/user/" + userId + "/notifications", onPrivateMessage);
@@ -65,7 +84,7 @@ export function Notifications() {
     return (
         <List sx={{ width: "600px" }}>
             {notifications.map((notification) => (
-                <ListItem key={notification.userId} sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}>
+                <ListItem key={notification.eventId} sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}>
                     <ListItemAvatar>
                         <Avatar alt={notification.userName} src={notification.userPhoto}/>
                     </ListItemAvatar>
