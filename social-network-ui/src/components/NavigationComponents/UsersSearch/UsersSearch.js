@@ -56,7 +56,10 @@ export function UsersSearch() {
     };
 
     const mdStyles = {
-        AdaptiveUserSearchAppBar:{...UserSearchAppBar, display:"none", flexBasis: "100px"},
+        AdaptiveUserSearchAppBar:{...UserSearchAppBar,
+            display:"none",
+            flexBasis: "100px"
+        },
         AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"0px", zIndex: "0.1",},
         AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"100px"}
     };

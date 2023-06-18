@@ -276,14 +276,13 @@ export function HomeScreen() {
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveHomeScreenWrapper: {
-            width: "100%",
+            width: "92%",
             display: "flex",
-            alignItems: "flex-start",
             flexDirection: "column",
-            justifyContent: "start",
+            justifyContent: "center",
+            alignItems: "center",
             padding: "0 30px",
             marginTop: "20px",
-            paddingBottom: "30px",
         }
         ,
         AdaptiveSendingPostButtonsContainer: {
