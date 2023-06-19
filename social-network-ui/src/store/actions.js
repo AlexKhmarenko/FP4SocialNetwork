@@ -214,7 +214,6 @@ export const checkEmailFetch = (values, setErrors) => {
 
 export const sendComments = (values, userId, postId) => {
     return async (dispatch) => {
-        console.log("hi");
         try {
             let userCommentResponse = await fetch(`${apiUrl}/api/comments`, {
                 method: "POST",
@@ -228,7 +227,6 @@ export const sendComments = (values, userId, postId) => {
                 }
             });
             let userCommentData = await userCommentResponse.json();
-            console.log(userCommentData);
             dispatch(setCommentFromUser(userCommentData));
         } catch (error) {
             console.error("Ошибка:", error);
@@ -294,7 +292,6 @@ export const sendRepostFetch = (postId, userId, isReposted) => {
                         "Content-Type": "application/json"
                     },
                 });
-                console.log("добавился пост")
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
             }
@@ -306,7 +303,6 @@ export const sendRepostFetch = (postId, userId, isReposted) => {
                         "Content-Type": "application/json"
                     },
                 });
-                console.log("удалился пост")
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
             }
@@ -352,7 +348,6 @@ export const deleteLikeFetch = (postId, userId) => {
 export const fetchData = (userId) => {
     return async (dispatch) => {
         try {
-            console.log(userId)
             const response = await fetch(`${apiUrl}/api/profile/${userId}`);
             const userData = await response.json();
             dispatch(setUserData(userData));
@@ -366,7 +361,6 @@ export const fetchData = (userId) => {
 
 export const checkPasswordFetch = (values, userDataState, setErrors) => {
     return async (dispatch) => {
-        console.log("hi");
         try {
             const userPassword = await fetch(`${apiUrl}/login`, {
                 method: "POST",
@@ -497,7 +491,6 @@ export const fetchExplorePosts = (userId, page) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/posts/explorer?userId=${userId}&page=${page}`);
         let posts = await response.json();
-        console.log("postsExploreAction", posts )
         dispatch(addExplorePosts(posts));
         return posts;
     };
