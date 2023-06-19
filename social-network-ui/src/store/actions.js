@@ -450,6 +450,7 @@ export const fetchPostsByPage = (page) => {
 };
 
 export const fetchTextsByPage = (inboxUid, userId, page) => {
+    console.log(inboxUid, userId, page);
     return async (dispatch) => {
         try {
             const response = await fetch(`${apiUrl}/api/getMessages`, {
@@ -457,15 +458,18 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                 body: JSON.stringify({
                     inboxUid: inboxUid,
                     userId: userId,
-                    page: page,
+                    page: page.toString(),
                 }),
                 headers: { "Content-Type": "application/json" }
             });
-
-            if (response.ok) {
-                const data = await response.json();
-                dispatch(setMessages(data));
+            if (!response.ok) {
+                throw new Error("Failed to fetch Texts");
             }
+            // if (response.ok) {
+                const data = await response.json();
+                console.log(data.content);
+                dispatch(setMessages(data));
+            // }
 
         } catch (error) {
             console.error("An error occurred:", error);

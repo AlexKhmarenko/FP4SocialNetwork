@@ -10,7 +10,7 @@ import { leftBlockInboxAndSearch, inboxContainerStyle,
   textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
   textingContainerWithScroll, textingConatinerScrollFromBottom,
   textingConatinerScrollFromTop } from "./pagesStyles/MessageStyles";
-import { setMessages, setPageForMessage } from "../store/actions";
+import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import PropTypes from 'prop-types';
 import { fetchTextsByPage } from "../store/actions";
 
@@ -32,6 +32,7 @@ function LoadAllMessages({ userId, handleSelectMessage }) {
         const date = new Date(dateString);
         const options = { month: 'long', day: 'numeric', year: 'numeric' };
         const formattedDate = date.toLocaleDateString('en-US', options);
+        console.log(item)
         return (
           <InboxMessage
             key={item.userId}
@@ -43,7 +44,9 @@ function LoadAllMessages({ userId, handleSelectMessage }) {
             handleClick={(event) => {
               event.preventDefault();
               handleSelectMessage(item);
-              dispatch(fetchTextsByPage(item.inboxUid, userId, page))
+              dispatch(setPageZeroForMessaging());
+              console.log(item.inboxUid);
+              dispatch(fetchTextsByPage(item.userId, userId, page))
             }
             }
           />
@@ -111,7 +114,7 @@ export function Message() {
             if (newTexts.length > 0) {
                 dispatch(setPageForMessage());
                 setTexts([...texts, ...newTexts]);
-                dispatch(fetchTextsByPage(selectedMessage.inboxUid, useId, page));
+                dispatch(fetchTextsByPage(selectedMessage.inboxUid, userId, page, dispatch));
             } else {
                 setAllTextsLoaded(true);
             }
