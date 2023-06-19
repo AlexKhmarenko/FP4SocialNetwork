@@ -49,10 +49,8 @@ export function ToggleButton ({width, height, searchId}) {
                 setIsLoading(true)
                 const users = userIsFollow.filter(el => searchId === el)
                 if (users.length > 0) {
-                            console.log("true")
                             setIsFollow(true)
                         } else {
-                            console.log("false")
                             setIsFollow(false)
                         }
 

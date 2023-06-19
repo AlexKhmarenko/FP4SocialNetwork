@@ -200,7 +200,6 @@ export const checkEmailFetch = (values, setErrors) => {
 
 export const sendComments = (values, userId, postId) => {
     return async (dispatch) => {
-        console.log("hi");
         try {
             let userCommentResponse = await fetch(`${apiUrl}/api/comments`, {
                 method: "POST",
@@ -214,7 +213,6 @@ export const sendComments = (values, userId, postId) => {
                 }
             });
             let userCommentData = await userCommentResponse.json();
-            console.log(userCommentData);
             dispatch(setCommentFromUser(userCommentData));
         } catch (error) {
             console.error("Ошибка:", error);
@@ -280,7 +278,6 @@ export const sendRepostFetch = (postId, userId, isReposted) => {
                         "Content-Type": "application/json"
                     },
                 });
-                console.log("добавился пост")
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
             }
@@ -292,7 +289,6 @@ export const sendRepostFetch = (postId, userId, isReposted) => {
                         "Content-Type": "application/json"
                     },
                 });
-                console.log("удалился пост")
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
             }
@@ -351,7 +347,6 @@ export const fetchData = (userId) => {
 
 export const checkPasswordFetch = (values, userDataState, setErrors) => {
     return async (dispatch) => {
-        console.log("hi");
         try {
             const userPassword = await fetch(`${apiUrl}/login`, {
                 method: "POST",
@@ -394,7 +389,6 @@ export const PopularPeopleFetch = (setIsLoading, setMostPopularPeople) => {
             setIsLoading(true);
             const response = await fetch(`${apiUrl}/api/users/popular?page=0`);
             const popularPeople = await response.json();
-            console.log(popularPeople)
             setMostPopularPeople(popularPeople);
         } catch (error) {
             console.error(error);
@@ -452,7 +446,6 @@ export const fetchExplorePosts = (userId, page) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/posts/explorer?userId=${userId}&page=${page}`);
         let posts = await response.json();
-        console.log("postsExploreAction", posts )
         dispatch(addExplorePosts(posts));
         return posts;
     };
