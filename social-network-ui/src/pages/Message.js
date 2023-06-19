@@ -114,7 +114,7 @@ export function Message() {
             if (newTexts.length > 0) {
                 dispatch(setPageForMessage());
                 setTexts([...texts, ...newTexts]);
-                dispatch(fetchTextsByPage(selectedMessage.inboxUid, userId, page, dispatch));
+                dispatch(fetchTextsByPage(selectedMessage.inboxUid, userId, 1));
             } else {
                 setAllTextsLoaded(true);
             }
@@ -140,9 +140,9 @@ export function Message() {
               <div>No texting</div>
             </div>
           ) : (
-            <div style={textingConatinerScrollFromBottom} ref={textingContainerRef}>
+            <div onScroll={handleScroll} style={textingConatinerScrollFromBottom} ref={textingContainerRef}>
               <TextingMessage
-                onScroll={handleScroll}
+                
                 sender={selectedMessage.inboxUid}
                 receiver={selectedMessage.userId}
                 selectedMessage={messages}

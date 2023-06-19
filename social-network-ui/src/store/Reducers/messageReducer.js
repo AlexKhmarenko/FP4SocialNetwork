@@ -7,7 +7,7 @@ export const messageReducer = (state = initialState, action) => {
         case "SET_MESSAGES":
             return {
                 ...state,
-                messages: [...state.messages, action.payload],
+                messages: [...state.messages, ...action.payload],
             };
         case "CLEAR_MESSAGES":
             return {

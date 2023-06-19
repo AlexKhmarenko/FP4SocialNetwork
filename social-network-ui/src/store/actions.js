@@ -453,23 +453,38 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
     console.log(inboxUid, userId, page);
     return async (dispatch) => {
         try {
-            const response = await fetch(`${apiUrl}/api/getMessages`, {
-                method: "POST",
-                body: JSON.stringify({
-                    inboxUid: inboxUid,
-                    userId: userId,
-                    page: page.toString(),
-                }),
-                headers: { "Content-Type": "application/json" }
-            });
-            if (!response.ok) {
-                throw new Error("Failed to fetch Texts");
-            }
-            // if (response.ok) {
-                const data = await response.json();
-                console.log(data.content);
-                dispatch(setMessages(data));
+            // const response = await fetch(`${apiUrl}/api/getMessages`, {
+            //     method: "POST",
+            //     body: JSON.stringify({
+            //         inboxUid: inboxUid,
+            //         userId: userId,
+            //         page: page.toString(),
+            //     }),
+            //     headers: { "Content-Type": "application/json" }
+            // });
+            // if (!response.ok) {
+            //     throw new Error("Failed to fetch Texts");
             // }
+            // // if (response.ok) {
+            //     const data = await response.json();
+            //     console.log(data.content);
+            //     dispatch(setMessages(data));
+            // // }
+            async function getData(){
+                const response = await fetch(`${apiUrl}/api/getMessages`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        inboxUid: inboxUid,
+                        userId: userId,
+                        page: page,
+                    }),
+                    headers: { "Content-Type": "application/json" }
+                });
+               const  response2 = await response.json()
+                console.log(response2)
+                dispatch(setMessages(response2));
+            }
+            getData();
 
         } catch (error) {
             console.error("An error occurred:", error);
