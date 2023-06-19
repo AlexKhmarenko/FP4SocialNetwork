@@ -11,7 +11,13 @@ export function TextingMessage({ sender, receiver, selectedMessage }) {
   const formattedMessages = selectedMessage.map((item) => {
     const dateString = item.createdAt;
     const date = new Date(dateString);
-    const options = { month: 'long', day: 'numeric', year: 'numeric' };
+    const options = {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric'
+    };
     const formattedDate = date.toLocaleDateString('en-US', options);
 
     if (parseInt(item.userId) === parseInt(userId)) {

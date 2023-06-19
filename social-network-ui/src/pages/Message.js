@@ -56,16 +56,24 @@ function LoadAllMessages({ userId, handleSelectMessage }) {
   const fetchMessages = async () => {
       const response1 = await fetch(`${apiUrl}/api/inbox/${userId}`);
     const userData = await response1.json();
-
+    
     if (userData[0]) {
       const formattedMessages = userData.map((item) => {
+        console.log(item);
         const dateString = item.createdAt;
         const date = new Date(dateString);
-        const options = { month: 'long', day: 'numeric', year: 'numeric' };
+        const options = {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric'
+        };
         const formattedDate = date.toLocaleDateString('en-US', options);
         return (
           <InboxMessage
             key={item.userId}
+            image={item.profileImageUrl}
             senderName={item.name}
             sender={item.inboxUid}
             receiver={item.userId}
@@ -116,8 +124,8 @@ export function Message() {
   const [isFetchingTexts, setIsFetchingTexts] = useState(false);
   const [allTextsLoaded, setAllTextsLoaded] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const loadingPostsRef = useRef(false);
-  const allPostsLoadedRef = useRef(false);
+  // const loadingPostsRef = useRef(false);
+  // const allPostsLoadedRef = useRef(false);
 
   const textingContainerRef = useRef(null);
 
@@ -187,6 +195,7 @@ export function Message() {
           {selectedMessage && (
             <TextField
               id="outlined-basic"
+              type="search"
               variant="outlined"
               placeholder="Input message"
               size="small"
@@ -196,7 +205,6 @@ export function Message() {
                 setInputValue(event.target.value.toString());
               }}
               InputProps={{
-                autoComplete: "off",
                 endAdornment: (
                   <SendIcon
                     style = {{ cursor: "pointer", }}
