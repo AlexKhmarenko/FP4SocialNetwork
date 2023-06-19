@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { StyledBlackButton } from "../../LoginModal/loginModalStyles";
 import React, { useEffect, useState } from "react";
 import { PopularPeopleFetch, setSearchId, userFollowing } from "../../../store/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import {
     PaperStyles,
@@ -29,6 +29,7 @@ export function PopularPeopleSidebar() {
     const idUser = useSelector(state => state.userData.userData.userId);
     const [mostPopularPeople, setMostPopularPeople] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const ArrayUsersWhichYouFollow = useSelector(state => state.userData.userFollowing.following, shallowEqual)
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -107,19 +108,6 @@ export function PopularPeopleSidebar() {
         styles = xxsStyles;
     }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            dispatch(PopularPeopleFetch(setIsLoading, setMostPopularPeople));
-            userFollowingData()
-        };
-        fetchData();
-    }, []);
-
-    const toAnotherUserPage = (userIdWhoSendPost) => {
-        dispatch(setSearchId(String(userIdWhoSendPost)));
-        navigate("/view");
-    };
-
     const userFollowingData = async () => {
         try {
             // setIsLoading(true);
@@ -133,6 +121,23 @@ export function PopularPeopleSidebar() {
             // setIsLoading(false);
         }
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            dispatch(PopularPeopleFetch(setIsLoading, setMostPopularPeople));
+            userFollowingData()
+        };
+        if(ArrayUsersWhichYouFollow){
+            fetchData();
+        }
+    }, []);
+
+    const toAnotherUserPage = (userIdWhoSendPost) => {
+        dispatch(setSearchId(String(userIdWhoSendPost)));
+        navigate("/view");
+    };
+
+
 
     return (
         isLoading ? <CircularProgress sx={{ marginTop: "20%", alignSelf: "center" }}/> :

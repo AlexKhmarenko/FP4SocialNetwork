@@ -326,7 +326,6 @@ export const deleteLikeFetch = (postId, userId) => {
 export const fetchData = (userId) => {
     return async (dispatch) => {
         try {
-            console.log(userId)
             const response = await fetch(`${apiUrl}/api/profile/${userId}`);
             const userData = await response.json();
             dispatch(setUserData(userData));
@@ -383,6 +382,7 @@ export const PopularPeopleFetch = (setIsLoading, setMostPopularPeople) => {
             setIsLoading(true);
             const response = await fetch(`${apiUrl}/api/users/popular?page=0`);
             const popularPeople = await response.json();
+            console.log(popularPeople)
             setMostPopularPeople(popularPeople);
         } catch (error) {
             console.error(error);

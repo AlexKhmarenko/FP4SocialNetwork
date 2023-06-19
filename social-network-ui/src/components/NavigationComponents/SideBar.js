@@ -48,6 +48,7 @@ export function SideBar() {
             })
             let notificationData = await notificationInformation.json()
             console.log(notificationData)
+            setNotificationCount(1)
         }
         getNotification()
     }, [])
