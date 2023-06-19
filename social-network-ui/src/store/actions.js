@@ -40,6 +40,10 @@ export const setPage = (pageNumber) => ({
     payload: pageNumber,
 });
 
+export const setPageForMessage = () => ({
+    type: 'SET_PAGE_FOR_MESSAGING'
+});
+
 export const setLike = (like) => {
     return {
         type: "SET_LIKE",
@@ -47,12 +51,6 @@ export const setLike = (like) => {
     };
 };
 
-export const setMessages = (messages) => {
-    return {
-        type: "SET_ITEM",
-        payload: messages,
-    };
-};
 
 export const setComments = (comments) => {
     return {
@@ -166,6 +164,16 @@ export const setUserPostToPostsArr = (post) => ({
 export const setPosts = (posts) => ({
     type: SET_POSTS,
     payload: posts,
+});
+
+export const setMessages = (texts) => ({
+    type: "SET_MESSAGES",
+    payload: texts,
+});
+
+export const getMoreTexts = (texts) => ({
+    type: 'GET_MORE_TEXTS',
+    payload: texts,
 });
 
 export const checkEmail = (email) => ({
@@ -441,6 +449,31 @@ export const fetchPostsByPage = (page) => {
     };
 };
 
+export const fetchTextsByPage = (inboxUid, userId, page) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${apiUrl}/api/getMessages`, {
+                method: "POST",
+                body: JSON.stringify({
+                    inboxUid: inboxUid,
+                    userId: userId,
+                    page: page,
+                }),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                dispatch(setMessages(data));
+            }
+
+        } catch (error) {
+            console.error("An error occurred:", error);
+            throw error;
+        }
+    };
+};
+
 export const setUserBirthday = (flag) => {
     return {
         type: "SET_USER_BIRTHDAY",
@@ -525,6 +558,12 @@ export const setProfileReposts = (posts) => ({
 export const setPageZero = () => {
     return {
         type: "SET_PAGE_ZERO"
+    };
+};
+
+export const setPageZeroForMessaging = () => {
+    return {
+        type: "SET_PAGE_ZERO_FOR_MESSAGING"
     };
 };
 

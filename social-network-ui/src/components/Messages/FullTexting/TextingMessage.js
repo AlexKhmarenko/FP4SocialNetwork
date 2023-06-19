@@ -7,57 +7,58 @@ import PropTypes from "prop-types";
 
 export function TextingMessage({ sender, receiver, selectedMessage }) {
   const [inboxMessagesClick, setInboxMessagesClick] = useState(null);
+  const userId = useSelector((state) => state.userData.userData.userId);
+  // const fetchTexting = async () => {
+  //   const response = await fetch(`${apiUrl}/api/getMessages`, {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       inboxUid: sender,
+  //       userId: receiver,
+  //     }),
+  //     headers: { "Content-Type": "application/json" }
+  //   });
+  //   const textingData = await response.json();
+  //   if (textingData[0]) {
+      console.log(selectedMessage);
 
-  const fetchTexting = async () => {
-    const response = await fetch(`${apiUrl}/api/getMessages`, {
-      method: "POST",
-      body: JSON.stringify({
-        inboxUid: sender,
-        userId: receiver,
-      }),
-      headers: { "Content-Type": "application/json" }
-    });
-    const textingData = await response.json();
-    if (textingData[0]) {
-      console.log(textingData);
-      let index = 0;
-      const formattedMessages = textingData.map((item) => {
-        console.log(item);
-        const dateString = item.createdAt;
-        const date = new Date(dateString);
-        const options = { month: 'long', day: 'numeric', year: 'numeric' };
-        const formattedDate = date.toLocaleDateString('en-US', options);
-        if (item.userId === 66) {
-            index++;
-            return (
-              <GenerateBlueMessage
-                key={index}
-                text={item.message}
-                timestampText={formattedDate}
-              />
-            );
-          } else {
-            index++;
-            return (
-              <GenerateWhiteMessage
-                key={index}
-                text={item.message}
-                timestampText={formattedDate}
-              />
-            );
+      // let index = 0;
+      // const formattedMessages = selectedMessage.map((item) => {
+      //   console.log(item);
+      //   const dateString = item.createdAt;
+      //   const date = new Date(dateString);
+      //   const options = { month: 'long', day: 'numeric', year: 'numeric' };
+      //   const formattedDate = date.toLocaleDateString('en-US', options);
+      //   if (parseInt(item.userId) === parseInt(userId)) {
+      //       index++;
+      //       return (
+      //         <GenerateBlueMessage
+      //           key={index}
+      //           text={item.message}
+      //           timestampText={formattedDate}
+      //         />
+      //       );
+      //     } else {
+      //       index++;
+      //       return (
+      //         <GenerateWhiteMessage
+      //           key={index}
+      //           text={selectedMessage.message}
+      //           timestampText={formattedDate}
+      //         />
+      //       );
             
-          }
-      });
-      setInboxMessagesClick(formattedMessages);
-    } else {
-      setInboxMessagesClick(null);
-    }
-  };
+      //     }
+      // });
+      // setInboxMessagesClick(formattedMessages);
+    // } else {
+    //   setInboxMessagesClick(null);
+    // }
+  // };
 
-  useEffect(() => {
-    fetchTexting();
-    console.log("Texting message useEffect");
-  }, [sender, receiver]);
+  // useEffect(() => {
+  //   fetchTexting();
+  //   console.log("Texting message useEffect");
+  // }, [sender, receiver]);
 
   return (
     <div>
@@ -73,5 +74,5 @@ export function TextingMessage({ sender, receiver, selectedMessage }) {
 TextingMessage.propTypes = {
   sender: PropTypes.number.isRequired,
   receiver: PropTypes.number.isRequired,
-  selectedMessage: PropTypes.object.isRequired,
+  selectedMessage: PropTypes.array.isRequired,
 };
