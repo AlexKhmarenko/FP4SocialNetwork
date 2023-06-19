@@ -40,8 +40,9 @@ export const setPage = (pageNumber) => ({
     payload: pageNumber,
 });
 
-export const setPageForMessage = () => ({
-    type: 'SET_PAGE_FOR_MESSAGING'
+export const setPageForMessage = (pageNumber) => ({
+    type: 'SET_PAGE_FOR_MESSAGING',
+    payload: pageNumber,
 });
 
 export const setLike = (like) => {
@@ -174,6 +175,11 @@ export const setMessages = (texts) => ({
 export const getMoreTexts = (texts) => ({
     type: 'GET_MORE_TEXTS',
     payload: texts,
+});
+
+export const maxPages = (pages) => ({
+    type: 'SET_MAX_AMOUT_OF_PAGES_FOR_MESSAGING',
+    payload: pages,
 });
 
 export const checkEmail = (email) => ({
@@ -453,23 +459,6 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
     console.log(inboxUid, userId, page);
     return async (dispatch) => {
         try {
-            // const response = await fetch(`${apiUrl}/api/getMessages`, {
-            //     method: "POST",
-            //     body: JSON.stringify({
-            //         inboxUid: inboxUid,
-            //         userId: userId,
-            //         page: page.toString(),
-            //     }),
-            //     headers: { "Content-Type": "application/json" }
-            // });
-            // if (!response.ok) {
-            //     throw new Error("Failed to fetch Texts");
-            // }
-            // // if (response.ok) {
-            //     const data = await response.json();
-            //     console.log(data.content);
-            //     dispatch(setMessages(data));
-            // // }
             async function getData(){
                 const response = await fetch(`${apiUrl}/api/getMessages`, {
                     method: "POST",
@@ -481,10 +470,14 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     headers: { "Content-Type": "application/json" }
                 });
                const  response2 = await response.json()
-                console.log(response2)
-                dispatch(setMessages(response2));
+                console.log(response2);
+                if (response2) {
+                    dispatch(maxPages(response2.totalPages))
+                    dispatch(setMessages(response2.content));
+                    return response2.content;
+                }
             }
-            getData();
+            return getData();
 
         } catch (error) {
             console.error("An error occurred:", error);

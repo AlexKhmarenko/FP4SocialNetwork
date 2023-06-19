@@ -41,7 +41,6 @@ export const leftBlockAndRightBlockContainer = {
   
   export const textingConatinerScrollFromBottom = {
     display: "flex",
-    flexDirection: "column",
     overflowY: "scroll",
     maxHeight: "calc(100vh - 160px)",
     height: "calc(100vh - 160px)",

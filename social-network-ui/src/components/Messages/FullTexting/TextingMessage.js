@@ -17,7 +17,7 @@ export function TextingMessage({ sender, receiver, selectedMessage }) {
     if (parseInt(item.userId) === parseInt(userId)) {
       return (
         <GenerateBlueMessage
-          key={item.userId}
+          key={Math.floor(Math.random() * 10000)}
           text={item.message}
           timestampText={formattedDate}
         />
@@ -25,7 +25,7 @@ export function TextingMessage({ sender, receiver, selectedMessage }) {
     } else {
       return (
         <GenerateWhiteMessage
-          key={item.userId}
+          key={Math.floor(Math.random() * 100)}
           text={item.message}
           timestampText={formattedDate}
         />
