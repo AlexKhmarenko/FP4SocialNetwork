@@ -47,6 +47,7 @@ public class MessageServiceImpl implements MessageService {
   /*Method save a new message and returns it*/
   @Override
   public MessageDtoResponse saveMessage(MessageDtoRequest request) {
+    getUsersId(request);
     Integer userSenderId = request.getInboxUid();
     Optional<DbUser> userSender = userRepository.findById(userSenderId);
     DbUser userS = null;
@@ -79,6 +80,10 @@ public class MessageServiceImpl implements MessageService {
 
     sendNewMessageToRecipientGetMessages(messageMapper.messageToMessageDtoResponse(savedMessage));
     return messageMapper.messageToMessageDtoResponse(savedMessage);
+  }
+
+  private void getUsersId(MessageDtoRequest request) {
+
   }
 
   /*The method finds all messages between the sender and the receiver and returns them*/
