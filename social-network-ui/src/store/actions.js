@@ -477,14 +477,13 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     body: JSON.stringify({
                         inboxUid: inboxUid,
                         userId: userId,
-                        // page: page,
                     }),
                     headers: { "Content-Type": "application/json" }
                 });
                 const response2 = await response.json();
                 console.log(response2);
                 if (response2) {
-                    dispatch(maxPages(3));
+                    dispatch(maxPages(10));
                     dispatch(setMessages(response2));
                     return response2;
                 }

@@ -36,15 +36,15 @@ export const InputMessageSearch = ({ ...props }) => {
     };
 
     const mdStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px",  marginLeft:"5px"}
     };
 
     const lgStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"500px", marginLeft:"10px"}
     };
 
     const xlStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"500px", marginLeft:"10px"}
     };
 
     let styles;
@@ -94,7 +94,7 @@ export const InputMessageSearch = ({ ...props }) => {
                     : "Messages not found"
             }
             renderInput={(params) => (
-                <TextField{...props} sx={styles.AdaptiveUserSearchTextField} {...params} label="Search message"
+                <TextField{...props} sx={styles.AdaptiveUserSearchTextField} {...params} label="Search message or people"
                           onBlur={(ev) => {
                               ev.preventDefault()
                               inputValue === ''
