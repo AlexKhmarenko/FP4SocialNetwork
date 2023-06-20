@@ -278,9 +278,10 @@ export const activeLikesFetch = (postId, userId, setLike) => {
     };
 };
 
-export const sendRepostFetch = (postId, userId, isReposted) => {
+export const sendRepostFetch = (postId, userId, isReposted, setRepostCountView, repostCountView, sendEventToWebsocket) => {
     return async (dispatch) => {
         if(isReposted){
+            setRepostCountView(repostCountView+1)
             try {
                 await fetch(`${apiUrl}/api/reposts`, {
                     method: "POST",
@@ -292,10 +293,13 @@ export const sendRepostFetch = (postId, userId, isReposted) => {
                         "Content-Type": "application/json"
                     },
                 });
+                sendEventToWebsocket(userId,postId )
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
             }
+
         }else if(!isReposted){
+            setRepostCountView(repostCountView-1)
             try {
                 await fetch(`${apiUrl}/api/reposts?postId=${postId}&userId=${userId}`, {
                     method: "DELETE",
