@@ -2,21 +2,18 @@ package com.danit.socialnetwork.repository;
 
 import com.danit.socialnetwork.model.Post;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-  @Query(nativeQuery = true, value = "SELECT * FROM POSTS "
-      + "LEFT JOIN USER_FOLLOWS ON POSTS.USER_ID = USER_FOLLOWS.USER_FOLLOWING_ID "
-      + "WHERE USER_FOLLOWS.USER_FOLLOWER_ID = :userId "
-      + "ORDER BY POSTS.SENT_DATETIME DESC")
-  List<Post> findAllPostsFromToFollow(Integer userId, Pageable pageable);
 
   @Query(nativeQuery = true, value = "SELECT DISTINCT POSTS.P_ID, POSTS.PHOTO_FILE, POSTS.SENT_DATETIME, "
       + "POSTS.WRITTEN_TEXT, POSTS.USER_ID, POSTS.VIEW_COUNT, "
@@ -98,4 +95,5 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
   Post findLatestPostByUserId(Integer userId);
 
   Post findPostByPostId(Integer postId);
+
 }
