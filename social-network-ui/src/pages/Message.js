@@ -24,38 +24,38 @@ function LoadAllMessages({ userId, handleSelectMessage }) {
   const [inboxMessages, setInboxMessages] = useState([]);
   const page = useSelector(state => state.pageCountMessage.page);
   const dispatch = useDispatch();
-  // var stompClient = null;
-  // const fetchMessages = async () => {
-  //   const response1 = await fetch(`${apiUrl}/api/inbox/${userId}`);
-  //   const userData = await response1.json();
-    
-
-  //   const connect =()=>{
-  //     let Sock = new SockJS(`${apiUrl}/websocket`);
-  //     stompClient = over(Sock);
-  //     stompClient.connect({},onConnected, onError);
-  //   }
-
-  //   const onConnected = () => {
-  //     stompClient.subscribe(`/user/inbox/${userId}`, onPrivateMessage);
-  //   }
-
-  //   const onError = (err) => {
-  //     console.log(err);
-  //   }
-
-  //   const onPrivateMessage = (payload)=>{
-  //     console.log(payload);
-  //     var payloadData = JSON.parse(payload.body);
-  //     let list =[];
-  //     list.push(payloadData);
-  //     privateChats.set(payloadData.notificationText,list);
-  //     setPrivateChats(new Map(privateChats));
-  //   }
-  //   connect();
+  var stompClient = null;
+  
   const fetchMessages = async () => {
-      const response1 = await fetch(`${apiUrl}/api/inbox/${userId}`);
+    const response1 = await fetch(`${apiUrl}/api/inbox/${userId}`);
     const userData = await response1.json();
+
+    const connect =()=>{
+      let Sock = new SockJS(`${apiUrl}/websocket`);
+      stompClient = over(Sock);
+      stompClient.connect({},onConnected, onError);
+    }
+
+    const onConnected = () => {
+      stompClient.subscribe(`/user/inbox/${userId}`, newMessage);
+    }
+
+    const onError = (err) => {
+      console.log(err);
+    }
+
+    const newMessage = (payload)=>{
+      console.log(payload);
+      var payloadData = JSON.parse(payload.body);
+      let list =[];
+      list.push(payloadData);
+      inboxMessages.set(payloadData.inboxUid,list);
+      inboxMessages.set(payloadData.userId,list);
+      inboxMessages.set(payloadData.body,list);
+      inboxMessages.set(payloadData.day,list);
+      setInboxMessages(new Map(inboxMessages));
+    }
+    connect();
     
     if (userData[0]) {
       const formattedMessages = userData.map((item) => {
