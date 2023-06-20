@@ -161,7 +161,7 @@ public class PostServiceImpl implements PostService {
   /*Method to add views for received an array of postIds*/
   @Override
   public HttpStatus addViews(Integer[] postIdArray) {
-    Arrays.stream(postIdArray).forEach(postId -> incrementViewCount(postId));
+    Arrays.stream(postIdArray).forEach(this::incrementViewCount);
     return HttpStatus.OK;
   }
 
