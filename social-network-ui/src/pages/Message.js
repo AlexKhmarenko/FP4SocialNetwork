@@ -41,8 +41,6 @@ export function Message() {
         console.log(userData);
     };
 
-
-
     useEffect(() => {
         console.log(selectedMessage,"selectedMessage");
     }, [selectedMessage]);
