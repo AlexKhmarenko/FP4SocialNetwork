@@ -69,8 +69,6 @@ export function Layout() {
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
-    console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
-
     const xxsStyles = {
         AdaptiveOutletWrapper: {},
         AdaptiveItemWrapperContainer: {
@@ -79,7 +77,7 @@ export function Layout() {
             flexDirection: "column",
             width: "100%",
         },
-        MaxWidthAdaptive: true,
+        MaxWidthAdaptive: "true",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -129,7 +127,7 @@ export function Layout() {
             flexDirection: "column",
             width: "100%",
         },
-        MaxWidthAdaptive: false,
+        MaxWidthAdaptive: "false",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -179,7 +177,7 @@ export function Layout() {
             flexDirection: "column",
             width: "470px",
         },
-        MaxWidthAdaptive: false,
+        MaxWidthAdaptive: "false",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -230,7 +228,7 @@ export function Layout() {
             flexDirection: "column",
             width: "600px",
         },
-        MaxWidthAdaptive: true,
+        MaxWidthAdaptive: "true",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -281,7 +279,7 @@ export function Layout() {
             flexDirection: "column",
             width: "600px",
         },
-        MaxWidthAdaptive: false,
+        MaxWidthAdaptive: "false",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -332,7 +330,7 @@ export function Layout() {
             flexDirection: "column",
             width: "600px",
         },
-        MaxWidthAdaptive: false,
+        MaxWidthAdaptive: "false",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -401,13 +399,7 @@ export function Layout() {
         loadingPostsRef.current = false;
     }, [location.pathname])
 
-    useEffect(()=>{
-        console.log(userId, "userIdFromLayout")
-    },[userId])
 
-    // useEffect(() => {
-    //     dispatch(fetchData(userId));
-    // }, []);
 
     const handleParentScroll = useCallback(async (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
@@ -415,18 +407,12 @@ export function Layout() {
             loadingPostsRef.current = true;
             let newPosts;
             const page2 = page + 1;
-            console.log(page)
             if (location.pathname === "/explore") {
                 newPosts = await dispatch(fetchExplorePosts(userId, page2));
-                console.log("newPostsExplore",newPosts )
             } else if (location.pathname === "/home") {
-                console.log('fetching posts by user id in layout scroll callback', page);
-                console.log(userId)
                 newPosts = await dispatch(fetchPostsByUserId(userId, page2));
-                console.log("newPostsHome", newPosts )
             }
             if (newPosts && newPosts.length === 0) {
-                console.log('All posts loaded, stopping further fetches');
                 allPostsLoadedRef.current = true;
                 loadingPostsRef.current = false;
             } else {

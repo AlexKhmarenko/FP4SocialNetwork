@@ -204,6 +204,12 @@ public class PostServiceImpl implements PostService {
     accumulatedViewCounts.clear();
   }
 
+  @Override
+  public Post findPostByPostId(Integer postId) {
+    return postRepository.findPostByPostId(postId);
+  }
+
+
 }
 
 

@@ -28,4 +28,7 @@ public interface PostService {
   Integer findLatestPostIdByUserId(Integer userId);
 
   HttpStatus addViews(Integer[] postIdArray);
+
+  Post findPostByPostId(Integer postId);
+
 }

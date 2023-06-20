@@ -40,6 +40,11 @@ export const setPage = (pageNumber) => ({
     payload: pageNumber,
 });
 
+export const setPageForMessage = (pageNumber) => ({
+    type: 'SET_PAGE_FOR_MESSAGING',
+    payload: pageNumber,
+});
+
 export const setLike = (like) => {
     return {
         type: "SET_LIKE",
@@ -47,12 +52,6 @@ export const setLike = (like) => {
     };
 };
 
-export const setMessages = (messages) => {
-    return {
-        type: "SET_ITEM",
-        payload: messages,
-    };
-};
 
 export const setComments = (comments) => {
     return {
@@ -168,6 +167,21 @@ export const setPosts = (posts) => ({
     payload: posts,
 });
 
+export const setMessages = (texts) => ({
+    type: "SET_MESSAGES",
+    payload: texts,
+});
+
+export const getMoreTexts = (texts) => ({
+    type: 'GET_MORE_TEXTS',
+    payload: texts,
+});
+
+export const maxPages = (pages) => ({
+    type: 'SET_MAX_AMOUT_OF_PAGES_FOR_MESSAGING',
+    payload: pages,
+});
+
 export const checkEmail = (email) => ({
     type: CHECK_EMAIL,
     payload: email
@@ -200,7 +214,6 @@ export const checkEmailFetch = (values, setErrors) => {
 
 export const sendComments = (values, userId, postId) => {
     return async (dispatch) => {
-        console.log("hi");
         try {
             let userCommentResponse = await fetch(`${apiUrl}/api/comments`, {
                 method: "POST",
@@ -214,7 +227,6 @@ export const sendComments = (values, userId, postId) => {
                 }
             });
             let userCommentData = await userCommentResponse.json();
-            console.log(userCommentData);
             dispatch(setCommentFromUser(userCommentData));
         } catch (error) {
             console.error("Ошибка:", error);
@@ -280,7 +292,6 @@ export const sendRepostFetch = (postId, userId, isReposted) => {
                         "Content-Type": "application/json"
                     },
                 });
-                console.log("добавился пост")
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
             }
@@ -292,7 +303,6 @@ export const sendRepostFetch = (postId, userId, isReposted) => {
                         "Content-Type": "application/json"
                     },
                 });
-                console.log("удалился пост")
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
             }
@@ -338,7 +348,6 @@ export const deleteLikeFetch = (postId, userId) => {
 export const fetchData = (userId) => {
     return async (dispatch) => {
         try {
-            console.log(userId)
             const response = await fetch(`${apiUrl}/api/profile/${userId}`);
             const userData = await response.json();
             dispatch(setUserData(userData));
@@ -352,7 +361,6 @@ export const fetchData = (userId) => {
 
 export const checkPasswordFetch = (values, userDataState, setErrors) => {
     return async (dispatch) => {
-        console.log("hi");
         try {
             const userPassword = await fetch(`${apiUrl}/login`, {
                 method: "POST",
@@ -441,6 +449,37 @@ export const fetchPostsByPage = (page) => {
     };
 };
 
+export const fetchTextsByPage = (inboxUid, userId, page) => {
+    console.log(inboxUid, userId, page);
+    return async (dispatch) => {
+        try {
+            async function getData(){
+                const response = await fetch(`${apiUrl}/api/getMessages?page=${page}`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        inboxUid: inboxUid,
+                        userId: userId,
+                        // page: page,
+                    }),
+                    headers: { "Content-Type": "application/json" }
+                });
+               const  response2 = await response.json()
+                console.log(response2);
+                if (response2) {
+                    dispatch(maxPages(3))
+                    dispatch(setMessages(response2));
+                    return response2;
+                }
+            }
+            return getData();
+
+        } catch (error) {
+            console.error("An error occurred:", error);
+            throw error;
+        }
+    };
+};
+
 export const setUserBirthday = (flag) => {
     return {
         type: "SET_USER_BIRTHDAY",
@@ -452,7 +491,6 @@ export const fetchExplorePosts = (userId, page) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/posts/explorer?userId=${userId}&page=${page}`);
         let posts = await response.json();
-        console.log("postsExploreAction", posts )
         dispatch(addExplorePosts(posts));
         return posts;
     };
@@ -525,6 +563,12 @@ export const setProfileReposts = (posts) => ({
 export const setPageZero = () => {
     return {
         type: "SET_PAGE_ZERO"
+    };
+};
+
+export const setPageZeroForMessaging = () => {
+    return {
+        type: "SET_PAGE_ZERO_FOR_MESSAGING"
     };
 };
 

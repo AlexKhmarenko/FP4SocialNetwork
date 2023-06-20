@@ -14,7 +14,7 @@ public interface MessageService {
 
   MessageDtoResponse saveMessage(MessageDtoRequest request);
 
-  List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(InboxParticipantsDtoRequest request);
+  List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(InboxParticipantsDtoRequest request, Integer page);
 
   List<Message> findMessageByInboxUidOrUserId(DbUser inboxUid, DbUser userId);
 
