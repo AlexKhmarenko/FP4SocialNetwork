@@ -69,7 +69,7 @@ class WebSocketControllerTest {
     repostUser.setUsername("TestUser");
     repostUser.setProfileImageUrl("testimage.jpg");
 
-    when(userService.findDbUserByUserId(repostDtoSave.getUserId())).thenReturn(java.util.Optional.of(repostUser));
+    when(userService.findDbUserByUserId(repostDtoSave.getUserId())).thenReturn(repostUser);
 
     NotificationRequest notificationRequest = new NotificationRequest();
     LocalDateTime dateTime = LocalDateTime.now();

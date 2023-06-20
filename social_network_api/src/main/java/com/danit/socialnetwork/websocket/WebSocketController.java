@@ -41,7 +41,7 @@ public class WebSocketController {
 
   @MessageMapping("/repost")
   public NotificationRequest postNotification(
-      @Payload RepostDtoSave repostDtoSave) throws InterruptedException {
+      @Payload RepostDtoSave repostDtoSave)  {
     Integer repostUserId = repostDtoSave.getUserId();
     Integer postId = repostDtoSave.getPostId();
 
@@ -49,7 +49,7 @@ public class WebSocketController {
 
     Integer authUserId = postByPostId.getUserPost().getUserId();
 
-    DbUser repostUser = userService.findDbUserByUserId(repostUserId).get();
+    DbUser repostUser = userService.findDbUserByUserId(repostUserId);
 
     String notificationType = NotificationType.POST.get();
 
