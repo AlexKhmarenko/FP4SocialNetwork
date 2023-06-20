@@ -418,7 +418,7 @@ export const Post = ({
 };
 
 Post.propTypes = {
-    sendEventToWebsocket:PropTypes.number,
+    sendEventToWebsocket:PropTypes.func,
     repostsCount:PropTypes.number,
     reposted: PropTypes.bool,
     profileImage: PropTypes.string,

@@ -29,13 +29,15 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
         };
     }, []);
 
+
+
+
     const handleClick = (userId, postId) => {
         if (stompClient) {
             stompClient.send("/app/repost", {}, JSON.stringify({ userId: userId, postId: postId }));
         }
     };
 
-    console.log(userPosts)
 
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>;
