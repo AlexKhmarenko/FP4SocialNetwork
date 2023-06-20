@@ -97,9 +97,6 @@ class InboxServiceImplTest {
     when(inboxRepository.findByInboxUidAndUserId(testUser1, testUser2))
         .thenReturn(Optional.empty());
     when(inboxRepository.save(any(Inbox.class))).thenAnswer(invocation -> invocation.getArgument(0));
-    doReturn(responseTest)
-        .when(mapper)
-        .inboxToInboxDtoResponse(Mockito.any(Inbox.class));
 
     List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
 
@@ -145,9 +142,6 @@ class InboxServiceImplTest {
         .thenReturn(Optional.of(testInboxReceiver));
     when(inboxRepository.save(testInboxSender)).thenReturn(testInboxSender);
     when(inboxRepository.save(testInboxReceiver)).thenReturn(testInboxReceiver);
-    doReturn(responseTest)
-        .when(mapper)
-        .inboxToInboxDtoResponse(Mockito.any(Inbox.class));
 
     List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
 
