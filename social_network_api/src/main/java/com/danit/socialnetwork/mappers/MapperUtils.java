@@ -95,7 +95,7 @@ public class MapperUtils {
 
   public static String getMessage(Inbox inbox) {
     Message message = inbox.getLastMessage();
-    if (message.equals(null)) {
+    if (message == null) {
       return null;
     }
     return message.getMessageText();
@@ -107,7 +107,7 @@ public class MapperUtils {
 
   public static LocalDateTime getCreatedAt(Inbox inbox) {
     Message message = inbox.getLastMessage();
-    if (message.equals(null)) {
+    if (message == null) {
       return null;
     }
     return message.getCreatedAt();
