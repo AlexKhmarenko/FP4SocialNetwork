@@ -359,9 +359,6 @@ export function HeaderInformation() {
     };
 
     const getRouteName = (path) => {
-        if (path.startsWith("/post/")) {
-            return "Post";
-        }
         switch (path) {
             case "/home":
                 return "Home";
