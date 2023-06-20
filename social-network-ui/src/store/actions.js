@@ -249,6 +249,7 @@ export const getComments = (setIsLoadingComments, isCommentOpen, setIsCommentOpe
     };
 };
 
+
 export const fetchLikes = (setLikesIsLoading, setUsersWhoLike, postId) => {
     return async (dispatch) => {
         try {
@@ -358,6 +359,8 @@ export const fetchData = (userId) => {
         }
     };
 };
+
+
 
 export const checkPasswordFetch = (values, userDataState, setErrors) => {
     return async (dispatch) => {
@@ -477,6 +480,7 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     body: JSON.stringify({
                         inboxUid: inboxUid,
                         userId: userId,
+                        // page: page,
                     }),
                     headers: { "Content-Type": "application/json" }
                 });

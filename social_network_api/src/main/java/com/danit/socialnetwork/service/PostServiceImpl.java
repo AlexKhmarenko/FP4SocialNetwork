@@ -13,12 +13,14 @@ import com.danit.socialnetwork.repository.RepostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.hibernate.annotations.Cache;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Cacheable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -171,6 +173,7 @@ public class PostServiceImpl implements PostService {
   public Integer incrementViewCount(Integer postId) {
     accumulatedViewCounts.putIfAbsent(postId, 0);
     int viewCount = accumulatedViewCounts.get(postId) + 1;
+    accumulatedViewCounts.put(postId, viewCount);
     if (viewCount % 10 == 0) {
       performBatchUpdate(postId);
     }
@@ -178,7 +181,7 @@ public class PostServiceImpl implements PostService {
   }
 
   // Method to perform update view count for a post by postId
-  public Integer performBatchUpdate(Integer postId) {
+  private Integer performBatchUpdate(Integer postId) {
     Integer viewCount = accumulatedViewCounts.get(postId);
     Post post = postRepository.findById(postId).orElse(null);
     if (post != null) {
@@ -191,16 +194,19 @@ public class PostServiceImpl implements PostService {
 
   /*Method to add view counts to all posts scheduled by time*/
   @Scheduled(fixedRate = 10000)
-  public void performBatchUpdateByTime() {
+  private void performBatchUpdateByTime() {
+    List<Post> updatedPosts = new ArrayList<>();
     for (Map.Entry<Integer, Integer> entry : accumulatedViewCounts.entrySet()) {
       Integer postId = entry.getKey();
       Integer viewCount = entry.getValue();
-      Post post = postRepository.findById(postId).orElse(null);
-      if (post != null) {
-        post.setViewCount(post.getViewCount() + viewCount);
-        postRepository.save(post);
-      }
+      Optional<Post> optionalPost = postRepository.findById(postId);
+      optionalPost.ifPresent(post -> {
+        Integer startCount = post.getViewCount() != null ? post.getViewCount() : 0;
+        post.setViewCount(startCount + viewCount);
+        updatedPosts.add(post);
+      });
     }
+    postRepository.saveAll(updatedPosts);
     accumulatedViewCounts.clear();
   }
 
@@ -208,7 +214,6 @@ public class PostServiceImpl implements PostService {
   public Post findPostByPostId(Integer postId) {
     return postRepository.findPostByPostId(postId);
   }
-
 
 }
 
