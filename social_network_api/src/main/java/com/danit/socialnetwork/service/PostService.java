@@ -3,6 +3,7 @@ package com.danit.socialnetwork.service;
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.Post;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface PostService {
   PostDtoResponse getPostByPostId(Integer postId, Integer userId);
 
   Integer findLatestPostIdByUserId(Integer userId);
+
+  HttpStatus addViews(Integer[] postIdArray);
 }
