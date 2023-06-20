@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.CascadeType;
@@ -57,6 +58,10 @@ public class Post {
   @JoinColumn(name = "user_id")
   private DbUser userPost;
 
+  public DbUser getUserPost() {
+    return userPost;
+  }
+
   public static Post from(PostDtoSave postDtoSave, DbUser userPost, String photoFile) {
     Post tempPost = new Post();
     tempPost.setPostId(0);
@@ -66,6 +71,8 @@ public class Post {
     tempPost.setUserPost(userPost);
     return tempPost;
   }
+
+
 
 
 }

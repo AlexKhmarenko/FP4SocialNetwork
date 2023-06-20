@@ -14,10 +14,11 @@ import com.danit.socialnetwork.repository.MessageRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +34,15 @@ public class MessageServiceImpl implements MessageService {
   private final MessageSearchMapper searchMapper;
   private final InboxServiceImpl inboxService;
   private final MessageMapper messageMapper;
+  private final SimpMessagingTemplate messagingTemplate;
   private static final String MESSAGE_CACHE = "MessageCache";
   private static final String USER_NOT_FOUND = "User with userId %d not found";
+
+  private void sendNewMessageToRecipientGetMessages(MessageDtoResponse newMessage) {
+    messagingTemplate.convertAndSend("/user/getMessages/" + newMessage.getUserId(), newMessage);
+    log.info(String.format("Send new message to the recipient inbox participants: %s, %s",
+        newMessage.getMessage(), newMessage.getCreatedAt()));
+  }
 
   /*Method save a new message and returns it*/
   @Override
@@ -67,20 +75,26 @@ public class MessageServiceImpl implements MessageService {
     Message savedMessage = messageRepository.save(message);
     log.info(String.format("Save message: %s", savedMessage.getMessageText()));
 
-    inboxService.saveInbox(userS, userR, message);
+    inboxService.saveInbox(userS, userR, savedMessage);
 
+    sendNewMessageToRecipientGetMessages(messageMapper.messageToMessageDtoResponse(savedMessage));
     return messageMapper.messageToMessageDtoResponse(savedMessage);
   }
 
   /*The method finds all messages between the sender and the receiver and returns them*/
   @Override
-  public List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(InboxParticipantsDtoRequest request) {
+  public List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(
+      InboxParticipantsDtoRequest request, Integer page) {
+    int pageSize = 16;
+    int offset = page * pageSize;
     DbUser inboxUid = userRepository.findById(request.getInboxUid()).get();
     DbUser userId = userRepository.findById(request.getUserId()).get();
-    List<Message> messages = messageRepository
-        .findByInboxUidAndUserIdOrUserIdAndInboxUid(inboxUid, userId, inboxUid, userId);
-    return messages.stream().map(messageMapper::messageToMessageDtoResponse).toList();
+    List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
+        inboxUid, userId, inboxUid, userId, offset, pageSize);
+    return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
   }
+
+
 
   /*The method finds all incoming and outgoing messages of the user and returns them*/
   @Override

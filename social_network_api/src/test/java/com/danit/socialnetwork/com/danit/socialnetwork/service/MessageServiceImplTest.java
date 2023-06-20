@@ -19,6 +19,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +31,7 @@ import java.util.Optional;
 
 import static com.danit.socialnetwork.config.GuavaCache.messageCache;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,6 +48,10 @@ class MessageServiceImplTest {
   MessageMapperImpl messageMapper;
   @Mock
   MessageSearchMapper messageSearchMapper;
+  @Mock
+  SimpMessagingTemplate messagingTemplate;
+  @Mock
+  Pageable pageable;
 
   @Test
   void saveMessage() {
@@ -71,14 +81,15 @@ class MessageServiceImplTest {
     when(inboxService.saveInbox(any(DbUser.class), any(DbUser.class), any(Message.class)))
         .thenReturn(inboxes);
     when(messageRepository.save(any(Message.class))).thenReturn(testMessage);
-    when(messageMapper.messageToMessageDtoResponse(testMessage)).thenReturn(testMessageDto);
+    doReturn(testMessageDto)
+        .when(messageMapper)
+        .messageToMessageDtoResponse(Mockito.any(Message.class));
 
     MessageDtoResponse savedMessage = messageService.saveMessage(request);
     Mockito.verify(messageRepository).save(Mockito.any(Message.class));
 
     Assert.assertEquals("Hello world!", savedMessage.getMessage());
   }
-
 
   @Test
   void findByInboxUidAndUserIdOrUserIdAndInboxUid_shouldFindAllMessagesByTwoUsers() {
@@ -130,11 +141,15 @@ class MessageServiceImplTest {
     testMessageDto4.setInboxUid(1);
     testMessageDto4.setUserId(2);
     testMessageDto4.setMessage("Test2!");
+    Integer page = 0;
+    int pageSize = 16;
+    int offset = page * pageSize;
 
     when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
     when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
     when(messageRepository
-        .findByInboxUidAndUserIdOrUserIdAndInboxUid(testUser1, testUser2, testUser1, testUser2))
+        .findByInboxUidAndUserIdOrUserIdAndInboxUid(
+            testUser1, testUser2, testUser1, testUser2, offset, pageSize))
         .thenReturn(testMessages);
     when(messageMapper.messageToMessageDtoResponse(testMessage1)).thenReturn(testMessageDto1);
     when(messageMapper.messageToMessageDtoResponse(testMessage2)).thenReturn(testMessageDto2);
@@ -142,8 +157,8 @@ class MessageServiceImplTest {
     when(messageMapper.messageToMessageDtoResponse(testMessage4)).thenReturn(testMessageDto4);
 
     List<MessageDtoResponse> testFindMessages = messageService
-        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request);
-    Assert.assertEquals(4,testFindMessages.size());
+        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page);
+    Assert.assertEquals(4, testFindMessages.size());
     Assert.assertEquals("Hallo", testFindMessages.get(0).getMessage());
     Assert.assertEquals("world!", testFindMessages.get(1).getMessage());
     Assert.assertEquals("Test!", testFindMessages.get(2).getMessage());
@@ -235,9 +250,9 @@ class MessageServiceImplTest {
 
     Assert.assertTrue(resultSearchDto1.get(0).getMessage().toUpperCase().contains("nad".toUpperCase()));
     Assert.assertTrue(resultSearchDto2.get(0).getName().toUpperCase().contains("ro".toUpperCase())
-    || resultSearchDto2.get(0).getUsername().toUpperCase().contains("ro".toUpperCase()));
+        || resultSearchDto2.get(0).getUsername().toUpperCase().contains("ro".toUpperCase()));
     Assert.assertTrue(resultSearchDto2.get(1).getName().toUpperCase().contains("ro".toUpperCase())
-    || resultSearchDto2.get(1).getUsername().toUpperCase().contains("ro".toUpperCase()));
+        || resultSearchDto2.get(1).getUsername().toUpperCase().contains("ro".toUpperCase()));
     Assert.assertTrue(resultSearchDto2.get(1).getMessage().toUpperCase().contains("ro".toUpperCase()));
   }
 
