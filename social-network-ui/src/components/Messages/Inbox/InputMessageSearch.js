@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/material";
 import {UserSearchTextField} from "./SearchStyles";
 import {useDispatch, useSelector} from "react-redux";
-import {DeleteMessageSuccess, DeleteUsersSuccess, setSearchData, setSearchId} from "../../../store/actions";
+import {DeleteMessageSuccess, setSearchData} from "../../../store/actions";
 import {useNavigate} from "react-router-dom";
 import {apiUrl} from "../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
