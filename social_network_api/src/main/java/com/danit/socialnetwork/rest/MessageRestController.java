@@ -50,10 +50,10 @@ public class MessageRestController {
 
   /*The method finds all messages between the sender and the receiver*/
   @PostMapping(path = "/api/getMessages")
-  public ResponseEntity<Page<MessageDtoResponse>> getMessage(
+  public ResponseEntity<List<MessageDtoResponse>> getMessage(
       @RequestBody InboxParticipantsDtoRequest request,
       @RequestParam(name = "page", defaultValue = "0") Integer page) {
-    Page<MessageDtoResponse> messages = messageService
+    List<MessageDtoResponse> messages = messageService
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page);
     return new ResponseEntity<>(messages, HttpStatus.FOUND);
   }
