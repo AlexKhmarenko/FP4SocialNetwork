@@ -41,7 +41,7 @@ public class MessageRestController {
   }
 
   /*The method finds inbox by message sender and receiver */
-  @GetMapping(path = "/api/inbox/{inboxUid}")
+  @GetMapping(path = "/api/{inboxUid}/inbox")
   public ResponseEntity<List<InboxDtoResponse>> getInbox(@PathVariable("inboxUid") Integer inboxUid) {
     List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(inboxUid);
     return new ResponseEntity<>(inboxes, HttpStatus.FOUND);

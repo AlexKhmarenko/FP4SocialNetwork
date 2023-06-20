@@ -2,16 +2,19 @@ package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationType;
 import com.danit.socialnetwork.dto.NotificationRequest;
+import com.danit.socialnetwork.dto.message.InboxDtoResponse;
+import com.danit.socialnetwork.dto.message.MessageDtoRequest;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
-import com.danit.socialnetwork.service.NotificationService;
+import com.danit.socialnetwork.service.InboxService;
 import com.danit.socialnetwork.service.PostService;
-import com.danit.socialnetwork.service.UserFollowService;
+import com.danit.socialnetwork.service.NotificationService;
 import com.danit.socialnetwork.service.UserService;
+import com.danit.socialnetwork.service.UserFollowService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,6 +37,7 @@ public class WebSocketController {
   private final NotificationService notificationService;
   private final UserFollowService userFollowService;
   private final UserService userService;
+  private final InboxService inboxService;
   private final PostService postService;
 
   @Autowired
@@ -143,5 +147,20 @@ public class WebSocketController {
       messagingTemplate.convertAndSendToUser(followerIdString, "/unread_notifications", unreadNotifications);
     }
     return notificationRequest;
+  }
+
+  @MessageMapping("/addMessage")
+  public MessageDtoRequest postAddMessage(
+      @Payload MessageDtoRequest requestMessage) throws InterruptedException {
+
+    Thread.sleep(500);
+
+    Integer inboxUid = requestMessage.getInboxUid();
+    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(inboxUid);
+
+    String inboxUidString = inboxUid.toString();
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxes);
+
+    return requestMessage;
   }
 }
