@@ -454,21 +454,21 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
     return async (dispatch) => {
         try {
             async function getData(){
-                const response = await fetch(`${apiUrl}/api/getMessages`, {
+                const response = await fetch(`${apiUrl}/api/getMessages?page=${page}`, {
                     method: "POST",
                     body: JSON.stringify({
                         inboxUid: inboxUid,
                         userId: userId,
-                        page: page,
+                        // page: page,
                     }),
                     headers: { "Content-Type": "application/json" }
                 });
                const  response2 = await response.json()
                 console.log(response2);
                 if (response2) {
-                    dispatch(maxPages(response2.totalPages))
-                    dispatch(setMessages(response2.content));
-                    return response2.content;
+                    dispatch(maxPages(3))
+                    dispatch(setMessages(response2));
+                    return response2;
                 }
             }
             return getData();
