@@ -8,6 +8,7 @@ import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.*;
 import com.danit.socialnetwork.service.*;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -198,15 +199,34 @@ class WebSocketControllerTest {
     inboxSender.setLastMessage(message);
 
     Inbox inboxReceiver = new Inbox();
-    inboxSender.setInboxUid(userReceiver);
-    inboxSender.setUserId(userSender);
-    inboxSender.setLastMessage(message);
+    inboxReceiver.setInboxUid(userReceiver);
+    inboxReceiver.setUserId(userSender);
+    inboxReceiver.setLastMessage(message);
 
-    when(userService.findDbUserByUserId(2)).thenReturn(userSender);
-    when(userService.findDbUserByUserId(2)).thenReturn(userReceiver);
-    when(inboxService.findByInboxUidAndLastSentUserId(userSender, userReceiver)).thenReturn(Optional.of(inboxSender));
-    when(inboxService.findByInboxUidAndLastSentUserId(userReceiver, userSender)).thenReturn(Optional.of(inboxReceiver));
+    Assert.assertEquals(Optional.of(1), Optional.of(inboxDtoResponse.getInboxUid()));
+    Assert.assertEquals(Optional.of(2), Optional.of(inboxDtoResponse.getUserId()));
 
+    Assert.assertEquals(Optional.of(1), Optional.of(userSender.getUserId()));
+    Assert.assertEquals("TestUser1", userSender.getName());
+    Assert.assertEquals("TestUser1", userSender.getUsername());
+    Assert.assertEquals("testimage1.jpg", userSender.getProfileImageUrl());
+
+    Assert.assertEquals(Optional.of(2), Optional.of(userReceiver.getUserId()));
+    Assert.assertEquals("TestUser2", userReceiver.getName());
+    Assert.assertEquals("TestUser2", userReceiver.getUsername());
+    Assert.assertEquals("testimage2.jpg", userReceiver.getProfileImageUrl());
+
+    Assert.assertEquals(userSender, message.getInboxUid());
+    Assert.assertEquals(userReceiver, message.getUserId());
+    Assert.assertEquals("Test", message.getMessageText());
+
+    Assert.assertEquals(userSender, inboxSender.getInboxUid());
+    Assert.assertEquals(userReceiver, inboxSender.getUserId());
+    Assert.assertEquals(message, inboxSender.getLastMessage());
+
+    Assert.assertEquals(userReceiver, inboxReceiver.getInboxUid());
+    Assert.assertEquals(userSender, inboxReceiver.getUserId());
+    Assert.assertEquals(message, inboxReceiver.getLastMessage());
   }
 }
 
