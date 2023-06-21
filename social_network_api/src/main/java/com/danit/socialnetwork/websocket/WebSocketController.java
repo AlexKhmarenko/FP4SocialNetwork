@@ -213,7 +213,7 @@ public class WebSocketController {
   public InboxDtoResponse postAddMessage(
       @Payload InboxDtoResponse inboxDtoResponse) throws InterruptedException {
 
-    Thread.sleep(1000);
+    Thread.sleep(500);
     Integer inboxUid = inboxDtoResponse.getInboxUid();
     Integer userId = inboxDtoResponse.getUserId();
     DbUser userReceiver = userService.findDbUserByUserId(inboxDtoResponse.getUserId());
