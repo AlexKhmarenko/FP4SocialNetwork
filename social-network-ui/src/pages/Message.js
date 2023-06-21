@@ -371,7 +371,7 @@ export function Message() {
                 <HeaderInformation/>
                 <MessageSearch/>
                 <div style={styles.AdaptiveInboxContainerStyle}>
-                    isLoading ? <CircularProgress sx={{ marginTop: "20%" }}/> : <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
+                    { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"40%" }}/> : <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>}
                 </div>
             </div>
             <div style={styles.AdaptiveTextingContainerWithInputStyle}>
