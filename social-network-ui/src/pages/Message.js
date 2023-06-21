@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
 import { apiUrl } from "../apiConfig";
 import { InboxMessage } from "../components/Messages/Inbox/InboxMessage";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { TextingMessage } from "../components/Messages/FullTexting/TextingMessage";
 import { MessageSearch } from "../components/Messages/Inbox/MessageSearch";
 import { MessageInbox } from "../components/Messages/Inbox/MessageInbox";
@@ -11,7 +11,7 @@ import {
     leftBlockInboxAndSearch, inboxContainerStyle,
     textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
     textingContainerWithScroll, textingConatinerScrollFromBottom,
-    textingConatinerScrollFromTop, headerMessages
+    textingConatinerScrollFromTop
 } from "./pagesStyles/MessageStyles";
 import PropTypes from "prop-types";
 import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
@@ -22,6 +22,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { height, padding } from "@mui/system";
+import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
+import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
+import { Avatar } from "@mui/material";
 
 
 let stompClient = null;
@@ -38,8 +41,8 @@ export function Message() {
     const [inputValue, setInputValue] = useState("");
     const textingContainerRef = useRef(null);
     const [inboxMessages, setInboxMessages] = useState([]);
-    const [isLoading, setIsLoading] = useState(false)
-
+    const [isLoading, setIsLoading] = useState(false);
+    const clicked = useSelector((state) => state.inboxOrTexting.click);
 
 
     const theme = useTheme();
@@ -53,9 +56,6 @@ export function Message() {
 
 
     const xxsStyles = {
-        AdaptiveHeaderMessages: {
-            ...headerMessages,
-        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
@@ -72,8 +72,8 @@ export function Message() {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height:"100vh",
+            width:"100vw",
             maxHeight:"100vh",
-            display: "none"
         },
         AdaptiveTextingConatinerScrollFromTop: {
             ...textingConatinerScrollFromTop,
@@ -87,14 +87,28 @@ export function Message() {
         },
         AdaptiveTextingContainerWithScroll: {
             ...textingContainerWithScroll,
-            width: "100vw"
+        },
+        AdaptiveMessageContainerStyle: {
+            width: "100%",
+            boxSizing: "border-box",
+            display: "flex",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F5F8FA",
+            alignItems: "center",
+            fontFamily: "'Lato', sans-serif",
+            flexGrow: 1,
+            padding: "0 20px 0 10px",
+            height: "50px",
+        },
+        AdaptiveAvatarStyle: {
+            width: "34px",
+            height: "34px",
+            borderRadius: "50%",
+            marginRight: "10px",
         }
     };
 
     const xsStyles = {
-        AdaptiveHeaderMessages: {
-            ...headerMessages,
-        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
@@ -111,8 +125,8 @@ export function Message() {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height:"100vh",
+            width:"100vw",
             maxHeight:"100vh",
-            display: "none"
         },
         AdaptiveTextingConatinerScrollFromTop: {
             ...textingConatinerScrollFromTop,
@@ -126,14 +140,28 @@ export function Message() {
         },
         AdaptiveTextingContainerWithScroll: {
             ...textingContainerWithScroll,
-            width: "100vw",
+        },
+        AdaptiveMessageContainerStyle: {
+            width: "100%",
+            boxSizing: "border-box",
+            display: "flex",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F5F8FA",
+            alignItems: "center",
+            fontFamily: "'Lato', sans-serif",
+            flexGrow: 1,
+            padding: "0 20px 0 10px",
+            height: "50px",
+        },
+        AdaptiveAvatarStyle: {
+            width: "34px",
+            height: "34px",
+            borderRadius: "50%",
+            marginRight: "10px",
         }
     };
 
     const smStyles = {
-        AdaptiveHeaderMessages: {
-            ...headerMessages,
-        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             maxWidth: "500px"
@@ -150,8 +178,8 @@ export function Message() {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height:"100vh",
+            width:"100vw",
             maxHeight:"100vh",
-            display: "none"
         },
         AdaptiveTextingConatinerScrollFromTop: {
             ...textingConatinerScrollFromTop,
@@ -165,14 +193,28 @@ export function Message() {
         },
         AdaptiveTextingContainerWithScroll: {
             ...textingContainerWithScroll
+        },
+        AdaptiveMessageContainerStyle: {
+            width: "100%",
+            boxSizing: "border-box",
+            display: "flex",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F5F8FA",
+            alignItems: "center",
+            fontFamily: "'Lato', sans-serif",
+            flexGrow: 1,
+            padding: "0 20px 0 10px",
+            height: "50px",
+        },
+        AdaptiveAvatarStyle: {
+            width: "34px",
+            height: "34px",
+            borderRadius: "50%",
+            marginRight: "10px",
         }
-
     };
 
     const mdStyles = {
-        AdaptiveHeaderMessages: {
-            ...headerMessages,
-        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "800px"
@@ -202,14 +244,28 @@ export function Message() {
         },
         AdaptiveTextingContainerWithScroll: {
             ...textingContainerWithScroll,
-            width: "800px"
+        },
+        AdaptiveMessageContainerStyle: {
+            width: "100%",
+            boxSizing: "border-box",
+            display: "flex",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F5F8FA",
+            alignItems: "center",
+            minHeight: "80px",
+            fontFamily: "'Lato', sans-serif",
+            flexGrow: 1,
+            padding: "0 20px 0 10px",
+        },
+        AdaptiveAvatarStyle: {
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            marginRight: "10px",
         }
     };
 
     const lgStyles = {
-        AdaptiveHeaderMessages: {
-            ...headerMessages,
-        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "900px"
@@ -239,14 +295,28 @@ export function Message() {
         },
         AdaptiveTextingContainerWithScroll: {
             ...textingContainerWithScroll,
-            width: "900px"
+        },
+        AdaptiveMessageContainerStyle: {
+            width: "100%",
+            boxSizing: "border-box",
+            display: "flex",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F5F8FA",
+            alignItems: "center",
+            minHeight: "80px",
+            fontFamily: "'Lato', sans-serif",
+            flexGrow: 1,
+            padding: "0 20px 0 10px",
+        },
+        AdaptiveAvatarStyle: {
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            marginRight: "10px",
         }
     };
 
     const xlStyles = {
-        AdaptiveHeaderMessages: {
-            ...headerMessages,
-        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "900px"
@@ -276,17 +346,37 @@ export function Message() {
         },
         AdaptiveTextingContainerWithScroll: {
             ...textingContainerWithScroll,
-            width: "900px"
+        },
+        AdaptiveMessageContainerStyle: {
+            width: "100%",
+            boxSizing: "border-box",
+            display: "flex",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F5F8FA",
+            alignItems: "center",
+            minHeight: "80px",
+            fontFamily: "'Lato', sans-serif",
+            flexGrow: 1,
+            padding: "0 20px 0 10px",
+        },
+        AdaptiveAvatarStyle: {
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            marginRight: "10px",
         }
     };
 
     let styles;
     if (isXl) {
         styles = xlStyles;
+        dispatch(setClickedInboxFalse());
     } else if (isLg) {
         styles = lgStyles;
+        dispatch(setClickedInboxFalse());
     } else if (isMd) {
         styles = mdStyles;
+        dispatch(setClickedInboxFalse());
     } else if (isSm) {
         styles = smStyles;
     } else if (isXs) {
@@ -294,7 +384,6 @@ export function Message() {
     } else {
         styles = xxsStyles;
     }
-
 
 
 
@@ -356,6 +445,10 @@ export function Message() {
         }
     }, [selectedMessage]);
 
+    useEffect(() => {
+        console.log(clicked);
+    }, [clicked]);
+
     function handleSelectMessage(message) {
         setSelectedMessage(message);
     }
@@ -383,24 +476,36 @@ export function Message() {
     };
 
     return (
-        <>
-        <header
-        style={styles.AdaptiveHeaderMessages}>Messages</header>
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
-            
-            <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
-                <MessageSearch/>
-                <div style={styles.AdaptiveInboxContainerStyle}>
-                    <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
+            {!clicked &&
+                <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
+                    <HeaderInformation />
+                    <MessageSearch/>
+                    <div style={styles.AdaptiveInboxContainerStyle}>
+                        <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
+                    </div>
                 </div>
-            </div>
+            }
+            {isXl || isLg || isMd || clicked ?
             <div style={styles.AdaptiveTextingContainerWithInputStyle}>
+                {clicked && <HeaderInformation />}
                 {selectedMessage === null ? (
                     <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
                         <div style={{fontSize: "1.1rem",
                             fontFamily: "'Lato', sans-serif"}}>Почніть переписку</div>
                     </div>
                 ) : (
+                    <>
+                        <div style={styles.AdaptiveMessageContainerStyle}>
+                            {selectedMessage.profileImageUrl ?
+                                <img src={selectedMessage.profileImageUrl} alt="Avatar" style={styles.AdaptiveAvatarStyle} /> :
+                                <Avatar alt={sender} src="#" style={styles.AdaptiveAvatarStyle}/>
+                            }
+                            <div style={{flex: "1", height: "40px", overflow: "hidden",}}>
+                                <div style={{fontFamily: "'Lato', sans-serif"}}>{selectedMessage.name}</div>
+                                <div style={{fontFamily: "'Lato', sans-serif", color: "gray",}}>@{selectedMessage.username}</div>
+                            </div>
+                        </div>
                     <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom} ref={textingContainerRef}>
                         <TextingMessage
                             sender={selectedMessage.inboxUid}
@@ -409,9 +514,11 @@ export function Message() {
                             key={Math.floor(Math.random() * 1000)}
                         />
                     </div>
+                    </>
+                    
                 )}
 
-                <div style={{...styles.AdaptiveTextingContainerWithScroll, width:"440px"}}>
+                <div style={{...styles.AdaptiveTextingContainerWithScroll, width:"100%"}}>
                     {selectedMessage && (
                         <TextField
                             id="outlined-basic"
@@ -458,8 +565,7 @@ export function Message() {
                         />
                     )}
                 </div>
-            </div>
+            </div>: null}
         </div>
-        </>
     );
 }

@@ -1,14 +1,3 @@
-  export const headerMessages = {
-    padding: "20px 24px",
-    margin: 0,
-    fontFamily: "'Lato', sans-serif",
-    fontWeight: "400",
-    fontSize: "1.5rem",
-    lineHeight: "1.334",
-    letterSpacing: "0em",
-    color: "#000000",
-  }
-  
   export const leftBlockAndRightBlockContainer = {
     borderTop: "1px solid rgba(0, 0, 0, 0.1)",
     display: "flex",
