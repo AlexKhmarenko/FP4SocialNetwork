@@ -21,6 +21,7 @@ import { over } from "stompjs";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 
 
 let stompClient = null;
@@ -304,6 +305,7 @@ export function Message() {
 
     useEffect(() => {
         const onConnected = () => {
+            console.log(userId)
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
         const onError = (err) => {
@@ -366,6 +368,7 @@ export function Message() {
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
+                <HeaderInformation/>
                 <MessageSearch/>
                 <div style={styles.AdaptiveInboxContainerStyle}>
                     <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
@@ -408,7 +411,7 @@ export function Message() {
                                         style={{ cursor: "pointer", }}
                                         onClick={async (event) => {
                                             event.preventDefault();
-                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
+                                            stompClient.send("/api/addMessage", {}, JSON.stringify({
                                                 userId: selectedMessage.userId,
                                                 inboxUid: selectedMessage.inboxUid,
                                                 writtenMessage: inputValue,
