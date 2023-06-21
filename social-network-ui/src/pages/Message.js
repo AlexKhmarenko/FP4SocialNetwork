@@ -32,13 +32,17 @@ export function Message() {
     const page = useSelector(state => state.pageCountMessage.page);
     const maxAmountOfPages = useSelector(state => state.pageCountMessage.maxAmountOfPages);
     const userId = useSelector((state) => state.userData.userData.userId);
-    const [selectedMessage, setSelectedMessage] = useState(null);
+    const [selectedMessage, setSelectedMessage] = useState({});
     const [isFetchingTexts, setIsFetchingTexts] = useState(false);
     const [allTextsLoaded, setAllTextsLoaded] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const textingContainerRef = useRef(null);
     const [inboxMessages, setInboxMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(()=>{
+        console.log(selectedMessage, "selectedMessageFROMMESSAGEEL")
+    },[selectedMessage])
 
 
 
@@ -339,9 +343,6 @@ export function Message() {
         }
     }, [selectedMessage]);
 
-    function handleSelectMessage(message) {
-        setSelectedMessage(message);
-    }
 
     const handleScroll = async (event) => {
         if (isFetchingTexts || allTextsLoaded) {
@@ -371,7 +372,7 @@ export function Message() {
                 <HeaderInformation/>
                 <MessageSearch/>
                 <div style={styles.AdaptiveInboxContainerStyle}>
-                    { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"40%" }}/> : <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>}
+                    { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"40%" }}/> : <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage} setSelectedMessage={setSelectedMessage}/>}
                 </div>
             </div>
             <div style={styles.AdaptiveTextingContainerWithInputStyle}>

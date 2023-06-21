@@ -66,7 +66,7 @@ export function TextingMessage({ sender, receiver, selectedMessage }) {
 
 
 TextingMessage.propTypes = {
-  sender: PropTypes.number.isRequired,
-  receiver: PropTypes.number.isRequired,
-  selectedMessage: PropTypes.array.isRequired,
+  sender: PropTypes.number,
+  receiver: PropTypes.number,
+  selectedMessage: PropTypes.array,
 };

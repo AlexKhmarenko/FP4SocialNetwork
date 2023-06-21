@@ -18,7 +18,7 @@ import { useTransition, animated } from 'react-spring';
 import { setMessages, setPageForMessage, setPageZeroForMessaging, fetchTextsByPage } from "../../../store/actions";
 
 
-export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessage }){
+export function MessageInbox({inboxMessages, selectedMessage, setSelectedMessage }){
     const transitions = useTransition(inboxMessages, {
         from: { opacity: 0, transform: 'translate3d(0,50%,0)' },
         enter: { opacity: 1, transform: 'translate3d(0%,0%,0)' },
@@ -47,11 +47,10 @@ export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessag
                                 date={item.createdAt}
                                 handleClick={(event) => {
                                     event.preventDefault()
-                                    console.log(item.inboxUid)
                                     if (selectedMessage !== item) {
-                                        handleSelectMessage(item);
+                                        console.log(selectedMessage, "selectedMessage", item, "item")
+                                        setSelectedMessage(item)
                                         dispatch(setPageZeroForMessaging());
-                                        console.log(item.inboxUid);
                                         dispatch(fetchTextsByPage(item.userId, userId, 0));
                                     }
                                 }}
@@ -71,6 +70,7 @@ export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessag
 }
 
 MessageInbox.propTypes = {
+    setSelectedMessage:PropTypes.any,
     selectedMessage:PropTypes.any,
     inboxMessages: PropTypes.any,
     handleSelectMessage:PropTypes.func
