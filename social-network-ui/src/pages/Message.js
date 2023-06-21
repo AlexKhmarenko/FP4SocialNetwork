@@ -58,18 +58,17 @@ export function Message() {
     }, []);
 
     useEffect(() => {
-        const connect = () => {
-            let Sock = new SockJS(`${apiUrl}/websocket`);
-            stompClient = over(Sock);
-            stompClient.connect({}, onConnected, onError);
-        };
         const onConnected = () => {
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
         const onError = (err) => {
             console.log(err);
         };
-        connect();
+
+        let Sock = new SockJS(`${apiUrl}/websocket`);
+        stompClient = over(Sock);
+        stompClient.connect({}, onConnected, onError);
+
         return () => {
             if (stompClient) {
                 stompClient.disconnect();
@@ -182,6 +181,7 @@ export function Message() {
                                                 inboxUid: selectedMessage.inboxUid,
                                                 writtenMessage: inputValue,
                                             }));
+                                            console.log(selectedMessage.userId,selectedMessage.inboxUid,inputValue)
                                             await fetch(`${apiUrl}/api/addMessage`, {
                                                 method: "POST",
                                                 body: JSON.stringify({
