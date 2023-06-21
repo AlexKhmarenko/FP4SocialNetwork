@@ -18,13 +18,12 @@ import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
-import CircularProgress from "@mui/material/CircularProgress";
-import { height, padding } from "@mui/system";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
-import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
+import { setClickedInboxFalse} from "../store/actions";
 import { Avatar } from "@mui/material";
 
 
