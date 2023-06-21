@@ -18,7 +18,11 @@ import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 import CircularProgress from "@mui/material/CircularProgress";
+
 
 let stompClient = null;
 
@@ -35,6 +39,248 @@ export function Message() {
     const textingContainerRef = useRef(null);
     const [inboxMessages, setInboxMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false)
+
+
+
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            width: "100vw",
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            width: "100%"
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+            display: "none"
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll,
+            width: "100vw"
+        }
+    };
+
+    const xsStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            width: "100vw",
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            width: "100%",
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+            display: "none"
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll,
+            width: "100vw",
+        }
+    };
+
+    const smStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            maxWidth: "500px"
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            width: "100%"
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+            display: "none"
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll
+        }
+
+    };
+
+    const mdStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            width: "800px"
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll,
+            width: "800px"
+        }
+    };
+
+    const lgStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            width: "900px"
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll,
+            width: "900px"
+        }
+    };
+
+    const xlStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            width: "900px"
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll,
+            width: "900px"
+        }
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
+
+
+
+
 
     const fetchMessages = async () => {
         try{
@@ -58,8 +304,9 @@ export function Message() {
     }, []);
 
     useEffect(() => {
-
+      
         const onConnected = () => {
+            console.log(userId)
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
         const onError = (err) => {
@@ -115,35 +362,22 @@ export function Message() {
     };
 
     return (
-        <div style={leftBlockAndRightBlockContainer}>
-            <div style={{ ...leftBlockInboxAndSearch, borderRight: "1px solid rgba(0, 0, 0, 0.1)" }}>
+        <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
+            <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
+                <HeaderInformation/>
                 <MessageSearch/>
-                <div style={{ ...inboxContainerStyle }}>
-                    { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"45%" }}/>  : <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage} selectedMessage={selectedMessage}/>}
+                <div style={styles.AdaptiveInboxContainerStyle}>
+                    { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"40%" }}/> : <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>}
                 </div>
             </div>
-            <div style={{
-                ...textingContainerWithInputStyle,
-                borderRight: "1px solid rgba(0, 0, 0, 0.1)",
-                height: "100vh",
-                maxHeight: "100vh"
-            }}>
+            <div style={styles.AdaptiveTextingContainerWithInputStyle}>
                 {selectedMessage === null ? (
-                    <div style={{
-                        ...textingConatinerScrollFromTop,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: "100vh"
-                    }} ref={textingContainerRef}>
-                        <div style={{
-                            fontSize: "1.1rem",
-                            fontFamily: "'Lato', sans-serif"
-                        }}>Почніть переписку
-                        </div>
+                    <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
+                        <div style={{fontSize: "1.1rem",
+                            fontFamily: "'Lato', sans-serif"}}>Почніть переписку</div>
                     </div>
                 ) : (
-                    <div onScroll={handleScroll} style={textingConatinerScrollFromBottom} ref={textingContainerRef}>
+                    <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom} ref={textingContainerRef}>
                         <TextingMessage
                             sender={selectedMessage.inboxUid}
                             receiver={selectedMessage.userId}
@@ -153,7 +387,7 @@ export function Message() {
                     </div>
                 )}
 
-                <div style={textingContainerWithScroll}>
+                <div style={{...styles.AdaptiveTextingContainerWithScroll, width:"440px"}}>
                     {selectedMessage && (
                         <TextField
                             id="outlined-basic"
@@ -172,11 +406,12 @@ export function Message() {
                                         style={{ cursor: "pointer", }}
                                         onClick={async (event) => {
                                             event.preventDefault();
-                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
+                                            stompClient.send("/api/addMessage", {}, JSON.stringify({
                                                 userId: selectedMessage.userId,
                                                 inboxUid: selectedMessage.inboxUid,
                                                 writtenMessage: inputValue,
                                             }));
+                                            console.log(selectedMessage.userId,selectedMessage.inboxUid,inputValue)
                                             await fetch(`${apiUrl}/api/addMessage`, {
                                                 method: "POST",
                                                 body: JSON.stringify({

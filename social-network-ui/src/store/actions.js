@@ -415,6 +415,8 @@ export const PopularPeopleFetch = (setIsLoading, setMostPopularPeople) => {
     };
 };
 
+
+
 export const changeDob = (userId, values) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/change_dob`, {
