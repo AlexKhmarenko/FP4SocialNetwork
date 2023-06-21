@@ -45,265 +45,284 @@ export function Message() {
     const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
     const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isL = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
 
-    const xxsStyles = {
-        AdaptivePostWrapper: {
-            width: "50vw",
-            minWidth: "200px",
-            display: "flex",
-            justifyContent: "space-around",
-            alignItems: "space-around",
+    // const xxsStyles = {
+    //     AdaptivePostWrapper: {
+    //         width: "50vw",
+    //         minWidth: "200px",
+    //         display: "flex",
+    //         justifyContent: "space-around",
+    //         alignItems: "space-around",
+    //     },
+    //     AdaptiveSendPostField: {
+    //         fontSize: "1.3rem",
+    //         fontFamily: "'Lato', sans-serif",
+    //         width: "65vw",
+    //         maxWidth: "300px",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveHomeScreenWrapper: {
+    //         overflow: "hidden",
+    //         display: "flex",
+    //         flexDirection: "column",
+    //         justifyContent: "start",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveSendingPostButtonsContainer: {
+    //         display: "flex",
+    //         justifyContent: "space-between",
+    //         width: "50vw",
+    //         marginTop: "40px",
+    //         marginBottom: "20px",
+    //     },
+    //     fab: {
+    //         position: "fixed",
+    //         bottom: "16px",
+    //         right: "16px",
+    //     },
+    //     AdaptiveSvgWrapper: {
+    //         display: "none",
+    //     },
+    //     AdaptivePostImgWrapper: {
+    //         ...PostImgWrapper, marginTop: "10px"
+    //     }
+    // };
+
+    // const xsStyles = {
+    //     AdaptivePostWrapper: {
+    //         width: "50vw",
+    //         paddingBottom: "40px",
+    //         minWidth: "200px",
+    //         display: "flex",
+    //         justifyContent: "space-around",
+    //         alignItems: "space-around",
+    //     },
+    //     AdaptiveHomeScreenWrapper: {
+    //         overflow: "hidden",
+    //         display: "flex",
+    //         flexDirection: "column",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveSendingPostButtonsContainer: {
+    //         display: "flex",
+    //         justifyContent: "space-between",
+    //         width: "70vw",
+    //         marginTop: "40px",
+    //         marginBottom: "20px",
+    //     },
+    //     AdaptiveSendPostField: {
+    //         fontSize: "1.3rem",
+    //         fontFamily: "'Lato', sans-serif",
+    //         width: "70vw",
+    //         marginTop: "20px",
+    //     },
+    //     fab: {
+    //         position: "fixed",
+    //         bottom: "16px",
+    //         right: "16px",
+    //     },
+    //     AdaptiveSvgWrapper: {
+    //         display: "none",
+    //     },
+    //     AdaptivePostImgWrapper: {
+    //         ...PostImgWrapper, marginTop: "10px"
+    //     }
+    // };
+
+    // const smStyles = {
+    //     AdaptivePostWrapper: {
+    //         width: "470px",
+    //         paddingBottom: "40px",
+    //         display: "flex",
+    //         justifyContent: "space-around",
+    //         alignItems: "space-around",
+    //         borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+    //     },
+    //     AdaptiveHomeScreenWrapper: {
+    //         width: "470px",
+    //         display: "flex",
+    //         flexDirection: "column",
+    //         justifyContent: "start",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveSendingPostButtonsContainer: {
+    //         display: "flex",
+    //         justifyContent: "space-between",
+    //         maxWidth: "400px",
+    //         width: "350px",
+    //         marginTop: "40px",
+    //         marginBottom: "20px",
+    //     },
+    //     AdaptiveSendPostField: {
+    //         fontSize: "1.3rem",
+    //         fontFamily: "'Lato', sans-serif",
+    //         width: "350px",
+    //         maxWidth: "600px",
+    //         marginTop: "20px",
+    //     },
+    //     fab: {
+    //         position: "fixed",
+    //         bottom: "16px",
+    //         right: "16px",
+    //     },
+
+    // };
+
+    // const mdStyles = {
+    //     AdaptivePostWrapper: {
+    //         width: "600px",
+    //         paddingBottom: "40px",
+    //         display: "flex",
+    //         justifyContent: "space-around",
+    //         alignItems: "space-around",
+    //         borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+    //     },
+    //     AdaptiveHomeScreenWrapper: {
+    //         width: "600px",
+    //         display: "flex",
+    //         flexDirection: "column",
+    //         justifyContent: "center",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveSendingPostButtonsContainer: {
+    //         display: "flex",
+    //         justifyContent: "space-between",
+    //         maxWidth: "400px",
+    //         width: "400px",
+    //         marginTop: "40px",
+    //         marginBottom: "20px",
+    //     },
+    //     AdaptiveSendPostField: {
+    //         fontSize: "1.3rem",
+    //         fontFamily: "'Lato', sans-serif",
+    //         width: "450px",
+    //         maxWidth: "600px",
+    //         marginTop: "20px",
+    //     },
+    //     fab: {
+    //         position: "fixed",
+    //         bottom: "16px",
+    //         right: "16px",
+    //     },
+    // };
+
+    // const lgStyles = {
+    //     AdaptiveLeftBlockAndRightBlockContainer: {
+    //         ...leftBlockAndRightBlockContainer,
+    //     },
+    //     AdaptiveLeftBlockInboxAndSearch: {
+    //         ...leftBlockInboxAndSearch,
+    //         borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+    //     },
+    //     AdaptiveInboxContainerStyle: {
+    //         ...inboxContainerStyle,
+    //     },
+    //     AdaptiveTextingContainerWithInputStyle: {
+    //         ...textingContainerWithInputStyle,
+    //         borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+    //         height:"100vh",
+    //         maxHeight:"100vh",
+    //     },
+    //     AdaptiveTextingConatinerScrollFromTop: {
+    //         ...textingConatinerScrollFromTop,
+    //         display:"flex",
+    //         justifyContent:"center",
+    //         alignItems:"center",
+    //         height:"100vh",
+    //     },
+    //     AdaptiveTextingContainerScrollFromBottom: {
+    //         ...textingConatinerScrollFromBottom
+    //     },
+    //     AdaptiveTextingContainerWithScroll: {
+    //         ...textingContainerWithScroll
+    //     }
+    // };
+
+    const lStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
         },
-        AdaptiveSendPostField: {
-            fontSize: "1.3rem",
-            fontFamily: "'Lato', sans-serif",
-            width: "65vw",
-            maxWidth: "300px",
-            marginTop: "20px",
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
         },
-        AdaptiveHomeScreenWrapper: {
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
-            marginTop: "20px",
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
         },
-        AdaptiveSendingPostButtonsContainer: {
-            display: "flex",
-            justifyContent: "space-between",
-            width: "50vw",
-            marginTop: "40px",
-            marginBottom: "20px",
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
         },
-        fab: {
-            position: "fixed",
-            bottom: "16px",
-            right: "16px",
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
         },
-        AdaptiveSvgWrapper: {
-            display: "none",
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
         },
-        AdaptivePostImgWrapper: {
-            ...PostImgWrapper, marginTop: "10px"
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll
         }
-    };
-
-    const xsStyles = {
-        AdaptivePostWrapper: {
-            width: "50vw",
-            paddingBottom: "40px",
-            minWidth: "200px",
-            display: "flex",
-            justifyContent: "space-around",
-            alignItems: "space-around",
-        },
-        AdaptiveHomeScreenWrapper: {
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "20px",
-        },
-        AdaptiveSendingPostButtonsContainer: {
-            display: "flex",
-            justifyContent: "space-between",
-            width: "70vw",
-            marginTop: "40px",
-            marginBottom: "20px",
-        },
-        AdaptiveSendPostField: {
-            fontSize: "1.3rem",
-            fontFamily: "'Lato', sans-serif",
-            width: "70vw",
-            marginTop: "20px",
-        },
-        fab: {
-            position: "fixed",
-            bottom: "16px",
-            right: "16px",
-        },
-        AdaptiveSvgWrapper: {
-            display: "none",
-        },
-        AdaptivePostImgWrapper: {
-            ...PostImgWrapper, marginTop: "10px"
-        }
-    };
-
-    const smStyles = {
-        AdaptivePostWrapper: {
-            width: "470px",
-            paddingBottom: "40px",
-            display: "flex",
-            justifyContent: "space-around",
-            alignItems: "space-around",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-        },
-        AdaptiveHomeScreenWrapper: {
-            width: "470px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
-            marginTop: "20px",
-        },
-        AdaptiveSendingPostButtonsContainer: {
-            display: "flex",
-            justifyContent: "space-between",
-            maxWidth: "400px",
-            width: "350px",
-            marginTop: "40px",
-            marginBottom: "20px",
-        },
-        AdaptiveSendPostField: {
-            fontSize: "1.3rem",
-            fontFamily: "'Lato', sans-serif",
-            width: "350px",
-            maxWidth: "600px",
-            marginTop: "20px",
-        },
-        fab: {
-            position: "fixed",
-            bottom: "16px",
-            right: "16px",
-        },
-
-    };
-
-    const mdStyles = {
-        AdaptivePostWrapper: {
-            width: "600px",
-            paddingBottom: "40px",
-            display: "flex",
-            justifyContent: "space-around",
-            alignItems: "space-around",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-        },
-        AdaptiveHomeScreenWrapper: {
-            width: "600px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            marginTop: "20px",
-        },
-        AdaptiveSendingPostButtonsContainer: {
-            display: "flex",
-            justifyContent: "space-between",
-            maxWidth: "400px",
-            width: "400px",
-            marginTop: "40px",
-            marginBottom: "20px",
-        },
-        AdaptiveSendPostField: {
-            fontSize: "1.3rem",
-            fontFamily: "'Lato', sans-serif",
-            width: "450px",
-            maxWidth: "600px",
-            marginTop: "20px",
-        },
-        fab: {
-            position: "fixed",
-            bottom: "16px",
-            right: "16px",
-        },
-    };
-
-    const lgStyles = {
-        AdaptivePostWrapper: {
-            width: "600px",
-            paddingBottom: "40px",
-            display: "flex",
-            justifyContent: "space-around",
-            alignItems: "space-around",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-        },
-        AdaptiveHomeScreenWrapper: {
-            width: "92%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "0 30px",
-            marginTop: "20px",
-        }
-        ,
-        AdaptiveSendingPostButtonsContainer: {
-            display: "flex",
-            justifyContent: "space-between",
-            maxWidth: "400px",
-            width: "400px",
-            marginTop: "40px",
-            marginBottom: "20px",
-        },
-        AdaptiveSendPostField: {
-            fontSize: "1.3rem",
-            fontFamily: "'Lato', sans-serif",
-            width: "400px",
-            maxWidth: "600px",
-            marginTop: "20px",
-        },
-        fab: {
-            position: "fixed",
-            bottom: "16px",
-            right: "16px",
-        },
     };
 
     const xlStyles = {
-        AdaptivePostWrapper: {
-            width: "600px",
-            paddingBottom: "40px",
-            display: "flex",
-            justifyContent: "space-around",
-            alignItems: "space-around",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
         },
-        AdaptiveHomeScreenWrapper: {
-            width: "92%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "0 30px",
-            marginTop: "20px",
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll
         }
-        ,
-        AdaptiveSendingPostButtonsContainer: {
-            display: "flex",
-            justifyContent: "space-between",
-            maxWidth: "400px",
-            width: "400px",
-            marginTop: "40px",
-            marginBottom: "20px",
-        },
-        AdaptiveSendPostField: {
-            fontSize: "1.3rem",
-            fontFamily: "'Lato', sans-serif",
-            width: "400px",
-            maxWidth: "600px",
-            marginTop: "20px",
-        },
-        fab: {
-            position: "fixed",
-            bottom: "16px",
-            right: "16px",
-        },
     };
 
     let styles;
     if (isXl) {
         styles = xlStyles;
-    } else if (isLg) {
-        styles = lgStyles;
-    } else if (isMd) {
-        styles = mdStyles;
-    } else if (isSm) {
-        styles = smStyles;
-    } else if (isXs) {
-        styles = xsStyles;
-    } else {
-        styles = xxsStyles;
+    } else if (isL) {
+        styles = lStyles;
     }
+    // else if (isLg) {
+    //     styles = lgStyles;
+    // }
+    // else if (isMd) {
+    //     styles = mdStyles;
+    // } else if (isSm) {
+    //     styles = smStyles;
+    // } else if (isXs) {
+    //     styles = xsStyles;
+    // } else {
+    //     styles = xxsStyles;
+    // }
 
 
 
@@ -333,7 +352,7 @@ export function Message() {
             stompClient.connect({}, onConnected, onError);
         };
         const onConnected = () => {
-            stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
+            stompClient.subscribe(`/user/66/inbox`, newMessage);
         };
         const onError = (err) => {
             console.log(err);
@@ -387,21 +406,21 @@ export function Message() {
     };
 
     return (
-        <div style={leftBlockAndRightBlockContainer}>
-            <div style={{...leftBlockInboxAndSearch,  borderRight: "1px solid rgba(0, 0, 0, 0.1)"}}>
+        <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
+            <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
                 <MessageSearch/>
-                <div style={{...inboxContainerStyle}}>
+                <div style={styles.AdaptiveInboxContainerStyle}>
                     <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
                 </div>
             </div>
-            <div style={{...textingContainerWithInputStyle, borderRight: "1px solid rgba(0, 0, 0, 0.1)", height:"100vh", maxHeight:"100vh" }}>
+            <div style={styles.AdaptiveTextingContainerWithInputStyle}>
                 {selectedMessage === null ? (
-                    <div style={{...textingConatinerScrollFromTop, display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}} ref={textingContainerRef}>
+                    <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
                         <div style={{fontSize: "1.1rem",
                             fontFamily: "'Lato', sans-serif"}}>Почніть переписку</div>
                     </div>
                 ) : (
-                    <div onScroll={handleScroll} style={textingConatinerScrollFromBottom} ref={textingContainerRef}>
+                    <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom} ref={textingContainerRef}>
                         <TextingMessage
                             sender={selectedMessage.inboxUid}
                             receiver={selectedMessage.userId}
@@ -411,7 +430,7 @@ export function Message() {
                     </div>
                 )}
 
-                <div style={textingContainerWithScroll}>
+                <div style={styles.AdaptiveTextingContainerWithScroll}>
                     {selectedMessage && (
                         <TextField
                             id="outlined-basic"

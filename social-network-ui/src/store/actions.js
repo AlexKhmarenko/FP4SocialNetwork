@@ -479,7 +479,7 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     method: "POST",
                     body: JSON.stringify({
                         inboxUid: inboxUid,
-                        userId: userId,
+                        userId: 66,
                         // page: page,
                     }),
                     headers: { "Content-Type": "application/json" }
