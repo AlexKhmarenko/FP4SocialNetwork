@@ -388,11 +388,12 @@ export function Message() {
                     </div>
                 )}
 
-                <div style={styles.AdaptiveTextingContainerWithScroll}>
+                <div style={{...styles.AdaptiveTextingContainerWithScroll, width:"440px"}}>
                     {selectedMessage && (
                         <TextField
                             id="outlined-basic"
                             type="search"
+                            sx={{width:"100px"}}
                             variant="outlined"
                             placeholder="Input message"
                             size="small"
