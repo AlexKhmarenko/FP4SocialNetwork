@@ -35,7 +35,7 @@ export function Message() {
     const [inboxMessages, setInboxMessages] = useState([]);
 
     const fetchMessages = async () => {
-        const response1 = await fetch(`${apiUrl}/api/inbox/66`);
+        const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
         const userData = await response1.json();
         console.log(userData)
         setInboxMessages(userData)

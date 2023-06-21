@@ -4,6 +4,7 @@ import com.danit.socialnetwork.dto.NotificationType;
 import com.danit.socialnetwork.dto.NotificationRequest;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
+import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.message.MessageRequest;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
@@ -22,6 +23,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -221,9 +223,26 @@ public class WebSocketController {
     Optional<Inbox> inboxesReceiver = inboxService.findByInboxUidAndLastSentUserId(userReceiver, userSender);
 
     String inboxUidString = inboxUid.toString();
-    String inboxUserId = userId.toString();
-    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", mapper.inboxToInboxDtoResponse(inboxSender.get()));
-    messagingTemplate.convertAndSendToUser(inboxUserId, "/inbox", mapper.inboxToInboxDtoResponse(inboxesReceiver.get()));
-    return inboxDtoResponse;
+    String inboxUserIdString = userId.toString();
+    InboxDtoResponse inboxesSenderDto = mapper.inboxToInboxDtoResponse(inboxSender.get());
+    InboxDtoResponse inboxesReceiverDto = mapper.inboxToInboxDtoResponse(inboxesReceiver.get());
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxesSenderDto);
+    messagingTemplate.convertAndSendToUser(inboxUserIdString, "/inbox", inboxesReceiverDto);
+
+    MessageDtoResponse lastMessageSenderDto = new MessageDtoResponse();
+    lastMessageSenderDto.setInboxUid(inboxesSenderDto.getInboxUid());
+    lastMessageSenderDto.setUserId(inboxesSenderDto.getUserId());
+    lastMessageSenderDto.setMessage(inboxesSenderDto.getMessage());
+    lastMessageSenderDto.setCreatedAt(inboxesSenderDto.getCreatedAt());
+
+    MessageDtoResponse lastMessageReceiverDto = new MessageDtoResponse();
+    lastMessageReceiverDto.setInboxUid(inboxesReceiverDto.getInboxUid());
+    lastMessageReceiverDto.setUserId(inboxesReceiverDto.getUserId());
+    lastMessageReceiverDto.setMessage(inboxesReceiverDto.getMessage());
+    lastMessageReceiverDto.setCreatedAt(inboxesReceiverDto.getCreatedAt());
+
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", lastMessageSenderDto);
+    messagingTemplate.convertAndSendToUser(inboxUserIdString, "/getMessages", lastMessageReceiverDto);
+    return inboxesReceiverDto;
   }
 }
