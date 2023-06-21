@@ -18,14 +18,14 @@ import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
+import CircularProgress from "@mui/material/CircularProgress";
 import { height, padding } from "@mui/system";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
 import { Avatar } from "@mui/material";
-
 
 let stompClient = null;
 
@@ -392,7 +392,7 @@ export function Message() {
     const fetchMessages = async () => {
         try{
             setIsLoading(true)
-            const response1 = await fetch(`${apiUrl}/api/inbox/${userId}`);
+            const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
             const userData = await response1.json();
             console.log(userData);
             setInboxMessages(userData);
@@ -411,7 +411,9 @@ export function Message() {
     }, []);
 
     useEffect(() => {
+      
         const onConnected = () => {
+            console.log(userId)
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
         const onError = (err) => {
@@ -431,12 +433,7 @@ export function Message() {
 
     const newMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        setInboxMessages(prevNotifications => {
-            const filteredNotifications = prevNotifications.filter(notification => notification.inboxId !== payloadData.inboxId);
-            console.log(payloadData)
-            dispatch(addMessageFromWebsocket(payloadData));
-            return [payloadData, ...filteredNotifications];
-        });
+            console.log(payloadData, "PayloadData")
     };
 
     useEffect(() => {
@@ -523,7 +520,6 @@ export function Message() {
                         <TextField
                             id="outlined-basic"
                             type="search"
-                            sx={{width:"100px"}}
                             variant="outlined"
                             placeholder="Input message"
                             size="small"
@@ -538,7 +534,7 @@ export function Message() {
                                         style={{ cursor: "pointer", }}
                                         onClick={async (event) => {
                                             event.preventDefault();
-                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
+                                            stompClient.send("/api/addMessage", {}, JSON.stringify({
                                                 userId: selectedMessage.userId,
                                                 inboxUid: selectedMessage.inboxUid,
                                                 writtenMessage: inputValue,
