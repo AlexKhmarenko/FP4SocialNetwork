@@ -22,7 +22,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
-import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 import { setClickedInboxFalse} from "../store/actions";
 import { Avatar } from "@mui/material";
 
