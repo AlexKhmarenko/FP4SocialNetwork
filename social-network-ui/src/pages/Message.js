@@ -23,7 +23,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 import CircularProgress from "@mui/material/CircularProgress";
 import { height, padding } from "@mui/system";
-import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
 import { Avatar } from "@mui/material";
 
