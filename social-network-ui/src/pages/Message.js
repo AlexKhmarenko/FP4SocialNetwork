@@ -289,7 +289,7 @@ export function Message() {
     const fetchMessages = async () => {
         try{
             setIsLoading(true)
-            const response1 = await fetch(`${apiUrl}/api/inbox/${userId}`);
+            const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
             const userData = await response1.json();
             console.log(userData);
             setInboxMessages(userData);
@@ -308,6 +308,7 @@ export function Message() {
     }, []);
 
     useEffect(() => {
+
         const onConnected = () => {
             console.log(userId)
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
@@ -329,12 +330,13 @@ export function Message() {
 
     const newMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        setInboxMessages(prevNotifications => {
-            const filteredNotifications = prevNotifications.filter(notification => notification.inboxId !== payloadData.inboxId);
-            console.log(payloadData)
-            dispatch(addMessageFromWebsocket(payloadData));
-            return [payloadData, ...filteredNotifications];
-        });
+        console.log(payloadData, "PayloadData");
+        // setInboxMessages(prevNotifications => {
+        //     const filteredNotifications = prevNotifications.filter(notification => notification.inboxId !== payloadData.inboxId);
+        //     console.log(payloadData)
+        //     dispatch(addMessageFromWebsocket(payloadData));
+        //     return [payloadData, ...filteredNotifications];
+        // });
     };
 
     useEffect(() => {
