@@ -2,12 +2,18 @@ package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationType;
 import com.danit.socialnetwork.dto.NotificationRequest;
+import com.danit.socialnetwork.dto.message.InboxDtoResponse;
+import com.danit.socialnetwork.dto.message.MessageDtoRequest;
+import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
+import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.service.InboxService;
 import com.danit.socialnetwork.service.NotificationService;
 import com.danit.socialnetwork.service.PostService;
 import com.danit.socialnetwork.service.UserFollowService;
@@ -25,6 +31,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Log4j2
 @Controller
@@ -35,6 +42,8 @@ public class WebSocketController {
   private final UserFollowService userFollowService;
   private final UserService userService;
   private final PostService postService;
+  private final InboxService inboxService;
+  private final InboxMapperImpl mapper;
 
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
@@ -196,5 +205,31 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(authUserIdString, "/unread_notifications", unreadNotifications);
 
     return notificationRequest;
+  }
+
+  @MessageMapping("/addMessage")
+  public MessageDtoRequest postAddMessage(
+      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
+    System.out.println("@MessageMapping(/addMessage)");
+
+    Thread.sleep(1000);
+    Integer inboxUid = messageDtoRequest.getInboxUid();
+    Integer userId = messageDtoRequest.getUserId();
+    System.out.println("inboxUid" + inboxUid);
+    System.out.println("userId" + userId);
+    DbUser userReceiver = userService.findDbUserByUserId(userId);
+    DbUser userSender = userService.findDbUserByUserId(inboxUid);
+
+    Optional<Inbox> inboxSender = inboxService.findByInboxUidAndLastSentUserId(userSender, userReceiver);
+    Optional<Inbox> inboxesReceiver = inboxService.findByInboxUidAndLastSentUserId(userReceiver, userSender);
+    InboxDtoResponse inboxesSenderDto = mapper.inboxToInboxDtoResponse(inboxSender.get());
+    InboxDtoResponse inboxesReceiverDto = mapper.inboxToInboxDtoResponse(inboxesReceiver.get());
+
+    String inboxUidString = inboxUid.toString();
+    String userIdString = userId.toString();
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxesSenderDto);
+    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxesReceiverDto);
+
+    return messageDtoRequest;
   }
 }

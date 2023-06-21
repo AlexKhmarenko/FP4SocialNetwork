@@ -39,7 +39,7 @@ export function Message() {
     const fetchMessages = async () => {
         try{
             setIsLoading(true)
-            const response1 = await fetch(`${apiUrl}/api/inbox/${userId}`);
+            const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
             const userData = await response1.json();
             console.log(userData);
             setInboxMessages(userData);
@@ -58,18 +58,18 @@ export function Message() {
     }, []);
 
     useEffect(() => {
-        const connect = () => {
-            let Sock = new SockJS(`${apiUrl}/websocket`);
-            stompClient = over(Sock);
-            stompClient.connect({}, onConnected, onError);
-        };
+
         const onConnected = () => {
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
         const onError = (err) => {
             console.log(err);
         };
-        connect();
+
+        let Sock = new SockJS(`${apiUrl}/websocket`);
+        stompClient = over(Sock);
+        stompClient.connect({}, onConnected, onError);
+
         return () => {
             if (stompClient) {
                 stompClient.disconnect();
