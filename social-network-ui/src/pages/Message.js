@@ -18,6 +18,8 @@ import { fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 let stompClient = null;
 
@@ -33,6 +35,280 @@ export function Message() {
     const [inputValue, setInputValue] = useState("");
     const textingContainerRef = useRef(null);
     const [inboxMessages, setInboxMessages] = useState([]);
+
+
+
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        AdaptivePostWrapper: {
+            width: "50vw",
+            minWidth: "200px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+        },
+        AdaptiveSendPostField: {
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "65vw",
+            maxWidth: "300px",
+            marginTop: "20px",
+        },
+        AdaptiveHomeScreenWrapper: {
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            marginTop: "20px",
+        },
+        AdaptiveSendingPostButtonsContainer: {
+            display: "flex",
+            justifyContent: "space-between",
+            width: "50vw",
+            marginTop: "40px",
+            marginBottom: "20px",
+        },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
+        AdaptiveSvgWrapper: {
+            display: "none",
+        },
+        AdaptivePostImgWrapper: {
+            ...PostImgWrapper, marginTop: "10px"
+        }
+    };
+
+    const xsStyles = {
+        AdaptivePostWrapper: {
+            width: "50vw",
+            paddingBottom: "40px",
+            minWidth: "200px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+        },
+        AdaptiveHomeScreenWrapper: {
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "20px",
+        },
+        AdaptiveSendingPostButtonsContainer: {
+            display: "flex",
+            justifyContent: "space-between",
+            width: "70vw",
+            marginTop: "40px",
+            marginBottom: "20px",
+        },
+        AdaptiveSendPostField: {
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "70vw",
+            marginTop: "20px",
+        },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
+        AdaptiveSvgWrapper: {
+            display: "none",
+        },
+        AdaptivePostImgWrapper: {
+            ...PostImgWrapper, marginTop: "10px"
+        }
+    };
+
+    const smStyles = {
+        AdaptivePostWrapper: {
+            width: "470px",
+            paddingBottom: "40px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveHomeScreenWrapper: {
+            width: "470px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            marginTop: "20px",
+        },
+        AdaptiveSendingPostButtonsContainer: {
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "350px",
+            marginTop: "40px",
+            marginBottom: "20px",
+        },
+        AdaptiveSendPostField: {
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "350px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
+
+    };
+
+    const mdStyles = {
+        AdaptivePostWrapper: {
+            width: "600px",
+            paddingBottom: "40px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveHomeScreenWrapper: {
+            width: "600px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            marginTop: "20px",
+        },
+        AdaptiveSendingPostButtonsContainer: {
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop: "40px",
+            marginBottom: "20px",
+        },
+        AdaptiveSendPostField: {
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "450px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
+    };
+
+    const lgStyles = {
+        AdaptivePostWrapper: {
+            width: "600px",
+            paddingBottom: "40px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveHomeScreenWrapper: {
+            width: "92%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "0 30px",
+            marginTop: "20px",
+        }
+        ,
+        AdaptiveSendingPostButtonsContainer: {
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop: "40px",
+            marginBottom: "20px",
+        },
+        AdaptiveSendPostField: {
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
+    };
+
+    const xlStyles = {
+        AdaptivePostWrapper: {
+            width: "600px",
+            paddingBottom: "40px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "space-around",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveHomeScreenWrapper: {
+            width: "92%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "0 30px",
+            marginTop: "20px",
+        }
+        ,
+        AdaptiveSendingPostButtonsContainer: {
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "400px",
+            width: "400px",
+            marginTop: "40px",
+            marginBottom: "20px",
+        },
+        AdaptiveSendPostField: {
+            fontSize: "1.3rem",
+            fontFamily: "'Lato', sans-serif",
+            width: "400px",
+            maxWidth: "600px",
+            marginTop: "20px",
+        },
+        fab: {
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+        },
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
+
+
+
+
 
     const fetchMessages = async () => {
         const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
