@@ -415,6 +415,8 @@ export const PopularPeopleFetch = (setIsLoading, setMostPopularPeople) => {
     };
 };
 
+
+
 export const changeDob = (userId, values) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/change_dob`, {
@@ -568,6 +570,13 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
         throw error;
     }
 };
+
+export const addMessageFromWebsocket = (message)=> {
+    return {
+        type: "ADD_ONE_MESSAGE_FROM_WEBSOCKET",
+        payload: message,
+    }
+}
 
 export const setProfilePosts = (posts) => ({
     type: SET_PROFILE_POSTS,
