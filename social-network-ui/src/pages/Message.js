@@ -18,10 +18,10 @@ import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 let stompClient = null;
@@ -371,7 +371,7 @@ export function Message() {
                 <HeaderInformation/>
                 <MessageSearch/>
                 <div style={styles.AdaptiveInboxContainerStyle}>
-                    <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
+                    isLoading ? <CircularProgress sx={{ marginTop: "20%" }}/> : <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
                 </div>
             </div>
             <div style={styles.AdaptiveTextingContainerWithInputStyle}>
@@ -396,7 +396,6 @@ export function Message() {
                         <TextField
                             id="outlined-basic"
                             type="search"
-                            sx={{width:"100px"}}
                             variant="outlined"
                             placeholder="Input message"
                             size="small"
