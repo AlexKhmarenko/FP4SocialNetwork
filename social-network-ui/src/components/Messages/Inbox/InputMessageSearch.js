@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/material";
 import {UserSearchTextField} from "./SearchStyles";
 import {useDispatch, useSelector} from "react-redux";
-import {DeleteMessageSuccess, DeleteUsersSuccess, setSearchData, setSearchId} from "../../../store/actions";
+import {DeleteMessageSuccess, setSearchData} from "../../../store/actions";
 import {useNavigate} from "react-router-dom";
 import {apiUrl} from "../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import {fetchUserInbox} from "../../../store/Thunks/fetchUserInboxThunk";
 
 export const InputMessageSearch = ({ ...props }) => {
     const message = useSelector(state => state.messageSearch.message)
@@ -36,15 +37,15 @@ export const InputMessageSearch = ({ ...props }) => {
     };
 
     const mdStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px",  marginLeft:"5px"}
     };
 
     const lgStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"500px", marginLeft:"10px"}
     };
 
     const xlStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"500px", marginLeft:"10px"}
     };
 
     let styles;
@@ -94,7 +95,7 @@ export const InputMessageSearch = ({ ...props }) => {
                     : "Messages not found"
             }
             renderInput={(params) => (
-                <TextField{...props} sx={styles.AdaptiveUserSearchTextField} {...params} label="Search message"
+                <TextField{...props} sx={styles.AdaptiveUserSearchTextField} {...params} label="Search message or people"
                           onBlur={(ev) => {
                               ev.preventDefault()
                               inputValue === ''
@@ -114,8 +115,9 @@ export const InputMessageSearch = ({ ...props }) => {
                 return (
                     <li {...props} key={option.userId}>
                         <Grid container alignItems="center" onClick={() => {
-                            dispatch(setSearchId(String(option.userId)))
-                            navigate("/view")
+                            dispatch(fetchUserInbox(option.userId))
+                            // dispatch(setSearchId(String(option.userId)))
+                            // navigate("/view")
                         }}>
                             <Grid item sx={{ display: 'flex', width: 44 }}>
                                 <Avatar alt={option.username} src={option.profileImageUrl}/>
@@ -127,9 +129,15 @@ export const InputMessageSearch = ({ ...props }) => {
                                 >
                                     {option.name}
                                 </Box>
-                                <Typography variant="body2" color="text.secondary">
-                                    @{option.username}
-                                </Typography>
+                                {option.message ?
+                                    <Typography variant="body2" color="text.secondary">
+                                        {option.message}
+                                    </Typography>
+                                    :
+                                    <Typography variant="body2" color="text.secondary">
+                                         @{option.username}
+                                    </Typography>
+                                }
                             </Grid>
                         </Grid>
                     </li>
