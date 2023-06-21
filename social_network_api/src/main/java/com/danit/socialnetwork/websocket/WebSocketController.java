@@ -105,7 +105,7 @@ public class WebSocketController {
 
   @MessageMapping("/repost")
   public NotificationRequest postNotification(
-      @Payload RepostDtoSave repostDtoSave)  {
+      @Payload RepostDtoSave repostDtoSave) {
     Integer repostUserId = repostDtoSave.getUserId();
     Integer postId = repostDtoSave.getPostId();
 

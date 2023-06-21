@@ -35,7 +35,7 @@ export function Message() {
     const [inboxMessages, setInboxMessages] = useState([]);
 
     const fetchMessages = async () => {
-        const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
+        const response1 = await fetch(`${apiUrl}/api/inbox/66`);
         const userData = await response1.json();
         console.log(userData);
         setInboxMessages(userData);
@@ -136,6 +136,7 @@ export function Message() {
                             fontFamily: "'Lato', sans-serif"
                         }}>Почніть переписку
                         </div>
+
                     </div>
                 ) : (
                     <div onScroll={handleScroll} style={textingConatinerScrollFromBottom} ref={textingContainerRef}>
@@ -167,6 +168,7 @@ export function Message() {
                                         style={{ cursor: "pointer", }}
                                         onClick={async (event) => {
                                             event.preventDefault();
+
                                             stompClient.send("/app/addMessage", {}, JSON.stringify({
                                                 userId: userId,
                                                 inboxUid: selectedMessage.inboxUid,
@@ -182,6 +184,7 @@ export function Message() {
                                                 headers: { "Content-Type": "application/json" },
                                             });
                                             console.log(userId, selectedMessage.inboxUid, inputValue);
+
                                             setInputValue("");
                                         }}
                                     />
