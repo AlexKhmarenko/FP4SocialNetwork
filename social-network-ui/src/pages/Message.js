@@ -79,12 +79,7 @@ export function Message() {
 
     const newMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        setInboxMessages(prevNotifications => {
-            const filteredNotifications = prevNotifications.filter(notification => notification.inboxId !== payloadData.inboxId);
-            console.log(payloadData)
-            dispatch(addMessageFromWebsocket(payloadData));
-            return [payloadData, ...filteredNotifications];
-        });
+            console.log(payloadData, "PayloadData")
     };
 
     useEffect(() => {
@@ -177,7 +172,7 @@ export function Message() {
                                         style={{ cursor: "pointer", }}
                                         onClick={async (event) => {
                                             event.preventDefault();
-                                            stompClient.send("/api/addMessage", {}, JSON.stringify({
+                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
                                                 userId: selectedMessage.userId,
                                                 inboxUid: selectedMessage.inboxUid,
                                                 writtenMessage: inputValue,
