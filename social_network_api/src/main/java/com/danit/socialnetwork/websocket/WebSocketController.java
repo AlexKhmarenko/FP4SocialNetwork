@@ -208,28 +208,29 @@ public class WebSocketController {
   }
 
   @MessageMapping("/addMessage")
-  public MessageDtoRequest postAddMessage(
+  public InboxDtoResponse postAddMessage(
       @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
-    System.out.println("@MessageMapping(/addMessage)");
+    log.info("@MessageMapping(/addMessage)");
 
     Thread.sleep(1000);
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
-    System.out.println("inboxUid" + inboxUid);
-    System.out.println("userId" + userId);
+    log.info("inboxUid" + inboxUid);
+    log.info("userId" + userId);
     DbUser userReceiver = userService.findDbUserByUserId(userId);
     DbUser userSender = userService.findDbUserByUserId(inboxUid);
 
-    Optional<Inbox> inboxSender = inboxService.findByInboxUidAndLastSentUserId(userSender, userReceiver);
-    Optional<Inbox> inboxesReceiver = inboxService.findByInboxUidAndLastSentUserId(userReceiver, userSender);
-    InboxDtoResponse inboxesSenderDto = mapper.inboxToInboxDtoResponse(inboxSender.get());
-    InboxDtoResponse inboxesReceiverDto = mapper.inboxToInboxDtoResponse(inboxesReceiver.get());
+    List<InboxDtoResponse> inboxesSender = inboxService.getInboxesByInboxUid(inboxUid);
+    List<InboxDtoResponse> inboxesReceiver = inboxService.getInboxesByInboxUid(userId);
+
+    InboxDtoResponse inboxSender = inboxesSender.get(inboxesSender.size() - 1);
+    InboxDtoResponse inboxReceiver = inboxesReceiver.get(inboxesReceiver.size() - 1);
 
     String inboxUidString = inboxUid.toString();
     String userIdString = userId.toString();
-    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxesSenderDto);
-    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxesReceiverDto);
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxSender);
+    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxReceiver);
+    return inboxSender;
 
-    return messageDtoRequest;
   }
 }
