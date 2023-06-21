@@ -35,7 +35,7 @@ export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessag
     return(
         <div style={{height:"100vh", marginLeft:"20px"}}>
             {inboxMessages.length > 0 ? (
-                <div style={{height:"100vh", marginLeft:"20px"}}>
+                <div style={{height:"100vh"}}>
                     {transitions((style, item) => (
                         <animated.div style={style} key={item.createdAt}>
                             <InboxMessage

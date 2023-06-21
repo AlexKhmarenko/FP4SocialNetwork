@@ -11,7 +11,7 @@ import {
     leftBlockInboxAndSearch, inboxContainerStyle,
     textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
     textingContainerWithScroll, textingConatinerScrollFromBottom,
-    textingConatinerScrollFromTop
+    textingConatinerScrollFromTop, headerMessages
 } from "./pagesStyles/MessageStyles";
 import PropTypes from "prop-types";
 import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
@@ -21,6 +21,7 @@ import { over } from "stompjs";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { height, padding } from "@mui/system";
 
 
 let stompClient = null;
@@ -52,6 +53,9 @@ export function Message() {
 
 
     const xxsStyles = {
+        AdaptiveHeaderMessages: {
+            ...headerMessages,
+        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
@@ -88,6 +92,9 @@ export function Message() {
     };
 
     const xsStyles = {
+        AdaptiveHeaderMessages: {
+            ...headerMessages,
+        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
@@ -124,6 +131,9 @@ export function Message() {
     };
 
     const smStyles = {
+        AdaptiveHeaderMessages: {
+            ...headerMessages,
+        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             maxWidth: "500px"
@@ -160,6 +170,9 @@ export function Message() {
     };
 
     const mdStyles = {
+        AdaptiveHeaderMessages: {
+            ...headerMessages,
+        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "800px"
@@ -194,6 +207,9 @@ export function Message() {
     };
 
     const lgStyles = {
+        AdaptiveHeaderMessages: {
+            ...headerMessages,
+        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "900px"
@@ -228,6 +244,9 @@ export function Message() {
     };
 
     const xlStyles = {
+        AdaptiveHeaderMessages: {
+            ...headerMessages,
+        },
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "900px"
@@ -364,7 +383,11 @@ export function Message() {
     };
 
     return (
+        <>
+        <header
+        style={styles.AdaptiveHeaderMessages}>Messages</header>
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
+            
             <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
                 <MessageSearch/>
                 <div style={styles.AdaptiveInboxContainerStyle}>
@@ -437,5 +460,6 @@ export function Message() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
