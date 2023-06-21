@@ -14,10 +14,13 @@ import {
     textingConatinerScrollFromTop
 } from "./pagesStyles/MessageStyles";
 import PropTypes from "prop-types";
-import { fetchTextsByPage } from "../store/actions";
+import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import CircularProgress from "@mui/material/CircularProgress";
 
 let stompClient = null;
 
@@ -33,18 +36,317 @@ export function Message() {
     const [inputValue, setInputValue] = useState("");
     const textingContainerRef = useRef(null);
     const [inboxMessages, setInboxMessages] = useState([]);
+    const [isLoading, setIsLoading] = useState(false)
+
+
+
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isL = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    // const xxsStyles = {
+    //     AdaptivePostWrapper: {
+    //         width: "50vw",
+    //         minWidth: "200px",
+    //         display: "flex",
+    //         justifyContent: "space-around",
+    //         alignItems: "space-around",
+    //     },
+    //     AdaptiveSendPostField: {
+    //         fontSize: "1.3rem",
+    //         fontFamily: "'Lato', sans-serif",
+    //         width: "65vw",
+    //         maxWidth: "300px",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveHomeScreenWrapper: {
+    //         overflow: "hidden",
+    //         display: "flex",
+    //         flexDirection: "column",
+    //         justifyContent: "start",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveSendingPostButtonsContainer: {
+    //         display: "flex",
+    //         justifyContent: "space-between",
+    //         width: "50vw",
+    //         marginTop: "40px",
+    //         marginBottom: "20px",
+    //     },
+    //     fab: {
+    //         position: "fixed",
+    //         bottom: "16px",
+    //         right: "16px",
+    //     },
+    //     AdaptiveSvgWrapper: {
+    //         display: "none",
+    //     },
+    //     AdaptivePostImgWrapper: {
+    //         ...PostImgWrapper, marginTop: "10px"
+    //     }
+    // };
+
+    // const xsStyles = {
+    //     AdaptivePostWrapper: {
+    //         width: "50vw",
+    //         paddingBottom: "40px",
+    //         minWidth: "200px",
+    //         display: "flex",
+    //         justifyContent: "space-around",
+    //         alignItems: "space-around",
+    //     },
+    //     AdaptiveHomeScreenWrapper: {
+    //         overflow: "hidden",
+    //         display: "flex",
+    //         flexDirection: "column",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveSendingPostButtonsContainer: {
+    //         display: "flex",
+    //         justifyContent: "space-between",
+    //         width: "70vw",
+    //         marginTop: "40px",
+    //         marginBottom: "20px",
+    //     },
+    //     AdaptiveSendPostField: {
+    //         fontSize: "1.3rem",
+    //         fontFamily: "'Lato', sans-serif",
+    //         width: "70vw",
+    //         marginTop: "20px",
+    //     },
+    //     fab: {
+    //         position: "fixed",
+    //         bottom: "16px",
+    //         right: "16px",
+    //     },
+    //     AdaptiveSvgWrapper: {
+    //         display: "none",
+    //     },
+    //     AdaptivePostImgWrapper: {
+    //         ...PostImgWrapper, marginTop: "10px"
+    //     }
+    // };
+
+    // const smStyles = {
+    //     AdaptivePostWrapper: {
+    //         width: "470px",
+    //         paddingBottom: "40px",
+    //         display: "flex",
+    //         justifyContent: "space-around",
+    //         alignItems: "space-around",
+    //         borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+    //     },
+    //     AdaptiveHomeScreenWrapper: {
+    //         width: "470px",
+    //         display: "flex",
+    //         flexDirection: "column",
+    //         justifyContent: "start",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveSendingPostButtonsContainer: {
+    //         display: "flex",
+    //         justifyContent: "space-between",
+    //         maxWidth: "400px",
+    //         width: "350px",
+    //         marginTop: "40px",
+    //         marginBottom: "20px",
+    //     },
+    //     AdaptiveSendPostField: {
+    //         fontSize: "1.3rem",
+    //         fontFamily: "'Lato', sans-serif",
+    //         width: "350px",
+    //         maxWidth: "600px",
+    //         marginTop: "20px",
+    //     },
+    //     fab: {
+    //         position: "fixed",
+    //         bottom: "16px",
+    //         right: "16px",
+    //     },
+
+    // };
+
+    // const mdStyles = {
+    //     AdaptivePostWrapper: {
+    //         width: "600px",
+    //         paddingBottom: "40px",
+    //         display: "flex",
+    //         justifyContent: "space-around",
+    //         alignItems: "space-around",
+    //         borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+    //     },
+    //     AdaptiveHomeScreenWrapper: {
+    //         width: "600px",
+    //         display: "flex",
+    //         flexDirection: "column",
+    //         justifyContent: "center",
+    //         marginTop: "20px",
+    //     },
+    //     AdaptiveSendingPostButtonsContainer: {
+    //         display: "flex",
+    //         justifyContent: "space-between",
+    //         maxWidth: "400px",
+    //         width: "400px",
+    //         marginTop: "40px",
+    //         marginBottom: "20px",
+    //     },
+    //     AdaptiveSendPostField: {
+    //         fontSize: "1.3rem",
+    //         fontFamily: "'Lato', sans-serif",
+    //         width: "450px",
+    //         maxWidth: "600px",
+    //         marginTop: "20px",
+    //     },
+    //     fab: {
+    //         position: "fixed",
+    //         bottom: "16px",
+    //         right: "16px",
+    //     },
+    // };
+
+    // const lgStyles = {
+    //     AdaptiveLeftBlockAndRightBlockContainer: {
+    //         ...leftBlockAndRightBlockContainer,
+    //     },
+    //     AdaptiveLeftBlockInboxAndSearch: {
+    //         ...leftBlockInboxAndSearch,
+    //         borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+    //     },
+    //     AdaptiveInboxContainerStyle: {
+    //         ...inboxContainerStyle,
+    //     },
+    //     AdaptiveTextingContainerWithInputStyle: {
+    //         ...textingContainerWithInputStyle,
+    //         borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+    //         height:"100vh",
+    //         maxHeight:"100vh",
+    //     },
+    //     AdaptiveTextingConatinerScrollFromTop: {
+    //         ...textingConatinerScrollFromTop,
+    //         display:"flex",
+    //         justifyContent:"center",
+    //         alignItems:"center",
+    //         height:"100vh",
+    //     },
+    //     AdaptiveTextingContainerScrollFromBottom: {
+    //         ...textingConatinerScrollFromBottom
+    //     },
+    //     AdaptiveTextingContainerWithScroll: {
+    //         ...textingContainerWithScroll
+    //     }
+    // };
+
+    const lStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll
+        }
+    };
+
+    const xlStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll
+        }
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isL) {
+        styles = lStyles;
+    }
+    // else if (isLg) {
+    //     styles = lgStyles;
+    // }
+    // else if (isMd) {
+    //     styles = mdStyles;
+    // } else if (isSm) {
+    //     styles = smStyles;
+    // } else if (isXs) {
+    //     styles = xsStyles;
+    // } else {
+    //     styles = xxsStyles;
+    // }
+
+
+
+
+
 
     const fetchMessages = async () => {
-        const response1 = await fetch(`${apiUrl}/api/inbox/66`);
-        const userData = await response1.json();
-        console.log(userData)
-        setInboxMessages(userData)
+        try{
+            setIsLoading(true)
+            const response1 = await fetch(`${apiUrl}/api/inbox/${userId}`);
+            const userData = await response1.json();
+            console.log(userData);
+            setInboxMessages(userData);
+        }finally {
+            setIsLoading(false)
+        }
+
     };
 
     useEffect(() => {
-        console.log(selectedMessage,"selectedMessage");
+        console.log(selectedMessage, "selectedMessage");
     }, [selectedMessage]);
-
 
     useEffect(() => {
         fetchMessages();
@@ -57,7 +359,7 @@ export function Message() {
             stompClient.connect({}, onConnected, onError);
         };
         const onConnected = () => {
-            stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
+            stompClient.subscribe(`/user/66/inbox`, newMessage);
         };
         const onError = (err) => {
             console.log(err);
@@ -74,6 +376,8 @@ export function Message() {
         let payloadData = JSON.parse(payload.body);
         setInboxMessages(prevNotifications => {
             const filteredNotifications = prevNotifications.filter(notification => notification.inboxId !== payloadData.inboxId);
+            console.log(payloadData)
+            dispatch(addMessageFromWebsocket(payloadData));
             return [payloadData, ...filteredNotifications];
         });
     };
@@ -111,21 +415,21 @@ export function Message() {
     };
 
     return (
-        <div style={leftBlockAndRightBlockContainer}>
-            <div style={{...leftBlockInboxAndSearch,  borderRight: "1px solid rgba(0, 0, 0, 0.1)"}}>
+        <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
+            <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
                 <MessageSearch/>
-                <div style={{...inboxContainerStyle}}>
+                <div style={styles.AdaptiveInboxContainerStyle}>
                     <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
                 </div>
             </div>
-            <div style={{...textingContainerWithInputStyle, borderRight: "1px solid rgba(0, 0, 0, 0.1)", height:"100vh", maxHeight:"100vh" }}>
+            <div style={styles.AdaptiveTextingContainerWithInputStyle}>
                 {selectedMessage === null ? (
-                    <div style={{...textingConatinerScrollFromTop, display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}} ref={textingContainerRef}>
+                    <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
                         <div style={{fontSize: "1.1rem",
                             fontFamily: "'Lato', sans-serif"}}>Почніть переписку</div>
                     </div>
                 ) : (
-                    <div onScroll={handleScroll} style={textingConatinerScrollFromBottom} ref={textingContainerRef}>
+                    <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom} ref={textingContainerRef}>
                         <TextingMessage
                             sender={selectedMessage.inboxUid}
                             receiver={selectedMessage.userId}
@@ -135,7 +439,7 @@ export function Message() {
                     </div>
                 )}
 
-                <div style={textingContainerWithScroll}>
+                <div style={styles.AdaptiveTextingContainerWithScroll}>
                     {selectedMessage && (
                         <TextField
                             id="outlined-basic"
@@ -152,10 +456,23 @@ export function Message() {
                                 endAdornment: (
                                     <SendIcon
                                         style={{ cursor: "pointer", }}
-                                        onClick={(event) => {
+                                        onClick={async (event) => {
                                             event.preventDefault();
-                                            stompClient.send("/app/addMessage", {}, JSON.stringify({ userId: userId, inboxUid: selectedMessage.inboxUid, writtenMessage: inputValue }));
-                                            console.log(userId, selectedMessage.inboxUid, inputValue)
+                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
+                                                userId: selectedMessage.userId,
+                                                inboxUid: selectedMessage.inboxUid,
+                                                writtenMessage: inputValue,
+                                            }));
+                                            await fetch(`${apiUrl}/api/addMessage`, {
+                                                method: "POST",
+                                                body: JSON.stringify({
+                                                    inboxUid: selectedMessage.inboxUid,
+                                                    userId: selectedMessage.userId,
+                                                    writtenMessage: inputValue
+                                                }),
+                                                headers: { "Content-Type": "application/json" },
+                                            });
+                                            console.log(selectedMessage.userId, selectedMessage.inboxUid, inputValue);
                                             setInputValue("");
                                         }}
                                     />
