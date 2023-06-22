@@ -371,13 +371,10 @@ export function Message() {
     let styles;
     if (isXl) {
         styles = xlStyles;
-        dispatch(setClickedInboxFalse());
     } else if (isLg) {
         styles = lgStyles;
-        dispatch(setClickedInboxFalse());
     } else if (isMd) {
         styles = mdStyles;
-        dispatch(setClickedInboxFalse());
     } else if (isSm) {
         styles = smStyles;
     } else if (isXs) {
@@ -426,13 +423,21 @@ export function Message() {
     const newMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
         console.log(payloadData, "PayloadData");
+        const messageData = {
+            inboxUid: payloadData.inboxUid,
+            userId: payloadData.userId,
+            messageId: payloadData.messageId,
+            message: payloadData.message,
+            createdAt: payloadData.createdAt
+        };
+        console.log(messageData)
+        dispatch(addMessageFromWebsocket(messageData))
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
                 return prevInboxMessages.map(message =>
                     message.inboxId === payloadData.inboxId ? payloadData : message
                 );
-            }
-            else {
+            } else {
                 return [...prevInboxMessages, payloadData];
             }
         });
@@ -443,8 +448,6 @@ export function Message() {
             textingContainerRef.current.scrollTop = textingContainerRef.current.scrollHeight;
         }
     }, [selectedMessage]);
-
-
 
     const handleScroll = async (event) => {
         if (isFetchingTexts || allTextsLoaded) {
@@ -482,7 +485,7 @@ export function Message() {
             {isXl || isLg || isMd || clicked ?
                 <div style={styles.AdaptiveTextingContainerWithInputStyle}>
                     {clicked && <HeaderInformation/>}
-                    {!selectedMessage  ? (
+                    {!selectedMessage ? (
                         <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
                             <div style={{
                                 fontSize: "1.1rem",
@@ -536,11 +539,6 @@ export function Message() {
                                             style={{ cursor: "pointer", }}
                                             onClick={async (event) => {
                                                 event.preventDefault();
-                                                stompClient.send("/app/addMessage", {}, JSON.stringify({
-                                                    userId: selectedMessage.userId,
-                                                    inboxUid: selectedMessage.inboxUid,
-                                                    writtenMessage: inputValue,
-                                                }));
                                                 await fetch(`${apiUrl}/api/addMessage`, {
                                                     method: "POST",
                                                     body: JSON.stringify({
@@ -550,6 +548,11 @@ export function Message() {
                                                     }),
                                                     headers: { "Content-Type": "application/json" },
                                                 });
+                                                stompClient.send("/app/addMessage", {}, JSON.stringify({
+                                                    userId: selectedMessage.userId,
+                                                    inboxUid: selectedMessage.inboxUid,
+                                                    writtenMessage: inputValue,
+                                                }));
                                                 setInputValue("");
                                             }}
                                         />
