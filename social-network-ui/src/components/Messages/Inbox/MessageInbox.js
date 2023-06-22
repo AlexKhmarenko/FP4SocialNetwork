@@ -41,7 +41,7 @@ export function MessageInbox({inboxMessages, selectedMessage, setSelectedMessage
         <div style={{height:"100vh", marginLeft:"20px"}}>
             {inboxMessages.length > 0 ? (
                 inboxMessages.map((item)=>(
-                <div key={item.inboxId} style={{height:"100vh"}}>
+                <div key={item.inboxId} style={{ display:"flex", justifyContent:"start", alignItems:"center", flexDirection:"column"}}>
                             <InboxMessage
                                 image={item.profileImageUrl}
                                 senderName={item.name}
