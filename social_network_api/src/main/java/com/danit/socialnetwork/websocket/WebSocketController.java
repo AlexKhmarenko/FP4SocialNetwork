@@ -218,8 +218,8 @@ public class WebSocketController {
     List<InboxDtoResponse> inboxesSender = inboxService.getInboxesByInboxUid(inboxUid);
     List<InboxDtoResponse> inboxesReceiver = inboxService.getInboxesByInboxUid(userId);
 
-    InboxDtoResponse inboxSender = inboxesSender.get(inboxesSender.size() - 1);
-    InboxDtoResponse inboxReceiver = inboxesReceiver.get(inboxesReceiver.size() - 1);
+    InboxDtoResponse inboxSender = inboxesSender.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
+    InboxDtoResponse inboxReceiver = inboxesReceiver.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
 
     String inboxUidString = inboxUid.toString();
     String userIdString = userId.toString();

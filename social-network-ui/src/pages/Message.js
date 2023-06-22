@@ -533,7 +533,7 @@ export function Message() {
                                         style={{ cursor: "pointer", }}
                                         onClick={async (event) => {
                                             event.preventDefault();
-                                            stompClient.send("/api/addMessage", {}, JSON.stringify({
+                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
                                                 userId: selectedMessage.userId,
                                                 inboxUid: selectedMessage.inboxUid,
                                                 writtenMessage: inputValue,
