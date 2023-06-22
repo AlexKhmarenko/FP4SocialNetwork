@@ -226,6 +226,5 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxSender);
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxReceiver);
     return inboxSender;
-
   }
 }

@@ -511,7 +511,6 @@ export function Message() {
                         />
                     </div>
                     </>
-                    
                 )}
 
                 <div style={{...styles.AdaptiveTextingContainerWithScroll, width:"100%"}}>
