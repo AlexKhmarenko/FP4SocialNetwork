@@ -1,13 +1,12 @@
 package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationRequest;
+import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
-import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.model.Notification;
-import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.model.*;
 import com.danit.socialnetwork.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 
@@ -171,6 +167,48 @@ class WebSocketControllerTest {
     verify(userService).findDbUserByUserId(anyInt());
     verify(notificationService).saveNotification(any(Notification.class));
     verify(messagingTemplate).convertAndSendToUser(anyString(), anyString(), anyMap());
+  }
+
+  @Test
+  public void testPostAddMessage() {
+    InboxDtoResponse inboxDtoResponse = new InboxDtoResponse();
+    inboxDtoResponse.setInboxUid(1);
+    inboxDtoResponse.setUserId(2);
+
+    DbUser userSender = new DbUser();
+    userSender.setUserId(1);
+    userSender.setName("TestUser1");
+    userSender.setUsername("TestUser1");
+    userSender.setProfileImageUrl("testimage1.jpg");
+
+    DbUser userReceiver = new DbUser();
+    userReceiver.setUserId(2);
+    userReceiver.setName("TestUser2");
+    userReceiver.setUsername("TestUser2");
+    userReceiver.setProfileImageUrl("testimage2.jpg");
+
+    Message message = new Message();
+    message.setInboxUid(userSender);
+    message.setUserId(userReceiver);
+    message.setMessageText("Test");
+
+    InboxDtoResponse inboxSenderDto = new InboxDtoResponse();
+    inboxSenderDto.setInboxUid(1);
+    inboxSenderDto.setUserId(2);
+    inboxSenderDto.setMessage("Test");
+
+    InboxDtoResponse inboxReceiverDto = new InboxDtoResponse();
+    inboxReceiverDto.setInboxUid(2);
+    inboxReceiverDto.setUserId(1);
+    inboxReceiverDto.setMessage("Test");
+
+    List<InboxDtoResponse> inboxesSenderTest = new ArrayList<>();
+    inboxesSenderTest.add(inboxSenderDto);
+    List<InboxDtoResponse> inboxesReceiverTest = new ArrayList<>();
+    inboxesSenderTest.add(inboxReceiverDto);
+    when(inboxService.getInboxesByInboxUid(1)).thenReturn(inboxesSenderTest);
+    when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesReceiverTest);
+
   }
 }
 
