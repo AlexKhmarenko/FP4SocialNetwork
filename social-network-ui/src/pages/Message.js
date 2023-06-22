@@ -449,6 +449,21 @@ export function Message() {
         }
     }, [selectedMessage]);
 
+    useEffect(() => {
+        console.log(clicked);
+        if (isXl && clicked) {
+            dispatch(setClickedInboxFalse());
+        } else if (isLg && clicked) {
+            dispatch(setClickedInboxFalse());
+        } else if (isMd && clicked) {
+            dispatch(setClickedInboxFalse());
+        }
+    }, [isXl, isLg, isMd, clicked]);
+
+    function handleSelectMessage(message) {
+        setSelectedMessage(message);
+    }
+
     const handleScroll = async (event) => {
         if (isFetchingTexts || allTextsLoaded) {
             return;
