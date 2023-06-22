@@ -168,48 +168,6 @@ class WebSocketControllerTest {
     verify(notificationService).saveNotification(any(Notification.class));
     verify(messagingTemplate).convertAndSendToUser(anyString(), anyString(), anyMap());
   }
-
-  @Test
-  void testPostAddMessage() {
-    InboxDtoResponse inboxDtoResponse = new InboxDtoResponse();
-    inboxDtoResponse.setInboxUid(1);
-    inboxDtoResponse.setUserId(2);
-
-    DbUser userSender = new DbUser();
-    userSender.setUserId(1);
-    userSender.setName("TestUser1");
-    userSender.setUsername("TestUser1");
-    userSender.setProfileImageUrl("testimage1.jpg");
-
-    DbUser userReceiver = new DbUser();
-    userReceiver.setUserId(2);
-    userReceiver.setName("TestUser2");
-    userReceiver.setUsername("TestUser2");
-    userReceiver.setProfileImageUrl("testimage2.jpg");
-
-    Message message = new Message();
-    message.setInboxUid(userSender);
-    message.setUserId(userReceiver);
-    message.setMessageText("Test");
-
-    InboxDtoResponse inboxSenderDto = new InboxDtoResponse();
-    inboxSenderDto.setInboxUid(1);
-    inboxSenderDto.setUserId(2);
-    inboxSenderDto.setMessage("Test");
-
-    InboxDtoResponse inboxReceiverDto = new InboxDtoResponse();
-    inboxReceiverDto.setInboxUid(2);
-    inboxReceiverDto.setUserId(1);
-    inboxReceiverDto.setMessage("Test");
-
-    List<InboxDtoResponse> inboxesSenderTest = new ArrayList<>();
-    inboxesSenderTest.add(inboxSenderDto);
-    List<InboxDtoResponse> inboxesReceiverTest = new ArrayList<>();
-    inboxesSenderTest.add(inboxReceiverDto);
-    when(inboxService.getInboxesByInboxUid(1)).thenReturn(inboxesSenderTest);
-    when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesReceiverTest);
-
-  }
 }
 
 
