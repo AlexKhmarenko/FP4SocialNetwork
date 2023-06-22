@@ -18,13 +18,13 @@ import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
-import { setClickedInboxFalse} from "../store/actions";
+import CircularProgress from "@mui/material/CircularProgress";
+import { height, padding } from "@mui/system";
+import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
 import { Avatar } from "@mui/material";
-
 
 let stompClient = null;
 
@@ -473,13 +473,16 @@ export function Message() {
 
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
-            <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
-                <MessageSearch/>
-                <div style={styles.AdaptiveInboxContainerStyle}>
-                    { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"40%" }}/> :
-                    <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>}
+            {!clicked &&
+                <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
+                    <HeaderInformation />
+                    <MessageSearch/>
+                    <div style={styles.AdaptiveInboxContainerStyle}>
+                        <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
+                    </div>
                 </div>
-            </div>
+            }
+            {isXl || isLg || isMd || clicked ?
             <div style={styles.AdaptiveTextingContainerWithInputStyle}>
                 {clicked && <HeaderInformation />}
                 {selectedMessage === null ? (
@@ -500,15 +503,14 @@ export function Message() {
                             </div>
                         </div>
                     <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom} ref={textingContainerRef}>
-                    { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"40%" }}/> : <TextingMessage
+                        <TextingMessage
                             sender={selectedMessage.inboxUid}
                             receiver={selectedMessage.userId}
                             selectedMessage={messages}
                             key={Math.floor(Math.random() * 1000)}
-                        />}
+                        />
                     </div>
                     </>
-                    
                 )}
 
                 <div style={{...styles.AdaptiveTextingContainerWithScroll, width:"100%"}}>
@@ -530,7 +532,7 @@ export function Message() {
                                         style={{ cursor: "pointer", }}
                                         onClick={async (event) => {
                                             event.preventDefault();
-                                            stompClient.send("/api/addMessage", {}, JSON.stringify({
+                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
                                                 userId: selectedMessage.userId,
                                                 inboxUid: selectedMessage.inboxUid,
                                                 writtenMessage: inputValue,
@@ -557,7 +559,7 @@ export function Message() {
                         />
                     )}
                 </div>
-            </div>
+            </div>: null}
         </div>
     );
 }
