@@ -17,7 +17,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTransition, animated } from 'react-spring';
-import { setMessages, setPageForMessage, setPageZeroForMessaging, fetchTextsByPage } from "../../../store/actions";
+import {
+    setMessages,
+    setPageForMessage,
+    setPageZeroForMessaging,
+    fetchTextsByPage,
+    clearMessages
+} from "../../../store/actions";
 import { setClickedInboxTrue } from "../../../store/actions";
 
 
@@ -52,6 +58,7 @@ export function MessageInbox({inboxMessages, selectedMessage, setSelectedMessage
                                 handleClick={(event) => {
                                     event.preventDefault()
                                     if (selectedMessage !== item) {
+                                        // dispatch(clearMessages())
                                         setSelectedMessage(item)
                                         dispatch(setPageZeroForMessaging());
                                         dispatch(fetchTextsByPage(item.userId, userId, 0));

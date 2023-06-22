@@ -401,7 +401,6 @@ export function Message() {
     }, [inbox]);
 
     useEffect(() => {
-
         const onConnected = () => {
             console.log(userId);
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
@@ -431,7 +430,6 @@ export function Message() {
                 message: payloadData.message,
                 createdAt: payloadData.createdAt
             };
-
         console.log(messageData)
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {

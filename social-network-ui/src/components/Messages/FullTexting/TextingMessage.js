@@ -27,7 +27,6 @@ export function TextingMessage({ sender, receiver, selectedMessage2 }) {
 
     if (parseInt(item.inboxUid) === parseInt(userId)) {
       let timestamp = item.createdAt;
-      console.log(timestamp)
       let parts = timestamp.split("T");
       let key = parts[1]+ "_" + index;;
       return (
@@ -52,11 +51,12 @@ export function TextingMessage({ sender, receiver, selectedMessage2 }) {
   });
 
   return (
-    <div>
+    <div >
       {formattedMessages.length > 0 ? (
         formattedMessages
       ) : (
-        <div>No texting</div>
+        <div style={{ fontSize: "1.8rem",
+          fontFamily: "'Lato', sans-serif", textAlign:"center"}}>Start a chat right now!</div>
       )}
     </div>
   );
