@@ -34,20 +34,18 @@ export function Message() {
     const page = useSelector(state => state.pageCountMessage.page);
     const maxAmountOfPages = useSelector(state => state.pageCountMessage.maxAmountOfPages);
     const userId = useSelector((state) => state.userData.userData.userId);
-    const [selectedMessage, setSelectedMessage] = useState({});
+    const [selectedMessage, setSelectedMessage] = useState(false);
     const [isFetchingTexts, setIsFetchingTexts] = useState(false);
     const [allTextsLoaded, setAllTextsLoaded] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const textingContainerRef = useRef(null);
     const [inboxMessages, setInboxMessages] = useState([]);
-    const [isLoading, setIsLoading] = useState(false)
-
-    useEffect(()=>{
-        console.log(selectedMessage, "selectedMessageFROMMESSAGEEL")
-    },[selectedMessage])
-
+    const [isLoading, setIsLoading] = useState(false);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
 
+    useEffect(() => {
+        console.log(selectedMessage, "selectedMessageFROMMESSAGEEL");
+    }, [selectedMessage]);
 
     const theme = useTheme();
 
@@ -57,7 +55,6 @@ export function Message() {
     const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
-
 
     const xxsStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
@@ -75,16 +72,16 @@ export function Message() {
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
-            height:"100vh",
-            width:"100vw",
-            maxHeight:"100vh",
+            height: "100vh",
+            width: "100vw",
+            maxHeight: "100vh",
         },
         AdaptiveTextingConatinerScrollFromTop: {
             ...textingConatinerScrollFromTop,
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            height:"100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
         },
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
@@ -128,16 +125,16 @@ export function Message() {
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
-            height:"100vh",
-            width:"100vw",
-            maxHeight:"100vh",
+            height: "100vh",
+            width: "100vw",
+            maxHeight: "100vh",
         },
         AdaptiveTextingConatinerScrollFromTop: {
             ...textingConatinerScrollFromTop,
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            height:"100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
         },
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
@@ -181,16 +178,16 @@ export function Message() {
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
-            height:"100vh",
-            width:"100vw",
-            maxHeight:"100vh",
+            height: "100vh",
+            width: "100vw",
+            maxHeight: "100vh",
         },
         AdaptiveTextingConatinerScrollFromTop: {
             ...textingConatinerScrollFromTop,
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            height:"100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
         },
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
@@ -233,15 +230,15 @@ export function Message() {
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
-            height:"100vh",
-            maxHeight:"100vh",
+            height: "100vh",
+            maxHeight: "100vh",
         },
         AdaptiveTextingConatinerScrollFromTop: {
             ...textingConatinerScrollFromTop,
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            height:"100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
         },
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
@@ -284,15 +281,15 @@ export function Message() {
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
-            height:"100vh",
-            maxHeight:"100vh",
+            height: "100vh",
+            maxHeight: "100vh",
         },
         AdaptiveTextingConatinerScrollFromTop: {
             ...textingConatinerScrollFromTop,
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            height:"100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
         },
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
@@ -335,15 +332,15 @@ export function Message() {
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
-            height:"100vh",
-            maxHeight:"100vh",
+            height: "100vh",
+            maxHeight: "100vh",
         },
         AdaptiveTextingConatinerScrollFromTop: {
             ...textingConatinerScrollFromTop,
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            height:"100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
         },
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
@@ -389,26 +386,17 @@ export function Message() {
         styles = xxsStyles;
     }
 
-
-
-
-
     const fetchMessages = async () => {
-        try{
-            setIsLoading(true)
+        try {
+            setIsLoading(true);
             const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
             const userData = await response1.json();
             console.log(userData);
             setInboxMessages(userData);
-        }finally {
-            setIsLoading(false)
+        } finally {
+            setIsLoading(false);
         }
-
     };
-
-    useEffect(() => {
-        console.log(selectedMessage, "selectedMessage");
-    }, [selectedMessage]);
 
     useEffect(() => {
         fetchMessages();
@@ -417,7 +405,7 @@ export function Message() {
     useEffect(() => {
 
         const onConnected = () => {
-            console.log(userId)
+            console.log(userId);
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
         const onError = (err) => {
@@ -438,12 +426,16 @@ export function Message() {
     const newMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
         console.log(payloadData, "PayloadData");
-        // setInboxMessages(prevNotifications => {
-        //     const filteredNotifications = prevNotifications.filter(notification => notification.inboxId !== payloadData.inboxId);
-        //     console.log(payloadData)
-        //     dispatch(addMessageFromWebsocket(payloadData));
-        //     return [payloadData, ...filteredNotifications];
-        // });
+        setInboxMessages((prevInboxMessages) => {
+            if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
+                return prevInboxMessages.map(message =>
+                    message.inboxId === payloadData.inboxId ? payloadData : message
+                );
+            }
+            else {
+                return [...prevInboxMessages, payloadData];
+            }
+        });
     };
 
     useEffect(() => {
@@ -452,13 +444,7 @@ export function Message() {
         }
     }, [selectedMessage]);
 
-    useEffect(() => {
-        console.log(clicked);
-    }, [clicked]);
 
-    function handleSelectMessage(message) {
-        setSelectedMessage(message);
-    }
 
     const handleScroll = async (event) => {
         if (isFetchingTexts || allTextsLoaded) {
@@ -468,8 +454,6 @@ export function Message() {
         try {
             const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
             if (clientHeight - scrollHeight >= scrollTop - 2) {
-                console.log("page:" + page);
-                console.log("maxAmountOfPages" + maxAmountOfPages);
                 if (page < maxAmountOfPages - 1) {
                     await dispatch(fetchTextsByPage(selectedMessage.userId, userId, page + 1));
                     dispatch(setPageForMessage(page + 1));
@@ -486,91 +470,98 @@ export function Message() {
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             {!clicked &&
                 <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
-                    <HeaderInformation />
+                    <HeaderInformation/>
                     <MessageSearch/>
                     <div style={styles.AdaptiveInboxContainerStyle}>
-                        { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"40%" }}/> : <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage} setSelectedMessage={setSelectedMessage}/>}
+                        {isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft: "40%" }}/> :
+                            <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage}
+                                          setSelectedMessage={setSelectedMessage}/>}
                     </div>
                 </div>
             }
             {isXl || isLg || isMd || clicked ?
-            <div style={styles.AdaptiveTextingContainerWithInputStyle}>
-                {clicked && <HeaderInformation />}
-                {selectedMessage === null ? (
-                    <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
-                        <div style={{fontSize: "1.1rem",
-                            fontFamily: "'Lato', sans-serif"}}>Почніть переписку</div>
-                    </div>
-                ) : (
-                    <>
-                        <div style={styles.AdaptiveMessageContainerStyle}>
-                            {selectedMessage.profileImageUrl ?
-                                <img src={selectedMessage.profileImageUrl} alt="Avatar" style={styles.AdaptiveAvatarStyle} /> :
-                                <Avatar alt={sender} src="#" style={styles.AdaptiveAvatarStyle}/>
-                            }
-                            <div style={{flex: "1", height: "40px", overflow: "hidden",}}>
-                                <div style={{fontFamily: "'Lato', sans-serif"}}>{selectedMessage.name}</div>
-                                <div style={{fontFamily: "'Lato', sans-serif", color: "gray",}}>@{selectedMessage.username}</div>
+                <div style={styles.AdaptiveTextingContainerWithInputStyle}>
+                    {clicked && <HeaderInformation/>}
+                    {!selectedMessage  ? (
+                        <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
+                            <div style={{
+                                fontSize: "1.1rem",
+                                fontFamily: "'Lato', sans-serif"
+                            }}>Почніть переписку
                             </div>
                         </div>
-                    <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom} ref={textingContainerRef}>
-                        <TextingMessage
-                            sender={selectedMessage.inboxUid}
-                            receiver={selectedMessage.userId}
-                            selectedMessage={messages}
-                            key={Math.floor(Math.random() * 1000)}
-                        />
-                    </div>
-                    </>
-                )}
-
-                <div style={{...styles.AdaptiveTextingContainerWithScroll, width:"100%"}}>
-                    {selectedMessage && (
-                        <TextField
-                            id="outlined-basic"
-                            type="search"
-                            variant="outlined"
-                            placeholder="Input message"
-                            size="small"
-                            value={inputValue}
-                            onChange={(event) => {
-                                event.preventDefault();
-                                setInputValue(event.target.value.toString());
-                            }}
-                            InputProps={{
-                                endAdornment: (
-                                    <SendIcon
-                                        style={{ cursor: "pointer", }}
-                                        onClick={async (event) => {
-                                            event.preventDefault();
-                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
-                                                userId: selectedMessage.userId,
-                                                inboxUid: selectedMessage.inboxUid,
-                                                writtenMessage: inputValue,
-                                            }));
-                                            console.log(selectedMessage.userId,selectedMessage.inboxUid,inputValue)
-                                            await fetch(`${apiUrl}/api/addMessage`, {
-                                                method: "POST",
-                                                body: JSON.stringify({
-                                                    inboxUid: selectedMessage.inboxUid,
-                                                    userId: selectedMessage.userId,
-                                                    writtenMessage: inputValue
-                                                }),
-                                                headers: { "Content-Type": "application/json" },
-                                            });
-                                            console.log(selectedMessage.userId, selectedMessage.inboxUid, inputValue);
-                                            setInputValue("");
-                                        }}
-                                    />
-                                )
-                            }}
-                            style={{
-                                flex: "1",
-                            }}
-                        />
+                    ) : (
+                        <>
+                            <div style={styles.AdaptiveMessageContainerStyle}>
+                                {selectedMessage.profileImageUrl ?
+                                    <img src={selectedMessage.profileImageUrl} alt="Avatar"
+                                         style={styles.AdaptiveAvatarStyle}/> :
+                                    <Avatar src="#" style={styles.AdaptiveAvatarStyle}/>
+                                }
+                                <div style={{ flex: "1", height: "40px", overflow: "hidden", }}>
+                                    <div style={{ fontFamily: "'Lato', sans-serif" }}>{selectedMessage.name}</div>
+                                    <div style={{
+                                        fontFamily: "'Lato', sans-serif",
+                                        color: "gray",
+                                    }}>@{selectedMessage.username}</div>
+                                </div>
+                            </div>
+                            <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom}
+                                 ref={textingContainerRef}>
+                                <TextingMessage
+                                    sender={selectedMessage.inboxUid}
+                                    receiver={selectedMessage.userId}
+                                    selectedMessage2={messages}
+                                    key={Math.floor(Math.random() * 1000)}
+                                />
+                            </div>
+                        </>
                     )}
-                </div>
-            </div>: null}
+                    <div style={{ ...styles.AdaptiveTextingContainerWithScroll, width: "100%" }}>
+                        {selectedMessage && (
+                            <TextField
+                                id="outlined-basic"
+                                type="search"
+                                variant="outlined"
+                                placeholder="Input message"
+                                size="small"
+                                value={inputValue}
+                                onChange={(event) => {
+                                    event.preventDefault();
+                                    setInputValue(event.target.value.toString());
+                                }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <SendIcon
+                                            style={{ cursor: "pointer", }}
+                                            onClick={async (event) => {
+                                                event.preventDefault();
+                                                stompClient.send("/app/addMessage", {}, JSON.stringify({
+                                                    userId: selectedMessage.userId,
+                                                    inboxUid: selectedMessage.inboxUid,
+                                                    writtenMessage: inputValue,
+                                                }));
+                                                await fetch(`${apiUrl}/api/addMessage`, {
+                                                    method: "POST",
+                                                    body: JSON.stringify({
+                                                        inboxUid: selectedMessage.inboxUid,
+                                                        userId: selectedMessage.userId,
+                                                        writtenMessage: inputValue
+                                                    }),
+                                                    headers: { "Content-Type": "application/json" },
+                                                });
+                                                setInputValue("");
+                                            }}
+                                        />
+                                    )
+                                }}
+                                style={{
+                                    flex: "1",
+                                }}
+                            />
+                        )}
+                    </div>
+                </div> : null}
         </div>
     );
 }
