@@ -170,7 +170,7 @@ class WebSocketControllerTest {
   }
 
   @Test
-  public void testPostAddMessage() {
+  void testPostAddMessage() {
     InboxDtoResponse inboxDtoResponse = new InboxDtoResponse();
     inboxDtoResponse.setInboxUid(1);
     inboxDtoResponse.setUserId(2);
