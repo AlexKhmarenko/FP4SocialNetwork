@@ -351,7 +351,7 @@ export const Post = ({
                 setLikeCount(likeCount + 1);
                 setLikeArr([...likeArr, { postId: postId, userId: userId }]);
                 await dispatch(addLikeFetch(postId, userId));
-                handleLikesClick(postId, userId)
+                handleLikesClick(postId, userId);
             } else {
                 if (likeCount === 0) {
                     setLikeCount(likeCount);
@@ -430,15 +430,16 @@ export const Post = ({
                             toAnotherUserPage={toAnotherUserPage}/>
             </CardActions>
             {isCommentOpen &&
-                <Comments comments={comments} isLoadingComments={isLoadingComments} postCommentCount={postCommentCount}
-                          setPostCommentCount={setPostCommentCount} postId={postId} userId={userId}/>}
+                <Comments comments={comments} isLoadingComments={isLoadingComments}
+                          setPostCommentCount={setPostCommentCount} postCommentCount={postCommentCount} postId={postId}
+                          userIdWhoSendPost={userIdWhoSendPost}/>}
         </Card>
     );
 };
 
 Post.propTypes = {
-    handleLikesClick:PropTypes.any,
-    viewCount:PropTypes.any,
+    handleLikesClick: PropTypes.any,
+    viewCount: PropTypes.any,
     sendEventToWebsocket: PropTypes.func,
     repostsCount: PropTypes.number,
     reposted: PropTypes.bool,
