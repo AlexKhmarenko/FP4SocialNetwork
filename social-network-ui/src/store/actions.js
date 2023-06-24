@@ -443,7 +443,7 @@ export const fetchPostsByUserId = (userId, page) => {
         const data = await response.json();
         let postIds = data.map(post => post.postId);
         console.log(postIds);
-        await fetch("http://localhost:8080/api/post/view", {
+        await fetch(`${apiUrl}/api/post/view`, {
             method: "PUT",
             body: JSON.stringify(
                 postIds
@@ -461,7 +461,7 @@ export const fetchPostsByPage = (page) => {
         let posts = await response.json();
         let postIds = posts.map(post => post.postId);
         console.log(postIds);
-        await fetch("http://localhost:8080/api/post/view", {
+        await fetch(`${apiUrl}/api/post/view`, {
             method: "PUT",
             body: JSON.stringify(
                 postIds
@@ -613,6 +613,14 @@ export const setPageZeroForMessaging = () => {
         type: "SET_PAGE_ZERO_FOR_MESSAGING"
     };
 };
+
+export const clearMessages = () => {
+    return {
+        type: "CLEAR_MESSAGES"
+    };
+};
+
+
 
 export const userFollow = () => ({
     type: SET_USER_FOLLOW
