@@ -18,7 +18,10 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +45,7 @@ import static com.danit.socialnetwork.config.GuavaCache.userCache;
 @Service
 @RequiredArgsConstructor
 @Log4j2
+@PropertySource("classpath:cloud.properties")
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
@@ -52,6 +57,12 @@ public class UserServiceImpl implements UserService {
   private final ImageHandlingConf imageHandlingConf;
   private static final String FALSE = "false";
   private static final String TRUE = "true";
+  @Value("${spring.cloud.cloud_name}")
+  private String cloudName;
+  @Value("${spring.cloud.api_key}")
+  private String apiKey;
+  @Value("${spring.cloud.api_secret}")
+  private String apiSecret;
 
   /*The method finds a user by username and returns it*/
   @Override
@@ -201,6 +212,7 @@ public class UserServiceImpl implements UserService {
   }
 
   /*The method saves changes to the existing user made by the user in the form*/
+  @SneakyThrows
   @Override
   public ResponseEntity<Map<String, String>> update(EditingDtoRequest request) {
     Integer userId = request.getUserId();
@@ -223,15 +235,24 @@ public class UserServiceImpl implements UserService {
       byte[] profileBackgroundImage = request.getProfileBackgroundImageUrl();
       String profileImageString = request.getProfileImageUrlString();
       String profileBackgroundImageString = request.getProfileBackgroundImageUrlString();
+
       if (profileImage != null && profileImage.length != 0) {
+        String folderName = "profile_" + userId;
+        String oldProfileImageUrl = userFromDb.get().getProfileImageUrl();
+        imageHandlingConf.deleteFolder(folderName, oldProfileImageUrl);
+        imageHandlingConf.createFolder(folderName);
         updateUser.setProfileImageUrl(imageHandlingConf
-            .uploadImage(profileImage, "production"));
+            .uploadImage(profileImage, folderName));
       } else if (profileImage == null && profileImageString == null) {
         updateUser.setProfileImageUrl(null);
       }
       if (profileBackgroundImage != null && profileBackgroundImage.length != 0) {
+        String folderName = "profile_background_" + userId;
+        String oldProfileBackgroundImageUrl = userFromDb.get().getProfileBackgroundImageUrl();
+        imageHandlingConf.deleteFolder(folderName, oldProfileBackgroundImageUrl);
+        imageHandlingConf.createFolder("profile_background_" + userId);
         updateUser.setProfileBackgroundImageUrl(imageHandlingConf
-            .uploadImage(profileBackgroundImage, "production"));
+            .uploadImage(profileBackgroundImage, folderName));
       } else if ((profileBackgroundImage == null && profileBackgroundImageString == null)
           || (profileBackgroundImage != null && profileBackgroundImage.length == 0)) {
         updateUser.setProfileBackgroundImageUrl(null);

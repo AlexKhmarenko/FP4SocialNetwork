@@ -53,4 +53,28 @@ public class ImageHandlingConf {
     }
   }
 
+  public void createFolder(String folderName) {
+    try {
+      getImageHandlingConf(cloudName, apiKey, apiSecret)
+          .api().createFolder(folderName, null);
+    } catch (IOException e) {
+      log.info(String.format("The folder with the name: %s was not created", folderName));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void deleteFolder(String folderName, String oldImageUrl) {
+    if (oldImageUrl != null) {
+      try {
+        getImageHandlingConf(cloudName, apiKey, apiSecret)
+            .api().deleteResourcesByPrefix(folderName, null);
+      } catch (IOException e) {
+        log.info(String.format("The folder with the name: %s was not deleted", folderName));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
 }
