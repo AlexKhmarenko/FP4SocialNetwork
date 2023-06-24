@@ -1,19 +1,28 @@
 import React, { useEffect, useContext, useState } from "react";import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from "react-redux";
 import { apiUrl } from "../../../apiConfig";
-import { Avatar } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import { differenceInDays, format, formatDistanceToNow } from "date-fns";
 
 const messageContainerStyle = {
     width: "95%",
     boxSizing: "border-box",
     display: "flex",
-    padding: "10px",
+    padding: "20px 20px",
     borderRadius: "8px",
-    backgroundColor: "#F5F8FA",
+    backgroundColor: "rgb(245, 248, 250)",
     marginBottom: "10px",
-    alignItems: "center"
-  };
+    alignItems: "center",
+    cursor:"pointer",
+    transition: "0.3s",
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0)",
+    "&:hover": {
+        backgroundColor: "rgb(237, 239, 242)", // Более нежный оттенок серого с голубизной
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)", // Сделаем тень более мягкой
+        transform: "translateY(-2px)",
+    }
+};
+
   
   const avatarStyle = {
     width: "40px",
@@ -64,7 +73,7 @@ export const InboxMessage = ({image, senderName, sender, receiver, message, date
     };
 
   return (
-    <div style={messageContainerStyle} onClick={handleClick}>
+    <Box sx={messageContainerStyle} onClick={handleClick}>
      {/* <div style={messageContainerStyle}> */}
         {image?
       <img src={image} alt="Avatar" style={avatarStyle} /> : <Avatar alt={senderName} src="#" style={avatarStyle}/>}
@@ -74,7 +83,7 @@ export const InboxMessage = ({image, senderName, sender, receiver, message, date
       </div>
       
       {message? <div style={dateStyle}>{postDate()}</div> : null}
-    </div>
+    </Box>
   );
 }
 

@@ -539,7 +539,7 @@ export function Message() {
                             </div>
                         </>
                     )}
-                    <div style={{ ...styles.AdaptiveTextingContainerWithScroll, width: "100%" }}>
+                    <div style={{ ...styles.AdaptiveTextingContainerWithScroll, width: "100%", marginBottom:"20px" }}>
                         {selectedMessage && (
                             <TextField
                                 id="outlined-basic"
