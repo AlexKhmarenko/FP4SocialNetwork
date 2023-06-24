@@ -152,7 +152,7 @@ export function Comments({
                                         >
                                             <DialogContent>
                                                 <DialogContentText id="alert-dialog-slide-description">
-                                                    You wont delete this comment?
+                                                    Do you want to delete this comment?
                                                 </DialogContentText>
                                             </DialogContent>
                                             <DialogActions>
