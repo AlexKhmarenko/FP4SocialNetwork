@@ -61,9 +61,8 @@ public class ImageHandlingConf {
           .api().createFolder(folderName, null);
     } catch (IOException e) {
       log.info(String.format("The folder with the name: %s was not created", folderName));
-      throw new FolderCreationException("Failed to create folder: " + folderName);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw new FolderCreationException("Failed to create folder: " + folderName);
     }
   }
 
@@ -74,9 +73,8 @@ public class ImageHandlingConf {
             .api().deleteResourcesByPrefix(folderName, null);
       } catch (IOException e) {
         log.info(String.format("The folder with the name: %s was not deleted", folderName));
-        throw new FolderDeletionException("Failed to delete folder: " + folderName);
       } catch (Exception e) {
-        throw new RuntimeException(e);
+        throw new FolderDeletionException("Failed to delete folder: " + folderName);
       }
     }
   }
