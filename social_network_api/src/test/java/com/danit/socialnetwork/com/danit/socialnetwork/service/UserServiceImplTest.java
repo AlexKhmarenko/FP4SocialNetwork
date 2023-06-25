@@ -461,7 +461,7 @@ class UserServiceImplTest {
   private UserServiceImpl userService;
 
   @Test
-  public void testSaveUser() {
+  void testSaveUser() {
     // Arrange
     DbUser user = new DbUser();
     // Set up the user object with necessary data
