@@ -255,6 +255,9 @@ public class UserServiceImpl implements UserService {
             .uploadImage(profileBackgroundImage, folderName));
       } else if ((profileBackgroundImage == null && profileBackgroundImageString == null)
           || (profileBackgroundImage != null && profileBackgroundImage.length == 0)) {
+        String folderName = "profile_background_" + userId;
+        String oldProfileBackgroundImageUrl = userFromDb.get().getProfileBackgroundImageUrl();
+        imageHandlingConf.deleteFolder(folderName, oldProfileBackgroundImageUrl);
         updateUser.setProfileBackgroundImageUrl(null);
       }
       userRepository.save(updateUser);
