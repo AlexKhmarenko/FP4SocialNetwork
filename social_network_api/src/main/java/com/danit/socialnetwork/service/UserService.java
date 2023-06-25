@@ -49,5 +49,5 @@ public interface UserService {
 
   DbUser findDbUserByUserId(Integer userId);
 
-  void saveUser (DbUser user);
+  void saveUser(DbUser user);
 }

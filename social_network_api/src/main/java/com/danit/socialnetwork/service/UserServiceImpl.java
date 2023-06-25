@@ -289,7 +289,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void saveUser (DbUser user){
+  public void saveUser(DbUser user) {
     userRepository.save(user);
   }
 }

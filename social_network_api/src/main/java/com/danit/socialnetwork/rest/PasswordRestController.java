@@ -122,28 +122,31 @@ public class PasswordRestController {
   private final UserService userService;
 
   @PostMapping("/api/changepassword")
-  public ResponseEntity<?> changePass(@RequestBody ChangePasswordRequest changePasswordRequest) {
+  public ResponseEntity<Object> changePass(@RequestBody ChangePasswordRequest changePasswordRequest) {
     ResponseEntity<?> responseEntity = passwordChangerService.changePassword(changePasswordRequest);
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
   @PostMapping("/api/codecheck")
-  public ResponseEntity<?> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest) {
+  public ResponseEntity<Object> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest) {
     ResponseEntity<?> responseEntity = passwordChangerService.codeCheck(codeCheckRequest);
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
   @PostMapping("/api/newpassword")
-  public ResponseEntity<?> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest) {
+  public ResponseEntity<Object> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest) {
     ResponseEntity<?> responseEntity = passwordChangerService.authenticateUser(newPasswordRequest);
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
-  @PostMapping("/api/check_password")
-  public ResponseEntity<?> checkUserPassword(@RequestBody PasswordChangeRequest passwordChangeRequest) throws Exception {
+  @PostMapping("/api/change_password")
+  public ResponseEntity<Object> changeUserPassword(
+      @RequestBody PasswordChangeRequest passwordChangeRequest) throws Exception {
 
     DbUser user = userService.findDbUserByUserId(passwordChangeRequest.getUserId());
-    if (user == null) return new  ResponseEntity<>("INVALID_CREDENTIALS", HttpStatus.NOT_FOUND);
+    if (user == null) {
+      return new ResponseEntity<>("INVALID_CREDENTIALS", HttpStatus.NOT_FOUND);
+    }
 
     String userEmail = user.getEmail();
     JwtRequest authRequest = new JwtRequest();
@@ -151,13 +154,12 @@ public class PasswordRestController {
     authRequest.setPassword(passwordChangeRequest.getCurrentPassword());
     authRequest.setRememberMe("true");
     ResponseEntity<?> authenticationToken = jwtAuthenticationRestController.createAuthenticationToken(authRequest);
-    Integer status = authenticationToken.getStatusCodeValue();
 
-    if (status == 200) {
+    if (authenticationToken.getStatusCodeValue() == 200) {
       user.setPassword(enc.encode(passwordChangeRequest.getNewPassword()));
       userService.saveUser(user);
-      return new  ResponseEntity<>("Password changed", HttpStatus.OK);
+      return new ResponseEntity<>("Password changed", HttpStatus.OK);
     }
-    return new  ResponseEntity<>("INVALID_CREDENTIALS", HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>("INVALID_CREDENTIALS", HttpStatus.NOT_FOUND);
   }
 }
