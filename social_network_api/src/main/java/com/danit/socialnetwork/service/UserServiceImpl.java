@@ -236,28 +236,27 @@ public class UserServiceImpl implements UserService {
       String profileImageString = request.getProfileImageUrlString();
       String profileBackgroundImageString = request.getProfileBackgroundImageUrlString();
 
+      String folderProfileName = "profile_" + userId;
+      String folderProfileBackgroundName = "profile_background_" + userId;
       if (profileImage != null && profileImage.length != 0) {
-        String folderName = "profile_" + userId;
         String oldProfileImageUrl = userFromDb.get().getProfileImageUrl();
-        imageHandlingConf.deleteFolder(folderName, oldProfileImageUrl);
-        imageHandlingConf.createFolder(folderName);
+        imageHandlingConf.deleteFolder(folderProfileName, oldProfileImageUrl);
+        imageHandlingConf.createFolder(folderProfileName);
         updateUser.setProfileImageUrl(imageHandlingConf
-            .uploadImage(profileImage, folderName));
+            .uploadImage(profileImage, folderProfileName));
       } else if (profileImage == null && profileImageString == null) {
         updateUser.setProfileImageUrl(null);
       }
       if (profileBackgroundImage != null && profileBackgroundImage.length != 0) {
-        String folderName = "profile_background_" + userId;
         String oldProfileBackgroundImageUrl = userFromDb.get().getProfileBackgroundImageUrl();
-        imageHandlingConf.deleteFolder(folderName, oldProfileBackgroundImageUrl);
+        imageHandlingConf.deleteFolder(folderProfileBackgroundName, oldProfileBackgroundImageUrl);
         imageHandlingConf.createFolder("profile_background_" + userId);
         updateUser.setProfileBackgroundImageUrl(imageHandlingConf
-            .uploadImage(profileBackgroundImage, folderName));
+            .uploadImage(profileBackgroundImage, folderProfileBackgroundName));
       } else if ((profileBackgroundImage == null && profileBackgroundImageString == null)
           || (profileBackgroundImage != null && profileBackgroundImage.length == 0)) {
-        String folderName = "profile_background_" + userId;
         String oldProfileBackgroundImageUrl = userFromDb.get().getProfileBackgroundImageUrl();
-        imageHandlingConf.deleteFolder(folderName, oldProfileBackgroundImageUrl);
+        imageHandlingConf.deleteFolder(folderProfileBackgroundName, oldProfileBackgroundImageUrl);
         updateUser.setProfileBackgroundImageUrl(null);
       }
       userRepository.save(updateUser);
