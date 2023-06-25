@@ -229,7 +229,8 @@ public class WebSocketController {
     // Now, there are 2 options here:
     // 1) refactor 'getInboxesByInboxUid' method or split it into 2 separate method, to be able to work separately with
     // SENDER and RECEIVER.
-    // 2) update the inboxReceiver object with proper inboxUid and userId properties (because other properties are already set correctly).
+    // 2) update the inboxReceiver object with proper inboxUid and userId properties,
+    // because other properties are already set correctly.
     // I'll use the second one as it's faster and will work.
     inboxReceiver.setUserId(userId);
     inboxReceiver.setInboxUid(inboxUid);
