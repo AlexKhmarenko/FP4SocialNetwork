@@ -3,7 +3,9 @@ package com.danit.socialnetwork.websocket;
 import com.danit.socialnetwork.dto.NotificationType;
 import com.danit.socialnetwork.dto.NotificationRequest;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
+import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
+import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
@@ -212,16 +214,31 @@ public class WebSocketController {
 
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
-    log.info("inboxUid" + inboxUid);
-    log.info("userId" + userId);
+    log.info("inboxUid {}", inboxUid);
+    log.info("userId {}", userId);
 
     List<InboxDtoResponse> inboxesSender = inboxService.getInboxesByInboxUid(inboxUid);
     List<InboxDtoResponse> inboxesReceiver = inboxService.getInboxesByInboxUid(userId);
 
     InboxDtoResponse inboxSender = inboxesSender.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
     InboxDtoResponse inboxReceiver = inboxesReceiver.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
-    log.info("inboxSender " + inboxSender.getUsername());
-    log.info("inboxReceiver " + inboxReceiver.getUsername());
+
+    // inboxReceiver was instantiated using the method 'getInboxesByInboxUid',
+    // and the comment of that method says: "The method finds the inbox by SENDER and returns it".
+    // The problem is that the RECEIVER is NOT THE SENDER. The userId and inboxUid properties were wrongly placed
+    // inside the 'getInboxesByInboxUid' method for the receiver, while staying correct for the sender
+    // (because method is expected to work with the sender).
+    // Now, there are 2 options here:
+    // 1) refactor 'getInboxesByInboxUid' method or split it into 2 separate method, to be able to work separately with
+    // SENDER and RECEIVER.
+    // 2) update the inboxReceiver object with proper inboxUid and userId properties,
+    // because other properties are already set correctly.
+    // I'll use the second one as it's faster and will work.
+    inboxReceiver.setUserId(userId);
+    inboxReceiver.setInboxUid(inboxUid);
+
+    log.info("inboxSender {}", inboxSender);
+    log.info("inboxReceiver {}", inboxReceiver);
 
     int unreadMessagesNum = messageService
         .numberUnreadMessages(inboxUid);
@@ -240,9 +257,15 @@ public class WebSocketController {
     String inboxUidString = inboxUid.toString();
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxSender);
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxReceiver);
-
-    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxSender);
-    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxReceiver);
+    InboxParticipantsDtoRequest request = new InboxParticipantsDtoRequest();
+    request.setInboxUid(inboxUid);
+    request.setUserId(userId);
+    MessageDtoResponse message = messageService
+        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request, 0).get(0);
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", message);
+    message.setInboxUid(inboxUid);
+    message.setUserId(userId);
+    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", message);
     return inboxSender;
   }
 }
