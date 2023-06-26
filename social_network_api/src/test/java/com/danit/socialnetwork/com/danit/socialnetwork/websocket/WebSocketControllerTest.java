@@ -222,6 +222,7 @@ class WebSocketControllerTest {
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("1"), eq("/getMessages"), any(MessageDtoResponse.class));
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(MessageDtoResponse.class));
   }
+
 }
 
 
