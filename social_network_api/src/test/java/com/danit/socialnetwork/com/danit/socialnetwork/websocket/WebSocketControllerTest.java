@@ -217,8 +217,8 @@ class WebSocketControllerTest {
     webSocketController.postAddMessage(messageDtoRequest);
 
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
-    verify(messagingTemplate, times(1)).convertAndSendToUser("1", eq("/inbox"), eq(inboxSender));
-    verify(messagingTemplate, times(1)).convertAndSendToUser("2", eq("/inbox"), eq(inboxReceiver));
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("1"), eq("/inbox"), eq(inboxSender));
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/inbox"), eq(inboxReceiver));
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("1"), eq("/getMessages"), any(MessageDtoResponse.class));
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(MessageDtoResponse.class));
   }
