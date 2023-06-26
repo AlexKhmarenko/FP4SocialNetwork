@@ -55,6 +55,7 @@ export function MessageInbox({inboxMessages, selectedMessage, setSelectedMessage
                                 receiver={item.userId}
                                 message={item.message}
                                 date={item.createdAt}
+                                unreadMessage={item.unreadByUser}
                                 handleClick={(event) => {
                                     event.preventDefault()
                                     if (selectedMessage !== item) {
