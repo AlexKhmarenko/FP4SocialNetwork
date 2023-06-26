@@ -210,10 +210,9 @@ class WebSocketControllerTest {
 
     when(inboxService.getInboxesByInboxUid(eq(1))).thenReturn(inboxesSender);
     when(inboxService.getInboxesByInboxUid(eq(2))).thenReturn(inboxesReceiver);
-    when(mapper.inboxToInboxDtoResponse(any(Inbox.class))).thenReturn(any(InboxDtoResponse.class));
     when(messageService.numberUnreadMessages(eq(1))).thenReturn(5);
     when(messageService.numberUnreadMessagesByUser(eq(1), eq(2))).thenReturn(3);
-    when(messageService.findByInboxUidAndUserIdOrUserIdAndInboxUid(any(InboxParticipantsDtoRequest.class), eq(0))).thenReturn(messageList);
+    when(messageService.findByInboxUidAndUserIdOrUserIdAndInboxUidForWebsocket(any(InboxParticipantsDtoRequest.class), eq(0))).thenReturn(messageList);
 
     webSocketController.postAddMessage(messageDtoRequest);
 
