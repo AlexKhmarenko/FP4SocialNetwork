@@ -612,7 +612,7 @@ export function Message() {
                                     value={inputValue}
                                     onChange={(event) => {
                                         event.preventDefault();
-                                        console.log(event.target.value.toString());
+                                        console.log("Data from input: " + event.target.value.toString());
                                         setInputValue(event.target.value.toString());
                                     }}
                                     onKeyPress={handleKeyPress}
@@ -621,7 +621,9 @@ export function Message() {
                                             <>
                                                 <EmojiEmotionsIcon
                                                     id="emoji-icon"
-                                                    onClick={() => setIsOpenEmoji(!isOpenEmoji)}
+                                                    onClick={(event) => {
+                                                        event.stopPropagation();
+                                                        setIsOpenEmoji(!isOpenEmoji)}}
                                                     sx={{ cursor: "pointer", marginRight: "10px", color: "#9e9e9e" }}
                                                 />
                                                 <Button
@@ -637,7 +639,7 @@ export function Message() {
                                 />
                                 {isOpenEmoji && (
                                     <div ref={emojiPickerRef} style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
-                                        <EmojiPicker onEmojiClick={handleEmojiClick} disableSearchBar disableSkinTonePicker />
+                                        <EmojiPicker emojiStyle={"google"} onEmojiClick={handleEmojiClick} disableSearchBar disableSkinTonePicker />
                                     </div>
                                 )}
                             </>
