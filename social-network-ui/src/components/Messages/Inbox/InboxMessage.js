@@ -67,8 +67,6 @@ export const InboxMessage = ({ image, senderName, sender, receiver, message, dat
             return format(date2, "MMM d, yyyy");
         }
     };
-
-console.log()
     return (
         <Box sx={messageContainerStyle} onClick={handleClick}>
             {image
