@@ -423,6 +423,7 @@ export function Message() {
             message: payloadData.message,
             createdAt: payloadData.createdAt
         };
+        console.log(messageData)
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
                 return prevInboxMessages.map(message =>
