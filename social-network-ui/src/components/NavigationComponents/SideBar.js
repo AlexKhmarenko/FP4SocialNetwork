@@ -446,7 +446,7 @@ export function SideBar() {
                     </Link>
                     <Link to="/messages" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/messages" ? SidebarFabActive : SidebarFab}>
-                            <Badge badgeContent={messageCount} color={"primary"}>
+                            <Badge badgeContent={location.pathname === "/messages" ? 0 : messageCount} color={"primary"}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
