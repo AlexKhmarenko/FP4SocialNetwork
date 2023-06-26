@@ -7,6 +7,7 @@ import { Button, TextField, Typography } from "@mui/material";
 import { TextingMessage } from "../components/Messages/FullTexting/TextingMessage";
 import { MessageSearch } from "../components/Messages/Inbox/MessageSearch";
 import { MessageInbox } from "../components/Messages/Inbox/MessageInbox";
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import {
     leftBlockInboxAndSearch, inboxContainerStyle,
     textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
@@ -25,6 +26,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { height, padding } from "@mui/system";
 import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
 import { Avatar } from "@mui/material";
+import EmojiPicker from 'emoji-picker-react';
 
 let stompClient = null;
 
@@ -43,10 +45,30 @@ export function Message() {
     const [inboxMessages, setInboxMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
+    const [isOpenEmoji, setIsOpenEmoji] = useState(false);
+    const emojiPickerRef = useRef();
 
     useEffect(() => {
         console.log(selectedMessage, "selectedMessageFROMMESSAGEEL");
     }, [selectedMessage]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                emojiPickerRef.current &&
+                !emojiPickerRef.current.contains(event.target) &&
+                event.target !== document.getElementById("emoji-icon")
+            ) {
+                setIsOpenEmoji(false);
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+      }, [isOpenEmoji, emojiPickerRef]);
+      
 
     const theme = useTheme();
 
@@ -488,102 +510,141 @@ export function Message() {
         }
     };
 
+    const handleSend = async (event) => {
+        await fetch(`${apiUrl}/api/addMessage`, {
+            method: "POST",
+            body: JSON.stringify({
+                inboxUid: selectedMessage.inboxUid,
+                userId: selectedMessage.userId,
+                writtenMessage: inputValue,
+            }),
+            headers: { "Content-Type": "application/json" },
+        });
+        stompClient.send("/app/addMessage", {}, JSON.stringify({
+            userId: selectedMessage.userId,
+            inboxUid: selectedMessage.inboxUid,
+            writtenMessage: inputValue,
+        }));
+        setInputValue("");
+    };
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSend(event);
+        }
+    };
+
+    const handleEmojiClick = (emojiData) => {
+        const emojiCodePoint = parseInt(emojiData.unified, 16);
+        const emojiChar = String.fromCodePoint(emojiCodePoint);
+        setInputValue((prevValue) => prevValue + emojiChar);
+    };
+
+    const handleClickOutside = (event) => {
+        if (!isOpenEmoji) {
+            return;
+        }
+        if (
+            emojiPickerRef.current &&
+            !emojiPickerRef.current.contains(event.target) &&
+            event.target !== document.getElementById("emoji-icon")
+        ) {
+            setIsOpenEmoji(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, [isOpenEmoji, emojiPickerRef]);
+
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
-            {!clicked &&
+            {!clicked && (
                 <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
-                    <HeaderInformation/>
-                    <MessageSearch/>
+                    <HeaderInformation />
+                    <MessageSearch />
                     <div style={styles.AdaptiveInboxContainerStyle}>
-                        {isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft: "40%" }}/> :
-                            <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage}
-                                          setSelectedMessage={setSelectedMessage}/>}
+                        {isLoading ? (
+                            <CircularProgress sx={{ marginTop: "20%", marginLeft: "40%" }} />
+                        ) : (
+                            <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage} setSelectedMessage={setSelectedMessage} />
+                        )}
                     </div>
                 </div>
-            }
-            {isXl || isLg || isMd || clicked ?
+            )}
+            {(isXl || isLg || isMd || clicked) && (
                 <div style={styles.AdaptiveTextingContainerWithInputStyle}>
-                    {clicked && <HeaderInformation/>}
+                    {clicked && <HeaderInformation />}
                     {!selectedMessage ? (
                         <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
-                            <div style={{
-                                fontSize: "1.1rem",
-                                fontFamily: "'Lato', sans-serif"
-                            }}>Почніть переписку
-                            </div>
+                            <div style={{ fontSize: "1.1rem", fontFamily: "'Lato', sans-serif" }}>Почніть переписку</div>
                         </div>
                     ) : (
                         <>
                             <div style={styles.AdaptiveMessageContainerStyle}>
-                                {selectedMessage.profileImageUrl ?
-                                    <img src={selectedMessage.profileImageUrl} alt="Avatar"
-                                         style={styles.AdaptiveAvatarStyle}/> :
-                                    <Avatar src="#" style={styles.AdaptiveAvatarStyle}/>
-                                }
-                                <div style={{ flex: "1", height: "40px", overflow: "hidden", }}>
+                                {selectedMessage.profileImageUrl ? (
+                                    <img src={selectedMessage.profileImageUrl} alt="Avatar" style={styles.AdaptiveAvatarStyle} />
+                                ) : (
+                                    <Avatar src="#" style={styles.AdaptiveAvatarStyle} />
+                                )}
+                                <div style={{ flex: "1", height: "40px", overflow: "hidden" }}>
                                     <div style={{ fontFamily: "'Lato', sans-serif" }}>{selectedMessage.name}</div>
-                                    <div style={{
-                                        fontFamily: "'Lato', sans-serif",
-                                        color: "gray",
-                                    }}>@{selectedMessage.username}</div>
+                                    <div style={{ fontFamily: "'Lato', sans-serif", color: "gray" }}>@{selectedMessage.username}</div>
                                 </div>
                             </div>
-                            <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom}
-                                 ref={textingContainerRef}>
-                                <TextingMessage
-                                    sender={selectedMessage.inboxUid}
-                                    receiver={selectedMessage.userId}
-                                    selectedMessage2={messages}
-                                    key={Math.floor(Math.random() * 1000)}
-                                />
+                            <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom} ref={textingContainerRef}>
+                                <TextingMessage sender={selectedMessage.inboxUid} receiver={selectedMessage.userId} selectedMessage2={messages} key={Math.floor(Math.random() * 1000)} />
                             </div>
                         </>
                     )}
-                    <div style={{ ...styles.AdaptiveTextingContainerWithScroll, width: "100%" }}>
+                    <div style={{ ...styles.AdaptiveTextingContainerWithScroll, width: "100%", position: "relative" }}>
                         {selectedMessage && (
-                            <TextField
-                                id="outlined-basic"
-                                type="search"
-                                variant="outlined"
-                                placeholder="Input message"
-                                size="small"
-                                value={inputValue}
-                                onChange={(event) => {
-                                    event.preventDefault();
-                                    setInputValue(event.target.value.toString());
-                                }}
-                                InputProps={{
-                                    endAdornment: (
-                                        <SendIcon
-                                            style={{ cursor: "pointer", }}
-                                            onClick={async (event) => {
-                                                await fetch(`${apiUrl}/api/addMessage`, {
-                                                    method: "POST",
-                                                    body: JSON.stringify({
-                                                        inboxUid: selectedMessage.inboxUid,
-                                                        userId: selectedMessage.userId,
-                                                        writtenMessage: inputValue,
-                                                    }),
-                                                    headers: { "Content-Type": "application/json" },
-                                                });
-                                                event.preventDefault();
-                                                stompClient.send("/app/addMessage", {}, JSON.stringify({
-                                                    userId: selectedMessage.userId,
-                                                    inboxUid: selectedMessage.inboxUid,
-                                                    writtenMessage: inputValue,
-                                                }));
-                                                setInputValue("");
-                                            }}
-                                        />
-                                    )
-                                }}
-                                style={{
-                                    flex: "1",
-                                }}
-                            />
+                            <>
+                                <TextField
+                                    id="outlined-basic"
+                                    type="search"
+                                    variant="outlined"
+                                    placeholder="Input message"
+                                    size="small"
+                                    value={inputValue}
+                                    onChange={(event) => {
+                                        event.preventDefault();
+                                        console.log(event.target.value.toString());
+                                        setInputValue(event.target.value.toString());
+                                    }}
+                                    onKeyPress={handleKeyPress}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <>
+                                                <EmojiEmotionsIcon
+                                                    id="emoji-icon"
+                                                    onClick={() => setIsOpenEmoji(!isOpenEmoji)}
+                                                    sx={{ cursor: "pointer", marginRight: "10px", color: "#9e9e9e" }}
+                                                />
+                                                <Button
+                                                    sx={{ color: "#9e9e9e", minWidth: "35px", height: "35px", padding: "0", fontSize: "2rem" }}
+                                                    onClick={handleSend}
+                                                >
+                                                    <SendIcon />
+                                                </Button>
+                                            </>
+                                        ),
+                                    }}
+                                    style={{ width: "100%", marginTop: "5px" }}
+                                />
+                                {isOpenEmoji && (
+                                    <div ref={emojiPickerRef} style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
+                                        <EmojiPicker onEmojiClick={handleEmojiClick} disableSearchBar disableSkinTonePicker />
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
-                </div> : null}
+                </div>
+            )}
         </div>
     );
 }
