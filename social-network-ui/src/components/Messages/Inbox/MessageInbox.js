@@ -44,7 +44,7 @@ export function MessageInbox({inboxMessages, selectedMessage, setSelectedMessage
 
 
     return(
-        <div style={{height:"100vh", marginLeft:"20px"}}>
+        <div style={{height:"100vh", marginTop:"10px"}}>
             {inboxMessages.length > 0 ? (
                 inboxMessages.map((item)=>(
                 <div key={item.inboxId} style={{ display:"flex", justifyContent:"start", alignItems:"center", flexDirection:"column"}}>
@@ -55,10 +55,11 @@ export function MessageInbox({inboxMessages, selectedMessage, setSelectedMessage
                                 receiver={item.userId}
                                 message={item.message}
                                 date={item.createdAt}
+                                unreadMessage={item.unreadByUser}
                                 handleClick={(event) => {
                                     event.preventDefault()
                                     if (selectedMessage !== item) {
-                                        // dispatch(clearMessages())
+                                        dispatch(clearMessages())
                                         setSelectedMessage(item)
                                         dispatch(setPageZeroForMessaging());
                                         dispatch(fetchTextsByPage(item.userId, userId, 0));
