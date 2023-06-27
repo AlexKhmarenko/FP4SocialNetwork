@@ -189,6 +189,10 @@ class MessageServiceImplTest {
     SearchRequest request2 = new SearchRequest();
     request2.setUserId("1");
     request2.setSearch(StringSearch2);
+    String StringSearch3 = "";
+    SearchRequest request3 = new SearchRequest();
+    request3.setUserId("1");
+    request3.setSearch(StringSearch3);
 
     DbUser testUser1 = new DbUser();
     testUser1.setUserId(1);
@@ -254,9 +258,11 @@ class MessageServiceImplTest {
 
     List<MessageSearchDto> resultSearchDto1 = messageService.filterCachedMessageByString(request1);
     List<MessageSearchDto> resultSearchDto2 = messageService.filterCachedMessageByString(request2);
+    List<MessageSearchDto> resultSearchDto3 = messageService.filterCachedMessageByString(request3);
 
     Assert.assertTrue(resultSearchDto1.size() <= 5);
     Assert.assertTrue(resultSearchDto2.size() <= 5);
+    Assert.assertTrue(resultSearchDto3.size() == 0);
 
     Assert.assertTrue(resultSearchDto1.get(0).getMessage().toUpperCase().contains("nad".toUpperCase()));
     Assert.assertTrue(resultSearchDto2.get(0).getName().toUpperCase().contains("ro".toUpperCase())
