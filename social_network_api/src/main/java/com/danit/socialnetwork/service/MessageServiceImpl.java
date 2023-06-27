@@ -83,7 +83,7 @@ public class MessageServiceImpl implements MessageService {
   @Override
   public List<MessageSearchDto> filterCachedMessageByString(SearchRequest request) {
     String messageSearch = request.getSearch();
-    if (messageSearch == "") {
+    if (messageSearch.equals("")) {
       return new ArrayList<>();
     }
     List<MessageSearchDto> search;

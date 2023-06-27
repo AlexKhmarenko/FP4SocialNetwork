@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<SearchDto> filterCachedUsersByName(SearchRequest request) {
     String userSearch = request.getSearch();
-    if (userSearch == "") {
+    if (userSearch.equals("")) {
       return new ArrayList<>();
     }
     Integer userId = Integer.valueOf(request.getUserId());
