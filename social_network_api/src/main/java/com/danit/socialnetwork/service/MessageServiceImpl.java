@@ -15,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.danit.socialnetwork.config.GuavaCache.messageCache;
@@ -64,22 +65,10 @@ public class MessageServiceImpl implements MessageService {
     DbUser userId = userService.findDbUserByUserId(request.getUserId());
     List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
         inboxUid, userId, inboxUid, userId, offset, pageSize);
-    messagePage.stream().filter(message -> message.getUserId().equals(inboxUid)).forEach(message -> {
-      message.setMessageReade(true);
-      messageRepository.save(message);
+    messagePage.stream().filter(m -> m.getInboxUid().equals(inboxUid) && m.getMessageReade().equals(false)).forEach(m -> {
+      m.setMessageReade(true);
+      messageRepository.save(m);
     });
-    return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
-  }
-
-  @Override
-  public List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUidForWebsocket(
-      InboxParticipantsDtoRequest request, Integer page) {
-    int pageSize = 16;
-    int offset = page * pageSize;
-    DbUser inboxUid = userService.findDbUserByUserId(request.getInboxUid());
-    DbUser userId = userService.findDbUserByUserId(request.getUserId());
-    List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
-        inboxUid, userId, inboxUid, userId, offset, pageSize);
     return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
   }
 
@@ -93,11 +82,13 @@ public class MessageServiceImpl implements MessageService {
    and filters messages from cache by requested string. And returns them*/
   @Override
   public List<MessageSearchDto> filterCachedMessageByString(SearchRequest request) {
+    String messageSearch = request.getSearch();
+    if (messageSearch.equals("")) {
+      return new ArrayList<>();
+    }
     List<MessageSearchDto> search;
     Integer userId = Integer.valueOf(request.getUserId());
     DbUser userFromDb = userService.findDbUserByUserId(userId);
-    String messageSearch = request.getSearch();
-
     if (messageCache.getIfPresent(MESSAGE_CACHE) == null) {
       List<Message> cacheMessage = messageRepository.findMessageByInboxUidOrUserId(userFromDb, userFromDb);
       log.debug(String.format("cacheMessage.size = %d", cacheMessage.size()));
