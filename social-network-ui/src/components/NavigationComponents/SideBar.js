@@ -358,7 +358,7 @@ export function SideBar() {
     };
 
     return (
-        <Box position="fixed" sx={styles.SidebarBox}>
+        <Box data-testid={"sidebar_for_home_page"} position="fixed" sx={styles.SidebarBox}>
             <div style={styles.AdaptiveDivWrapper}>
                 <div
                     style={{ height: "60%", display: "flex", justifyContent: "space-around", flexDirection: "column" }}>
