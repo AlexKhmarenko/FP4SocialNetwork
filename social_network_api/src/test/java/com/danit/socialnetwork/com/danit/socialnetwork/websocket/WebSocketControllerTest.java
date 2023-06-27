@@ -186,9 +186,6 @@ class WebSocketControllerTest {
     messageDtoRequest.setInboxUid(1);
     messageDtoRequest.setUserId(2);
     messageDtoRequest.setWrittenMessage("Test");
-    InboxParticipantsDtoRequest request = new InboxParticipantsDtoRequest();
-    request.setInboxUid(1);
-    request.setUserId(2);
 
     List<InboxDtoResponse> inboxes = new ArrayList<>();
     InboxDtoResponse inbox = new InboxDtoResponse();
@@ -196,14 +193,6 @@ class WebSocketControllerTest {
     inbox.setUserId(2);
     inbox.setMessage("Test");
     inboxes.add(inbox);
-
-    List<MessageDtoResponse> messageList = new ArrayList<>();
-    MessageDtoResponse messageTest = new MessageDtoResponse();
-    messageTest.setInboxUid(1);
-    messageTest.setUserId(2);
-    messageTest.setMessage("Test");
-    messageList.add(messageTest);
-    System.out.println(messageTest);
 
     when(inboxService.getInboxesByInboxUid(1)).thenReturn(inboxes);
     when(userService.findByUserId(1)).thenReturn(userS);
