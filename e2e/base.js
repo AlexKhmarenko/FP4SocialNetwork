@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { CommonActions } from "./pages/CommonActions";
 
+
 export const test = base.extend({
     notFoundPage: async ({ page }, use) => {
         await use(new NotFoundPage(page));
