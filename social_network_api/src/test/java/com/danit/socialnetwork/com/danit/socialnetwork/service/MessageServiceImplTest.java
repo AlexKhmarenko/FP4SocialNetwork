@@ -369,7 +369,7 @@ class MessageServiceImplTest {
 
     Assert.assertTrue(resultSearchDto1.size() <= 5);
     Assert.assertTrue(resultSearchDto2.size() <= 5);
-    Assert.assertTrue(resultSearchDto3.size() == 0);
+    Assert.assertEquals(0,resultSearchDto3.size());
 
     Assert.assertTrue(resultSearchDto1.get(0).getMessage().toUpperCase().contains("nad".toUpperCase()));
     Assert.assertTrue(resultSearchDto2.get(0).getName().toUpperCase().contains("ro".toUpperCase())
