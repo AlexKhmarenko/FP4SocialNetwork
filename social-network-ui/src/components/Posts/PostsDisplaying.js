@@ -17,6 +17,7 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
         keys: post => post.postId,
         config: { duration: 600, delay: 200 },
     });
+console.log(userPosts)
 
     useEffect(() => {
         const socket = new SockJS(`${apiUrl}/websocket`);

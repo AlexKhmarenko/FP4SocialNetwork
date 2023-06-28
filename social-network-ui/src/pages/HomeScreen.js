@@ -470,7 +470,7 @@ export function HomeScreen() {
     };
 
     return (
-        <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper}>
+        <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper} >
             {isXs || isXxs ? <>
                     <Modal open={open} onClose={() => setOpen(false)}
                            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -667,6 +667,7 @@ export function HomeScreen() {
 
                                             </div>
                                             <Field
+                                                data-testid={"post_text_input"}
                                                 values={postText}
                                                 component={SendPostInput}
                                                 name="postText"
@@ -690,7 +691,7 @@ export function HomeScreen() {
                                                     onChange={handlePostImageChange}
                                                     style={{ display: "none" }}
                                                 />
-                                                <div style={styles.AdaptiveSendingPostButtonsContainer}>
+                                                <div style={styles.AdaptiveSendingPostButtonsContainer}  data-testid="posting_button" >
                                                     <div>
                                                         <label htmlFor="post-image-input"
                                                                style={{ height: "30px", borderRadius: "20px", }}>
@@ -724,8 +725,7 @@ export function HomeScreen() {
 
                                                         </label>
                                                     </div>
-                                                    <label htmlFor="post-image-input"
-                                                           style={{ height: "30px", borderRadius: "20px", }}>
+                                                    <label htmlFor="post-image-input"  style={{ height: "30px", borderRadius: "20px", }}>
                                                         <Button
                                                             type="submit"
                                                             variant="contained"

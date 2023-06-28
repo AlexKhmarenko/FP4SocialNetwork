@@ -202,7 +202,6 @@ export function EnterEmailModal() {
                     <FormControl style={styles.AdaptiveFormControl}>
                         <Field as={InputFieldWithError}  name={"email"}
                                id="email"
-                               data-testid="email_modal"
                                label="Email" style={{width:"100%"}} disabled={isSubmitting} type="text"/>
                         <Button type="submit"
                                 variant="contained" sx={styles.AdaptiveStyledBlackButton} disabled={isSubmitting}

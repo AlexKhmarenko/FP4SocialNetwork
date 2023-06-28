@@ -445,7 +445,9 @@ export const Post = ({
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
-                    <Typography variant="body1" component="div" mt={1} sx={styles.AdaptiveText}>{text}</Typography>
+                    <div data-testid="user_post_text">
+                        <Typography  variant="body1" component="div" mt={1} sx={styles.AdaptiveText}>{text}</Typography>
+                    </div>
                 </div>
             </CardContent>
             <Typography variant="body1" component="div" mt={1} sx={styles.AdaptiveSmallText}>{text}</Typography>
