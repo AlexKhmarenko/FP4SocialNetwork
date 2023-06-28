@@ -279,7 +279,7 @@ class UserServiceImplTest {
     List<SearchDto> resultSearchDto2 = userServiceImp.filterCachedUsersByName(search2);
 
     Assert.assertTrue(resultSearchDto1.size() <= 5);
-    Assert.assertTrue(resultSearchDto2.size() == 0);
+    Assert.assertEquals(0,resultSearchDto2.size());
     Assert.assertEquals(2, resultSearchDto1.size());
     Assert.assertTrue(resultSearchDto1.get(0).getName().toUpperCase().contains("nad".toUpperCase())
         || resultSearchDto1.get(0).getUsername().toUpperCase().contains("nad".toUpperCase()));
