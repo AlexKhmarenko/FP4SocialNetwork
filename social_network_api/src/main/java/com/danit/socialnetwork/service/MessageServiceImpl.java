@@ -125,15 +125,13 @@ public class MessageServiceImpl implements MessageService {
   public Integer numberUnreadMessagesByUser(Integer inboxUid, Integer userId) {
     DbUser userS = userService.findDbUserByUserId(inboxUid);
     DbUser userR = userService.findDbUserByUserId(userId);
-    Integer unreadByUser = messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(userS, userR, false).size();
-    return unreadByUser;
+    return messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(userS, userR, false).size();
   }
 
   /*The method counts the number of unread messages returns it*/
   @Override
   public Integer numberUnreadMessages(Integer inboxUid) {
     DbUser userS = userService.findDbUserByUserId(inboxUid);
-    Integer unread = messageRepository.findAllByUserIdAndMessageReadeEquals(userS, false).size();
-    return unread;
+    return messageRepository.findAllByUserIdAndMessageReadeEquals(userS, false).size();
   }
 }

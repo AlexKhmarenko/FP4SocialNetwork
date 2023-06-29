@@ -44,6 +44,8 @@ public class WebSocketController {
   private final MessageService messageService;
   private final InboxMapperImpl mapper;
 
+  String UNREAD_BY_USER = "unreadByUser";
+
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
 
@@ -221,7 +223,7 @@ public class WebSocketController {
     int unreadMessagesByUserNumSenderS = messageService
         .numberUnreadMessagesByUser(userId, inboxUid);
     Map<String, Integer> unreadMessagesByUserS = new HashMap<>();
-    unreadMessagesByUserS.put("unreadByUser", unreadMessagesByUserNumSenderS);
+    unreadMessagesByUserS.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderS);
     inboxS.setUnreadByUser(unreadMessagesByUserNumSenderS);
 
     log.info("unreadByUser {}",unreadMessagesByUserNumSenderS);
@@ -236,7 +238,7 @@ public class WebSocketController {
     int unreadMessagesByUserNumSenderR = messageService
         .numberUnreadMessagesByUser(inboxUid, userId);
     Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
-    unreadMessagesByUserR.put("unreadByUser", unreadMessagesByUserNumSenderR);
+    unreadMessagesByUserR.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderR);
     inboxR.setUnreadByUser(unreadMessagesByUserNumSenderR);
 
     inboxR.setInboxUid(inboxUid);
@@ -272,7 +274,7 @@ public class WebSocketController {
     int unreadMessagesByUserNumSenderR = messageService
         .numberUnreadMessagesByUser(inboxUid, userId);
     Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
-    unreadMessagesByUserR.put("unreadByUser", unreadMessagesByUserNumSenderR);
+    unreadMessagesByUserR.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderR);
     inboxR.setUnreadByUser(unreadMessagesByUserNumSenderR);
 
     String userIdString = userId.toString();
