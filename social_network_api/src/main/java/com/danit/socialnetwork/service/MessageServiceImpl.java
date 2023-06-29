@@ -59,13 +59,16 @@ public class MessageServiceImpl implements MessageService {
   @Override
   public List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(
       InboxParticipantsDtoRequest request, Integer page) {
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(request.getInboxUid());
+    messageDtoRequest.setUserId(request.getUserId());
+    unreadToReadMessages(messageDtoRequest);
     int pageSize = 16;
     int offset = page * pageSize;
     DbUser userS = userService.findDbUserByUserId(request.getInboxUid());
     DbUser userR = userService.findDbUserByUserId(request.getUserId());
     List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
         userS, userR, userS, userR, offset, pageSize);
-    convertMessages(messagePage, userS);
     return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
   }
 
@@ -74,13 +77,13 @@ public class MessageServiceImpl implements MessageService {
   public void unreadToReadMessages(MessageDtoRequest request) {
     DbUser userS = userService.findDbUserByUserId(request.getInboxUid());
     DbUser userR = userService.findDbUserByUserId(request.getUserId());
-    List<Message> messagePage = messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(userS, userR, false);
-    convertMessages(messagePage, userS);
+    List<Message> messages = messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(userS, userR, false);
+    convertMessages(messages, userS);
   }
 
   /*Method converts unread messages to read messages*/
-  public void convertMessages(List<Message> messagePage, DbUser inboxUid) {
-    messagePage.stream().filter(m -> m.getInboxUid().equals(inboxUid) && m.getMessageReade().equals(false)).forEach(m -> {
+  public void convertMessages(List<Message> messages, DbUser inboxUid) {
+    messages.stream().filter(m -> m.getInboxUid().equals(inboxUid) && m.getMessageReade().equals(false)).forEach(m -> {
       m.setMessageReade(true);
       messageRepository.save(m);
     });
@@ -122,13 +125,15 @@ public class MessageServiceImpl implements MessageService {
   public Integer numberUnreadMessagesByUser(Integer inboxUid, Integer userId) {
     DbUser userS = userService.findDbUserByUserId(inboxUid);
     DbUser userR = userService.findDbUserByUserId(userId);
-    return messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(userS, userR, false).size();
+    Integer unreadByUser = messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(userS, userR, false).size();
+    return unreadByUser;
   }
 
   /*The method counts the number of unread messages returns it*/
   @Override
   public Integer numberUnreadMessages(Integer inboxUid) {
     DbUser userS = userService.findDbUserByUserId(inboxUid);
-    return messageRepository.findAllByUserIdAndMessageReadeEquals(userS, false).size();
+    Integer unread = messageRepository.findAllByUserIdAndMessageReadeEquals(userS, false).size();
+    return unread;
   }
 }
