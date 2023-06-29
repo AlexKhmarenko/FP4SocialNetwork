@@ -19,4 +19,11 @@ public interface MessageService {
   List<Message> findMessageByInboxUidOrUserId(DbUser inboxUid, DbUser userId);
 
   List<MessageSearchDto> filterCachedMessageByString(SearchRequest request);
+
+  Integer numberUnreadMessagesByUser(Integer inboxUid, Integer userId);
+
+  Integer numberUnreadMessages(Integer inboxUid);
+
+  void  unreadToReadMessages(MessageDtoRequest request);
+
 }

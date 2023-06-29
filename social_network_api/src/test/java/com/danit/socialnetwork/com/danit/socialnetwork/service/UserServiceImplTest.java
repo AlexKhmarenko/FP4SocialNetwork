@@ -30,7 +30,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.danit.socialnetwork.config.GuavaCache;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -38,11 +37,8 @@ import java.util.*;
 import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
 import static com.danit.socialnetwork.config.GuavaCache.userCache;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -82,7 +78,7 @@ class UserServiceImplTest {
   public void findByUsername_shouldNotFindUser_WhenNotExists() {
     Optional<DbUser> testUser = userRepository.findByUsername("TestUser");
 
-    Mockito.verify(userRepository).findByUsername("TestUser");
+    verify(userRepository).findByUsername("TestUser");
 
 
     Assert.assertEquals(Optional.empty(), testUser);
@@ -103,7 +99,7 @@ class UserServiceImplTest {
   void findById_shouldNotFindUser_WhenNotExists() {
     Optional<DbUser> testUser = userRepository.findById(10);
 
-    Mockito.verify(userRepository).findById(10);
+    verify(userRepository).findById(10);
 
     Assert.assertEquals(Optional.empty(), testUser);
   }
@@ -141,8 +137,8 @@ class UserServiceImplTest {
 
     ResponseEntity<Map<String, String>> result = userServiceImp.save(registrationRequest);
 
-    Mockito.verify(userRepository).save(testUser);
-    Mockito.verify(passwordEncoder).encode(testUser.getPassword());
+    verify(userRepository).save(testUser);
+    verify(passwordEncoder).encode(testUser.getPassword());
 
     assertEquals(ResponseEntity.ok(responseTest), result);
   }
@@ -176,7 +172,7 @@ class UserServiceImplTest {
     dbUser.setDateOfBirth(LocalDate.of(1999, 01, 27));
 
     ResponseEntity<Map<String, String>> result = userServiceImp.save(registrationRequest);
-    Mockito.verify(userRepository, never()).save(any(DbUser.class));
+    verify(userRepository, never()).save(any(DbUser.class));
 
     assertEquals(new ResponseEntity<>(responseTest, HttpStatus.BAD_REQUEST), result);
   }
@@ -264,21 +260,29 @@ class UserServiceImplTest {
     testSearchDto.add(testSearchDto1);
     testSearchDto.add(testSearchDto2);
 
-    String nameSearch = "nad";
-    String userId = "3";
-    SearchRequest search = new SearchRequest();
-    search.setSearch(nameSearch);
-    search.setUserId(userId);
+    String nameSearch1 = "nad";
+    String userId1 = "3";
+    SearchRequest search1 = new SearchRequest();
+    search1.setSearch(nameSearch1);
+    search1.setUserId(userId1);
+    String nameSearch2 = "";
+    String userId2 = "1";
+    SearchRequest search2 = new SearchRequest();
+    search2.setSearch(nameSearch2);
+    search2.setUserId(userId2);
+
 
     when(searchMapper.dbUserToSearchDto(testDbUser1)).thenReturn(testSearchDto1);
     when(searchMapper.dbUserToSearchDto(testDbUser2)).thenReturn(testSearchDto2);
 
-    List<SearchDto> resultSearchDto = userServiceImp.filterCachedUsersByName(search);
+    List<SearchDto> resultSearchDto1 = userServiceImp.filterCachedUsersByName(search1);
+    List<SearchDto> resultSearchDto2 = userServiceImp.filterCachedUsersByName(search2);
 
-    Assert.assertTrue(resultSearchDto.size() <= 5);
-    Assert.assertEquals(2, resultSearchDto.size());
-    Assert.assertTrue(resultSearchDto.get(0).getName().toUpperCase().contains("nad".toUpperCase())
-        || resultSearchDto.get(0).getUsername().toUpperCase().contains("nad".toUpperCase()));
+    Assert.assertTrue(resultSearchDto1.size() <= 5);
+    Assert.assertEquals(0,resultSearchDto2.size());
+    Assert.assertEquals(2, resultSearchDto1.size());
+    Assert.assertTrue(resultSearchDto1.get(0).getName().toUpperCase().contains("nad".toUpperCase())
+        || resultSearchDto1.get(0).getUsername().toUpperCase().contains("nad".toUpperCase()));
   }
 
 
@@ -320,7 +324,7 @@ class UserServiceImplTest {
   void findDbUserByEmail_shouldNotFindUser_WhenNotExists() {
     Optional<DbUser> testUser = userRepository.findDbUserByEmail("TestUser@gmail.com");
 
-    Mockito.verify(userRepository).findDbUserByEmail("TestUser@gmail.com");
+    verify(userRepository).findDbUserByEmail("TestUser@gmail.com");
 
     Assert.assertEquals(Optional.empty(), testUser);
   }
@@ -460,4 +464,20 @@ class UserServiceImplTest {
     Assertions.assertEquals("John1", userList.get(0).getName());
   }
 
+
+  @InjectMocks
+  private UserServiceImpl userService;
+
+  @Test
+  void testSaveUser() {
+    // Arrange
+    DbUser user = new DbUser();
+    // Set up the user object with necessary data
+
+    // Act
+    userService.saveUser(user);
+
+    // Assert
+    verify(userRepository, times(1)).save(user);
+  }
 }
