@@ -29,7 +29,6 @@ public class InboxServiceImpl implements InboxService {
   private final UserServiceImpl userService;
   private final InboxMapperImpl mapper;
   private final SimpMessagingTemplate messagingTemplate;
-  private static final String USER_NOT_FOUND = "User with userId %d not found";
 
   /*The method finds inbox by message sender and receiver and returns it*/
   @Override
