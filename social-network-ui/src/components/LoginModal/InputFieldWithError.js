@@ -75,7 +75,6 @@ export function InputFieldWithError({
             <>
                 <TextField
                     label={label}
-                    data-testid="email_modal_input"
                     variant="outlined"
                     error={hasError}
                     name={name}

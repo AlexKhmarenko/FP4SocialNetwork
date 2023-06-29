@@ -22,10 +22,11 @@ export class CommonActions {
         await expect(this.page.getByTestId(CommonActions.SELECTOR.NEWS_FEED_REGISTRATION_PAGE_AND_RIGHT_SIDE_MENU)).toBeVisible();
     }
 
+
     async login() {
         await this.page.goto(BASE_URL);
         await this.page.getByText("Log in").click();
-        await this.page.getByTestId(CommonActions.SELECTOR.EMAIL_INPUT_MODAL).locator("input[name=\"email\"]").fill("slonotop2103@gmail.com");
+        await this.page.locator("input[name=\"email\"]").fill("slonotop2103@gmail.com");
         await this.page.getByText("Next").click();
         await this.page.getByTestId(CommonActions.SELECTOR.PASSWORD_INPUT_MODAL).locator("input[name=\"password\"]").fill("241120Na");
         await this.page.getByTestId(CommonActions.SELECTOR.LOGIN_MODAL_BUTTON).click();

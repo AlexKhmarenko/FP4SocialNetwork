@@ -66,6 +66,39 @@ export function SideBar() {
     }, [userId]);
 
     useEffect(() => {
+
+        let stompClient;
+
+        const onConnected = () => {
+            if (stompClient.connected) {
+                stompClient.subscribe("/user/" + userId + "/unread", onMessageUnread);
+            }
+        };
+
+        const onError = (err) => {
+            console.log(err);
+        };
+
+        if (location.pathname !== "/message") {
+            let Sock = new SockJS(`${apiUrl}/websocket`);
+            stompClient = over(Sock);
+            stompClient.connect({}, onConnected, onError);
+        }
+
+        return () => {
+            if (stompClient && stompClient.connected) {
+                stompClient.disconnect();
+            }
+        };
+    }, [location.pathname]);
+
+    const onMessageUnread = (payload) => {
+        let payloadData = JSON.parse(payload.body);
+        setMessageCount(payloadData.unread);
+        console.log(payloadData, "unreadMessageFromSidebar");
+    };
+
+    useEffect(() => {
         if (location.pathname === "/notifications") {
             setNotificationCount(0);
         }
@@ -87,6 +120,7 @@ export function SideBar() {
             stompClient = over(Sock);
             stompClient.connect({}, onConnected, onError);
         }
+
 
         return () => {
             if (stompClient && stompClient.connected) {
@@ -384,7 +418,7 @@ export function SideBar() {
 
                     </Link>
                     <Link to="/explore" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={pathname === "/explore" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended" sx={pathname === "/explore" ? SidebarFabActive : SidebarFab} data-testid={"fab_of_explore_text"}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">

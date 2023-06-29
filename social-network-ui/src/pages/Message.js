@@ -396,6 +396,10 @@ export function Message() {
     }, [inbox]);
 
     useEffect(() => {
+        console.log(selectedMessage, "selectedMessage");
+    }, [selectedMessage]);
+
+    useEffect(() => {
         const onConnected = () => {
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
@@ -414,7 +418,18 @@ export function Message() {
         };
     }, []);
 
-    const newMessage = (payload) => {
+    async function sendDataReadMessage(inboxUid) {
+        await fetch("http://localhost:8080/api/readMessages", {
+            method: "POST",
+            body: JSON.stringify({
+                inboxUid: inboxUid,
+                userId: userId,
+            }),
+            headers: { "Content-Type": "application/json" }
+        });
+    }
+
+    const newMessage = async (payload) => {
         let payloadData = JSON.parse(payload.body);
         let messageData = {
             inboxUid: payloadData.inboxUid,
@@ -423,7 +438,9 @@ export function Message() {
             message: payloadData.message,
             createdAt: payloadData.createdAt
         };
-        console.log(messageData)
+        if (selectedMessage.inboxId === payloadData.inboxId) {
+            await sendDataReadMessage(payloadData.inboxUid)
+        }
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
                 return prevInboxMessages.map(message =>
@@ -435,6 +452,8 @@ export function Message() {
         });
         dispatch(addMessageFromWebsocket(messageData));
     };
+
+
 
     useEffect(() => {
         if (textingContainerRef.current) {

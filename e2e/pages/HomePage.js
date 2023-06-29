@@ -7,6 +7,10 @@ export class HomePage {
         POSTING_BUTTON: "posting_button",
         POST_TEXT_INPUT: "post_text_input",
         USER_POST_TEXT: "user_post_text",
+        ICON_BUTTON_ADD_LIKE: "icon_button_add_like",
+        WHITE_LIKE_BUTTON: "white_like_icon",
+        RED_LIKE_ICON:"red_like_icon",
+        POST_ID: "postId_35056"
     };
 
     constructor(page) {
@@ -20,7 +24,7 @@ export class HomePage {
             name: "Sanchoous",
             photoFileLink: "http://res.cloudinary.com/dir4ciwiy/image/upload/v1687444289/production/t99pwbtpfpncilfbhiwf.png",
             postCommentsCount: 1,
-            postId: 350,
+            postId: 35056,
             profileImageLink: "http://res.cloudinary.com/dir4ciwiy/image/upload/v1686407058/production/pmtn5n3rijffz4zuq4km.png",
             repostsCount: 0,
             sentDateTime: "2023-06-28T20:58:51.580775",
@@ -38,6 +42,11 @@ export class HomePage {
         await this.page.getByPlaceholder("What's happening").fill("щзщзщзщзщзщ");
         await this.page.getByTestId(HomePage.SELECTOR.POSTING_BUTTON).getByText("Post").click();
         await expect(this.page.getByTestId(HomePage.SELECTOR.USER_POST_TEXT).getByText("щзщзщзщзщзщ")).toBeVisible();
+    }
+
+    async verifyAddLikeHandle() {
+        await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.ICON_BUTTON_ADD_LIKE).click();
+        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.RED_LIKE_ICON)).toBeVisible();
     }
 
     async openHomePage() {
