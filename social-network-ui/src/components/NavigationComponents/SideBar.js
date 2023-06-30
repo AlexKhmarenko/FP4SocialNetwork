@@ -25,8 +25,6 @@ import { apiUrl } from "../../apiConfig";
 import PropTypes from "prop-types";
 import { Post } from "../Posts/Post";
 
-let stompClient = null;
-
 export function SideBar() {
     const dispatch = useDispatch();
     const location = useLocation();
@@ -35,6 +33,7 @@ export function SideBar() {
     const userId = useSelector(state => state.userData.userData.userId);
     const [notificationCount, setNotificationCount] = useState(0);
     const [messageCount, setMessageCount] = useState(0);
+
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -64,10 +63,13 @@ export function SideBar() {
             getNotification();
         }
     }, [userId]);
+    let stompClient;
+    let Sock = new SockJS(`${apiUrl}/websocket`);
+    stompClient = over(Sock);
 
     useEffect(() => {
 
-        let stompClient;
+
 
         const onConnected = () => {
             if (stompClient.connected) {
@@ -80,8 +82,6 @@ export function SideBar() {
         };
 
         if (location.pathname !== "/message") {
-            let Sock = new SockJS(`${apiUrl}/websocket`);
-            stompClient = over(Sock);
             stompClient.connect({}, onConnected, onError);
         }
 
@@ -103,7 +103,6 @@ export function SideBar() {
             setNotificationCount(0);
         }
 
-        let stompClient;
 
         const onConnected = () => {
             if (stompClient.connected) {
@@ -116,8 +115,6 @@ export function SideBar() {
         };
 
         if (location.pathname !== "/notifications") {
-            let Sock = new SockJS(`${apiUrl}/websocket`);
-            stompClient = over(Sock);
             stompClient.connect({}, onConnected, onError);
         }
 

@@ -4,7 +4,7 @@ import { apiUrl } from "../apiConfig";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { useNavigate } from "react-router-dom";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { differenceInDays, format, formatDistanceToNow } from "date-fns";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -153,12 +153,11 @@ export function Notifications() {
                 stompClient.disconnect();
             }
         };
-
     }, []);
 
     const onPrivateMessage = async (payload) => {
         let payloadData = JSON.parse(payload.body);
-        console.log(payloadData)
+        console.log(payloadData);
         setNotifications(prevNotifications => [payloadData, ...prevNotifications]);
         await fetch(`${apiUrl}/api/read_notifications`, {
             method: "POST",
@@ -183,7 +182,7 @@ export function Notifications() {
     };
 
     return (
-        <List sx={styles.AdaptiveListStyles}>
+        <List sx={styles.AdaptiveListStyles} data-testid={"notifications_list"}>
             {isLoading ? <CircularProgress sx={{ marginTop: "20%" }}/> :
                 notifications.length > 0 ?
                     transitions((style, item) => (

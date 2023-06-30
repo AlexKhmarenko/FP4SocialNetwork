@@ -412,7 +412,7 @@ export function Message() {
         stompClient.connect({}, onConnected, onError);
 
         return () => {
-            if (stompClient) {
+            if (stompClient && stompClient.connected) {
                 stompClient.disconnect();
             }
         };
@@ -498,7 +498,7 @@ export function Message() {
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             {!clicked &&
-                <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
+                <div style={styles.AdaptiveLeftBlockInboxAndSearch} data-testid={"message_search_and_inbox_wrapper"}>
                     <HeaderInformation/>
                     <MessageSearch/>
                     <div style={styles.AdaptiveInboxContainerStyle}>
@@ -516,7 +516,7 @@ export function Message() {
                             <div style={{
                                 fontSize: "1.1rem",
                                 fontFamily: "'Lato', sans-serif"
-                            }}>Почніть переписку
+                            }} data-testid={"start_chat_text"} >Почніть переписку
                             </div>
                         </div>
                     ) : (
@@ -579,6 +579,7 @@ export function Message() {
                                                     inboxUid: selectedMessage.inboxUid,
                                                     writtenMessage: inputValue,
                                                 }));
+                                                stompClient.send("/app/addMessage", {}, JSON.stringify({ unread: "unread" }));
                                                 setInputValue("");
                                             }}
                                         />
