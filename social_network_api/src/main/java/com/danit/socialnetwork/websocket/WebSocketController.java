@@ -9,7 +9,6 @@ import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.service.PostService;
@@ -66,6 +65,14 @@ public class WebSocketController {
     List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(userId);
     InboxDtoResponse inbox = inboxes.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
     return inbox;
+  }
+
+  private void setUnreadMessagesByUserNumToInboxDtoResponse(Integer inboxUid, Integer userId, InboxDtoResponse inbox) {
+    int unreadMessagesByUserNumSenderR = messageService
+        .numberUnreadMessagesByUser(inboxUid, userId);
+    Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
+    unreadMessagesByUserR.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderR);
+    inbox.setUnreadByUser(unreadMessagesByUserNumSenderR);
   }
 
   @MessageMapping("/post")
@@ -238,13 +245,7 @@ public class WebSocketController {
 
     InboxDtoResponse inboxS = getInbox(inboxUid, userId);
 
-    int unreadMessagesByUserNumSenderS = messageService
-        .numberUnreadMessagesByUser(userId, inboxUid);
-    Map<String, Integer> unreadMessagesByUserS = new HashMap<>();
-    unreadMessagesByUserS.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderS);
-    inboxS.setUnreadByUser(unreadMessagesByUserNumSenderS);
-
-    log.info("unreadByUser {}",unreadMessagesByUserNumSenderS);
+    setUnreadMessagesByUserNumToInboxDtoResponse(userId, inboxUid, inboxS);
 
     String inboxUidString = inboxUid.toString();
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxS);
@@ -252,11 +253,7 @@ public class WebSocketController {
 
     InboxDtoResponse inboxR = getInbox(userId, inboxUid);
 
-    int unreadMessagesByUserNumSenderR = messageService
-        .numberUnreadMessagesByUser(inboxUid, userId);
-    Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
-    unreadMessagesByUserR.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderR);
-    inboxR.setUnreadByUser(unreadMessagesByUserNumSenderR);
+    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
 
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
@@ -282,11 +279,7 @@ public class WebSocketController {
 
     messageService.unreadToReadMessages(messageDtoRequest);
 
-    int unreadMessagesByUserNumSenderR = messageService
-        .numberUnreadMessagesByUser(inboxUid, userId);
-    Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
-    unreadMessagesByUserR.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderR);
-    inboxR.setUnreadByUser(unreadMessagesByUserNumSenderR);
+    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
 
     String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
@@ -295,5 +288,4 @@ public class WebSocketController {
 
     return inboxR;
   }
-
 }
