@@ -36,13 +36,13 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
 
     String secretCode = UUID.randomUUID().toString().substring(0, 8);
 
-    String message = "If you really want to change your current "
+    String textMessage = "If you really want to change your current "
         + "password for logging into your Capitweet account, "
         + "enter this code to create "
         + "a new password: \n\n" + secretCode;
 
 
-    mailSender.send(userEmail, "Change Capitweet password", message);
+    mailSender.send(userEmail, "Change Capitweet password", textMessage);
     return secretCode;
   }
 
