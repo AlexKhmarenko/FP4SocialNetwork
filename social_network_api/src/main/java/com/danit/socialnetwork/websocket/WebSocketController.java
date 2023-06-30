@@ -9,6 +9,7 @@ import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.service.PostService;
@@ -44,10 +45,28 @@ public class WebSocketController {
   private final MessageService messageService;
   private final InboxMapperImpl mapper;
 
-  private static final String UNREAD = "unreadByUser";
+  private static final String UNREAD_BY_USER = "unreadByUser";
+  private static final String UNREAD = "unread";
 
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
+
+  private void sendUnreadMessagesToUserReceiver(Integer userId) {
+    String userIdString = userId.toString();
+    int unreadMessagesNum = messageService
+        .numberUnreadMessages(userId);
+    Map<String, Integer> unreadMessages = new HashMap<>();
+    unreadMessages.put(UNREAD, unreadMessagesNum);
+    log.info("unread {}",unreadMessagesNum);
+
+    messagingTemplate.convertAndSendToUser(userIdString, "/unread", unreadMessages);
+  }
+
+  private InboxDtoResponse getInbox(Integer userId, Integer inboxUid) {
+    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(userId);
+    InboxDtoResponse inbox = inboxes.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
+    return inbox;
+  }
 
   @MessageMapping("/post")
   public NotificationRequest postNotification(
@@ -217,13 +236,12 @@ public class WebSocketController {
     log.info("inboxUid {}",inboxUid);
     log.info("userId {}",userId);
 
-    List<InboxDtoResponse> inboxesS = inboxService.getInboxesByInboxUid(inboxUid);
-    InboxDtoResponse inboxS = inboxesS.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
+    InboxDtoResponse inboxS = getInbox(inboxUid, userId);
 
     int unreadMessagesByUserNumSenderS = messageService
         .numberUnreadMessagesByUser(userId, inboxUid);
     Map<String, Integer> unreadMessagesByUserS = new HashMap<>();
-    unreadMessagesByUserS.put(UNREAD, unreadMessagesByUserNumSenderS);
+    unreadMessagesByUserS.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderS);
     inboxS.setUnreadByUser(unreadMessagesByUserNumSenderS);
 
     log.info("unreadByUser {}",unreadMessagesByUserNumSenderS);
@@ -232,13 +250,12 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxS);
     messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
 
-    List<InboxDtoResponse> inboxesR = inboxService.getInboxesByInboxUid(userId);
-    InboxDtoResponse inboxR = inboxesR.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
 
     int unreadMessagesByUserNumSenderR = messageService
         .numberUnreadMessagesByUser(inboxUid, userId);
     Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
-    unreadMessagesByUserR.put(UNREAD, unreadMessagesByUserNumSenderR);
+    unreadMessagesByUserR.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderR);
     inboxR.setUnreadByUser(unreadMessagesByUserNumSenderR);
 
     inboxR.setInboxUid(inboxUid);
@@ -247,13 +264,8 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
     messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxR);
 
-    int unreadMessagesNum = messageService
-        .numberUnreadMessages(userId);
-    Map<String, Integer> unreadMessages = new HashMap<>();
-    unreadMessages.put("unread", unreadMessagesNum);
-    log.info("unread {}",unreadMessagesNum);
+    sendUnreadMessagesToUserReceiver(userId);
 
-    messagingTemplate.convertAndSendToUser(userIdString, "/unread", unreadMessages);
     return inboxS;
   }
 
@@ -266,19 +278,21 @@ public class WebSocketController {
     log.info("inboxUid {}",inboxUid);
     log.info("userId {}",userId);
 
-    List<InboxDtoResponse> inboxesR = inboxService.getInboxesByInboxUid(userId);
-    InboxDtoResponse inboxR = inboxesR.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
 
     messageService.unreadToReadMessages(messageDtoRequest);
 
     int unreadMessagesByUserNumSenderR = messageService
         .numberUnreadMessagesByUser(inboxUid, userId);
     Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
-    unreadMessagesByUserR.put(UNREAD, unreadMessagesByUserNumSenderR);
+    unreadMessagesByUserR.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderR);
     inboxR.setUnreadByUser(unreadMessagesByUserNumSenderR);
 
     String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
+
+    sendUnreadMessagesToUserReceiver(userId);
+
     return inboxR;
   }
 

@@ -2,9 +2,7 @@ package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationRequest;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
-import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
-import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
@@ -233,11 +231,12 @@ class WebSocketControllerTest {
 
     when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesR);
     when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
+    when(messageService.numberUnreadMessages(1)).thenReturn(5);
 
     webSocketController.postReadMessages(messageDtoRequest);
 
     verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
-
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
   }
 
 }
