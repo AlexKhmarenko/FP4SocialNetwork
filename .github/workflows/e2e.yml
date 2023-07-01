@@ -66,6 +66,13 @@ jobs:
     - name: 'Run E2E tests'
       working-directory: e2e
       run: npm test
+    # TODO remove after dev
+    - name: 'Start API (testing)'
+      timeout-minutes: 2
+      if: always()
+      working-directory: social_network_api
+      run: mvn spring-boot:run
+    # TODO end
     - name: 'Upload artifacts'
       uses: actions/upload-artifact@v3
       if: always()
