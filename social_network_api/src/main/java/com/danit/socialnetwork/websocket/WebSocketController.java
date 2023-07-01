@@ -63,8 +63,7 @@ public class WebSocketController {
 
   private InboxDtoResponse getInbox(Integer userId, Integer inboxUid) {
     List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(userId);
-    InboxDtoResponse inbox = inboxes.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
-    return inbox;
+    return inboxes.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
   }
 
   private void setUnreadMessagesByUserNumToInboxDtoResponse(Integer inboxUid, Integer userId, InboxDtoResponse inbox) {
