@@ -1,10 +1,8 @@
 package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.dto.post.PostCommentDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.Post;
-import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

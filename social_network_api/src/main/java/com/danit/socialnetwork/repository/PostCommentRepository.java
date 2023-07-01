@@ -1,7 +1,5 @@
 package com.danit.socialnetwork.repository;
 
-import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

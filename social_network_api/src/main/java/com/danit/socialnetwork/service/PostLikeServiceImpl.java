@@ -45,10 +45,8 @@ public class PostLikeServiceImpl implements PostLikeService {
     PostLike postLike = modelMapper.map(postLikeDto, PostLike.class);
     postLike.setPostLikeId(0);
     postLike.setCreatedDateTime(LocalDateTime.now());
-    System.out.println(tempPost.getPostLikes().size());
     tempPost.getPostLikes().add(postLike);
     postRepository.save(tempPost);
-    System.out.println(tempPost.getPostLikes().size());
     return tempPost.getPostLikes().get(tempPost.getPostLikes().size() - 1);
   }
 

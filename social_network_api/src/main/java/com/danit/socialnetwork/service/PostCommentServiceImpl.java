@@ -39,10 +39,8 @@ public class PostCommentServiceImpl implements PostCommentService {
     PostComment postComment = modelMapper.map(postCommentDtoSave, PostComment.class);
     postComment.setCreatedDateTime(LocalDateTime.now());
     postComment.setPostCommentId(0);
-    System.out.println(tempPost.getPostComments().size());
     tempPost.getPostComments().add(postComment);
     tempPost = postRepository.save(tempPost);
-    System.out.println(tempPost.getPostComments().size());
     return tempPost.getPostComments().get(tempPost.getPostComments().size() - 1);
   }
 
