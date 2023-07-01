@@ -17,10 +17,11 @@ public class InboxDtoResponse {
   private Integer messageId;
   private String message;
   private LocalDateTime createdAt;
+  private Integer unreadByUser;
 
-  public InboxDtoResponse(Integer inboxId, Integer userId, Integer inboxUid, String username,
-                          String name, String profileImageUrl, Integer messageId,
-                          String message, LocalDateTime createdAt) {
+  public InboxDtoResponse(Integer inboxId, Integer userId, Integer inboxUid,
+                          String username, String name, String profileImageUrl, Integer messageId,
+                          String message, LocalDateTime createdAt, Integer unreadByUser) {
     this.inboxId = inboxId;
     this.userId = userId;
     this.inboxUid = inboxUid;
@@ -30,5 +31,6 @@ public class InboxDtoResponse {
     this.messageId = messageId;
     this.message = message;
     this.createdAt = createdAt;
+    this.unreadByUser = unreadByUser;
   }
 }

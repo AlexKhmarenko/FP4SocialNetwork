@@ -26,9 +26,9 @@ public class InboxServiceImpl implements InboxService {
   private final InboxRepository inboxRepository;
   private final UserRepository userRepository;
   private final MessageRepository messageRepository;
+  private final UserServiceImpl userService;
   private final InboxMapperImpl mapper;
   private final SimpMessagingTemplate messagingTemplate;
-  private static final String USER_NOT_FOUND = "User with userId %d not found";
 
   /*The method finds inbox by message sender and receiver and returns it*/
   @Override
@@ -68,43 +68,33 @@ public class InboxServiceImpl implements InboxService {
   /*The method finds the inbox by sender and returns it*/
   @Override
   public List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid) {
-    List<InboxDtoResponse> inboxesDto;
-    Optional<DbUser> oInboxUid = userRepository.findById(inboxUid);
-    if (oInboxUid.isEmpty()) {
-      throw new UserNotFoundException(String.format("User with userId %s not found", inboxUid));
-    } else {
-      List<Inbox> inboxes = inboxRepository.getInboxesByInboxUid(oInboxUid.get());
-      inboxesDto = inboxes.stream()
-          .map(mapper::inboxToInboxDtoResponse).toList();
-    }
-    return inboxesDto;
+    DbUser userS = userService.findDbUserByUserId(inboxUid);
+    return inboxRepository.getInboxesByInboxUid(userS).stream()
+        .map(inbox -> {
+          InboxDtoResponse inboxDto = mapper.inboxToInboxDtoResponse(inbox);
+          DbUser userR = userService.findDbUserByUserId(inboxDto.getUserId());
+          inboxDto.setUnreadByUser(messageRepository
+              .findAllByInboxUidAndUserIdAndMessageReadeEquals(userR, userS, false).size());
+          return inboxDto;
+        }).toList();
   }
 
   /*The method saves a new inbox, finds the inbox by sender and returns it*/
   @Override
-  public InboxDtoResponse saveNewInbox(InboxParticipantsDtoRequest request) {
+  public InboxDtoResponse addInbox(InboxParticipantsDtoRequest request) {
     Integer senderId = request.getInboxUid();
     Integer receiverId = request.getUserId();
-    Optional<DbUser> userSender = userRepository.findById(senderId);
-    DbUser userS = null;
-    if (userSender.isPresent()) {
-      userS = userSender.get();
-    } else {
-      throw new UserNotFoundException(String.format(USER_NOT_FOUND, senderId));
+    DbUser userS = userService.findDbUserByUserId(senderId);
+    DbUser userR = userService.findDbUserByUserId(receiverId);
+    Optional<Inbox> inboxSenderO = inboxRepository.findByInboxUidAndUserId(userS, userR);
+    if (inboxSenderO.isPresent()) {
+      return mapper.inboxToInboxDtoResponse(inboxSenderO.get());
     }
-    Optional<DbUser> userReceiver = userRepository.findById(receiverId);
-    DbUser userR = null;
-    if (userReceiver.isPresent()) {
-      userR = userReceiver.get();
-    } else {
-      throw new UserNotFoundException(String.format(USER_NOT_FOUND, receiverId));
-    }
-    Message message = new Message();
-    messageRepository.save(message);
-    List<Inbox> inboxesNew = saveInbox(userS, userR, message);
+    List<Inbox> inboxesNew = saveInbox(userS, userR, null);
     Inbox inboxSender = inboxesNew.stream()
         .filter(inbox -> inbox.getInboxUid()
             .getUserId().equals(senderId)).toList().get(0);
     return mapper.inboxToInboxDtoResponse(inboxSender);
   }
+
 }

@@ -2,6 +2,7 @@ package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationRequest;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
+import com.danit.socialnetwork.dto.message.MessageDtoRequest;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
@@ -32,6 +33,8 @@ class WebSocketControllerTest {
   @Mock
   private InboxService inboxService;
   @Mock
+  private MessageService messageService;
+  @Mock
   private InboxMapperImpl mapper;
   @Mock
   private SimpMessagingTemplate messagingTemplate;
@@ -47,6 +50,7 @@ class WebSocketControllerTest {
         userService,
         postService,
         inboxService,
+        messageService,
         mapper
     );
     webSocketController.setMessagingTemplate(messagingTemplate);
@@ -168,6 +172,74 @@ class WebSocketControllerTest {
     verify(notificationService).saveNotification(any(Notification.class));
     verify(messagingTemplate).convertAndSendToUser(anyString(), anyString(), anyMap());
   }
+
+  @Test
+  void testPostAddMessage() {
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(1);
+    messageDtoRequest.setUserId(2);
+    messageDtoRequest.setWrittenMessage("Test");
+
+    List<InboxDtoResponse> inboxesS = new ArrayList<>();
+    InboxDtoResponse inboxS = new InboxDtoResponse();
+    inboxS.setInboxUid(1);
+    inboxS.setUserId(2);
+    inboxS.setMessage("Test");
+    inboxesS.add(inboxS);
+
+    List<InboxDtoResponse> inboxesR = new ArrayList<>();
+    InboxDtoResponse inboxR = new InboxDtoResponse();
+    inboxR.setInboxUid(2);
+    inboxR.setUserId(1);
+    inboxR.setMessage("Test");
+    inboxesR.add(inboxR);
+
+    when(inboxService.getInboxesByInboxUid(1)).thenReturn(inboxesS);
+    when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesR);
+    when(messageService.numberUnreadMessages(1)).thenReturn(5);
+    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
+
+    webSocketController.postAddMessage(messageDtoRequest);
+
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
+    verify(messagingTemplate, times(1)).convertAndSendToUser("1", "/inbox", inboxS);
+    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("1"), eq("/getMessages"), any(InboxDtoResponse.class));
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(InboxDtoResponse.class));
+  }
+
+  @Test
+  void testPostGetMessage() {
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(1);
+    messageDtoRequest.setUserId(2);
+    messageDtoRequest.setWrittenMessage("Test");
+
+    List<InboxDtoResponse> inboxesS = new ArrayList<>();
+    InboxDtoResponse inboxS = new InboxDtoResponse();
+    inboxS.setInboxUid(1);
+    inboxS.setUserId(2);
+    inboxS.setMessage("Test");
+    inboxesS.add(inboxS);
+
+    List<InboxDtoResponse> inboxesR = new ArrayList<>();
+    InboxDtoResponse inboxR = new InboxDtoResponse();
+    inboxR.setInboxUid(2);
+    inboxR.setUserId(1);
+    inboxR.setMessage("Test");
+    inboxesR.add(inboxR);
+
+    when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesR);
+    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
+    when(messageService.numberUnreadMessages(1)).thenReturn(5);
+
+    webSocketController.postReadMessages(messageDtoRequest);
+
+    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
+  }
+
 }
+
 
 

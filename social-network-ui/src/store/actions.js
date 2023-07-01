@@ -181,6 +181,45 @@ export const maxPages = (pages) => ({
     payload: pages,
 });
 
+export const deleteExplorePost = (posts) => ({
+    type: "SET_EXPLORE_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteHomeScreenPost = (posts) => ({
+    type: "SET_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteRegistrationPagePostScreenPost = (posts) => ({
+    type: "SET_REGISTRATION_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteProfilePost = (posts) => ({
+    type: "SET_PROFILE_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteProfileLikePosts = (posts) => ({
+    type: "SET_PROFILE_LIKE_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteProfileRepostsPosts = (posts) => ({
+    type: "SET_PROFILE_REPOSTS_DELETE",
+    payload: posts,
+});
+
+
+
+
+
+
+
+
+
+
 export const checkEmail = (email) => ({
     type: CHECK_EMAIL,
     payload: email
@@ -442,7 +481,6 @@ export const fetchPostsByUserId = (userId, page) => {
         const response = await fetch(`${apiUrl}/api/posts?userId=${userId}&page=${page}`);
         const data = await response.json();
         let postIds = data.map(post => post.postId);
-        console.log(postIds);
         await fetch(`${apiUrl}/api/post/view`, {
             method: "PUT",
             body: JSON.stringify(
@@ -486,7 +524,6 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     headers: { "Content-Type": "application/json" }
                 });
                 const response2 = await response.json();
-                console.log(response2);
                 if (response2) {
                     dispatch(maxPages(10));
                     dispatch(setMessages(response2));

@@ -11,7 +11,6 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.MessageRepository;
-import com.danit.socialnetwork.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,9 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
@@ -43,7 +39,7 @@ class MessageServiceImplTest {
   @Mock
   InboxServiceImpl inboxService;
   @Mock
-  UserRepository userRepository;
+  UserService userService;
   @Mock
   MessageMapperImpl messageMapper;
   @Mock
@@ -77,8 +73,9 @@ class MessageServiceImplTest {
     inboxes.add(testInbox1);
     inboxes.add(testInbox2);
 
-    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
-    when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
+    when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
+
+    when(userService.findDbUserByUserId(2)).thenReturn(testUser2);
     when(inboxService.saveInbox(any(DbUser.class), any(DbUser.class), any(Message.class)))
         .thenReturn(inboxes);
     when(messageRepository.save(any(Message.class))).thenReturn(testMessage);
@@ -99,23 +96,27 @@ class MessageServiceImplTest {
     DbUser testUser2 = new DbUser();
     testUser2.setUserId(2);
     DbUser testUser3 = new DbUser();
-    testUser3.setUserId(2);
+    testUser3.setUserId(3);
     Message testMessage1 = new Message();
     testMessage1.setInboxUid(testUser1);
     testMessage1.setUserId(testUser2);
     testMessage1.setMessageText("Hallo");
+    testMessage1.setMessageReade(false);
     Message testMessage2 = new Message();
     testMessage2.setInboxUid(testUser1);
     testMessage2.setUserId(testUser2);
     testMessage2.setMessageText("world!");
+    testMessage2.setMessageReade(false);
     Message testMessage3 = new Message();
     testMessage3.setInboxUid(testUser1);
     testMessage3.setUserId(testUser2);
     testMessage3.setMessageText("Test!");
+    testMessage3.setMessageReade(false);
     Message testMessage4 = new Message();
     testMessage4.setInboxUid(testUser1);
     testMessage4.setUserId(testUser2);
     testMessage4.setMessageText("Test2!");
+    testMessage4.setMessageReade(false);
     List<Message> testMessages = new ArrayList<>();
     testMessages.add(testMessage1);
     testMessages.add(testMessage2);
@@ -146,8 +147,10 @@ class MessageServiceImplTest {
     int pageSize = 16;
     int offset = page * pageSize;
 
-    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
-    when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
+    when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
+    when(userService.findDbUserByUserId(2)).thenReturn(testUser2);
+    when(messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(
+        testUser1, testUser2, false)).thenReturn(testMessages);
     when(messageRepository
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(
             testUser1, testUser2, testUser1, testUser2, offset, pageSize))
@@ -164,10 +167,125 @@ class MessageServiceImplTest {
     Assert.assertEquals("world!", testFindMessages.get(1).getMessage());
     Assert.assertEquals("Test!", testFindMessages.get(2).getMessage());
     Assert.assertEquals("Test2!", testFindMessages.get(3).getMessage());
+    Assert.assertEquals(true, testMessage1.getMessageReade());
+    Assert.assertEquals(true, testMessage2.getMessageReade());
+    Assert.assertEquals(true, testMessage3.getMessageReade());
+    Assert.assertEquals(true, testMessage4.getMessageReade());
     Assert.assertEquals(Optional.of(1), Optional.of(testFindMessages.get(0).getInboxUid()));
     Assert.assertEquals(Optional.of(2), Optional.of(testFindMessages.get(0).getUserId()));
     Assert.assertEquals(Optional.of(2), Optional.of(testFindMessages.get(1).getInboxUid()));
     Assert.assertEquals(Optional.of(1), Optional.of(testFindMessages.get(1).getUserId()));
+  }
+
+  @Test
+  void unreadToReadMessages() {
+    DbUser testUserSender1 = new DbUser();
+    testUserSender1.setUserId(1);
+    testUserSender1.setName("TestUser1");
+    testUserSender1.setUsername("TestUser1");
+    DbUser testUserReceiver1 = new DbUser();
+    testUserReceiver1.setUserId(2);
+    testUserReceiver1.setName("TestUser2");
+    testUserReceiver1.setUsername("TestUser2");
+    DbUser testUserSender2 = new DbUser();
+    testUserSender2.setUserId(3);
+    testUserSender2.setName("TestUser3");
+    testUserSender2.setUsername("TestUser3");
+    DbUser testUserReceiver2 = new DbUser();
+    testUserReceiver2.setUserId(4);
+    testUserReceiver2.setName("TestUser4");
+    testUserReceiver2.setUsername("TestUser4");
+    Message testMessage1 = new Message();
+    testMessage1.setInboxUid(testUserSender1);
+    testMessage1.setUserId(testUserReceiver1);
+    testMessage1.setMessageReade(false);
+    Message testMessage2 = new Message();
+    testMessage2.setInboxUid(testUserSender2);
+    testMessage2.setUserId(testUserReceiver2);
+    testMessage2.setMessageReade(false);
+    Message testMessage3 = new Message();
+    testMessage3.setInboxUid(testUserReceiver1);
+    testMessage3.setUserId(testUserSender1);
+    testMessage3.setMessageReade(false);
+    Message testMessage4 = new Message();
+    testMessage4.setInboxUid(testUserReceiver2);
+    testMessage4.setUserId(testUserSender2);
+    testMessage4.setMessageReade(false);
+    Message testMessage5 = new Message();
+    testMessage5.setInboxUid(testUserReceiver1);
+    testMessage5.setUserId(testUserSender1);
+    testMessage5.setMessageReade(false);
+
+    List<Message> testAllMessages = new ArrayList<>();
+    testAllMessages.add(testMessage1);
+    testAllMessages.add(testMessage2);
+    testAllMessages.add(testMessage3);
+    testAllMessages.add(testMessage4);
+    testAllMessages.add(testMessage5);
+
+    List<Message> testAllUnreadMessagesByTwoUsers = new ArrayList<>();
+    testAllUnreadMessagesByTwoUsers.add(testMessage1);
+
+    MessageDtoRequest testRequest = new MessageDtoRequest();
+    testRequest.setInboxUid(1);
+    testRequest.setUserId(2);
+
+    when(userService.findDbUserByUserId(1)).thenReturn(testUserSender1);
+    when(userService.findDbUserByUserId(2)).thenReturn(testUserReceiver1);
+    when(messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(
+        testUserSender1, testUserReceiver1, false))
+        .thenReturn(testAllUnreadMessagesByTwoUsers);
+
+    messageService.unreadToReadMessages(testRequest);
+
+    Assert.assertEquals(true, testMessage1.getMessageReade());
+    Assert.assertEquals(false, testMessage2.getMessageReade());
+    Assert.assertEquals(false, testMessage3.getMessageReade());
+    Assert.assertEquals(false, testMessage4.getMessageReade());
+    Assert.assertEquals(false, testMessage5.getMessageReade());
+  }
+
+  @Test
+  void convertMessages() {
+    DbUser testUserSender = new DbUser();
+    testUserSender.setUserId(1);
+    DbUser testUserReceiver = new DbUser();
+    testUserSender.setUserId(2);
+    Message testMessage1 = new Message();
+    testMessage1.setInboxUid(testUserSender);
+    testMessage1.setUserId(testUserReceiver);
+    testMessage1.setMessageReade(false);
+    Message testMessage2 = new Message();
+    testMessage2.setInboxUid(testUserSender);
+    testMessage2.setUserId(testUserReceiver);
+    testMessage2.setMessageReade(false);
+    Message testMessage3 = new Message();
+    testMessage3.setInboxUid(testUserReceiver);
+    testMessage3.setUserId(testUserSender);
+    testMessage3.setMessageReade(false);
+    Message testMessage4 = new Message();
+    testMessage4.setInboxUid(testUserReceiver);
+    testMessage4.setUserId(testUserSender);
+    testMessage4.setMessageReade(false);
+    Message testMessage5 = new Message();
+    testMessage5.setInboxUid(testUserReceiver);
+    testMessage5.setUserId(testUserSender);
+    testMessage5.setMessageReade(false);
+
+    List<Message> testMessages = new ArrayList<>();
+    testMessages.add(testMessage1);
+    testMessages.add(testMessage2);
+    testMessages.add(testMessage3);
+    testMessages.add(testMessage4);
+    testMessages.add(testMessage5);
+
+    messageService.convertMessages(testMessages, testUserSender);
+
+    Assert.assertEquals(true, testMessage1.getMessageReade());
+    Assert.assertEquals(true, testMessage2.getMessageReade());
+    Assert.assertEquals(false, testMessage3.getMessageReade());
+    Assert.assertEquals(false, testMessage4.getMessageReade());
+    Assert.assertEquals(false, testMessage5.getMessageReade());
   }
 
   @Test
@@ -180,6 +298,10 @@ class MessageServiceImplTest {
     SearchRequest request2 = new SearchRequest();
     request2.setUserId("1");
     request2.setSearch(StringSearch2);
+    String StringSearch3 = "";
+    SearchRequest request3 = new SearchRequest();
+    request3.setUserId("1");
+    request3.setSearch(StringSearch3);
 
     DbUser testUser1 = new DbUser();
     testUser1.setUserId(1);
@@ -237,17 +359,19 @@ class MessageServiceImplTest {
     testMessageSearchDto3.setUsername("RRR");
     testMessageSearchDto3.setMessage("Roma");
 
-    when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
-    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
+    when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
+    when(userService.findDbUserByUserId(2)).thenReturn(testUser2);
     when(messageSearchMapper.messageToMessageSearchDto(testMessage1)).thenReturn(testMessageSearchDto1);
     when(messageSearchMapper.messageToMessageSearchDto(testMessage3)).thenReturn(testMessageSearchDto2);
     when(messageSearchMapper.messageToMessageSearchDto(testMessage5)).thenReturn(testMessageSearchDto3);
 
     List<MessageSearchDto> resultSearchDto1 = messageService.filterCachedMessageByString(request1);
     List<MessageSearchDto> resultSearchDto2 = messageService.filterCachedMessageByString(request2);
+    List<MessageSearchDto> resultSearchDto3 = messageService.filterCachedMessageByString(request3);
 
     Assert.assertTrue(resultSearchDto1.size() <= 5);
     Assert.assertTrue(resultSearchDto2.size() <= 5);
+    Assert.assertEquals(0,resultSearchDto3.size());
 
     Assert.assertTrue(resultSearchDto1.get(0).getMessage().toUpperCase().contains("nad".toUpperCase()));
     Assert.assertTrue(resultSearchDto2.get(0).getName().toUpperCase().contains("ro".toUpperCase())
