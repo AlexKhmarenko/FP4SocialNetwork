@@ -33,7 +33,7 @@ jobs:
         restore-keys: ${{ runner.os }}-m2
     - name: 'Build API'
       working-directory: social_network_api
-      run: mvn clean package
+      run: mvn install
     - name: 'Cache node modules'
       uses: actions/cache@v3
       env:
@@ -54,6 +54,18 @@ jobs:
     - name: 'Run E2E tests'
       working-directory: e2e
       run: npm test
+    # TODO remove after dev
+    - name: 'Start API (testing)'
+      timeout-minutes: 2
+      if: always()
+      working-directory: social_network_api
+      run: mvn spring-boot:run
+    - name: 'Start UI (testing)'
+      timeout-minutes: 2
+      if: always()
+      working-directory: social-network-ui
+      run: npm run start
+    # TODO end
     - name: 'Upload artifacts'
       uses: actions/upload-artifact@v3
       if: always()
