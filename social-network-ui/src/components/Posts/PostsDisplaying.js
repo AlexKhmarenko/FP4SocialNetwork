@@ -20,14 +20,25 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
 console.log(userPosts)
 
     useEffect(() => {
-        const socket = new SockJS(`${apiUrl}/websocket`);
-        stompClient = Stomp.over(socket);
+        try {
+            const socket = new SockJS(`${apiUrl}/websocket`);
+            stompClient = Stomp.over(socket);
 
-        return () => {
-            if (stompClient !== null) {
-                stompClient.disconnect();
-            }
-        };
+            return () => {
+                if (stompClient && stompClient.connected) {
+                    console.info('posts - disconnecting from websocket');
+                    try {
+                        stompClient.disconnect();
+                    } catch (e) {
+                        console.warn('posts - failed to disconnect the stomp client', e);
+                    }
+                } else {
+                    console.warn('posts - no websocket to disconnect from');
+                }
+            };
+        } catch (e) {
+            console.warn('posts - failed to create the stomp client', e);
+        }
     }, []);
 
     const handleClick = (postId, userId) => {

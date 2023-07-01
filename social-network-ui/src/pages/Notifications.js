@@ -138,21 +138,30 @@ export function Notifications() {
     }
 
     useEffect(() => {
-        const onConnected = () => {
-            stompClient.subscribe("/user/" + userId + "/notifications", onPrivateMessage);
-        };
-        const onError = (err) => {
-            console.log(err);
-        };
-        let Sock = new SockJS(`${apiUrl}/websocket`);
-        stompClient = over(Sock);
-        stompClient.connect({}, onConnected, onError);
+        try{
+            const onConnected = () => {
+                stompClient.subscribe("/user/" + userId + "/notifications", onPrivateMessage);
+            };
+            const onError = (err) => {
+                console.log(err);
+            };
+            let Sock = new SockJS(`${apiUrl}/websocket`);
+            stompClient = over(Sock);
+            stompClient.connect({}, onConnected, onError);
 
-        return () => {
-            if (stompClient) {
-                stompClient.disconnect();
-            }
-        };
+            return () => {
+                if (stompClient && stompClient.connected) {
+                    try {
+                        stompClient.disconnect();
+                    } catch (e) {
+                        console.warn('home - failed to disconnect the stomp client', e);
+                    }
+                }
+            };
+        }catch (e){
+            console.warn('notifications - failed to create the stomp client', e);
+        }
+
     }, []);
 
     const onPrivateMessage = async (payload) => {

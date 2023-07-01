@@ -400,22 +400,33 @@ export function Message() {
     }, [selectedMessage]);
 
     useEffect(() => {
-        const onConnected = () => {
-            stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
-        };
-        const onError = (err) => {
-            console.log(err);
-        };
+        try {
+            const onConnected = () => {
+                stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
+            };
+            const onError = (err) => {
+                console.log(err);
+            };
 
-        let Sock = new SockJS(`${apiUrl}/websocket`);
-        stompClient = over(Sock);
-        stompClient.connect({}, onConnected, onError);
+            let Sock = new SockJS(`${apiUrl}/websocket`);
+            stompClient = over(Sock);
+            stompClient.connect({}, onConnected, onError);
 
-        return () => {
-            if (stompClient && stompClient.connected) {
-                stompClient.disconnect();
-            }
-        };
+            return () => {
+                if (stompClient && stompClient.connected) {
+                    try {
+                        stompClient.disconnect();
+                    } catch (e) {
+                        console.warn("message - failed to disconnect the stomp client", e);
+                    }
+                }else{
+                    console.warn("message - no websocket to disconnect from");
+                }
+            };
+        } catch (e) {
+            console.warn("message - failed to disconnect the stomp client", e);
+        }
+
     }, []);
 
     async function sendDataReadMessage(inboxUid) {
@@ -439,7 +450,7 @@ export function Message() {
             createdAt: payloadData.createdAt
         };
         if (selectedMessage.inboxId === payloadData.inboxId) {
-            await sendDataReadMessage(payloadData.inboxUid)
+            await sendDataReadMessage(payloadData.inboxUid);
         }
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
@@ -452,8 +463,6 @@ export function Message() {
         });
         dispatch(addMessageFromWebsocket(messageData));
     };
-
-
 
     useEffect(() => {
         if (textingContainerRef.current) {
@@ -471,9 +480,6 @@ export function Message() {
         }
     }, [isXl, isLg, isMd, clicked]);
 
-    function handleSelectMessage(message) {
-        setSelectedMessage(message);
-    }
 
     const handleScroll = async (event) => {
         if (isFetchingTexts || allTextsLoaded) {
@@ -516,7 +522,7 @@ export function Message() {
                             <div style={{
                                 fontSize: "1.1rem",
                                 fontFamily: "'Lato', sans-serif"
-                            }} data-testid={"start_chat_text"} >Почніть переписку
+                            }} data-testid={"start_chat_text"}>Почніть переписку
                             </div>
                         </div>
                     ) : (
@@ -573,13 +579,16 @@ export function Message() {
                                                     }),
                                                     headers: { "Content-Type": "application/json" },
                                                 });
+                                                stompClient.send("/app/getMessages", {}, JSON.stringify({
+                                                    userId: selectedMessage.userId,
+                                                    inboxUid: selectedMessage.inboxUid,
+                                                }));
                                                 event.preventDefault();
                                                 stompClient.send("/app/addMessage", {}, JSON.stringify({
                                                     userId: selectedMessage.userId,
                                                     inboxUid: selectedMessage.inboxUid,
                                                     writtenMessage: inputValue,
                                                 }));
-                                                stompClient.send("/app/addMessage", {}, JSON.stringify({ unread: "unread" }));
                                                 setInputValue("");
                                             }}
                                         />

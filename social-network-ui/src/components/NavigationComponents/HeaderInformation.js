@@ -78,7 +78,6 @@ export function HeaderInformation() {
             let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
             let messageData = await messageInformation.json();
             setMessageCount(messageData.unread)
-            console.log(messageData)
         }
         if(userId){
             getNotification();
@@ -409,7 +408,6 @@ export function HeaderInformation() {
     const onMessageUnread = (payload) => {
         let payloadData = JSON.parse(payload.body);
         setMessageCount(payloadData.unread);
-        console.log(payloadData, "unreadMessageFromSidebar");
     };
 
     const onPrivateMessage = (payload) => {

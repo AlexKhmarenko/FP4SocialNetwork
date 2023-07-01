@@ -34,7 +34,6 @@ export class HomePage {
             writtenText: "щзщзщзщзщзщ",
         };
         await this.page.route(`${BASE_API_URL}/api/posts`, (route, req) => {
-            // console.log("IAM HERE, HANDLING", req.url());
             route.fulfill({
                 body: JSON.stringify(mockObj)
             });

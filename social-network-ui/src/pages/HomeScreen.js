@@ -364,14 +364,22 @@ export function HomeScreen() {
     }, []);
 
     useEffect(() => {
-        const socket = new SockJS(`${apiUrl}/websocket`);
-        stompClient = Stomp.over(socket);
+        try {
+            const socket = new SockJS(`${apiUrl}/websocket`);
+            stompClient = Stomp.over(socket);
 
-        return () => {
-            if (stompClient !== null) {
-                stompClient.disconnect();
-            }
-        };
+            return () => {
+                if (stompClient && stompClient.connected) {
+                    try {
+                        stompClient.disconnect();
+                    } catch (e) {
+                        console.warn('home - failed to disconnect the stomp client', e);
+                    }
+                }
+            };
+        } catch (e) {
+            console.warn('home - failed to create the stomp client', e);
+        }
     }, []);
 
     const handleClick = () => {
