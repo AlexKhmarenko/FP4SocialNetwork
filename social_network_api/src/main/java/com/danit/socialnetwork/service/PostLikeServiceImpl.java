@@ -4,7 +4,6 @@ import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.danit.socialnetwork.exception.post.PostLikeNotFoundException;
 import com.danit.socialnetwork.exception.post.PostNotFoundException;
 import com.danit.socialnetwork.model.Post;
-import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
@@ -29,7 +28,6 @@ public class PostLikeServiceImpl implements PostLikeService {
 
   @Override
   public PostLike savePostLike(PostLikeDto postLikeDto) {
-    System.out.println(postLikeDto);
     Optional<PostLike> tempPostLike = postLikeRepository.findPostLikeByPostIdAndUserId(
         postLikeDto.getPostId(), postLikeDto.getUserId()
     );
