@@ -3,7 +3,9 @@ package com.danit.socialnetwork.repository;
 
 import com.danit.socialnetwork.model.PostLike;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,5 +24,10 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Integer> {
   @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM POST_LIKES PL "
       + "WHERE PL.POST_ID= :postId")
   Integer findCountAllLikesByPostId(Integer postId);
+
+  @Query(nativeQuery = true, value = "SELECT * FROM POST_LIKES "
+      + "WHERE POST_ID= :postId")
+  List<PostLike> findAllByPostId(Integer postId);
+
 
 }

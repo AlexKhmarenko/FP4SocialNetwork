@@ -1,9 +1,12 @@
 package com.danit.socialnetwork.repository;
 
+import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.model.Repost;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +25,9 @@ public interface RepostRepository extends JpaRepository<Repost, Integer> {
   @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM REPOSTS R "
       + "WHERE R.POST_ID= :postId")
   Integer findCountAllRepostsByPostId(Integer postId);
+
+  @Query(nativeQuery = true, value = "SELECT * FROM REPOSTS "
+      + "WHERE POST_ID= :postId")
+  List<Repost> findAllByPostId(Integer postId);
+
 }
