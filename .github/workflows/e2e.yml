@@ -45,7 +45,11 @@ jobs:
               SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }}" > .env
     - name: 'Build API'
       working-directory: social_network_api
-      run: mvn install
+      run: mvn clean install
+    - name: 'Clean packages'
+      working-directory: social_network_api
+      run: mvn clean package
+
     - name: 'Cache node modules'
       uses: actions/cache@v3
       env:
