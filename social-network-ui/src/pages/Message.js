@@ -667,6 +667,7 @@ export function Message() {
                             />
                             {isOpenEmoji && (
                                 <div ref={emojiPickerRef} style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
+                                    
                                     <EmojiPicker emojiStyle={"google"} onEmojiClick={handleEmojiClick} disableSearchBar disableSkinTonePicker />
                                 </div>
                             )}
