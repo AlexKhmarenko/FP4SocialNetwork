@@ -25,7 +25,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { height, padding } from "@mui/system";
 import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
 import { Avatar } from "@mui/material";
-import { apiUrl } from "../apiConfig";
 
 let stompClient = null;
 
