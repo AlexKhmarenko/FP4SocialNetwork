@@ -25,6 +25,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { height, padding } from "@mui/system";
 import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
 import { Avatar } from "@mui/material";
+import { apiUrl } from "../apiConfig";
 
 let stompClient = null;
 
@@ -430,7 +431,7 @@ export function Message() {
     }, []);
 
     async function sendDataReadMessage(inboxUid) {
-        await fetch("http://localhost:8080/api/readMessages", {
+        await fetch(`${apiUrl}/api/readMessages`, {
             method: "POST",
             body: JSON.stringify({
                 inboxUid: inboxUid,
