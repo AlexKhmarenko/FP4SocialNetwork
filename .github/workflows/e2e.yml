@@ -55,7 +55,6 @@ jobs:
         if: always()
         working-directory: social_network_api
         run: mvn spring-boot:run
-
     - name: 'Cache node modules'
       uses: actions/cache@v3
       env:
