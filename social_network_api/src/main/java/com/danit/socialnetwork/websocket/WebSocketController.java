@@ -44,8 +44,35 @@ public class WebSocketController {
   private final MessageService messageService;
   private final InboxMapperImpl mapper;
 
+  private static final String UNREAD_BY_USER = "unreadByUser";
+  private static final String UNREAD = "unread";
+
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
+
+  private void sendUnreadMessagesToUserReceiver(Integer userId) {
+    String userIdString = userId.toString();
+    int unreadMessagesNum = messageService
+        .numberUnreadMessages(userId);
+    Map<String, Integer> unreadMessages = new HashMap<>();
+    unreadMessages.put(UNREAD, unreadMessagesNum);
+    log.info("unread {}",unreadMessagesNum);
+
+    messagingTemplate.convertAndSendToUser(userIdString, "/unread", unreadMessages);
+  }
+
+  private InboxDtoResponse getInbox(Integer userId, Integer inboxUid) {
+    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(userId);
+    return inboxes.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
+  }
+
+  private void setUnreadMessagesByUserNumToInboxDtoResponse(Integer inboxUid, Integer userId, InboxDtoResponse inbox) {
+    int unreadMessagesByUserNumSenderR = messageService
+        .numberUnreadMessagesByUser(inboxUid, userId);
+    Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
+    unreadMessagesByUserR.put(UNREAD_BY_USER, unreadMessagesByUserNumSenderR);
+    inbox.setUnreadByUser(unreadMessagesByUserNumSenderR);
+  }
 
   @MessageMapping("/post")
   public NotificationRequest postNotification(
@@ -215,40 +242,49 @@ public class WebSocketController {
     log.info("inboxUid {}",inboxUid);
     log.info("userId {}",userId);
 
-    int unreadMessagesNum = messageService
-        .numberUnreadMessages(inboxUid);
-    Map<String, Integer> unreadMessages = new HashMap<>();
-    unreadMessages.put("unread", unreadMessagesNum);
+    InboxDtoResponse inboxS = getInbox(inboxUid, userId);
 
-    String userIdString = userId.toString();
-    messagingTemplate.convertAndSendToUser(userIdString, "/unread", unreadMessages);
-
-    List<InboxDtoResponse> inboxesS = inboxService.getInboxesByInboxUid(inboxUid);
-    InboxDtoResponse inboxS = inboxesS.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
-
-    int unreadMessagesByUserNumSenderS = messageService
-        .numberUnreadMessagesByUser(userId, inboxUid);
-    Map<String, Integer> unreadMessagesByUserS = new HashMap<>();
-    unreadMessagesByUserS.put("unread", unreadMessagesByUserNumSenderS);
-    inboxS.setUnreadByUser(unreadMessagesByUserNumSenderS);
+    setUnreadMessagesByUserNumToInboxDtoResponse(userId, inboxUid, inboxS);
 
     String inboxUidString = inboxUid.toString();
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxS);
     messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
 
-    List<InboxDtoResponse> inboxesR = inboxService.getInboxesByInboxUid(userId);
-    InboxDtoResponse inboxR = inboxesR.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
 
-    int unreadMessagesByUserNumSenderR = messageService
-        .numberUnreadMessagesByUser(inboxUid, userId);
-    Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
-    unreadMessagesByUserR.put("unreadByUser", unreadMessagesByUserNumSenderR);
-    inboxS.setUnreadByUser(unreadMessagesByUserNumSenderR);
+    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
 
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
+    String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
     messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxR);
+
+    sendUnreadMessagesToUserReceiver(userId);
+
     return inboxS;
+  }
+
+  @MessageMapping("/getMessages")
+  public InboxDtoResponse postReadMessages(
+      @Payload MessageDtoRequest messageDtoRequest) {
+
+    Integer inboxUid = messageDtoRequest.getInboxUid();
+    Integer userId = messageDtoRequest.getUserId();
+    log.info("inboxUid {}",inboxUid);
+    log.info("userId {}",userId);
+
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
+
+    messageService.unreadToReadMessages(messageDtoRequest);
+
+    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
+
+    String userIdString = userId.toString();
+    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
+
+    sendUnreadMessagesToUserReceiver(userId);
+
+    return inboxR;
   }
 }
