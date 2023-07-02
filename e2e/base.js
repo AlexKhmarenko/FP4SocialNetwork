@@ -4,7 +4,6 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { CommonActions } from "./pages/CommonActions";
 import { SideBar } from "./pages/SideBar";
 
-
 export const test = base.extend({
     notFoundPage: async ({ page }, use) => {
         await use(new NotFoundPage(page));

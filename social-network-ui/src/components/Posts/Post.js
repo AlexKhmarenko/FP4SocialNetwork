@@ -364,25 +364,19 @@ export const Post = ({
     };
 
     const deletePost = async () => {
+        const filterPostPredicate = (post) => post.postId !== postId;
         if(location.pathname === "/explore"){
-            let filteredExplorePosts = explorePosts.filter((post) => {
-                return post.postId !== postId;
-            });
+            let filteredExplorePosts = explorePosts.filter(filterPostPredicate);
             dispatch(deleteExplorePost(filteredExplorePosts))
         }else if(location.pathname === "/profile"){
-            let filteredProfilePosts = profilePosts.filter((post) => {
-                return post.postId !== postId;
-            });
+            let filteredProfilePosts = profilePosts.filter(filterPostPredicate);
             dispatch(deleteProfilePost(filteredProfilePosts))
-            let filteredProfileLikePosts= profileLikePosts.filter((post) => {
-                return post.postId !== postId;
-            });
+            let filteredProfileLikePosts= profileLikePosts.filter(filterPostPredicate);
             dispatch(deleteProfileLikePosts(filteredProfileLikePosts))
-            let filteredProfileReposts = profileReposts.filter((post) => {
-                return post.postId !== postId;
-            });
+            let filteredProfileReposts = profileReposts.filter(filterPostPredicate);
             dispatch(deleteProfileRepostsPosts(filteredProfileReposts))
         }
+
     };
 
     const handleCommentToggle = async () => {
