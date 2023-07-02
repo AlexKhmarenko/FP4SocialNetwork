@@ -45,16 +45,7 @@ jobs:
               SPRING_MAIL_PASSWORD=${{ secrets.SPRING_MAIL_PASSWORD }}" > .env
     - name: 'Build API'
       working-directory: social_network_api
-      run: mvn clean install
-    - name: 'Clean packages'
-      working-directory: social_network_api
-      run: mvn clean package
-      # TODO remove after dev
-    - name: 'Start API (testing)'
-        timeout-minutes: 2
-        if: always()
-        working-directory: social_network_api
-        run: mvn spring-boot:run
+      run: mvn install
     - name: 'Cache node modules'
       uses: actions/cache@v3
       env:
@@ -75,6 +66,12 @@ jobs:
     - name: 'Run E2E tests'
       working-directory: e2e
       run: npm test
+    # TODO remove after dev
+    - name: 'Start API (testing)'
+      timeout-minutes: 2
+      if: always()
+      working-directory: social_network_api
+      run: mvn spring-boot:run
     # TODO end
     - name: 'Upload artifacts'
       uses: actions/upload-artifact@v3
