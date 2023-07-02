@@ -376,6 +376,7 @@ export const Post = ({
             let filteredProfileReposts = profileReposts.filter(filterPostPredicate);
             dispatch(deleteProfileRepostsPosts(filteredProfileReposts))
         }
+
     };
 
     const handleCommentToggle = async () => {
