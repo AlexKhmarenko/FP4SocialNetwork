@@ -28,7 +28,7 @@ import { setClickedInboxTrue } from "../../../store/actions";
 import { apiUrl } from "../../../apiConfig";
 
 
-export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessage }) {
+export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessage, stompClient}) {
 
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.userData.userData.userId);
@@ -61,10 +61,10 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                             date={item.createdAt}
                             selectedMessage={selectedMessage}
                             unreadMessage={item.unreadByUser}
-                            handleClick={(event) => {
+                            handleClick={async (event) => {
                                 event.preventDefault();
                                 if (selectedMessage !== item) {
-                                    fetch(`${apiUrl}/api/getMessages`, {
+                                   await fetch(`${apiUrl}/api/getMessages`, {
                                         method: "POST",
                                         body: JSON.stringify({
                                             inboxUid: item.inboxUid,
@@ -72,6 +72,8 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                                         }),
                                         headers: { "Content-Type": "application/json" }
                                     });
+                                    stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: userId,
+                                        inboxUid: item.inboxUid}));
                                     dispatch(clearMessages());
                                     setSelectedMessage(item);
                                     dispatch(setPageZeroForMessaging());
@@ -105,6 +107,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
 }
 
 MessageInbox.propTypes = {
+    stompClient:PropTypes.any,
     setSelectedMessage: PropTypes.any,
     selectedMessage: PropTypes.any,
     inboxMessages: PropTypes.any,
