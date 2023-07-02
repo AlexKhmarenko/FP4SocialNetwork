@@ -587,7 +587,7 @@ export function Message() {
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             {!clicked && (
-                <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
+                <div style={styles.AdaptiveLeftBlockInboxAndSearch} data-testid={"message_search_and_inbox_wrapper"}>
                     <HeaderInformation/>
                     <MessageSearch/>
                     <div style={styles.AdaptiveInboxContainerStyle}>
