@@ -415,8 +415,7 @@ export function SideBar() {
 
                     </Link>
                     <Link to="/explore" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/explore" ? SidebarFabActive : SidebarFab}>
-                            data-testid={"fab_of_explore_text"}>
+                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/explore" ? SidebarFabActive : SidebarFab}  data-testid={"fab_of_explore_text"}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
