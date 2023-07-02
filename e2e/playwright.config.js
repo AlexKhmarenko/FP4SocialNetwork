@@ -29,9 +29,9 @@ module.exports = defineConfig({
             dependencies: ["setup"],
         },
         {
-            name: "firefox",
+            name: 'webkit',
             use: {
-                ...devices["Desktop Firefox"],
+                ...devices['Desktop Safari'],
                 storageState: "playwright/.auth/user.json"
             },
             dependencies: ["setup"],
