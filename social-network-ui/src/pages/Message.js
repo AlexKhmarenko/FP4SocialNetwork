@@ -423,36 +423,63 @@ export function Message() {
     }, [inbox]);
 
     useEffect(() => {
-        const onConnected = () => {
-            console.log(userId);
-            stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
-        };
-        const onError = (err) => {
-            console.log(err);
-        };
+        console.log(selectedMessage, "selectedMessage");
+    }, [selectedMessage]);
 
-        let Sock = new SockJS(`${apiUrl}/websocket`);
-        stompClient = over(Sock);
-        stompClient.connect({}, onConnected, onError);
+    useEffect(() => {
+        try {
+            const onConnected = () => {
+                stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
+            };
+            const onError = (err) => {
+                console.log(err);
+            };
 
-        return () => {
-            if (stompClient) {
-                stompClient.disconnect();
-            }
-        };
+            let Sock = new SockJS(`${apiUrl}/websocket`);
+            stompClient = over(Sock);
+            stompClient.connect({}, onConnected, onError);
+
+            return () => {
+                if (stompClient && stompClient.connected) {
+                    try {
+                        stompClient.disconnect();
+                    } catch (e) {
+                        console.warn("message - failed to disconnect the stomp client", e);
+                    }
+                }else{
+                    console.warn("message - no websocket to disconnect from");
+                }
+            };
+        } catch (e) {
+            console.warn("message - failed to disconnect the stomp client", e);
+        }
+
     }, []);
 
-    const newMessage = (payload) => {
+    async function sendDataReadMessage(inboxUid) {
+        await fetch(`${apiUrl}/api/readMessages`, {
+            method: "POST",
+            body: JSON.stringify({
+                inboxUid: inboxUid,
+                userId: userId,
+            }),
+            headers: { "Content-Type": "application/json" }
+        });
+    }
+
+    const newMessage = async (payload) => {
         let payloadData = JSON.parse(payload.body);
         console.log(payloadData, "PayloadData");
         let messageData = {
-                inboxUid:payloadData.inboxUid,
-                userId:payloadData.userId,
-                messageId: payloadData.messageId,
-                message: payloadData.message,
-                createdAt: payloadData.createdAt
-            };
-        console.log(messageData)
+            inboxUid: payloadData.inboxUid,
+            userId: payloadData.userId,
+            messageId: payloadData.messageId,
+            message: payloadData.message,
+            createdAt: payloadData.createdAt
+        };
+        if (selectedMessage.inboxId === payloadData.inboxId) {
+            await sendDataReadMessage(payloadData.inboxUid);
+        }
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
                 return prevInboxMessages.map(message =>
@@ -486,9 +513,6 @@ export function Message() {
         }
     }, [isXl, isLg, isMd, clicked]);
 
-    function handleSelectMessage(message) {
-        setSelectedMessage(message);
-    }
 
     const handleScroll = async (event) => {
         if (isFetchingTexts || allTextsLoaded) {
@@ -564,8 +588,8 @@ export function Message() {
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             {!clicked && (
                 <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
-                    <HeaderInformation />
-                    <MessageSearch />
+                    <HeaderInformation/>
+                    <MessageSearch/>
                     <div style={styles.AdaptiveInboxContainerStyle}>
                         {isLoading ? (
                             <CircularProgress sx={{ marginTop: "20%", marginLeft: "40%" }} />
@@ -580,7 +604,11 @@ export function Message() {
                     {clicked && <HeaderInformation />}
                     {!selectedMessage ? (
                         <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
-                            <div style={{ fontSize: "1.1rem", fontFamily: "'Lato', sans-serif" }}>Почніть переписку</div>
+                            <div style={{
+                                fontSize: "1.1rem",
+                                fontFamily: "'Lato', sans-serif"
+                            }}>Почніть переписку
+                            </div>
                         </div>
                     ) : (
                         <>
@@ -603,46 +631,46 @@ export function Message() {
                     <div style={{ ...styles.AdaptiveTextingContainerWithScroll, width: "100%", position: "relative" }}>
                         {selectedMessage && (
                             <>
-                                <TextField
-                                    id="outlined-basic"
-                                    type="search"
-                                    variant="outlined"
-                                    placeholder="Input message"
-                                    size="small"
-                                    value={inputValue}
-                                    onChange={(event) => {
-                                        event.preventDefault();
-                                        console.log("Data from input: " + event.target.value.toString());
-                                        setInputValue(event.target.value.toString());
-                                    }}
-                                    onKeyPress={handleKeyPress}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <>
-                                                <EmojiEmotionsIcon
-                                                    id="emoji-icon"
-                                                    onClick={(event) => {
-                                                        event.stopPropagation();
-                                                        setIsOpenEmoji(!isOpenEmoji)}}
-                                                    sx={{ cursor: "pointer", marginRight: "10px", color: "#9e9e9e" }}
-                                                />
-                                                <Button
-                                                    sx={{ color: "#9e9e9e", minWidth: "35px", height: "35px", padding: "0", fontSize: "2rem" }}
-                                                    onClick={handleSend}
-                                                >
-                                                    <SendIcon />
-                                                </Button>
-                                            </>
-                                        ),
-                                    }}
-                                    style={{ width: "100%", marginTop: "5px" }}
-                                />
-                                {isOpenEmoji && (
-                                    <div ref={emojiPickerRef} style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
-                                        <EmojiPicker emojiStyle={"google"} onEmojiClick={handleEmojiClick} disableSearchBar disableSkinTonePicker />
-                                    </div>
-                                )}
-                            </>
+                            <TextField
+                                id="outlined-basic"
+                                type="search"
+                                variant="outlined"
+                                placeholder="Input message"
+                                size="small"
+                                value={inputValue}
+                                onChange={(event) => {
+                                    event.preventDefault();
+                                    console.log("Data from input: " + event.target.value.toString());
+                                    setInputValue(event.target.value.toString());
+                                }}
+                                onKeyPress={handleKeyPress}
+                                InputProps={{
+                                    endAdornment: (
+                                        <>
+                                            <EmojiEmotionsIcon
+                                                id="emoji-icon"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    setIsOpenEmoji(!isOpenEmoji)}}
+                                                sx={{ cursor: "pointer", marginRight: "10px", color: "#9e9e9e" }}
+                                            />
+                                            <Button
+                                                sx={{ color: "#9e9e9e", minWidth: "35px", height: "35px", padding: "0", fontSize: "2rem" }}
+                                                onClick={handleSend}
+                                            >
+                                                <SendIcon />
+                                            </Button>
+                                        </>
+                                    ),
+                                }}
+                                style={{ width: "100%", marginTop: "5px" }}
+                            />
+                            {isOpenEmoji && (
+                                <div ref={emojiPickerRef} style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
+                                    <EmojiPicker emojiStyle={"google"} onEmojiClick={handleEmojiClick} disableSearchBar disableSkinTonePicker />
+                                </div>
+                            )}
+                        </>
                         )}
                     </div>
                 </div>
