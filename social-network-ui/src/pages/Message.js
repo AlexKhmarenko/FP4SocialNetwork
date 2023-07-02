@@ -607,7 +607,7 @@ export function Message() {
                             <div style={{
                                 fontSize: "1.1rem",
                                 fontFamily: "'Lato', sans-serif"
-                            }}>Почніть переписку
+                            }} data-testid={"start_chat_text"}>Почніть переписку
                             </div>
                         </div>
                     ) : (
