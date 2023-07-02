@@ -20,7 +20,7 @@ import {
     SidebarTypography,
     SidebarLogOutButton,
     SidebarIconBackground,
-    SidebarFabActive, SvgIconStyles
+    SidebarFabActive, SvgIconStyles, DarkHeader
 } from "./NavigationStyles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,6 +54,7 @@ export function HeaderInformation() {
     });
 
     const [isOpen, setIsOpen] = useState(false);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -508,7 +509,7 @@ export function HeaderInformation() {
     }
 
     return (
-        <AppBar position="fixed" color="primary" sx={Header} data-testid={"header_information_for_home_page"}>
+        <AppBar position="fixed" color="primary" sx={darkMode ? DarkHeader : Header} data-testid={"header_information_for_home_page"}>
             <Toolbar sx={{ height: "70px" }}>
                 {isXs || isXxs ?
                     (["left"].map((anchor) => (

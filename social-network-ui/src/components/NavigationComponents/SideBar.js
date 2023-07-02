@@ -17,7 +17,7 @@ import {
     SidebarTypography,
     SidebarLogOutButton,
     SidebarIconBackground,
-    SidebarFabActive, SvgIconStyles
+    SidebarFabActive, SvgIconStyles, DarkSidebarIconBackground, DarkSidebarFab
 } from "./NavigationStyles";
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
 import { setUserToken } from "../../store/actions";
@@ -35,6 +35,7 @@ export function SideBar() {
     const userId = useSelector(state => state.userData.userData.userId);
     const [notificationCount, setNotificationCount] = useState(0);
     const [messageCount, setMessageCount] = useState(0);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -112,7 +113,7 @@ export function SideBar() {
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height: "100vh",
             overflow: "hidden",
-            backgroundColor: "#ffff",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             position: "sticky",
             top: 0,
         },
@@ -147,7 +148,7 @@ export function SideBar() {
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height: "100vh",
             overflow: "hidden",
-            backgroundColor: "#ffff",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             position: "sticky",
             top: 0,
         },
@@ -182,7 +183,7 @@ export function SideBar() {
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height: "100vh",
             overflow: "hidden",
-            backgroundColor: "#ffff",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             position: "sticky",
             top: 0,
         },
@@ -224,7 +225,7 @@ export function SideBar() {
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height: "100vh",
             overflow: "hidden",
-            backgroundColor: "#ffff",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             position: "sticky",
             top: 0,
         },
@@ -265,7 +266,7 @@ export function SideBar() {
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height: "100vh",
             overflow: "hidden",
-            backgroundColor: "#ffff",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             position: "sticky",
             top: 0,
         },
@@ -306,7 +307,7 @@ export function SideBar() {
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height: "100vh",
             overflow: "hidden",
-            backgroundColor: "#ffff",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             position: "sticky",
             top: 0,
         },
@@ -363,12 +364,12 @@ export function SideBar() {
                 <div
                     style={{ height: "60%", display: "flex", justifyContent: "space-around", flexDirection: "column" }}>
                     <Link to="/home" variant="contained">
-                        <Fab variant="extended" sx={SidebarIconBackground}>
+                        <Fab variant="extended" sx={darkMode ? DarkSidebarIconBackground : SidebarIconBackground}>
                             <CapybaraSvgIcon/>
                         </Fab>
                     </Link>
                     <Link to="/home" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={pathname === "/home" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/home" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={{ width: "25px", height: "25px", marginLeft: "10px" }} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -384,7 +385,7 @@ export function SideBar() {
 
                     </Link>
                     <Link to="/explore" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={pathname === "/explore" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/explore" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -399,7 +400,7 @@ export function SideBar() {
                         </Fab>
                     </Link>
                     {!isLg && !isXl ? <Link to="/search" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={pathname === "/search" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/search" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -414,7 +415,7 @@ export function SideBar() {
                         </Fab>
                     </Link> : null}
                     <Link to="/notifications" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={pathname === "/notifications" ? SidebarFabActive : SidebarFab}
+                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/notifications" ? SidebarFabActive : SidebarFab}
                              onClick={() => {
                                  setNotificationCount(0);
                              }}>
@@ -445,7 +446,7 @@ export function SideBar() {
                         </Fab>
                     </Link>
                     <Link to="/messages" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={pathname === "/messages" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/messages" ? SidebarFabActive : SidebarFab}>
                             <Badge badgeContent={location.pathname === "/messages" ? 0 : messageCount} color={"primary"}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
@@ -462,7 +463,7 @@ export function SideBar() {
                         </Fab>
                     </Link>
                     <Link to="/profile" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={pathname === "/profile" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/profile" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -477,7 +478,7 @@ export function SideBar() {
                         </Fab>
                     </Link>
                     <Link to="/settings" variant="contained" style={{ textDecoration: "none", marginBottom: "30px" }}>
-                        <Fab variant="extended" sx={pathname === "/settings" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/settings" ? SidebarFabActive : SidebarFab}>
                             <ManageAccountsOutlinedIcon sx={SvgIconStyles}/>
                             <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                                 Settings
