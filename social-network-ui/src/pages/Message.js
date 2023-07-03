@@ -455,13 +455,9 @@ export function Message() {
 
     }, []);
 
-    async function sendDataReadMessage(inboxUid) {
-
-    }
 
     const newMessage = async (payload) => {
         let payloadData = JSON.parse(payload.body);
-        console.log(payloadData, "PayloadData");
         let messageData = {
             inboxUid: payloadData.inboxUid,
             userId: payloadData.userId,
@@ -469,7 +465,7 @@ export function Message() {
             message: payloadData.message,
             createdAt: payloadData.createdAt
         };
-        // stompClient.send("/app/get", {}, JSON.stringify({ inboxUid: payloadData.inboxUid, userId: userId, }));
+        stompClient.send("/app/getUnread", {}, JSON.stringify({ userId: payloadData.userId, inboxUid: payloadData.inboxUid }));
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
                 return prevInboxMessages.map(message =>

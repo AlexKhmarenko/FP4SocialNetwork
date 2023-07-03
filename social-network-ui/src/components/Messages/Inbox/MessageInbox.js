@@ -33,6 +33,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.userData.userData.userId);
     const theme = useTheme();
+    const [clickedMessages, setClickedMessages] = useState([]);
 
     const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -59,8 +60,9 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                             receiver={item.userId}
                             message={item.message}
                             date={item.createdAt}
+                            clickedMessages={clickedMessages}
                             selectedMessage={selectedMessage}
-                            unreadMessage={item.unreadByUser}
+                            unreadMessage={selectedMessage.inboxId === item.inboxId || clickedMessages.includes(item.inboxId) ? 0 : item.unreadByUser}
                             handleClick={async (event) => {
                                 event.preventDefault();
                                 if (selectedMessage !== item) {
@@ -79,6 +81,9 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                                     dispatch(setPageZeroForMessaging());
                                     dispatch(fetchTextsByPage(item.userId, userId, 0));
                                 }
+                                setClickedMessages(prevState => {
+                                   return [...prevState, item.inboxId]
+                                })
                                 if (!isXl && !isLg && !isMd) {
                                     dispatch(setClickedInboxTrue());
                                 }
