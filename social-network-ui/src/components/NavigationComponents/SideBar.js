@@ -102,7 +102,7 @@ export function SideBar() {
             const onConnected = () => {
                 if (stompClient?.connected) {
                     stompClient.subscribe("/user/" + userId + "/unread_notifications", onPrivateMessage);
-                    stompClient.subscribe("/user/" + userId + "/unread", onMessageUnread);
+                    stompClient.subscribe("/user/" + userId + "/unread_to_read", onMessageUnread);
                 }
             };
 
