@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +34,10 @@ class NotificationServiceImplTest {
         "photoLink", "test");
     List<Notification> notificationList = new ArrayList<>();
     notificationList.add(notification);
+    Pageable pageable = PageRequest.of(1, 12);
 
-    when(notificationRepository.findAllByFollowerUserId(1)).thenReturn(notificationList);
-    Notification maybeNotification = notificationService.findAllByFollowerUserId(1).get(0);
+    when(notificationRepository.findAllByFollowerUserId(1,pageable)).thenReturn(notificationList);
+    Notification maybeNotification = notificationService.findAllByFollowerUserId(1,1,12).get(0);
     String notificationText = maybeNotification.getNotificationText();
     Assertions.assertEquals("test", notificationText);
   }

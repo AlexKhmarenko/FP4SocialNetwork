@@ -4,6 +4,8 @@ import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,13 +18,15 @@ public class NotificationServiceImpl implements NotificationService {
   private final NotificationRepository notificationRepository;
 
   @Override
-  public List<Notification> findAllByFollowerUserId(Integer userId) {
-    return notificationRepository.findAllByFollowerUserId(userId);
+  public List<Notification> findAllByFollowerUserId(Integer userId, int page, int pageSize) {
+    Pageable pageable = PageRequest.of(page, pageSize);
+    return notificationRepository.findAllByFollowerUserId(userId, pageable);
   }
 
   @Override
-  public List<Notification> findAllByFollowingUserId(Integer userId) {
-    return notificationRepository.findAllByFollowingUserId(userId);
+  public List<Notification> findAllByFollowingUserId(Integer userId, int page, int pageSize) {
+    Pageable pageable = PageRequest.of(page, pageSize);
+    return notificationRepository.findAllByFollowingUserId(userId, pageable);
   }
 
   @Override

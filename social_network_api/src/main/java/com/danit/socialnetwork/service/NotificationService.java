@@ -7,9 +7,9 @@ import java.util.List;
 public interface NotificationService {
 
 
-  List<Notification> findAllByFollowerUserId(Integer followerUserId);
+  List<Notification> findAllByFollowerUserId(Integer userId, int page, int pageSize);
 
-  List<Notification> findAllByFollowingUserId(Integer userId);
+  List<Notification> findAllByFollowingUserId(Integer userId, int page, int pageSize);
 
   Notification saveNotification(Notification notification);
 
