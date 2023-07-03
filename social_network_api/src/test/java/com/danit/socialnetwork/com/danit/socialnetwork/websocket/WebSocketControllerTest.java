@@ -208,6 +208,18 @@ class WebSocketControllerTest {
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(InboxDtoResponse.class));
   }
 
+  @Test
+  void testPostGetMessage() {
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(1);
+    messageDtoRequest.setUserId(2);
+
+    when(messageService.numberUnreadMessages(2)).thenReturn(5);
+
+    webSocketController.postReadMessages(messageDtoRequest);
+
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
+  }
 }
 
 
