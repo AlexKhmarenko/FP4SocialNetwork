@@ -272,13 +272,23 @@ public class WebSocketController {
   }
 
   @MessageMapping("/getMessages")
-  public void postReadMessages(
+  public InboxDtoResponse postReadMessages(
       @Payload MessageDtoRequest messageDtoRequest) {
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     getLog(inboxUid, userId);
 
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
+
+    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
+
+    inboxR.setInboxUid(inboxUid);
+    inboxR.setUserId(userId);
+    String userIdString = userId.toString();
+    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
+    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxR);
     sendUnreadMessagesToUserReceiver(userId);
+    return inboxR;
   }
 
 }
