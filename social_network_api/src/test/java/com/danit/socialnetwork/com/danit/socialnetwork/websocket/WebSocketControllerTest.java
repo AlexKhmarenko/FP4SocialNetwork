@@ -247,7 +247,8 @@ class WebSocketControllerTest {
 
     webSocketController.postGetUnread(messageDtoRequest);
 
-    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());  }
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
+  }
 
 }
 

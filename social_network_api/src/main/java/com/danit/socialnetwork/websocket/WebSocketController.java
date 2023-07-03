@@ -298,4 +298,5 @@ public class WebSocketController {
     getLog(inboxUid, userId);
     sendUnreadMessagesToUserReceiver(userId);
   }
+
 }
