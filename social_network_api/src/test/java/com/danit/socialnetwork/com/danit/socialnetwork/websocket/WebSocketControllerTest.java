@@ -245,7 +245,11 @@ class WebSocketControllerTest {
 
     when(messageService.numberUnreadMessages(2)).thenReturn(5);
 
-    webSocketController.postGetUnread(messageDtoRequest);
+    try {
+      webSocketController.postGetUnread(messageDtoRequest);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
 
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
   }

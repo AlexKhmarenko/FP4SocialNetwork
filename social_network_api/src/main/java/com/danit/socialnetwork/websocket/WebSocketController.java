@@ -50,7 +50,7 @@ public class WebSocketController {
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
 
-  private void sendUnreadMessagesToUserReceiver(Integer userId) {
+  private Map<String, Integer> sendUnreadMessagesToUserReceiver(Integer userId) {
     String userIdString = userId.toString();
     int unreadMessagesNum = messageService
         .numberUnreadMessages(userId);
@@ -59,6 +59,7 @@ public class WebSocketController {
     log.info("unread {}",unreadMessagesNum);
 
     messagingTemplate.convertAndSendToUser(userIdString, "/unread", unreadMessages);
+    return unreadMessages;
   }
 
   private InboxDtoResponse getInbox(Integer userId, Integer inboxUid) {
@@ -290,13 +291,14 @@ public class WebSocketController {
   }
 
   @MessageMapping("/getUnread")
-  public void postGetUnread(
+  public Map<String, Integer> postGetUnread(
       @Payload MessageDtoRequest messageDtoRequest) {
-
+    messageService.unreadToReadMessages(messageDtoRequest);
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     getLog(inboxUid, userId);
-    sendUnreadMessagesToUserReceiver(userId);
+    Map<String, Integer> unread = sendUnreadMessagesToUserReceiver(userId);
+    return unread;
   }
 
 }
