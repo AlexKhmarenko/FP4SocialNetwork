@@ -37,7 +37,7 @@ describe("Home Page", () => {
         await homePage.verifyAddPost();
         await homePage.verifyAddRepostHandle()
     });
-    test.only("Add comment success", async ({ homePage, page }) => {
+    test("Add comment success", async ({ homePage, page }) => {
         await homePage.openHomePage();
         await page.waitForTimeout(5000);
         await homePage.verifyAddPost();

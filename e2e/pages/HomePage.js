@@ -79,7 +79,7 @@ export class HomePage {
         await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER)).toBeVisible();
         await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER)
             .getByLabel("Please enter your comment").fill("this is a test comment");
-        await this.page.waitForTimeout(5000);
+        await this.page.waitForTimeout(10000);
         await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER)
             .getByTestId(HomePage.SELECTOR.SEND_COMMENT_BUTTON).click();
         await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER).getByText(mocComment.commentText)).toBeVisible();
