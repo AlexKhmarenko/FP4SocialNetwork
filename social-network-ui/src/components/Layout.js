@@ -52,6 +52,7 @@ const theme = createTheme({
 });
 
 export function Layout() {
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const navigate = useNavigate();
     const userToken = JSON.parse(localStorage.getItem("userToken")) || JSON.parse(sessionStorage.getItem("userToken"));
     const userBirthdateGoogle = useSelector(state => state.saveUserToken.userBirthdayFlag);
@@ -61,6 +62,7 @@ export function Layout() {
     const userId = useSelector(state => state.userData.userData.userId);
     const loadingPostsRef = useRef(false);
     const allPostsLoadedRef = useRef(false);
+
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -86,6 +88,7 @@ export function Layout() {
             justifyContent: "flex-start",
             overflowX: "hidden",
             width: "100vw",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff"
         },
         AdaptiveContentContainer: {
             display: "flex",
@@ -135,6 +138,7 @@ export function Layout() {
             justifyContent: "flex-start",
             overflowX: "hidden",
             width: "100vw",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff"
         },
         AdaptiveContentContainer: {
             display: "flex",
@@ -183,6 +187,7 @@ export function Layout() {
             alignItems: "center",
             justifyContent: "flex-start",
             overflowX: "hidden",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff"
         },
         AdaptiveContentContainer: {
             display: "flex",
@@ -233,6 +238,7 @@ export function Layout() {
             alignItems: "center",
             justifyContent: "flex-start",
             overflowX: "hidden",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff"
         },
         AdaptiveContentContainer: {
             display: "flex",
@@ -283,6 +289,7 @@ export function Layout() {
             alignItems: "center",
             justifyContent: "flex-start",
             overflowX: "hidden",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff"
         },
         AdaptiveContentContainer: {
             display: "flex",
@@ -344,6 +351,7 @@ export function Layout() {
             alignItems: "center",
             justifyContent: "flex-start",
             overflowX: "hidden",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff"
         },
         AdaptiveContentContainer: {
             display: "flex",
@@ -400,13 +408,14 @@ export function Layout() {
         },
         MaxWidthAdaptive: "false",
         AdaptiveContainerStyled: {
-            padding: "0!important",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            overflowX: "hidden",
-        },
+                    padding: "0!important",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    overflowX: "hidden",
+                    backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff"
+                },
         AdaptiveContentContainer: {
             display: "flex",
             flexDirection: "row",
