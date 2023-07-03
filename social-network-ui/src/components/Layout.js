@@ -36,6 +36,7 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { BirthdateForm } from "./LoginModal/BirthdateForm";
 
+
 export const ScrollContext = React.createContext(() => {});
 
 const theme = createTheme({

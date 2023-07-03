@@ -7,7 +7,6 @@ import { Button, TextField, Typography } from "@mui/material";
 import { TextingMessage } from "../components/Messages/FullTexting/TextingMessage";
 import { MessageSearch } from "../components/Messages/Inbox/MessageSearch";
 import { MessageInbox } from "../components/Messages/Inbox/MessageInbox";
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import {
     leftBlockInboxAndSearch, inboxContainerStyle,
     textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
@@ -45,29 +44,10 @@ export function Message() {
     const [inboxMessages, setInboxMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
-    const [isOpenEmoji, setIsOpenEmoji] = useState(false);
-    const emojiPickerRef = useRef();
 
     useEffect(() => {
         console.log(selectedMessage, "selectedMessageFROMMESSAGEEL");
     }, [selectedMessage]);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                emojiPickerRef.current &&
-                !emojiPickerRef.current.contains(event.target) &&
-                event.target !== document.getElementById("emoji-icon")
-            ) {
-                setIsOpenEmoji(false);
-            }
-        };
-
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, [isOpenEmoji, emojiPickerRef]);
 
     const theme = useTheme();
 
@@ -556,26 +536,6 @@ export function Message() {
         setInputValue((prevValue) => prevValue + emojiChar);
     };
 
-    const handleClickOutside = (event) => {
-        if (!isOpenEmoji) {
-            return;
-        }
-        if (
-            emojiPickerRef.current &&
-            !emojiPickerRef.current.contains(event.target) &&
-            event.target !== document.getElementById("emoji-icon")
-        ) {
-            setIsOpenEmoji(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, [isOpenEmoji, emojiPickerRef]);
-
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             {!clicked && (
@@ -645,40 +605,22 @@ export function Message() {
                                     onKeyPress={handleKeyPress}
                                     InputProps={{
                                         endAdornment: (
-                                            <>
-                                                <EmojiEmotionsIcon
-                                                    id="emoji-icon"
-                                                    onClick={(event) => {
-                                                        event.stopPropagation();
-                                                        setIsOpenEmoji(!isOpenEmoji);
-                                                    }}
-                                                    sx={{ cursor: "pointer", marginRight: "10px", color: "#9e9e9e" }}
-                                                />
-                                                <Button
-                                                    sx={{
-                                                        color: "#9e9e9e",
-                                                        minWidth: "35px",
-                                                        height: "35px",
-                                                        padding: "0",
-                                                        fontSize: "2rem"
-                                                    }}
-                                                    onClick={handleSend}
-                                                >
-                                                    <SendIcon/>
-                                                </Button>
-                                            </>
+                                            <Button
+                                                sx={{
+                                                    color: "#9e9e9e",
+                                                    minWidth: "35px",
+                                                    height: "35px",
+                                                    padding: "0",
+                                                    fontSize: "2rem"
+                                                }}
+                                                onClick={handleSend}
+                                            >
+                                                <SendIcon/>
+                                            </Button>
                                         ),
                                     }}
                                     style={{ width: "100%", marginTop: "5px" }}
                                 />
-                                {isOpenEmoji && (
-                                    <div ref={emojiPickerRef}
-                                         style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
-
-                                        <EmojiPicker emojiStyle={"google"} onEmojiClick={handleEmojiClick}
-                                                     disableSearchBar disableSkinTonePicker/>
-                                    </div>
-                                )}
                             </>
                         )}
                     </div>
