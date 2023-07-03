@@ -283,8 +283,18 @@ public class WebSocketController {
     String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
 
-    sendUnreadMessagesToUserReceiver(userId);
-
     return inboxR;
+  }
+
+  @MessageMapping("/getUnread")
+  public void postGetUnread(
+      @Payload MessageDtoRequest messageDtoRequest) {
+
+    Integer inboxUid = messageDtoRequest.getInboxUid();
+    Integer userId = messageDtoRequest.getUserId();
+    log.info("inboxUid {}",inboxUid);
+    log.info("userId {}",userId);
+
+    sendUnreadMessagesToUserReceiver(userId);
   }
 }
