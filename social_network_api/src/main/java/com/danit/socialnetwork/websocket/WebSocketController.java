@@ -74,6 +74,11 @@ public class WebSocketController {
     inbox.setUnreadByUser(unreadMessagesByUserNumSenderR);
   }
 
+  private void getLog(Integer inboxUid, Integer userId) {
+    log.info("inboxUid {}",inboxUid);
+    log.info("userId {}",userId);
+  }
+
   @MessageMapping("/post")
   public NotificationRequest postNotification(
       @Payload NotificationRequest notificationRequest) throws InterruptedException {
@@ -239,8 +244,7 @@ public class WebSocketController {
 
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
-    log.info("inboxUid {}",inboxUid);
-    log.info("userId {}",userId);
+    getLog(inboxUid, userId);
 
     InboxDtoResponse inboxS = getInbox(inboxUid, userId);
 
@@ -271,8 +275,7 @@ public class WebSocketController {
 
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
-    log.info("inboxUid {}",inboxUid);
-    log.info("userId {}",userId);
+    getLog(inboxUid, userId);
 
     InboxDtoResponse inboxR = getInbox(userId, inboxUid);
 
@@ -292,9 +295,7 @@ public class WebSocketController {
 
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
-    log.info("inboxUid {}",inboxUid);
-    log.info("userId {}",userId);
-
+    getLog(inboxUid, userId);
     sendUnreadMessagesToUserReceiver(userId);
   }
 }
