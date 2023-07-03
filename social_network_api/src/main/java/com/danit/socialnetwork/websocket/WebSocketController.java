@@ -9,6 +9,7 @@ import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.service.PostService;
@@ -56,7 +57,7 @@ public class WebSocketController {
         .numberUnreadMessages(userId);
     Map<String, Integer> unreadMessages = new HashMap<>();
     unreadMessages.put(UNREAD, unreadMessagesNum);
-    log.info("unread {}",unreadMessagesNum);
+    log.info("unread {}", unreadMessagesNum);
 
     messagingTemplate.convertAndSendToUser(userIdString, "/unread", unreadMessages);
     return unreadMessages;
@@ -76,8 +77,8 @@ public class WebSocketController {
   }
 
   private void getLog(Integer inboxUid, Integer userId) {
-    log.info("inboxUid {}",inboxUid);
-    log.info("userId {}",userId);
+    log.info("inboxUid {}", inboxUid);
+    log.info("userId {}", userId);
   }
 
   @MessageMapping("/post")
@@ -271,34 +272,13 @@ public class WebSocketController {
   }
 
   @MessageMapping("/getMessages")
-  public InboxDtoResponse postReadMessages(
+  public void postReadMessages(
       @Payload MessageDtoRequest messageDtoRequest) {
-
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     getLog(inboxUid, userId);
 
-    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
-
-    messageService.unreadToReadMessages(messageDtoRequest);
-
-    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
-
-    String userIdString = userId.toString();
-    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
-
-    return inboxR;
-  }
-
-  @MessageMapping("/getUnread")
-  public Map<String, Integer> postGetUnread(
-      @Payload MessageDtoRequest messageDtoRequest) {
-    messageService.unreadToReadMessages(messageDtoRequest);
-    Integer inboxUid = messageDtoRequest.getInboxUid();
-    Integer userId = messageDtoRequest.getUserId();
-    getLog(inboxUid, userId);
-    Map<String, Integer> unread = sendUnreadMessagesToUserReceiver(userId);
-    return unread;
+    sendUnreadMessagesToUserReceiver(userId);
   }
 
 }
