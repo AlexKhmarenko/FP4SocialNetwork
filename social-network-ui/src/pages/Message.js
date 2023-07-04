@@ -1,9 +1,8 @@
-import React, { useEffect, useCallback, useContext, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
 import { apiUrl } from "../apiConfig";
-import { InboxMessage } from "../components/Messages/Inbox/InboxMessage";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { TextingMessage } from "../components/Messages/FullTexting/TextingMessage";
 import { MessageSearch } from "../components/Messages/Inbox/MessageSearch";
 import { MessageInbox } from "../components/Messages/Inbox/MessageInbox";
@@ -14,17 +13,15 @@ import {
     textingContainerWithScroll, textingConatinerScrollFromBottom,
     textingConatinerScrollFromTop, DarkTextingContainerWithScroll
 } from "./pagesStyles/MessageStyles";
-import PropTypes from "prop-types";
 import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
-import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
+import { setPageForMessage } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 import CircularProgress from "@mui/material/CircularProgress";
-import { height, padding } from "@mui/system";
-import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
+import { setClickedInboxFalse } from "../store/actions";
 import { Avatar } from "@mui/material";
 import EmojiPicker from "emoji-picker-react";
 
@@ -468,7 +465,7 @@ export function Message() {
                 return [...prevInboxMessages, payloadData];
             }
         });
-        console.log(messageData.userId,messageData.inboxUid,)
+        console.log(messageData.userId, messageData.inboxUid,)
         dispatch(addMessageFromWebsocket(messageData));
         if(payloadData.userId == userId) {
             await fetch(`${apiUrl}/api/readMessages`, {
@@ -537,11 +534,10 @@ export function Message() {
             headers: { "Content-Type": "application/json" },
         });
         stompClient.send("/app/addMessage", {}, JSON.stringify({
-            userId: selectedMessage.userId,
+            userId:  selectedMessage.userId,
             inboxUid: selectedMessage.inboxUid,
             writtenMessage: inputValue,
         }));
-        console.log(selectedMessage.inboxUid,selectedMessage.userId,"selectedMessagefromMessage549")
         setInputValue("");
     };
 
@@ -549,6 +545,11 @@ export function Message() {
         if (event.key === "Enter") {
             handleSend(event);
         }
+    };
+
+    const stompClientSendMessage = (event) => {
+        stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: selectedMessage.userId,
+            inboxUid: selectedMessage.inboxUid}));
     };
 
     const handleEmojiClick = (emojiData) => {
@@ -590,7 +591,7 @@ export function Message() {
                             <CircularProgress sx={{ marginTop: "20%", marginLeft: "40%" }}/>
                         ) : (
                             <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage}
-                                          stompClient={stompClient} setSelectedMessage={setSelectedMessage}/>
+                                          stompClientSendMessage={stompClientSendMessage} setSelectedMessage={setSelectedMessage}/>
                         )}
                     </div>
                 </div>
