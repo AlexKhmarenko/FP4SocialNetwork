@@ -36,7 +36,7 @@ import {
     LikesCircular,
     LikeBox,
     CardContentPost,
-    EmptyLikesUserArrParagraph
+    EmptyLikesUserArrParagraph, DarkUserNameParagraph
 } from "./PostStyles";
 import {
     activeLikesFetch,
@@ -97,6 +97,7 @@ export const Post = ({
     const profilePosts = useSelector(state => state.Posts.profilePosts)
     const profileLikePosts = useSelector(state => state.Posts.profileLikePosts)
     const profileReposts = useSelector(state => state.Posts.profileReposts)
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const navigate = useNavigate();
 
     const theme = useTheme();
@@ -120,8 +121,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "90vw",
@@ -150,8 +153,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "90vw",
@@ -181,8 +186,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -213,8 +220,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -245,8 +254,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -277,8 +288,11 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            position: "relative",
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -430,9 +444,9 @@ export const Post = ({
                     <Avatar alt={userName} src="#"/>}
                 <div style={PostTextWrapper}>
                     <Typography variant="subtitle1" component="div"
-                                sx={{...userNameParagraph, maxWidth:"300px"}}
+                                sx={darkMode ? {...DarkUserNameParagraph, maxWidth:"300px"} : {...userNameParagraph, maxWidth:"300px"}}
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
-                        {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
+                        {name} <span style={{ color: darkMode ? "rgb(139, 152, 165)" : "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
                     <div data-testid="user_post_text">
                         <Typography  variant="body1" component="div" mt={1} sx={styles.AdaptiveText}>{text}</Typography>
@@ -495,31 +509,31 @@ export const Post = ({
             </div>
             <CardActions sx={{ padding: "20px 20px" }}>
                 <Tooltip title={"See comments"}>
-                    <IconButton onClick={handleCommentToggle}>
-                        <ChatBubbleOutline fontSize="small"/>
-                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
+                    <IconButton onClick={handleCommentToggle} sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
+                        <ChatBubbleOutline fontSize="small" sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>
+                        <Typography variant="body2" sx={{ marginLeft: "5px", color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}>{postCommentCount}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={isReposted ? "Undo repost" : "Repost"}>
-                    <IconButton onClick={sendRepost}>
-                        <Repeat fontSize="small" htmlColor={isReposted ? "rgb(0, 186, 124)" : "inherit"}/>
-                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>{repostCountView}</Typography>
+                    <IconButton onClick={sendRepost} sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
+                        {isReposted ? <Repeat fontSize="small" htmlColor={ "rgb(0, 186, 124)" }/> : <Repeat fontSize="small" sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>}
+                        <Typography variant="body2" sx={{ marginLeft: "5px", color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}>{repostCountView}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={"Views"}>
-                    <IconButton>
-                        <BarChartIcon/>
-                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>{viewCount}</Typography>
+                    <IconButton sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
+                        <BarChartIcon sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>
+                        <Typography variant="body2" sx={{ marginLeft: "5px", color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}>{viewCount}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={like ? "Undo like" : "Like"}>
-                    <IconButton onClick={addLikeHandle}>
-                        {like ? <Favorite fontSize="small" sx={{ color: "red" }} data-testid={"red_like_icon"}/> : <FavoriteBorder data-testid={"icon_button_add_like"} fontSize="small"/>}
+                    <IconButton onClick={addLikeHandle} sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
+                        {like ? <Favorite fontSize="small" sx={{ color: "red" }} data-testid={"red_like_icon"}/> : <FavoriteBorder data-testid={"icon_button_add_like"} fontSize="small" sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>}
                     </IconButton>
                 </Tooltip>
                 <Typography onClick={()=>{
                     navigate(`/likes/${postId}`)
-                }} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
+                }} variant="body2" sx={{...userLikeCount, color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)"}}>{likeCount}</Typography>
             </CardActions>
             {isCommentOpen &&
                 <Comments comments={comments} isLoadingComments={isLoadingComments}

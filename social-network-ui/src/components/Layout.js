@@ -112,6 +112,7 @@ export function Layout() {
             width: "100vw",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -162,6 +163,7 @@ export function Layout() {
             width: "100vw",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -212,6 +214,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -263,6 +266,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -314,6 +318,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -376,6 +381,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -439,6 +445,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
