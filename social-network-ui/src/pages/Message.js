@@ -473,6 +473,7 @@ export function Message() {
                 return [...prevInboxMessages, payloadData];
             }
         });
+        console.log(messageData.userId,messageData.inboxUid,)
         dispatch(addMessageFromWebsocket(messageData));
         if(payloadData.inboxUid !== userId) {
             await fetch(`${apiUrl}/api/readMessages`, {
@@ -545,6 +546,7 @@ export function Message() {
             inboxUid: selectedMessage.inboxUid,
             writtenMessage: inputValue,
         }));
+        console.log(selectedMessage.inboxUid,selectedMessage.userId,"selectedMessagefromMessage549")
         setInputValue("");
     };
 
