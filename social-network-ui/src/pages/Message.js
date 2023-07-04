@@ -1,9 +1,8 @@
-import React, { useEffect, useCallback, useContext, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
 import { apiUrl } from "../apiConfig";
-import { InboxMessage } from "../components/Messages/Inbox/InboxMessage";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { TextingMessage } from "../components/Messages/FullTexting/TextingMessage";
 import { MessageSearch } from "../components/Messages/Inbox/MessageSearch";
 import { MessageInbox } from "../components/Messages/Inbox/MessageInbox";
@@ -12,21 +11,18 @@ import {
     leftBlockInboxAndSearch, inboxContainerStyle,
     textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
     textingContainerWithScroll, textingConatinerScrollFromBottom,
-    textingConatinerScrollFromTop
+    textingConatinerScrollFromTop, DarkTextingContainerWithScroll
 } from "./pagesStyles/MessageStyles";
-import PropTypes from "prop-types";
 import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
-import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
+import { setPageForMessage } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 import CircularProgress from "@mui/material/CircularProgress";
-import { height, padding } from "@mui/system";
-import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
+import { setClickedInboxFalse } from "../store/actions";
 import { Avatar } from "@mui/material";
-import EmojiPicker from "emoji-picker-react";
 
 let stompClient = null;
 
@@ -45,29 +41,7 @@ export function Message() {
     const [inboxMessages, setInboxMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
-    const [isOpenEmoji, setIsOpenEmoji] = useState(false);
-    const emojiPickerRef = useRef();
-
-    useEffect(() => {
-        console.log(selectedMessage, "selectedMessageFROMMESSAGEEL");
-    }, [selectedMessage]);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                emojiPickerRef.current &&
-                !emojiPickerRef.current.contains(event.target) &&
-                event.target !== document.getElementById("emoji-icon")
-            ) {
-                setIsOpenEmoji(false);
-            }
-        };
-
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, [isOpenEmoji, emojiPickerRef]);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const theme = useTheme();
 
@@ -82,6 +56,8 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -108,20 +84,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
             height: "50px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "34px",
@@ -135,6 +109,8 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -161,20 +137,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
             height: "50px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "34px",
@@ -187,7 +161,9 @@ export function Message() {
     const smStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
-            maxWidth: "500px"
+            maxWidth: "500px",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -214,20 +190,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
             height: "50px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "34px",
@@ -240,11 +214,13 @@ export function Message() {
     const mdStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
-            width: "800px"
+            width: "800px",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
-            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveInboxContainerStyle: {
             ...inboxContainerStyle,
@@ -265,20 +241,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             minHeight: "80px",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "40px",
@@ -291,11 +265,13 @@ export function Message() {
     const lgStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
-            width: "900px"
+            width: "900px",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
-            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveInboxContainerStyle: {
             ...inboxContainerStyle,
@@ -316,20 +292,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             minHeight: "80px",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "40px",
@@ -342,11 +316,13 @@ export function Message() {
     const xlStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
-            width: "900px"
+            width: "900px",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
-            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveInboxContainerStyle: {
             ...inboxContainerStyle,
@@ -367,20 +343,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             minHeight: "80px",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "40px",
@@ -410,7 +384,6 @@ export function Message() {
             setIsLoading(true);
             const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
             const userData = await response1.json();
-            console.log(userData);
             setInboxMessages(userData);
         } finally {
             setIsLoading(false);
@@ -420,10 +393,6 @@ export function Message() {
     useEffect(() => {
         fetchMessages();
     }, [inbox]);
-
-    useEffect(() => {
-        console.log(selectedMessage, "selectedMessage");
-    }, [selectedMessage]);
 
     useEffect(() => {
         try {
@@ -439,7 +408,7 @@ export function Message() {
             stompClient.connect({}, onConnected, onError);
 
             return () => {
-                if (stompClient && stompClient.connected) {
+                if (stompClient.connected) {
                     try {
                         stompClient.disconnect();
                     } catch (e) {
@@ -455,7 +424,6 @@ export function Message() {
 
     }, []);
 
-
     const newMessage = async (payload) => {
         let payloadData = JSON.parse(payload.body);
         let messageData = {
@@ -465,7 +433,6 @@ export function Message() {
             message: payloadData.message,
             createdAt: payloadData.createdAt
         };
-        stompClient.send("/app/getUnread", {}, JSON.stringify({ userId: payloadData.userId, inboxUid: payloadData.inboxUid }));
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
                 return prevInboxMessages.map(message =>
@@ -475,12 +442,25 @@ export function Message() {
                 return [...prevInboxMessages, payloadData];
             }
         });
+        console.log(messageData.userId, messageData.inboxUid,)
         dispatch(addMessageFromWebsocket(messageData));
+        if(payloadData.userId == userId) {
+            try {
+                await fetch(`${apiUrl}/api/readMessages`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        userId: messageData.userId,
+                        inboxUid: messageData.inboxUid,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+            } catch (error) {
+                console.error("An error occurred:", error);
+            }
+        }
     };
-
-    useEffect(() => {
-        console.log(messages);
-    }, [messages]);
 
     useEffect(() => {
         if (textingContainerRef.current) {
@@ -489,7 +469,6 @@ export function Message() {
     }, [selectedMessage]);
 
     useEffect(() => {
-        console.log(clicked);
         if (isXl && clicked) {
             dispatch(setClickedInboxFalse());
         } else if (isLg && clicked) {
@@ -520,6 +499,7 @@ export function Message() {
     };
 
     const handleSend = async (event) => {
+        event.preventDefault();
         await fetch(`${apiUrl}/api/addMessage`, {
             method: "POST",
             body: JSON.stringify({
@@ -529,13 +509,8 @@ export function Message() {
             }),
             headers: { "Content-Type": "application/json" },
         });
-        stompClient.send("/app/getMessages", {}, JSON.stringify({
-            userId: selectedMessage.userId,
-            inboxUid: selectedMessage.inboxUid,
-        }));
-        event.preventDefault();
         stompClient.send("/app/addMessage", {}, JSON.stringify({
-            userId: selectedMessage.userId,
+            userId:  selectedMessage.userId,
             inboxUid: selectedMessage.inboxUid,
             writtenMessage: inputValue,
         }));
@@ -546,6 +521,11 @@ export function Message() {
         if (event.key === "Enter") {
             handleSend(event);
         }
+    };
+
+    const stompClientSendMessage = (event) => {
+        stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: selectedMessage.userId,
+            inboxUid: selectedMessage.inboxUid}));
     };
 
     const handleEmojiClick = (emojiData) => {
@@ -569,12 +549,6 @@ export function Message() {
         }
     };
 
-    useEffect(() => {
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, [isOpenEmoji, emojiPickerRef]);
 
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
@@ -587,7 +561,7 @@ export function Message() {
                             <CircularProgress sx={{ marginTop: "20%", marginLeft: "40%" }}/>
                         ) : (
                             <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage}
-                                          stompClient={stompClient} setSelectedMessage={setSelectedMessage}/>
+                                          stompClientSendMessage={stompClientSendMessage} setSelectedMessage={setSelectedMessage}/>
                         )}
                     </div>
                 </div>
@@ -599,7 +573,8 @@ export function Message() {
                         <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
                             <div style={{
                                 fontSize: "1.1rem",
-                                fontFamily: "'Lato', sans-serif"
+                                fontFamily: "'Lato', sans-serif",
+                                color: darkMode ? "rgb(247, 249, 249)" : "#000000"
                             }} data-testid={"start_chat_text"}>Почніть переписку
                             </div>
                         </div>
@@ -613,11 +588,8 @@ export function Message() {
                                     <Avatar src="#" style={styles.AdaptiveAvatarStyle}/>
                                 )}
                                 <div style={{ flex: "1", height: "40px", overflow: "hidden" }}>
-                                    <div style={{ fontFamily: "'Lato', sans-serif" }}>{selectedMessage.name}</div>
-                                    <div style={{
-                                        fontFamily: "'Lato', sans-serif",
-                                        color: "gray"
-                                    }}>@{selectedMessage.username}</div>
+                                    <div style={{ fontFamily: "'Lato', sans-serif", color: darkMode ? "rgb(247, 249, 249)" : "#000000", }}>{selectedMessage.name}</div>
+                                    <div style={{ fontFamily: "'Lato', sans-serif", color: darkMode ? "rgb(139, 152, 165)" : "gray", }}>@{selectedMessage.username}</div>
                                 </div>
                             </div>
                             <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom}
@@ -632,6 +604,16 @@ export function Message() {
                             <>
                                 <TextField
                                     id="outlined-basic"
+                                    sx={
+                                        darkMode ?
+                                            {"& .MuiOutlinedInput-root": {
+                                                    background: "rgb(39, 51, 64)",
+                                                    color: "rgb(247, 249, 249)",
+                                                }
+                                            }
+                                            :
+                                            {backgroundColor: "white"}
+                                    }
                                     type="search"
                                     variant="outlined"
                                     placeholder="Input message"
@@ -639,46 +621,21 @@ export function Message() {
                                     value={inputValue}
                                     onChange={(event) => {
                                         event.preventDefault();
-                                        console.log("Data from input: " + event.target.value.toString());
                                         setInputValue(event.target.value.toString());
                                     }}
                                     onKeyPress={handleKeyPress}
                                     InputProps={{
                                         endAdornment: (
-                                            <>
-                                                <EmojiEmotionsIcon
-                                                    id="emoji-icon"
-                                                    onClick={(event) => {
-                                                        event.stopPropagation();
-                                                        setIsOpenEmoji(!isOpenEmoji);
-                                                    }}
-                                                    sx={{ cursor: "pointer", marginRight: "10px", color: "#9e9e9e" }}
-                                                />
-                                                <Button
-                                                    sx={{
-                                                        color: "#9e9e9e",
-                                                        minWidth: "35px",
-                                                        height: "35px",
-                                                        padding: "0",
-                                                        fontSize: "2rem"
-                                                    }}
-                                                    onClick={handleSend}
-                                                >
-                                                    <SendIcon/>
-                                                </Button>
-                                            </>
+                                            <Button
+                                                sx={{color: "#9e9e9e", minWidth: "35px", height: "35px", padding: "0", fontSize: "2rem"}}
+                                                onClick={handleSend}
+                                            >
+                                                <SendIcon/>
+                                            </Button>
                                         ),
                                     }}
-                                    style={{ width: "100%", marginTop: "5px" }}
+                                    style={{ width: "100%"}}
                                 />
-                                {isOpenEmoji && (
-                                    <div ref={emojiPickerRef}
-                                         style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
-
-                                        <EmojiPicker emojiStyle={"google"} onEmojiClick={handleEmojiClick}
-                                                     disableSearchBar disableSkinTonePicker/>
-                                    </div>
-                                )}
                             </>
                         )}
                     </div>

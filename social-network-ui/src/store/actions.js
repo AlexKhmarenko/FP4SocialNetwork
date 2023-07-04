@@ -267,7 +267,7 @@ export const sendComments = (values, userId, postId) => {
             let userCommentData = await userCommentResponse.json();
             dispatch(setCommentFromUser(userCommentData));
         } catch (error) {
-            console.error("Ошибка:", error);
+            console.warn("Ошибка:", error);
         }
     };
 };
@@ -519,7 +519,6 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     body: JSON.stringify({
                         inboxUid: inboxUid,
                         userId: userId,
-                        // page: page,
                     }),
                     headers: { "Content-Type": "application/json" }
                 });
@@ -530,9 +529,7 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     return response2;
                 }
             }
-
             return getData();
-
         } catch (error) {
             console.error("An error occurred:", error);
             throw error;

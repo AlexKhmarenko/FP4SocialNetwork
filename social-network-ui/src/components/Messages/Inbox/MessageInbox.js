@@ -28,7 +28,7 @@ import { setClickedInboxTrue } from "../../../store/actions";
 import { apiUrl } from "../../../apiConfig";
 
 
-export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessage, stompClient}) {
+export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessage, stompClientSendMessage}) {
 
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.userData.userData.userId);
@@ -66,7 +66,8 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                             handleClick={async (event) => {
                                 event.preventDefault();
                                 if (selectedMessage !== item) {
-                                   await fetch(`${apiUrl}/api/getMessages`, {
+                                    stompClientSendMessage()
+                                    await fetch(`${apiUrl}/api/readMessages`, {
                                         method: "POST",
                                         body: JSON.stringify({
                                             inboxUid: item.inboxUid,
@@ -74,8 +75,6 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                                         }),
                                         headers: { "Content-Type": "application/json" }
                                     });
-                                    stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: userId,
-                                        inboxUid: item.inboxUid}));
                                     dispatch(clearMessages());
                                     setSelectedMessage(item);
                                     dispatch(setPageZeroForMessaging());
@@ -112,6 +111,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
 }
 
 MessageInbox.propTypes = {
+    stompClientSendMessage:PropTypes.any,
     stompClient:PropTypes.any,
     setSelectedMessage: PropTypes.any,
     selectedMessage: PropTypes.any,
