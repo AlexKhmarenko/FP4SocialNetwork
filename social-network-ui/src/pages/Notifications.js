@@ -197,7 +197,7 @@ export function Notifications() {
                 notifications.length > 0 ?
                     transitions((style, item) => (
                         <animated.div style={{ ...style, width: "100%" }} key={item.eventId}>
-                            <ListItem
+                            <ListItem data-testid={`notification_${item.eventId}`}
                                 sx={darkMode ? {border: "1px solid rgb(56, 68, 77)"} : { borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
                                 onClick={() => {
                                     navigate(`/post/${item.eventId}`);

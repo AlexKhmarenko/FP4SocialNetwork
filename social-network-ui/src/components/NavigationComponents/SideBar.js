@@ -12,9 +12,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Badge from "@mui/material/Badge";
 
 import {
-    SidebarBox,
     SidebarFab,
-    SidebarTypography,
     SidebarLogOutButton,
     SidebarIconBackground,
     SidebarFabActive, SvgIconStyles, DarkSidebarIconBackground, DarkSidebarFab
@@ -22,8 +20,7 @@ import {
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
 import { setUserToken } from "../../store/actions";
 import { apiUrl } from "../../apiConfig";
-import PropTypes from "prop-types";
-import { Post } from "../Posts/Post";
+
 
 let stompClient;
 
@@ -65,29 +62,15 @@ export function SideBar() {
         }
     }, [userId]);
 
-    useEffect(() => {
-        async function getNotification() {
-            let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
-            let messageData = await messageInformation.json();
-            setMessageCount(messageData.unread);
-        }
-
-        if (userId) {
-            getNotification();
-        }
-    }, [userId, location.pathname]);
-
     const onMessageUnread = (payload) => {
         let payloadData = JSON.parse(payload.body);
         console.log("ALOOOOOHAAA");
         setMessageCount(payloadData.unread);
-        console.log(payloadData, "payloadDataonMessageUnread");
     };
 
     const onPrivateMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
         setNotificationCount(payloadData.unreadNotifications);
-
     };
 
     useEffect(() => {

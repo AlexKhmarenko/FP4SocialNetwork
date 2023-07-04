@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/material";
-import {DarkUserSearchTextField, UserSearchTextField} from "../../NavigationStyles";
+import {DarkPopper, DarkUserSearchTextField, UserSearchTextField} from "../../NavigationStyles";
 import {useDispatch, useSelector} from "react-redux";
 import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../../store/actions";
 import {useNavigate} from "react-router-dom";
@@ -8,6 +8,7 @@ import {apiUrl} from "../../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {DarkPaperStyles, PaperStyles} from "../popularPeopleSidebarStyles";
 
 export const InputSearch = ({ ...props }) => {
     const users = useSelector(state => state.usersSearch.users)
@@ -172,18 +173,3 @@ export const InputSearch = ({ ...props }) => {
         </ThemeProvider>
     )
 }
-
-// option: {
-//     "&:hover": {
-//         backgroundColor: "rgba(247, 249, 249, 0.1)"
-//     },
-//     "&:focus-within": {
-//         backgroundColor: "rgba(247, 249, 249, 0.1)",
-//     },
-//     "& .Mui-focused": {
-//         backgroundColor: "rgba(247, 249, 249, 0.1)",
-//     },
-//     focused: {
-//         backgroundColor: "rgba(247, 249, 249, 0.1)"
-//     }
-// },

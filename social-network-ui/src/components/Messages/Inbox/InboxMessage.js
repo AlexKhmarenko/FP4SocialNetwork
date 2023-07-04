@@ -92,7 +92,8 @@ export const InboxMessage = ({
                                  date,
                                  handleClick,
                                  unreadMessage,
-                                 selectedMessage
+                                 selectedMessage,
+                                 clickedMessages
                              }) => {
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const postDate = () => {
@@ -102,19 +103,27 @@ export const InboxMessage = ({
         if (diffDays < 1) {
             return formatDistanceToNow(date2, { addSuffix: true });
         } else if (diffDays < 365) {
-            return format(date2, "MMM d");
+            return formatDateWithTimezone(date2, "MMM d");
         } else {
-            return format(date2, "MMM d, yyyy");
+            return formatDateWithTimezone(date2, "MMM d, yyyy");
         }
+    };
+
+    const formatDateWithTimezone = (date, format) => {
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const options = { timeZone: userTimezone, year: 'numeric', month: '2-digit', day: '2-digit' };
+
+        const formattedDate = date.toLocaleString(undefined, options);
+        return formattedDate;
     };
     return (
         <Box sx={darkMode ? DarkMessageContainerStyle : messageContainerStyle} onClick={handleClick}>
             {image
 
-                ? <Badge color="primary" badgeContent={selectedMessage.inboxId === inboxId ? 0 : unreadMessage}>
+                ? <Badge color="primary" badgeContent={clickedMessages.includes(inboxId) ? 0 : unreadMessage}>
                     <img src={image} alt="Avatar" style={{ ...avatarStyle, marginRight: "0" }}/>
                 </Badge>
-                : <Badge color="primary" badgeContent={selectedMessage.inboxId === inboxId ? 0 : unreadMessage}>
+                : <Badge color="primary" badgeContent={clickedMessages.includes(inboxId) ? 0 : unreadMessage}>
                     <Avatar alt={senderName} src="#" style={{ ...avatarStyle, marginRight: "0" }}/>
                 </Badge>
             }
@@ -128,6 +137,7 @@ export const InboxMessage = ({
 };
 
 InboxMessage.propTypes = {
+    clickedMessages:PropTypes.any,
     inboxId: PropTypes.any,
     selectedMessage: PropTypes.any,
     unreadMessage: PropTypes.number,

@@ -221,6 +221,7 @@ export const DarkUserSearchTextField = {
         color: "rgb(247, 249, 249)",
     },
 };
+
 export const UserSearchContentWrapper = {
     height: "100vh",
     width: "300px",
