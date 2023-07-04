@@ -15,7 +15,6 @@ import {
     PhotoStyle,
     editButtonStyles,
     noticesButton,
-    DarkProfileStyles,
     DarkNameStyles,
     DarkNicknameStyles, DarkSvgStyles, DarkInfoTextStyles, DarkLinkTextStyles, DarkLinkQuantityStyles
 } from "./ProfileStyles";
@@ -29,7 +28,6 @@ import {apiUrl} from "../../../apiConfig";
 import {useTheme} from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {fetchNotifications} from "../../../store/Thunks/fetchNotificationsThunk";
-import {BirthdateForm} from "../../LoginModal/BirthdateForm";
 
 export function Profile (props) {
 
