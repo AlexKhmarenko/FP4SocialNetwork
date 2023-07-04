@@ -56,7 +56,8 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -108,7 +109,8 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -160,7 +162,8 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             maxWidth: "500px",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -212,11 +215,12 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "800px",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
-            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveInboxContainerStyle: {
             ...inboxContainerStyle,
@@ -262,11 +266,12 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "900px",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
-            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveInboxContainerStyle: {
             ...inboxContainerStyle,
@@ -312,11 +317,12 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "900px",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
-            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveInboxContainerStyle: {
             ...inboxContainerStyle,
@@ -543,12 +549,6 @@ export function Message() {
         }
     };
 
-    useEffect(() => {
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, [isOpenEmoji, emojiPickerRef]);
 
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
