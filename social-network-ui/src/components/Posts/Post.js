@@ -21,7 +21,6 @@ import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-
 import { Comments } from "./Comments.js";
 import BarChartIcon from "@mui/icons-material/BarChart";
 
-
 import {
     PostCard,
     PostText,
@@ -36,7 +35,7 @@ import {
     LikesCircular,
     LikeBox,
     CardContentPost,
-    EmptyLikesUserArrParagraph
+    EmptyLikesUserArrParagraph, DarkUserNameParagraph
 } from "./PostStyles";
 import {
     activeLikesFetch,
@@ -94,9 +93,10 @@ export const Post = ({
     const [openWindow, setOpenWindow] = useState(false);
     const open = Boolean(anchorEl);
     const explorePosts = useSelector(state => state.Posts.explorePosts);
-    const profilePosts = useSelector(state => state.Posts.profilePosts)
-    const profileLikePosts = useSelector(state => state.Posts.profileLikePosts)
-    const profileReposts = useSelector(state => state.Posts.profileReposts)
+    const profilePosts = useSelector(state => state.Posts.profilePosts);
+    const profileLikePosts = useSelector(state => state.Posts.profileLikePosts);
+    const profileReposts = useSelector(state => state.Posts.profileReposts);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const navigate = useNavigate();
 
     const theme = useTheme();
@@ -120,8 +120,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "90vw",
@@ -150,8 +152,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "90vw",
@@ -181,8 +185,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -213,8 +219,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -245,8 +253,10 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -277,8 +287,11 @@ export const Post = ({
             margin: "0",
             padding: "0",
             boxShadow: "none",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
-            overflowAnchor: "none"
+            position: "relative",
+            overflowAnchor: "none",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -311,14 +324,6 @@ export const Post = ({
         styles = xxsStyles;
     }
 
-    const ShowUsersWhoLike = async () => {
-        if (userId) {
-
-        } else {
-            dispatch(openLoginModal());
-        }
-    };
-
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -326,11 +331,6 @@ export const Post = ({
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const validationSchema = Yup.object().shape({
-        comment: Yup.string()
-            .required("Please enter a comment").max(250, "Comment must be no longer than 250 characters")
-    });
-
 
     useEffect(() => {
         if (showLike) {
@@ -365,16 +365,16 @@ export const Post = ({
 
     const deletePost = async () => {
         const filterPostPredicate = (post) => post.postId !== postId;
-        if(location.pathname === "/explore"){
+        if (location.pathname === "/explore") {
             let filteredExplorePosts = explorePosts.filter(filterPostPredicate);
-            dispatch(deleteExplorePost(filteredExplorePosts))
-        }else if(location.pathname === "/profile"){
+            dispatch(deleteExplorePost(filteredExplorePosts));
+        } else if (location.pathname === "/profile") {
             let filteredProfilePosts = profilePosts.filter(filterPostPredicate);
-            dispatch(deleteProfilePost(filteredProfilePosts))
-            let filteredProfileLikePosts= profileLikePosts.filter(filterPostPredicate);
-            dispatch(deleteProfileLikePosts(filteredProfileLikePosts))
+            dispatch(deleteProfilePost(filteredProfilePosts));
+            let filteredProfileLikePosts = profileLikePosts.filter(filterPostPredicate);
+            dispatch(deleteProfileLikePosts(filteredProfileLikePosts));
             let filteredProfileReposts = profileReposts.filter(filterPostPredicate);
-            dispatch(deleteProfileRepostsPosts(filteredProfileReposts))
+            dispatch(deleteProfileRepostsPosts(filteredProfileReposts));
         }
         await fetch(`${apiUrl}/api/post?postId=${postId}`, {
             method: "DELETE",
@@ -421,10 +421,18 @@ export const Post = ({
         if (diffDays < 1) {
             return formatDistanceToNow(date, { addSuffix: true });
         } else if (diffDays < 365) {
-            return format(date, "MMM d");
+            return formatDateWithTimezone(date, "MMM d");
         } else {
-            return format(date, "MMM d, yyyy");
+            return formatDateWithTimezone(date, "MMM d, yyyy");
         }
+    };
+
+    const formatDateWithTimezone = (date, format) => {
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const options = { timeZone: userTimezone, year: 'numeric', month: '2-digit', day: '2-digit' };
+
+        const formattedDate = date.toLocaleString(undefined, options);
+        return formattedDate;
     };
 
     return (
@@ -435,12 +443,12 @@ export const Post = ({
                     <Avatar alt={userName} src="#"/>}
                 <div style={PostTextWrapper}>
                     <Typography variant="subtitle1" component="div"
-                                sx={{...userNameParagraph, maxWidth:"300px"}}
+                                sx={darkMode ? {...DarkUserNameParagraph, maxWidth:"300px"} : {...userNameParagraph, maxWidth:"300px"}}
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
-                        {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
+                        {name} <span style={{ color: darkMode ? "rgb(139, 152, 165)" : "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
                     <div data-testid="user_post_text">
-                        <Typography  variant="body1" component="div" mt={1} sx={styles.AdaptiveText}>{text}</Typography>
+                        <Typography variant="body1" component="div" mt={1} sx={styles.AdaptiveText}>{text}</Typography>
                     </div>
                 </div>
             </CardContent>
@@ -452,7 +460,7 @@ export const Post = ({
                 </div>) : null
             }
 
-            {userIdWhoSendPost == userId ? <div style={{ position: "absolute", right: "30px",top:"20px", }}>
+            {userIdWhoSendPost == userId ? <div style={{ position: "absolute", right: "30px", top: "20px", }}>
                 <MoreVertOutlinedIcon
                     aria-controls="fade-menu"
                     aria-haspopup="true"
@@ -499,32 +507,33 @@ export const Post = ({
                 </Dialog>
             </div>
             <CardActions sx={{ padding: "20px 20px" }}>
-                <Tooltip title={"See comments"}>
-                    <IconButton onClick={handleCommentToggle}>
-                        <ChatBubbleOutline fontSize="small"/>
-                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
+                <Tooltip title={"See comments"} data-testid={"open_comments_button"}>
+                    <IconButton onClick={handleCommentToggle} sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
+                        <ChatBubbleOutline fontSize="small" sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>
+                        <Typography variant="body2" sx={{ marginLeft: "5px", color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}>{postCommentCount}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={isReposted ? "Undo repost" : "Repost"}>
-                    <IconButton onClick={sendRepost}>
-                        <Repeat fontSize="small" htmlColor={isReposted ? "rgb(0, 186, 124)" : "inherit"}/>
-                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>{repostCountView}</Typography>
+                    <IconButton onClick={sendRepost} data-testid={"repost_button"} sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
+                        {isReposted ? <Repeat data-testid={"repost_post"} fontSize="small" htmlColor={ "rgb(0, 186, 124)" }/> : <Repeat data-testid={"repost_post"} fontSize="small" sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>}
+                        <Typography variant="body2" sx={{ marginLeft: "5px", color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}
+                                    data-testid={"repost_count"}>{repostCountView}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={"Views"}>
-                    <IconButton>
-                        <BarChartIcon/>
-                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>{viewCount}</Typography>
+                    <IconButton sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
+                        <BarChartIcon sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>
+                        <Typography variant="body2" sx={{ marginLeft: "5px", color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}>{viewCount}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={like ? "Undo like" : "Like"}>
-                    <IconButton onClick={addLikeHandle}>
-                        {like ? <Favorite fontSize="small" sx={{ color: "red" }} data-testid={"red_like_icon"}/> : <FavoriteBorder data-testid={"icon_button_add_like"} fontSize="small"/>}
+                    <IconButton onClick={addLikeHandle} sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
+                        {like ? <Favorite fontSize="small" sx={{ color: "red" }} data-testid={"red_like_icon"}/> : <FavoriteBorder data-testid={"icon_button_add_like"} fontSize="small" sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>}
                     </IconButton>
                 </Tooltip>
                 <Typography onClick={()=>{
                     navigate(`/likes/${postId}`)
-                }} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
+                }} variant="body2" sx={{...userLikeCount, color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)"}} data-testid={"like_count"}>{likeCount}</Typography>
             </CardActions>
             {isCommentOpen &&
                 <Comments comments={comments} isLoadingComments={isLoadingComments}

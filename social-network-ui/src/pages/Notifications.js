@@ -20,6 +20,7 @@ export function Notifications() {
     const userId = useSelector(state => state.userData.userData.userId);
     const [isLoading, setIsLoading] = useState(false);
     const theme = useTheme();
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const transitions = useTransition(notifications, {
         from: { opacity: 0, transform: "translate3d(0,50%,0)" },
@@ -196,8 +197,8 @@ export function Notifications() {
                 notifications.length > 0 ?
                     transitions((style, item) => (
                         <animated.div style={{ ...style, width: "100%" }} key={item.eventId}>
-                            <ListItem
-                                sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
+                            <ListItem data-testid={`notification_${item.eventId}`}
+                                sx={darkMode ? {border: "1px solid rgb(56, 68, 77)"} : { borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
                                 onClick={() => {
                                     navigate(`/post/${item.eventId}`);
                                 }}
@@ -214,6 +215,8 @@ export function Notifications() {
                                         justifyContent: "space-between",
                                         wordWrap: "break-word",
                                         overflowWrap: "anywhere",
+                                        color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)",
+                                        "& .MuiTypography-root": {color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"}
                                     }}
                                 />
                             </ListItem>
