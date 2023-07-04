@@ -76,6 +76,8 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                                         }),
                                         headers: { "Content-Type": "application/json" }
                                     });
+                                    stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: userId,
+                                        inboxUid: item.inboxUid}));
                                     dispatch(clearMessages());
                                     setSelectedMessage(item);
                                     dispatch(setPageZeroForMessaging());
