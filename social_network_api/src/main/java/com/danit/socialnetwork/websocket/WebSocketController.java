@@ -12,6 +12,7 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.rest.MessageRestController;
 import com.danit.socialnetwork.service.PostService;
 import com.danit.socialnetwork.service.UserService;
 import com.danit.socialnetwork.service.NotificationService;
@@ -43,6 +44,7 @@ public class WebSocketController {
   private final PostService postService;
   private final InboxService inboxService;
   private final MessageService messageService;
+  private final MessageRestController messageRestController;
   private final InboxMapperImpl mapper;
 
   private static final String UNREAD_BY_USER = "unreadByUser";
@@ -258,8 +260,6 @@ public class WebSocketController {
 
     InboxDtoResponse inboxR = getInbox(userId, inboxUid);
 
-    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
-
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
     String userIdString = userId.toString();
@@ -274,13 +274,12 @@ public class WebSocketController {
   @MessageMapping("/getMessages")
   public InboxDtoResponse postReadMessages(
       @Payload MessageDtoRequest messageDtoRequest) {
+    messageRestController.readMessage(messageDtoRequest);
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     getLog(inboxUid, userId);
 
     InboxDtoResponse inboxR = getInbox(userId, inboxUid);
-
-    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
 
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
