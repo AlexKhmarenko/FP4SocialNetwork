@@ -470,7 +470,7 @@ export function Message() {
         });
         console.log(messageData.userId,messageData.inboxUid,)
         dispatch(addMessageFromWebsocket(messageData));
-        if(payloadData.inboxUid !== userId) {
+        if(payloadData.userId == userId) {
             await fetch(`${apiUrl}/api/readMessages`, {
                 method: "POST",
                 body: JSON.stringify({
