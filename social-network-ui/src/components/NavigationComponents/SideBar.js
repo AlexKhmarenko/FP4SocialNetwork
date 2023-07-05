@@ -18,9 +18,8 @@ import {
     SidebarFabActive, SvgIconStyles, DarkSidebarIconBackground, DarkSidebarFab
 } from "./NavigationStyles";
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
-import { setUserToken } from "../../store/actions";
+import { setUserToken, setNotificationsCount } from "../../store/actions";
 import { apiUrl } from "../../apiConfig";
-
 
 let stompClient;
 
@@ -30,8 +29,8 @@ export function SideBar() {
     const { pathname } = location;
     const theme = useTheme();
     const userId = useSelector(state => state.userData.userData.userId);
-    const [notificationCount, setNotificationCount] = useState(0);
     const [messageCount, setMessageCount] = useState(0);
+    const notificationsCount = useSelector(state => state.notificationsCount.notificationsCount);
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
@@ -51,7 +50,7 @@ export function SideBar() {
                 headers: { "Content-Type": "application/json" }
             });
             let notificationData = await notificationInformation.json();
-            setNotificationCount(notificationData.unreadNotifications);
+            dispatch(setNotificationsCount(notificationData.unreadNotifications));
             let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
             let messageData = await messageInformation.json();
             setMessageCount(messageData.unread);
@@ -64,24 +63,17 @@ export function SideBar() {
 
     const onMessageUnread = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        console.log("ALOOOOOHAAA");
         setMessageCount(payloadData.unread);
     };
 
     const onPrivateMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        setNotificationCount(payloadData.unreadNotifications);
+        dispatch(setNotificationsCount(payloadData.unreadNotifications));
     };
 
-    useEffect(() => {
-        console.log(messageCount, "messageCountFromSidebarUseEffect");
-    }, [messageCount]);
 
     useEffect(() => {
         try {
-            if (location.pathname === "/notifications") {
-                setNotificationCount(0);
-            }
             const socket = new SockJS(`${apiUrl}/websocket`);
             stompClient = Stomp.over(socket);
 
@@ -93,7 +85,7 @@ export function SideBar() {
             };
 
             const onError = (err) => {
-                console.log(err);
+                console.warn(err);
             };
 
             stompClient?.connect({}, onConnected, onError);
@@ -382,7 +374,8 @@ export function SideBar() {
                         </Fab>
                     </Link>
                     <Link to="/home" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/home" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended"
+                             sx={darkMode ? DarkSidebarFab : pathname === "/home" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={{ width: "25px", height: "25px", marginLeft: "10px" }} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -398,7 +391,9 @@ export function SideBar() {
 
                     </Link>
                     <Link to="/explore" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/explore" ? SidebarFabActive : SidebarFab}  data-testid={"fab_of_explore_text"}>
+                        <Fab variant="extended"
+                             sx={darkMode ? DarkSidebarFab : pathname === "/explore" ? SidebarFabActive : SidebarFab}
+                             data-testid={"fab_of_explore_text"}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -413,7 +408,8 @@ export function SideBar() {
                         </Fab>
                     </Link>
                     {!isLg && !isXl ? <Link to="/search" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/search" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended"
+                             sx={darkMode ? DarkSidebarFab : pathname === "/search" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -428,12 +424,13 @@ export function SideBar() {
                         </Fab>
                     </Link> : null}
                     <Link to="/notifications" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/notifications" ? SidebarFabActive : SidebarFab}
+                        <Fab variant="extended"
+                             sx={darkMode ? DarkSidebarFab : pathname === "/notifications" ? SidebarFabActive : SidebarFab}
                              onClick={() => {
-                                 setNotificationCount(0);
+                                 dispatch(setNotificationsCount(0));
                              }}>
-                            {notificationCount > 0 ? (
-                                <Badge badgeContent={notificationCount} color={"primary"}>
+                            {notificationsCount > 0 ? (
+                                <Badge badgeContent={notificationsCount} color={"primary"}>
                                     <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                              aria-hidden="true"
                                              className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -459,7 +456,8 @@ export function SideBar() {
                         </Fab>
                     </Link>
                     <Link to="/messages" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/messages" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended"
+                             sx={darkMode ? DarkSidebarFab : pathname === "/messages" ? SidebarFabActive : SidebarFab}>
                             <Badge badgeContent={location.pathname === "/messages" ? 0 : messageCount}
                                    color={"primary"}>
                                 <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
@@ -477,7 +475,8 @@ export function SideBar() {
                         </Fab>
                     </Link>
                     <Link to="/profile" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/profile" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended"
+                             sx={darkMode ? DarkSidebarFab : pathname === "/profile" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -492,7 +491,8 @@ export function SideBar() {
                         </Fab>
                     </Link>
                     <Link to="/settings" variant="contained" style={{ textDecoration: "none", marginBottom: "30px" }}>
-                        <Fab variant="extended" sx={darkMode ? DarkSidebarFab : pathname === "/settings" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended"
+                             sx={darkMode ? DarkSidebarFab : pathname === "/settings" ? SidebarFabActive : SidebarFab}>
                             <ManageAccountsOutlinedIcon sx={SvgIconStyles}/>
                             <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                                 Settings

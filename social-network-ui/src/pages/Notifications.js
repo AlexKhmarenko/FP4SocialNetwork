@@ -4,17 +4,19 @@ import { apiUrl } from "../apiConfig";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { differenceInDays, format, formatDistanceToNow } from "date-fns";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTransition, animated } from "react-spring";
+import { setNotificationsCount } from "../store/actions";
 
 let stompClient = null;
 
 export function Notifications() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [notifications, setNotifications] = useState([]);
     const userId = useSelector(state => state.userData.userData.userId);
@@ -137,8 +139,20 @@ export function Notifications() {
         styles = xxsStyles;
     }
 
+    const sendDataAboutReadNotifications = async () => {
+        await fetch(`${apiUrl}/api/read_notifications`, {
+            method: "POST",
+            body: JSON.stringify({
+                userId: userId,
+            }),
+            headers: { "Content-Type": "application/json" }
+        });
+    };
+
     useEffect(() => {
-        try{
+        dispatch(setNotificationsCount(0));
+        sendDataAboutReadNotifications();
+        try {
             const onConnected = () => {
                 stompClient.subscribe("/user/" + userId + "/notifications", onPrivateMessage);
             };
@@ -150,16 +164,18 @@ export function Notifications() {
             stompClient.connect({}, onConnected, onError);
 
             return () => {
+                dispatch(setNotificationsCount(0));
+                sendDataAboutReadNotifications();
                 if (stompClient && stompClient.connected) {
                     try {
                         stompClient.disconnect();
                     } catch (e) {
-                        console.warn('home - failed to disconnect the stomp client', e);
+                        console.warn("home - failed to disconnect the stomp client", e);
                     }
                 }
             };
-        }catch (e){
-            console.warn('notifications - failed to create the stomp client', e);
+        } catch (e) {
+            console.warn("notifications - failed to create the stomp client", e);
         }
 
     }, []);
@@ -168,27 +184,38 @@ export function Notifications() {
         let payloadData = JSON.parse(payload.body);
         console.log(payloadData);
         setNotifications(prevNotifications => [payloadData, ...prevNotifications]);
-        await fetch(`${apiUrl}/api/read_notifications`, {
-            method: "POST",
-            body: JSON.stringify({
-                userId: userId,
-            }),
-            headers: { "Content-Type": "application/json" }
-        });
+        await sendDataAboutReadNotifications();
+        dispatch(setNotificationsCount(0));
     };
 
     const postDate = (dataTime) => {
         const date = new Date(dataTime);
-        const diffDays = differenceInDays(new Date(), date);
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        if (diffDays < 1) {
-            return formatDistanceToNow(date, { addSuffix: true });
-        } else if (diffDays < 365) {
-            return format(date, "MMM d");
-        } else {
-            return format(date, "MMM d, yyyy");
-        }
+        const options = {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+            timeZone: userTimezone,
+            locale: "en-US", // Указываем полный идентификатор языка
+        };
+
+        const formatter = new Intl.DateTimeFormat(undefined, options);
+        const parts = formatter.formatToParts(date);
+        const formattedDate = parts.map(part => {
+            if (part.type === "literal") {
+                return part.value;
+            }
+            return part.value.toLowerCase();
+        }).join("");
+
+        const currentDate = new Date();
+        const timeDiffInMinutes = Math.round((currentDate - date) / (1000 * 60));
+
+        return formattedDate;
+
     };
+
 
     return (
         <List sx={styles.AdaptiveListStyles} data-testid={"notifications_list"}>
@@ -197,10 +224,10 @@ export function Notifications() {
                     transitions((style, item) => (
                         <animated.div style={{ ...style, width: "100%" }} key={item.eventId}>
                             <ListItem data-testid={`notification_${item.eventId}`}
-                                sx={darkMode ? {border: "1px solid rgb(56, 68, 77)"} : { borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
-                                onClick={() => {
-                                    navigate(`/post/${item.eventId}`);
-                                }}
+                                      sx={darkMode ? { border: "1px solid rgb(56, 68, 77)" } : { borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
+                                      onClick={() => {
+                                          navigate(`/post/${item.eventId}`);
+                                      }}
                             >
                                 <ListItemAvatar>
                                     <Avatar alt={item.userName} src={item.userPhoto}/>
@@ -215,7 +242,7 @@ export function Notifications() {
                                         wordWrap: "break-word",
                                         overflowWrap: "anywhere",
                                         color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)",
-                                        "& .MuiTypography-root": {color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"}
+                                        "& .MuiTypography-root": { color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)" }
                                     }}
                                 />
                             </ListItem>

@@ -29,7 +29,7 @@ import Badge from "@mui/material/Badge";
 import { Header, HeaderInformationParagraph } from "./NavigationStyles";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { setClickedInboxFalse, setUserToken } from "../../store/actions";
+import { setClickedInboxFalse, setUserToken, setNotificationsCount } from "../../store/actions";
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
 import { useEffect } from "react";
 import SockJS from "sockjs-client";
@@ -39,7 +39,6 @@ import { ArrowBack } from "@mui/icons-material";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
 export function HeaderInformation() {
-    const [notificationCount, setNotificationCount] = useState(0);
     const [messageCount, setMessageCount] = useState(0);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
     const location = useLocation();
@@ -56,6 +55,7 @@ export function HeaderInformation() {
 
     const [isOpen, setIsOpen] = useState(false);
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
+    const notificationsCount = useSelector(state => state.notificationsCount.notificationsCount);
 
     const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -74,7 +74,7 @@ export function HeaderInformation() {
                 headers: { "Content-Type": "application/json" }
             });
             let notificationData = await notificationInformation.json();
-            setNotificationCount(notificationData.unreadNotifications);
+            dispatch(setNotificationsCount(notificationData.unreadNotifications));
 
             let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
             let messageData = await messageInformation.json();
@@ -114,8 +114,8 @@ export function HeaderInformation() {
             ...SidebarLogOutButton,
             padding: "0",
             minWidth: "20px",
-            width: "100px",
-            borderRadius: "100px",
+            width: "130px",
+            borderRadius: "40px",
             marginLeft: "40px",
             height: "40px",
             marginTop: 0
@@ -150,17 +150,17 @@ export function HeaderInformation() {
             display: "flex",
             alignItems: "center",
             padding: "0 20px 0 10px",
-            color: darkMode ? "#FFF" : "#000000",
             textTransform: "none",
         },
         LogoutButton: {
             ...SidebarLogOutButton,
-            padding: "0 20px",
+            padding: "20",
             minWidth: "20px",
-            width: "135px",
+            width: "130px",
+            borderRadius: "100px",
             marginLeft: "40px",
             height: "40px",
-            marginTop: 0
+            marginTop: 0,
         },
         ExitSvgIcon: {
             height: "20px",
@@ -192,14 +192,13 @@ export function HeaderInformation() {
             display: "flex",
             alignItems: "center",
             padding: "0 20px 0 10px",
-            color: darkMode ? "#FFF" : "#000000",
             textTransform: "none",
         },
         LogoutButton: {
             ...SidebarLogOutButton,
-            padding: "0",
+            padding: "20",
             minWidth: "20px",
-            width: "40px",
+            width: "130px",
             borderRadius: "100px",
             marginLeft: "40px",
             height: "40px",
@@ -236,18 +235,16 @@ export function HeaderInformation() {
             display: "flex",
             alignItems: "center",
             padding: "0 20px 0 10px",
-            color: darkMode ? "#FFF" : "#000000",
             textTransform: "none",
         },
         LogoutButton: {
             ...SidebarLogOutButton,
-            padding: "0",
+            padding: "10",
             minWidth: "20px",
-            width: "40px",
+            width: "130px",
             borderRadius: "100px",
             marginLeft: "40px",
             height: "40px",
-            color:"#FFF",
             marginTop: 0
         },
         ExitSvgIcon: {
@@ -279,7 +276,6 @@ export function HeaderInformation() {
             fontSize: "22px",
             display: "flex",
             alignItems: "center",
-            color: darkMode ? "#FFF" : "#000000",
             padding: "0 20px 0 10px",
             textTransform: "none",
         },
@@ -313,7 +309,6 @@ export function HeaderInformation() {
             fontSize: "22px",
             display: "flex",
             alignItems: "center",
-            color: darkMode ? "#FFF" : "#000000",
             padding: "0 20px 0 10px",
             textTransform: "none",
         },
@@ -357,7 +352,7 @@ export function HeaderInformation() {
 
     useEffect(() => {
         if (location.pathname === "/notifications") {
-            setNotificationCount(0);
+            dispatch(setNotificationsCount(0));
         }
 
         let stompClient;
@@ -419,8 +414,7 @@ export function HeaderInformation() {
 
     const onPrivateMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        setNotificationCount(payloadData.unreadNotifications);
-        console.log(payloadData, "unreadNotificationsFromSidebar");
+        dispatch(setNotificationsCount(payloadData.unreadNotifications));
     };
 
     const getRouteName = (path) => {
@@ -492,9 +486,9 @@ export function HeaderInformation() {
                     </SvgIcon>
                 ),
                 text: "Notifications",
-                badgeContent: notificationCount,
+                badgeContent: notificationsCount,
                 color: "error",
-                onClick: () => setNotificationCount(0)
+                onClick: () => dispatch(setNotificationsCount(0))
             },
             {
                 to: "/search",
@@ -608,7 +602,7 @@ export function HeaderInformation() {
                                     {createComponents(pathname, toggleDrawer(anchor, false))}
                                 </div>
                                 <Button onClick={clearLocaleStorage}
-                                        variant="contained" sx={styles.LogoutButton} fullWidth={true}>
+                                        variant="contained" sx={{...styles.LogoutButton}} fullWidth={true}>
                                     <SvgIcon fill="#000000" sx={styles.ExitSvgIcon} version="1.1"
                                              id="Capa_1"
                                              viewBox="0 0 384.971 384.971">
@@ -640,7 +634,8 @@ export function HeaderInformation() {
                                         fontSize: "15px",
                                         padding: "0",
                                         marginLeft: "8px",
-                                        textTransform: "uppercase"
+                                        textTransform: "uppercase",
+                                        color:"#ffffff",
                                     }}>
                                         Log out
                                     </Typography>
