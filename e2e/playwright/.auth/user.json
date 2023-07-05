@@ -14,7 +14,7 @@
         },
         {
           "name": "userToken",
-          "value": "{\"token\":\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MyIsImlhdCI6MTY4ODU0OTkzMSwiZXhwIjoxNjg5NDEzOTMxfQ.s66JFyBImIuTK68uV5Y6xjb6VNktgb1LzQQm47Hlho1BJj0TeeN_PzE7ZtmzirNTcR2DVuCmOzNfD0EONkjV4Q\"}"
+          "value": "{\"token\":\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MyIsImlhdCI6MTY4ODU1MDMzMSwiZXhwIjoxNjg5NDE0MzMxfQ.Ky2ArWHFmFW20CwAbpRA54_69ZQ8TZKfMz5REWi_uhwVCC5kgweDv_ZzBvbosA8oqIjB9cQjYGXQf78MzJ_d2g\"}"
         }
       ]
     }
