@@ -42,6 +42,7 @@ export function Message() {
     const [isLoading, setIsLoading] = useState(false);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
+    const [sending, setSending] = useState(false);
 
     const theme = useTheme();
 
@@ -84,7 +85,7 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
+        AdaptiveTextingContainerWithScroll: darkMode ? { ...DarkTextingContainerWithScroll } : { ...textingContainerWithScroll },
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
@@ -137,7 +138,7 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
+        AdaptiveTextingContainerWithScroll: darkMode ? { ...DarkTextingContainerWithScroll } : { ...textingContainerWithScroll },
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
@@ -190,7 +191,7 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
+        AdaptiveTextingContainerWithScroll: darkMode ? { ...DarkTextingContainerWithScroll } : { ...textingContainerWithScroll },
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
@@ -241,7 +242,7 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
+        AdaptiveTextingContainerWithScroll: darkMode ? { ...DarkTextingContainerWithScroll } : { ...textingContainerWithScroll },
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
@@ -292,7 +293,7 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
+        AdaptiveTextingContainerWithScroll: darkMode ? { ...DarkTextingContainerWithScroll } : { ...textingContainerWithScroll },
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
@@ -343,7 +344,7 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
+        AdaptiveTextingContainerWithScroll: darkMode ? { ...DarkTextingContainerWithScroll } : { ...textingContainerWithScroll },
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
@@ -442,8 +443,9 @@ export function Message() {
                 return [...prevInboxMessages, payloadData];
             }
         });
+        setSending(false)
         dispatch(addMessageFromWebsocket(messageData));
-        if(payloadData.userId == userId) {
+        if (payloadData.userId == userId) {
             try {
                 await fetch(`${apiUrl}/api/readMessages`, {
                     method: "POST",
@@ -498,7 +500,11 @@ export function Message() {
     };
 
     const handleSend = async (event) => {
+        if (inputValue===""){
+            return
+        }
         event.preventDefault();
+        setSending(true)
         await fetch(`${apiUrl}/api/addMessage`, {
             method: "POST",
             body: JSON.stringify({
@@ -509,11 +515,12 @@ export function Message() {
             headers: { "Content-Type": "application/json" },
         });
         stompClient.send("/app/addMessage", {}, JSON.stringify({
-            userId:  selectedMessage.userId,
+            userId: selectedMessage.userId,
             inboxUid: selectedMessage.inboxUid,
             writtenMessage: inputValue,
         }));
         setInputValue("");
+
     };
 
     const handleKeyPress = (event) => {
@@ -522,33 +529,12 @@ export function Message() {
         }
     };
 
-    const stompClientSendMessage = () => {
-        stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: selectedMessage.userId,
-            inboxUid: selectedMessage.inboxUid}));
-
+    const stompClientSendMessage = (userId, inboxUid) => {
+        stompClient.send("/app/getMessages", {}, JSON.stringify({
+            userId: userId,
+            inboxUid: inboxUid
+        }));
     };
-
-    const handleEmojiClick = (emojiData) => {
-        const emojiCodePoint = parseInt(emojiData.unified, 16);
-        console.log(emojiCodePoint);
-        const emojiChar = String.fromCodePoint(emojiCodePoint);
-        console.log(emojiChar, "emojiChar");
-        setInputValue((prevValue) => prevValue + emojiChar);
-    };
-
-    const handleClickOutside = (event) => {
-        if (!isOpenEmoji) {
-            return;
-        }
-        if (
-            emojiPickerRef.current &&
-            !emojiPickerRef.current.contains(event.target) &&
-            event.target !== document.getElementById("emoji-icon")
-        ) {
-            setIsOpenEmoji(false);
-        }
-    };
-
 
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
@@ -561,7 +547,8 @@ export function Message() {
                             <CircularProgress sx={{ marginTop: "20%", marginLeft: "40%" }}/>
                         ) : (
                             <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage}
-                                          stompClientSendMessage={stompClientSendMessage} setSelectedMessage={setSelectedMessage}/>
+                                          stompClientSendMessage={stompClientSendMessage}
+                                          setSelectedMessage={setSelectedMessage}/>
                         )}
                     </div>
                 </div>
@@ -588,8 +575,14 @@ export function Message() {
                                     <Avatar src="#" style={styles.AdaptiveAvatarStyle}/>
                                 )}
                                 <div style={{ flex: "1", height: "40px", overflow: "hidden" }}>
-                                    <div style={{ fontFamily: "'Lato', sans-serif", color: darkMode ? "rgb(247, 249, 249)" : "#000000", }}>{selectedMessage.name}</div>
-                                    <div style={{ fontFamily: "'Lato', sans-serif", color: darkMode ? "rgb(139, 152, 165)" : "gray", }}>@{selectedMessage.username}</div>
+                                    <div style={{
+                                        fontFamily: "'Lato', sans-serif",
+                                        color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                    }}>{selectedMessage.name}</div>
+                                    <div style={{
+                                        fontFamily: "'Lato', sans-serif",
+                                        color: darkMode ? "rgb(139, 152, 165)" : "gray",
+                                    }}>@{selectedMessage.username}</div>
                                 </div>
                             </div>
                             <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom}
@@ -606,13 +599,14 @@ export function Message() {
                                     id="outlined-basic"
                                     sx={
                                         darkMode ?
-                                            {"& .MuiOutlinedInput-root": {
+                                            {
+                                                "& .MuiOutlinedInput-root": {
                                                     background: "rgb(39, 51, 64)",
                                                     color: "rgb(247, 249, 249)",
                                                 }
                                             }
                                             :
-                                            {backgroundColor: "white"}
+                                            { backgroundColor: "white" }
                                     }
                                     type="search"
                                     variant="outlined"
@@ -627,14 +621,21 @@ export function Message() {
                                     InputProps={{
                                         endAdornment: (
                                             <Button
-                                                sx={{color: "#9e9e9e", minWidth: "35px", height: "35px", padding: "0", fontSize: "2rem"}}
+                                                sx={{
+                                                    color: "#9e9e9e",
+                                                    minWidth: "35px",
+                                                    height: "35px",
+                                                    padding: "0",
+                                                    fontSize: "2rem"
+                                                }}
+                                                disabled={sending}
                                                 onClick={handleSend}
                                             >
                                                 <SendIcon/>
                                             </Button>
                                         ),
                                     }}
-                                    style={{ width: "100%"}}
+                                    style={{ width: "100%" }}
                                 />
                             </>
                         )}
