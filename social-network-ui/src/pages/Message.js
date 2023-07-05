@@ -549,7 +549,6 @@ export function Message() {
         }
     };
 
-
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             {!clicked && (

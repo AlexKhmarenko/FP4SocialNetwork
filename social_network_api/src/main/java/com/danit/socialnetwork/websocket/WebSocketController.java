@@ -286,5 +286,4 @@ public class WebSocketController {
     sendUnreadMessagesToUserReceiver(inboxUid);
     return inboxR;
   }
-
 }

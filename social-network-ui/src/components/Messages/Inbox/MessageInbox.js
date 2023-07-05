@@ -42,6 +42,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
+
     return (
         <div style={{ height: "100vh", marginTop: "10px" }}>
             {inboxMessages.length > 0 ? (
