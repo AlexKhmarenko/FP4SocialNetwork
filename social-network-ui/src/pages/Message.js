@@ -523,10 +523,10 @@ export function Message() {
         }
     };
 
-    const stompClientSendMessage = (event) => {
-        stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: selectedMessage.userId,
-            inboxUid: selectedMessage.inboxUid}));
-    };
+    const stompClientSendMessage = (userId, inboxUid) => {
+        stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: userId,
+            inboxUid: inboxUid}));
+    }
 
     const handleEmojiClick = (emojiData) => {
         const emojiCodePoint = parseInt(emojiData.unified, 16);
