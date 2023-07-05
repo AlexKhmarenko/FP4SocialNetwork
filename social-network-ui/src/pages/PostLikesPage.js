@@ -145,7 +145,7 @@ export function PostLikesPage() {
                             </ListItem>
                         )) :
                         <ListItem>
-                            <ListItemText primary="No likes yet! Be the first one." />
+                            <ListItemText primary="No likes yet! Be the first one." sx={{color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"}} />
                         </ListItem>
                     : null
             }
