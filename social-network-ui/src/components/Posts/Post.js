@@ -428,8 +428,6 @@ export const Post = ({
             year: 'numeric',
             month: 'short',
             day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
             timeZone: userTimezone,
             locale: 'en-US',
         };
