@@ -111,6 +111,7 @@ export const Post = ({
     const xxsStyles = {
         AdaptiveUserPhoto: {
             width: "100%",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "100vw",
@@ -144,6 +145,7 @@ export const Post = ({
     const xsStyles = {
         AdaptiveUserPhoto: {
             width: "100%",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "100vw",
@@ -178,6 +180,7 @@ export const Post = ({
         AdaptiveUserPhoto: {
             width: "430px",
             marginRight: "130px",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "470px",
@@ -212,7 +215,8 @@ export const Post = ({
     const mdStyles = {
         AdaptiveUserPhoto: {
             width: "450px",
-            margin: "0 auto"
+            margin: "0 auto",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "600px",
@@ -247,7 +251,8 @@ export const Post = ({
     const lgStyles = {
         AdaptiveUserPhoto: {
             width: "450px",
-            margin: "0 auto"
+            margin: "0 auto",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "600px",
@@ -282,7 +287,8 @@ export const Post = ({
     const xlStyles = {
         AdaptiveUserPhoto: {
             width: "450px",
-            margin: "0 auto"
+            margin: "0 auto",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "600px",
@@ -422,24 +428,32 @@ export const Post = ({
 
     const postDate = () => {
         const date = new Date(dataTime);
-        const diffDays = differenceInDays(new Date(), date);
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        if (diffDays < 1) {
-            return formatDistanceToNow(date, { addSuffix: true });
-        } else if (diffDays < 365) {
-            return formatDateWithTimezone(date, "MMM d");
+        const options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            timeZone: userTimezone,
+            locale: 'en-US',
+        };
+
+        const formattedDate = new Intl.DateTimeFormat(undefined, options).format(date);
+        const currentDate = new Date();
+        const timeDiffInMinutes = Math.round((currentDate - date) / (1000 * 60));
+
+        if (timeDiffInMinutes < 1) {
+            return 'less than a minute ago';
+        } else if (timeDiffInMinutes < 60) {
+            return `${timeDiffInMinutes} minutes ago`;
         } else {
-            return formatDateWithTimezone(date, "MMM d, yyyy");
+            return formattedDate;
         }
     };
 
-    const formatDateWithTimezone = (date, format) => {
-        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const options = { timeZone: userTimezone, year: 'numeric', month: '2-digit', day: '2-digit' };
 
-        const formattedDate = date.toLocaleString(undefined, options);
-        return formattedDate;
-    };
 
     return (
         <Card sx={styles.AdaptivePostCard} data-testid={`postId_${postId}`}>
