@@ -26,6 +26,7 @@ public class RepostDtoResponse extends PostDtoResponse {
 
     ZoneId utcZoneId = ZoneId.of("UTC"); // The stored time is in UTC
     ZoneId userZoneId = ZoneId.of(userTimeZone);
+
     ZonedDateTime utcDateTimeRepost = repost.getRepostedDateTime().atZone(utcZoneId);
     ZonedDateTime userDateTimeRepost = utcDateTimeRepost.withZoneSameInstant(userZoneId);
     tempPostDto.setRepostDateTime(userDateTimeRepost.toLocalDateTime());
@@ -33,8 +34,6 @@ public class RepostDtoResponse extends PostDtoResponse {
     ZonedDateTime utcDateTimePost = repost.getPostId().getSentDateTime().atZone(utcZoneId);
     ZonedDateTime userDateTimePost = utcDateTimePost.withZoneSameInstant(userZoneId);
     tempPostDto.setSentDateTime(userDateTimePost.toLocalDateTime());
-    tempPostDto.setRepostDateTime(repost.getRepostedDateTime());
-
     return tempPostDto;
 
   }
