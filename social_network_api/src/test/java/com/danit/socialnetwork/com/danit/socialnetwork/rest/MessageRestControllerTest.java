@@ -142,7 +142,7 @@ class MessageRestControllerTest {
     messageSearchDto.add(messageSearchDto1);
     messageSearchDto.add(messageSearchDto2);
 
-    when(messageService.filterCachedMessageByString(request, "Europe/Kiev")).thenReturn(messageSearchDto);
+    when(messageService.filterCachedMessageByString(request, "Europe/London")).thenReturn(messageSearchDto);
 
     mockMvc.perform(post("/api/messageSearch")
             .contentType(MediaType.APPLICATION_JSON)

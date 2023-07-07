@@ -173,73 +173,73 @@ class WebSocketControllerTest {
     verify(messagingTemplate).convertAndSendToUser(anyString(), anyString(), anyMap());
   }
 
-//  @Test
-//  void testPostAddMessage() throws InterruptedException {
-//    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
-//    messageDtoRequest.setInboxUid(1);
-//    messageDtoRequest.setUserId(2);
-//    messageDtoRequest.setWrittenMessage("Test");
-//
-//    List<InboxDtoResponse> inboxesS = new ArrayList<>();
-//    InboxDtoResponse inboxS = new InboxDtoResponse();
-//    inboxS.setInboxUid(1);
-//    inboxS.setUserId(2);
-//    inboxS.setMessage("Test");
-//    inboxesS.add(inboxS);
-//
-//    List<InboxDtoResponse> inboxesR = new ArrayList<>();
-//    InboxDtoResponse inboxR = new InboxDtoResponse();
-//    inboxR.setInboxUid(2);
-//    inboxR.setUserId(1);
-//    inboxR.setMessage("Test");
-//    inboxesR.add(inboxR);
-//
-//    when(inboxService.getInboxesByInboxUid(1, userTimeZone)).thenReturn(inboxesS);
-//    when(inboxService.getInboxesByInboxUid(2, userTimeZone)).thenReturn(inboxesR);
-//    when(messageService.numberUnreadMessages(1)).thenReturn(5);
-//    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
-//
-//    webSocketController.postAddMessage(messageDtoRequest);
-//
-//    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
-//    verify(messagingTemplate, times(1)).convertAndSendToUser("1", "/inbox", inboxS);
-//    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
-//    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("1"), eq("/getMessages"), any(InboxDtoResponse.class));
-//    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(InboxDtoResponse.class));
-//  }
+  @Test
+  void testPostAddMessage() throws InterruptedException {
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(1);
+    messageDtoRequest.setUserId(2);
+    messageDtoRequest.setWrittenMessage("Test");
 
-//  @Test
-//  void testPostReadMessages() throws InterruptedException {
-//    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
-//    messageDtoRequest.setInboxUid(1);
-//    messageDtoRequest.setUserId(2);
-//    messageDtoRequest.setWrittenMessage("Test");
-//
-//    List<InboxDtoResponse> inboxesS = new ArrayList<>();
-//    InboxDtoResponse inboxS = new InboxDtoResponse();
-//    inboxS.setInboxUid(1);
-//    inboxS.setUserId(2);
-//    inboxS.setMessage("Test");
-//    inboxesS.add(inboxS);
-//
-//    List<InboxDtoResponse> inboxesR = new ArrayList<>();
-//    InboxDtoResponse inboxR = new InboxDtoResponse();
-//    inboxR.setInboxUid(2);
-//    inboxR.setUserId(1);
-//    inboxR.setMessage("Test");
-//    inboxesR.add(inboxR);
-//
-//    when(inboxService.getInboxesByInboxUid(1, userTimeZone)).thenReturn(inboxesS);
-//    when(inboxService.getInboxesByInboxUid(2, userTimeZone)).thenReturn(inboxesR);
-//    when(messageService.numberUnreadMessages(1)).thenReturn(0);
-//    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(0);
-//
-//    webSocketController.postAddMessage(messageDtoRequest);
-//
-//    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
-//    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
-//    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(InboxDtoResponse.class));
-//  }
+    List<InboxDtoResponse> inboxesS = new ArrayList<>();
+    InboxDtoResponse inboxS = new InboxDtoResponse();
+    inboxS.setInboxUid(1);
+    inboxS.setUserId(2);
+    inboxS.setMessage("Test");
+    inboxesS.add(inboxS);
+
+    List<InboxDtoResponse> inboxesR = new ArrayList<>();
+    InboxDtoResponse inboxR = new InboxDtoResponse();
+    inboxR.setInboxUid(2);
+    inboxR.setUserId(1);
+    inboxR.setMessage("Test");
+    inboxesR.add(inboxR);
+
+    when(inboxService.getInboxesByInboxUid(1, "Europe/London")).thenReturn(inboxesS);
+    when(inboxService.getInboxesByInboxUid(2, "Europe/London")).thenReturn(inboxesR);
+    when(messageService.numberUnreadMessages(1)).thenReturn(5);
+    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
+
+    webSocketController.postAddMessage(messageDtoRequest, "Europe/London");
+
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
+    verify(messagingTemplate, times(1)).convertAndSendToUser("1", "/inbox", inboxS);
+    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("1"), eq("/getMessages"), any(InboxDtoResponse.class));
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(InboxDtoResponse.class));
+  }
+
+  @Test
+  void testPostReadMessages() throws InterruptedException {
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(1);
+    messageDtoRequest.setUserId(2);
+    messageDtoRequest.setWrittenMessage("Test");
+
+    List<InboxDtoResponse> inboxesS = new ArrayList<>();
+    InboxDtoResponse inboxS = new InboxDtoResponse();
+    inboxS.setInboxUid(1);
+    inboxS.setUserId(2);
+    inboxS.setMessage("Test");
+    inboxesS.add(inboxS);
+
+    List<InboxDtoResponse> inboxesR = new ArrayList<>();
+    InboxDtoResponse inboxR = new InboxDtoResponse();
+    inboxR.setInboxUid(2);
+    inboxR.setUserId(1);
+    inboxR.setMessage("Test");
+    inboxesR.add(inboxR);
+
+    when(inboxService.getInboxesByInboxUid(1, "Europe/London")).thenReturn(inboxesS);
+    when(inboxService.getInboxesByInboxUid(2, "Europe/London")).thenReturn(inboxesR);
+    when(messageService.numberUnreadMessages(1)).thenReturn(0);
+    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(0);
+
+    webSocketController.postAddMessage(messageDtoRequest, "Europe/London");
+
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
+    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(InboxDtoResponse.class));
+  }
 
 }
 
