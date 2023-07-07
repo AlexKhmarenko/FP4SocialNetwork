@@ -25,6 +25,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -62,12 +63,13 @@ public class WebSocketController {
     return unreadMessages;
   }
 
-  private InboxDtoResponse getInbox(Integer userId, Integer inboxUid) {
-    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(userId);
+  private InboxDtoResponse getInbox(Integer userId, Integer inboxUid, String userTimeZone) {
+    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(userId, userTimeZone);
     return inboxes.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
   }
 
-  private void setUnreadMessagesByUserNumToInboxDtoResponse(Integer inboxUid, Integer userId, InboxDtoResponse inbox) {
+  private void setUnreadMessagesByUserNumToInboxDtoResponse(
+      Integer inboxUid, Integer userId, InboxDtoResponse inbox) {
     int unreadMessagesByUserNumSenderR = messageService
         .numberUnreadMessagesByUser(inboxUid, userId);
     Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
@@ -241,12 +243,14 @@ public class WebSocketController {
 
   @MessageMapping("/addMessage")
   public InboxDtoResponse postAddMessage(
-      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
+      @Payload MessageDtoRequest messageDtoRequest,
+      @RequestParam(value = "time_zone",
+          defaultValue = "Europe/London") String userTimeZone) throws InterruptedException {
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     getLog(inboxUid, userId);
 
-    InboxDtoResponse inboxS = getInbox(inboxUid, userId);
+    InboxDtoResponse inboxS = getInbox(inboxUid, userId, "Europe/London");
 
     setUnreadMessagesByUserNumToInboxDtoResponse(userId, inboxUid, inboxS);
 
@@ -254,7 +258,7 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxS);
     messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
 
-    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid, "Europe/London");
 
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
@@ -268,7 +272,9 @@ public class WebSocketController {
 
   @MessageMapping("/getMessages")
   public InboxDtoResponse postReadMessages(
-      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
+      @Payload MessageDtoRequest messageDtoRequest,
+      @RequestParam(value = "time_zone",
+          defaultValue = "Europe/London") String userTimeZone) throws InterruptedException {
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     getLog(inboxUid, userId);
@@ -277,7 +283,7 @@ public class WebSocketController {
     messageService.unreadToReadMessages(userS, userR);
     Thread.sleep(500);
 
-    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid, "Europe/London");
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
     String userIdString = userId.toString();
