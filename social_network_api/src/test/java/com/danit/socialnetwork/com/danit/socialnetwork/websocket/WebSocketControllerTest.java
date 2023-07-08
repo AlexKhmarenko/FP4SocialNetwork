@@ -179,7 +179,8 @@ class WebSocketControllerTest {
     messageDtoRequest.setInboxUid(1);
     messageDtoRequest.setUserId(2);
     messageDtoRequest.setWrittenMessage("Test");
-    messageDtoRequest.setUserTimeZone("Europe/Kiev");
+    messageDtoRequest.setInboxUidTimeZone("Europe/Kiev");
+    messageDtoRequest.setUserIdTimeZone("Europe/Kiev");
 
     List<InboxDtoResponse> inboxesS = new ArrayList<>();
     InboxDtoResponse inboxS = new InboxDtoResponse();
@@ -215,7 +216,8 @@ class WebSocketControllerTest {
     messageDtoRequest.setInboxUid(1);
     messageDtoRequest.setUserId(2);
     messageDtoRequest.setWrittenMessage("Test");
-    messageDtoRequest.setUserTimeZone("Europe/Kiev");
+    messageDtoRequest.setInboxUidTimeZone("Europe/Kiev");
+    messageDtoRequest.setUserIdTimeZone("Europe/Kiev");
 
     List<InboxDtoResponse> inboxesS = new ArrayList<>();
     InboxDtoResponse inboxS = new InboxDtoResponse();

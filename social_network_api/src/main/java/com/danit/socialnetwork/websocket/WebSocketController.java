@@ -246,10 +246,10 @@ public class WebSocketController {
       @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
-    String userTimeZone = messageDtoRequest.getUserTimeZone();
+
     getLog(inboxUid, userId);
 
-    InboxDtoResponse inboxS = getInbox(inboxUid, userId, userTimeZone);
+    InboxDtoResponse inboxS = getInbox(inboxUid, userId, messageDtoRequest.getInboxUidTimeZone());
 
     setUnreadMessagesByUserNumToInboxDtoResponse(userId, inboxUid, inboxS);
 
@@ -257,7 +257,7 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxS);
     messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
 
-    InboxDtoResponse inboxR = getInbox(userId, inboxUid, userTimeZone);
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid, messageDtoRequest.getUserIdTimeZone());
 
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
@@ -279,7 +279,7 @@ public class WebSocketController {
     DbUser userR = userService.findDbUserByUserId(userId);
     messageService.unreadToReadMessages(userS, userR);
     Thread.sleep(500);
-    String userTimeZone = messageDtoRequest.getUserTimeZone();
+    String userTimeZone = messageDtoRequest.getInboxUidTimeZone();
     InboxDtoResponse inboxR = getInbox(userId, inboxUid, userTimeZone);
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
