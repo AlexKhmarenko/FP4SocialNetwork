@@ -179,6 +179,7 @@ class WebSocketControllerTest {
     messageDtoRequest.setInboxUid(1);
     messageDtoRequest.setUserId(2);
     messageDtoRequest.setWrittenMessage("Test");
+    messageDtoRequest.setUserTimeZone("Europe/Kiev");
 
     List<InboxDtoResponse> inboxesS = new ArrayList<>();
     InboxDtoResponse inboxS = new InboxDtoResponse();
@@ -194,12 +195,12 @@ class WebSocketControllerTest {
     inboxR.setMessage("Test");
     inboxesR.add(inboxR);
 
-    when(inboxService.getInboxesByInboxUid(1, "Europe/London")).thenReturn(inboxesS);
-    when(inboxService.getInboxesByInboxUid(2, "Europe/London")).thenReturn(inboxesR);
+    when(inboxService.getInboxesByInboxUid(1, "Europe/Kiev")).thenReturn(inboxesS);
+    when(inboxService.getInboxesByInboxUid(2, "Europe/Kiev")).thenReturn(inboxesR);
     when(messageService.numberUnreadMessages(1)).thenReturn(5);
     when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
 
-    webSocketController.postAddMessage(messageDtoRequest, "Europe/London");
+    webSocketController.postAddMessage(messageDtoRequest);
 
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
     verify(messagingTemplate, times(1)).convertAndSendToUser("1", "/inbox", inboxS);
@@ -214,6 +215,7 @@ class WebSocketControllerTest {
     messageDtoRequest.setInboxUid(1);
     messageDtoRequest.setUserId(2);
     messageDtoRequest.setWrittenMessage("Test");
+    messageDtoRequest.setUserTimeZone("Europe/Kiev");
 
     List<InboxDtoResponse> inboxesS = new ArrayList<>();
     InboxDtoResponse inboxS = new InboxDtoResponse();
@@ -229,12 +231,12 @@ class WebSocketControllerTest {
     inboxR.setMessage("Test");
     inboxesR.add(inboxR);
 
-    when(inboxService.getInboxesByInboxUid(1, "Europe/London")).thenReturn(inboxesS);
-    when(inboxService.getInboxesByInboxUid(2, "Europe/London")).thenReturn(inboxesR);
+    when(inboxService.getInboxesByInboxUid(1, "Europe/Kiev")).thenReturn(inboxesS);
+    when(inboxService.getInboxesByInboxUid(2, "Europe/Kiev")).thenReturn(inboxesR);
     when(messageService.numberUnreadMessages(1)).thenReturn(0);
     when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(0);
 
-    webSocketController.postAddMessage(messageDtoRequest, "Europe/London");
+    webSocketController.postAddMessage(messageDtoRequest);
 
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
     verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);

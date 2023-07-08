@@ -243,14 +243,13 @@ public class WebSocketController {
 
   @MessageMapping("/addMessage")
   public InboxDtoResponse postAddMessage(
-      @Payload MessageDtoRequest messageDtoRequest,
-      @RequestParam(value = "time_zone",
-          defaultValue = "Europe/London") String userTimeZone) throws InterruptedException {
+      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
+    String userTimeZone = messageDtoRequest.getUserTimeZone();
     getLog(inboxUid, userId);
 
-    InboxDtoResponse inboxS = getInbox(inboxUid, userId, "Europe/London");
+    InboxDtoResponse inboxS = getInbox(inboxUid, userId, userTimeZone);
 
     setUnreadMessagesByUserNumToInboxDtoResponse(userId, inboxUid, inboxS);
 
@@ -258,7 +257,7 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxS);
     messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
 
-    InboxDtoResponse inboxR = getInbox(userId, inboxUid, "Europe/London");
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid, userTimeZone);
 
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
@@ -272,9 +271,7 @@ public class WebSocketController {
 
   @MessageMapping("/getMessages")
   public InboxDtoResponse postReadMessages(
-      @Payload MessageDtoRequest messageDtoRequest,
-      @RequestParam(value = "time_zone",
-          defaultValue = "Europe/London") String userTimeZone) throws InterruptedException {
+      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     getLog(inboxUid, userId);
@@ -282,8 +279,8 @@ public class WebSocketController {
     DbUser userR = userService.findDbUserByUserId(userId);
     messageService.unreadToReadMessages(userS, userR);
     Thread.sleep(500);
-
-    InboxDtoResponse inboxR = getInbox(userId, inboxUid, "Europe/London");
+    String userTimeZone = messageDtoRequest.getUserTimeZone();
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid, userTimeZone);
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
     String userIdString = userId.toString();
