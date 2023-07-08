@@ -14,5 +14,5 @@ public class MessageDtoRequest {
   @Positive(message = "positive number required")
   private Integer userId;     // userId = receiver_id
   private String writtenMessage;
-  private String userTimeZone;
+  private String userTimeZone = "Europe/London";
 }
