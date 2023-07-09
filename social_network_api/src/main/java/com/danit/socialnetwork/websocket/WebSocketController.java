@@ -250,7 +250,6 @@ public class WebSocketController {
     getLog(inboxUid, userId);
 
     InboxDtoResponse inboxS = getInbox(inboxUid, userId, messageDtoRequest.getInboxUidTimeZone());
-
     setUnreadMessagesByUserNumToInboxDtoResponse(userId, inboxUid, inboxS);
 
     String inboxUidString = inboxUid.toString();
@@ -258,6 +257,7 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
 
     InboxDtoResponse inboxR = getInbox(userId, inboxUid, messageDtoRequest.getUserIdTimeZone());
+    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
 
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
@@ -280,13 +280,12 @@ public class WebSocketController {
     messageService.unreadToReadMessages(userS, userR);
     Thread.sleep(500);
     String userTimeZone = messageDtoRequest.getInboxUidTimeZone();
-    InboxDtoResponse inboxR = getInbox(userId, inboxUid, userTimeZone);
-    inboxR.setInboxUid(inboxUid);
-    inboxR.setUserId(userId);
-    String userIdString = userId.toString();
-    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
-    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxR);
+    InboxDtoResponse inboxS = getInbox(inboxUid, userId, userTimeZone);
+    setUnreadMessagesByUserNumToInboxDtoResponse(userId, inboxUid, inboxS);
+    String inboxUidString = inboxUid.toString();
+
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
     sendUnreadMessagesToUserReceiver(inboxUid);
-    return inboxR;
+    return inboxS;
   }
 }
