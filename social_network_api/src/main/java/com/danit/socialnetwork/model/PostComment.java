@@ -32,7 +32,6 @@ public class PostComment {
 
   @Column(name = "created_datetime", updatable = false)
   @NonNull
-  @CreationTimestamp
   private LocalDateTime createdDateTime;
 
   @NotEmpty

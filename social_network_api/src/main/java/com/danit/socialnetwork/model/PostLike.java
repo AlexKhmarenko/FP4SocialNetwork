@@ -29,7 +29,6 @@ public class PostLike {
 
   @Column(name = "created_datetime", updatable = false)
   @NonNull
-  @CreationTimestamp
   private LocalDateTime createdDateTime;
 
   @ManyToOne(targetEntity = DbUser.class, fetch = FetchType.LAZY)

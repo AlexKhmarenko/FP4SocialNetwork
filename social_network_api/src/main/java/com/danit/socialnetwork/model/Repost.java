@@ -30,7 +30,6 @@ public class Repost {
 
   @Column(name = "reposted_datetime", updatable = false)
   @NonNull
-  @CreationTimestamp
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
   private LocalDateTime repostedDateTime;
 
